@@ -1,3 +1,5 @@
+import type { ImageURLs } from "@noli/core";
+
 import type { SDSamplers, SDVersions, VariationModel } from "./meta";
 
 interface ITxt2ImgSDData {
@@ -19,4 +21,23 @@ interface ITxt2ImgSDData {
 export type TaskTypes = "txt2img.sd";
 export interface ITaskData {
   "txt2img.sd": ITxt2ImgSDData;
+}
+
+export interface ITaskResponse {
+  status: "pending" | "working" | "finished" | "exception";
+  pending: number;
+  data?: ImageURLs & {
+    response?: {
+      text?: string;
+      prompts?: string[];
+      hint_urls?: string[];
+      hint_reasons?: string[];
+      result_urls?: string[];
+      result_reasons?: string[];
+    };
+    create_time?: number;
+    start_time?: number;
+    end_time?: number;
+    duration?: number;
+  };
 }
