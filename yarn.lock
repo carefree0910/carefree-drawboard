@@ -1439,7 +1439,7 @@
     "@noli/core" "^0.4.9-alpha.37"
     "@noli/svg" "^0.4.9-alpha.37"
 
-"@noli/core@^0.4.9-alpha.37":
+"@noli/core@^0.4.9-alpha.34", "@noli/core@^0.4.9-alpha.37":
   version "0.4.9-alpha.37"
   resolved "https://opennpm.nolibox.com/@noli%2fcore/-/core-0.4.9-alpha.37.tgz#e0ac26c7b5ada1c3a40b332512ac20d0f82fc7b4"
   integrity sha512-VSZw3q7fPQGKt2o8FpHdbgYWB5B67PHWEePLQve8kx2nNjLqInDOPlR6sxCOyhQCqnpoeDOFcznVbywi19OFNA==

@@ -14,6 +14,7 @@
     "@emotion/react": "^11.9.3",
     "@emotion/styled": "^11.9.3",
     "@noli/business": "^0.4.9-alpha.34",
+    "@noli/core": "^0.4.9-alpha.34",
     "@noli/native": "^0.4.9-alpha.34",
     "@svgdotjs/svg.filter.js": "^3.0.8",
     "@svgdotjs/svg.js": "^3.1.1",
