@@ -1,0 +1,50 @@
+{
+  "name": "cfdraw",
+  "private": true,
+  "version": "0.0.0",
+  "type": "module",
+  "scripts": {
+    "dev": "vite",
+    "build": "tsc && vite build",
+    "preview": "vite preview"
+  },
+  "dependencies": {
+    "@chakra-ui/icons": "^2.0.4",
+    "@chakra-ui/react": "^2.2.4",
+    "@emotion/react": "^11.9.3",
+    "@emotion/styled": "^11.9.3",
+    "@noli/business": "^0.4.9-alpha.34",
+    "@noli/native": "^0.4.9-alpha.34",
+    "@svgdotjs/svg.filter.js": "^3.0.8",
+    "@svgdotjs/svg.js": "^3.1.1",
+    "@svgdotjs/svg.topath.js": "^2.0.3",
+    "@svgdotjs/svg.topoly.js": "^1.0.3",
+    "@types/node": "18.15.11",
+    "@types/react": "18.0.33",
+    "@types/react-dom": "18.0.11",
+    "axios": "^0.24.0",
+    "eslint": "8.37.0",
+    "eslint-config-next": "13.2.4",
+    "framer-motion": "^10.10.0",
+    "jszip": "^3.7.1",
+    "ml-matrix": "^6.10.0",
+    "mobx": "6.6.1",
+    "mobx-react-lite": "^3.4.0",
+    "next": "13.2.4",
+    "opentype.js": "^1.3.4",
+    "platform": "^1.3.6",
+    "react": "18.2.0",
+    "react-dom": "18.2.0",
+    "typescript": "5.0.3",
+    "uuid": "^8.3.2",
+    "vite-tsconfig-paths": "^4.0.8"
+  },
+  "devDependencies": {
+    "@types/react": "^18.0.28",
+    "@types/react-dom": "^18.0.11",
+    "@vitejs/plugin-react": "^3.1.0",
+    "sass": "^1.60.0",
+    "typescript": "^4.9.3",
+    "vite": "^4.2.0"
+  }
+}
