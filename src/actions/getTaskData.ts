@@ -28,7 +28,7 @@ function txt2imgSDDataConverter(meta: IMetaData): ITaskData["txt2img.sd"] {
 
 // get data api
 
-export function getTaskData<T extends TaskTypes>(type: T): ITaskData[T] {
-  const converter = converters[type];
+export function getTaskData<T extends TaskTypes>(task: T): ITaskData[T] {
+  const converter = converters[task];
   return converter(metaStore.metaData);
 }
