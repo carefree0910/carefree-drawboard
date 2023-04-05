@@ -1,14 +1,14 @@
 import type { IMetaData } from "@/types/meta";
-import type { APITypes, IAPIData } from "@/types/apiData";
+import type { TaskTypes, ITaskData } from "@/types/tasks";
 import { metaStore } from "@/stores/meta";
 
 // converters
 
-const converters: Record<APITypes, (meta: IMetaData) => IAPIData[APITypes]> = {
+const converters: Record<TaskTypes, (meta: IMetaData) => ITaskData[TaskTypes]> = {
   "txt2img.sd": txt2imgSDDataConverter,
 };
 
-function txt2imgSDDataConverter(meta: IMetaData): IAPIData["txt2img.sd"] {
+function txt2imgSDDataConverter(meta: IMetaData): ITaskData["txt2img.sd"] {
   return {
     w: meta.w,
     h: meta.h,
@@ -28,7 +28,7 @@ function txt2imgSDDataConverter(meta: IMetaData): IAPIData["txt2img.sd"] {
 
 // get data api
 
-export function getAPIData<T extends APITypes>(type: T): IAPIData[T] {
+export function getTaskData<T extends TaskTypes>(type: T): ITaskData[T] {
   const converter = converters[type];
   return converter(metaStore.metaData);
 }

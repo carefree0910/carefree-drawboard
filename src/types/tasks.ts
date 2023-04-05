@@ -16,7 +16,7 @@ interface ITxt2ImgSDData {
   variations: VariationModel[];
 }
 
-export type APITypes = "txt2img.sd";
-export interface IAPIData {
+export type TaskTypes = "txt2img.sd";
+export interface ITaskData {
   "txt2img.sd": ITxt2ImgSDData;
 }
