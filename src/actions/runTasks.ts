@@ -4,7 +4,7 @@ import type { APISources } from "@/types/requests";
 import type { INarrowedMetaData } from "@/types/narrowedMeta";
 import type { ITaskData, ITaskResponse, TaskTypes } from "@/types/tasks";
 import { Requests } from "@/requests/actions";
-import { getTaskData } from "./getTaskData";
+import { getTaskData } from "./handleTaskData";
 
 export function pushTask<T extends TaskTypes>(
   task: T,
