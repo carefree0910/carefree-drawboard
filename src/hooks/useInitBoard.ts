@@ -22,7 +22,8 @@ import { themeStore } from "@/stores/theme";
 export function useInitBoard(): void {
   async function _initialize(): Promise<void> {
     // pre settings
-    Logger.isDebug = true;
+    const isProduction = ENV === "production";
+    Logger.isDebug = !isProduction;
 
     // check cache
     const cache: { graph?: Graph; globalTransform?: Matrix2DFields } = {};
@@ -54,7 +55,6 @@ export function useInitBoard(): void {
     await unittest.renderGraph(cache.graph ?? new Graph(), undefined, false);
 
     //// setup options
-    const isProduction = ENV === "production";
     const storeOptions: BoardStoresOptions = {
       constantsOpt: {
         env: ENV as BoardStoresOptions["constantsOpt"]["env"],
