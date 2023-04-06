@@ -51,13 +51,12 @@ const Render = ({
     const updateFloating = async () => {
       const _pivot = pivot!;
       const _follow = follow ?? false;
-      const _offsetX = offsetX ?? 8;
-      const _offsetY = offsetY ?? 8;
+      const _offsetX = offsetX ?? (["top", "center", "bottom"].includes(_pivot) ? 0 : 8);
+      const _offsetY = offsetY ?? (["left", "center", "right"].includes(_pivot) ? 0 : 8);
       const domFloating = document.querySelector<HTMLDivElement>(`#${id}`);
       if (!domFloating) return;
-      const isExpand = domFloating.dataset.expand === "true";
-      const _w = isExpand ? props.w : iconW!;
-      const _h = isExpand ? props.h : iconH!;
+      const _w = iconW!;
+      const _h = iconH!;
       let x, y;
       if (!_follow) {
         const { x: left, y: top } = useBoardContainerLeftTop();
@@ -68,7 +67,7 @@ const Render = ({
         } else if (["rt", "right", "rb"].includes(_pivot)) {
           x = left + bw - _w - _offsetX;
         } else {
-          x = left + 0.5 * (bw - _w);
+          x = left + 0.5 * (bw - _w) + _offsetX;
         }
         // y
         if (["lt", "top", "rt"].includes(_pivot)) {
@@ -76,7 +75,7 @@ const Render = ({
         } else if (["lb", "bottom", "rb"].includes(_pivot)) {
           y = top + bh - _h - _offsetY;
         } else {
-          y = top + 0.5 * (bh - _h);
+          y = top + 0.5 * (bh - _h) + _offsetY;
         }
       } else {
         const info = useSelecting("basic")({ fixed: 0 });
@@ -91,7 +90,7 @@ const Render = ({
         } else if (["rt", "right", "rb"].includes(_pivot)) {
           offsetX = _offsetX;
         } else {
-          offsetX = -0.5 * _w;
+          offsetX = -0.5 * _w + _offsetX;
         }
         // y
         if (["lt", "top", "rt"].includes(_pivot)) {
@@ -99,7 +98,7 @@ const Render = ({
         } else if (["lb", "bottom", "rb"].includes(_pivot)) {
           offsetY = _offsetY;
         } else {
-          offsetY = -0.5 * _h;
+          offsetY = -0.5 * _h + _offsetY;
         }
         ({ x, y } = domPivot.add(new Coordinate(offsetX, offsetY)));
       }
