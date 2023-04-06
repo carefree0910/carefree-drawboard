@@ -4,16 +4,27 @@ import type { APISources } from "./requests";
 export type MetaType = "upload" | "txt2img.sd";
 
 // (global) meta data
-export type SDVersions =
-  | ""
-  | "v1.5"
-  | "anime"
-  | "anime_anything"
-  | "anime_hybrid"
-  | "anime_guofeng"
-  | "anime_orange"
-  | "dreamlike_v1";
-export type SDSamplers = "ddim" | "plms" | "klms" | "solver" | "k_euler" | "k_euler_a" | "k_heun";
+export const allSDVersions = [
+  "",
+  "v1.5",
+  "anime",
+  "anime_anything",
+  "anime_hybrid",
+  "anime_guofeng",
+  "anime_orange",
+  "dreamlike_v1",
+] as const;
+export const allSDSamplers = [
+  "ddim",
+  "plms",
+  "klms",
+  "solver",
+  "k_euler",
+  "k_euler_a",
+  "k_heun",
+] as const;
+export type SDVersions = typeof allSDVersions[number];
+export type SDSamplers = typeof allSDSamplers[number];
 export interface VariationModel {
   seed: number;
   strength: number;
