@@ -4,6 +4,7 @@ import { shallowCopy } from "@noli/core";
 import { ABCStore } from "@noli/business";
 
 import type { IMetaData, SDSamplers, SDVersions, VariationModel } from "@/types/meta";
+import type { APISources } from "@/types/requests";
 
 class MetaStore extends ABCStore<IMetaData> implements IMetaData {
   // common api data
@@ -21,6 +22,7 @@ class MetaStore extends ABCStore<IMetaData> implements IMetaData {
   max_wh = 1024;
   clip_skip = -1;
   variations: VariationModel[] = [];
+  source: APISources = "nolibox";
   // specific data
   isDrag = false;
   timestamp?: number;
@@ -65,6 +67,7 @@ class MetaStore extends ABCStore<IMetaData> implements IMetaData {
       max_wh: this.max_wh,
       clip_skip: this.clip_skip,
       variations: this.variations,
+      source: this.source,
       isDrag: this.isDrag,
       timestamp: this.timestamp,
     });

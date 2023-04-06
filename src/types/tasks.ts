@@ -1,6 +1,7 @@
 import type { ImageURLs } from "@noli/core";
 
 import type { SDSamplers, SDVersions, VariationModel } from "./meta";
+import type { APISources } from "./requests";
 
 interface ITxt2ImgSDTaskData {
   w: number;
@@ -16,6 +17,7 @@ interface ITxt2ImgSDTaskData {
   max_wh: number;
   clip_skip: number;
   variations: VariationModel[];
+  source: APISources;
 }
 
 export type TaskTypes = "txt2img.sd";

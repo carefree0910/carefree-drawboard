@@ -8,11 +8,14 @@ import type { IImportMeta } from "@/types/narrowedMeta";
 import { toast } from "@/utils/toast";
 import { Toast_Words } from "@/utils/lang/toast";
 import { addNewImage, NewImageInfo } from "./addImage";
+import { pollTask, pushTask } from "./runTasks";
+import { metaStore } from "@/stores/meta";
 
 // consumers
 
-const consumers: Record<MetaType, (input: IImportMeta<MetaType>) => void> = {
+const consumers: Record<MetaType, (input: IImportMeta<any>) => void> = {
   upload: consumeUpload,
+  "txt2img.sd": consumeTxt2ImgSD,
 };
 function consumeUpload({ t, lang, type, metaData }: IImportMeta<"upload">): void {
   const success = async () => {
@@ -32,6 +35,30 @@ function consumeUpload({ t, lang, type, metaData }: IImportMeta<"upload">): void
     callbacks: { success, failed },
     noSelect: false,
   });
+}
+function consumeTxt2ImgSD({ t, lang, type, metaData }: IImportMeta<"txt2img.sd">): void {
+  const success = async () => {
+    metaData.timestamp = Date.now();
+    toast(t, "success", translate(Toast_Words["generate-image-success-message"], lang));
+  };
+  const failed = async (err: any) => {
+    toast(t, "error", `${translate(Toast_Words["generate-image-error-message"], lang)} (${err})`);
+  };
+  pushTask("txt2img.sd", metaData)
+    .then(({ taskId, taskData }) => pollTask(metaData.source, taskId, taskData))
+    .then(({ res, taskData }) => {
+      const url = res.data?.cdn;
+      if (!url) throw Error("cdn url not found in response");
+      const newAlias = `txt2img.sd.${getRandomHash()}`;
+      const bboxInfo: NewImageInfo = { w: taskData.w, h: taskData.h };
+      addNewImage(newAlias, url, {
+        info: bboxInfo,
+        meta: { type, data: taskData },
+        callbacks: { success, failed },
+        noSelect: false,
+      });
+    })
+    .catch((err) => failed(err));
 }
 
 // import api

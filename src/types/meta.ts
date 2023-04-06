@@ -1,4 +1,9 @@
-export type MetaType = "upload";
+import type { APISources } from "./requests";
+
+// meta types
+export type MetaType = "upload" | "txt2img.sd";
+
+// (global) meta data
 export type SDVersions =
   | ""
   | "v1.5"
@@ -30,11 +35,13 @@ export interface IMetaData {
   max_wh: number;
   clip_skip: number;
   variations: VariationModel[];
+  source: APISources;
   // specific data
   isDrag: boolean;
   timestamp?: number;
 }
 
+// meta bundle
 export interface IMeta {
   type: MetaType;
   data: IMetaData;

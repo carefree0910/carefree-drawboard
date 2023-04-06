@@ -1,18 +1,20 @@
 import { Logger } from "@noli/core";
 
 import type { APISources } from "@/types/requests";
-import type { ITaskResponse, TaskTypes } from "@/types/tasks";
+import type { INarrowedMetaData } from "@/types/narrowedMeta";
+import type { ITaskData, ITaskResponse, TaskTypes } from "@/types/tasks";
 import { Requests } from "@/requests/actions";
 import { getTaskData } from "./getTaskData";
 
-export function pushTask<T extends TaskTypes, S extends APISources>(
-  source: S,
+export function pushTask<T extends TaskTypes>(
   task: T,
-): Promise<string> {
-  return Requests.postJson<{ uid: string }, S>(source, "/push", {
+  metaData?: INarrowedMetaData[T],
+): Promise<{ taskId: string; taskData: ITaskData[T] }> {
+  const taskData = getTaskData(task, metaData);
+  return Requests.postJson<{ uid: string }>(taskData.source, "/push", {
     task,
-    params: getTaskData(task),
-  }).then((res) => res.uid);
+    params: taskData,
+  }).then((res) => ({ taskId: res.uid, taskData }));
 }
 
 export class TaskPolling {
@@ -78,6 +80,10 @@ export class TaskPolling {
   }
 }
 
-export function pollTask<S extends APISources>(source: S, taskId: string): Promise<ITaskResponse> {
-  return new TaskPolling(source, taskId).run();
+export function pollTask<S extends APISources, T extends TaskTypes>(
+  source: S,
+  taskId: string,
+  taskData: ITaskData[T],
+): Promise<{ res: ITaskResponse; taskData: ITaskData[T] }> {
+  return new TaskPolling(source, taskId).run().then((res) => ({ res, taskData }));
 }

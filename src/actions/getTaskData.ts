@@ -1,14 +1,15 @@
-import type { IMetaData } from "@/types/meta";
 import type { TaskTypes, ITaskData } from "@/types/tasks";
+import type { INarrowedMetaData } from "@/types/narrowedMeta";
 import { metaStore } from "@/stores/meta";
 
 // converters
 
-const converters: Record<TaskTypes, (meta: IMetaData) => ITaskData[TaskTypes]> = {
-  "txt2img.sd": txt2imgSDDataConverter,
-};
+const converters: Record<TaskTypes, (meta: INarrowedMetaData[TaskTypes]) => ITaskData[TaskTypes]> =
+  {
+    "txt2img.sd": txt2imgSDDataConverter,
+  };
 
-function txt2imgSDDataConverter(meta: IMetaData): ITaskData["txt2img.sd"] {
+function txt2imgSDDataConverter(meta: INarrowedMetaData["txt2img.sd"]): ITaskData["txt2img.sd"] {
   return {
     w: meta.w,
     h: meta.h,
@@ -23,12 +24,16 @@ function txt2imgSDDataConverter(meta: IMetaData): ITaskData["txt2img.sd"] {
     max_wh: meta.max_wh,
     clip_skip: meta.clip_skip,
     variations: meta.variations,
+    source: meta.source,
   };
 }
 
 // get data api
 
-export function getTaskData<T extends TaskTypes>(task: T): ITaskData[T] {
+export function getTaskData<T extends TaskTypes>(
+  task: T,
+  metaData?: INarrowedMetaData[T],
+): ITaskData[T] {
   const converter = converters[task];
-  return converter(metaStore.metaData);
+  return converter(metaData ?? metaStore.metaData);
 }
