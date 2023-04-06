@@ -67,9 +67,8 @@ export function addNewImage(
   },
 ): void {
   const newImage = getNewImageNode(alias, src, opt.info);
-  console.log("newImage: ", newImage);
-
   newImage.meta = opt.meta;
+  console.log("newImage: ", newImage.snapshot());
   useSafeExecute("addJson", null, true, opt.callbacks, {
     noSelect: opt.noSelect ?? true,
     safeOpt: {
