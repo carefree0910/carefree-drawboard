@@ -9,7 +9,7 @@ export function pushTask<T extends TaskTypes, S extends APISources>(
   source: S,
   task: T,
 ): Promise<string> {
-  return Requests.postJson<S, { uid: string }>(source, "/push", {
+  return Requests.postJson<{ uid: string }, S>(source, "/push", {
     task,
     params: getTaskData(task),
   }).then((res) => res.uid);
@@ -48,7 +48,7 @@ export class TaskPolling {
     this.timerId = setTimeout(this.check, 0);
   }
   check = async (): Promise<void> => {
-    Requests.get<APISources, ITaskResponse>(this.source, `/status/${this.taskId}`)
+    Requests.get<ITaskResponse>(this.source, `/status/${this.taskId}`)
       .then((res) => {
         this.response = res;
         if (res.status === "finished") {
