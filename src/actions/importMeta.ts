@@ -1,14 +1,15 @@
-import { getRandomHash } from "@noli/core";
+import { getRandomHash, Logger } from "@noli/core";
 import { translate } from "@noli/business";
 
 import type { MetaType } from "@/types/meta";
-import type { IImportMeta } from "@/types/narrowedMeta";
+import type { IImportMeta, INarrowedMetaData } from "@/types/narrowedMeta";
 import { toast } from "@/utils/toast";
 import { Toast_Words } from "@/utils/lang/toast";
 import { addNewImage, NewImageInfo } from "./addImage";
 import { pollTask, pushTask } from "./runTasks";
-import { revertTaskData } from "./handleTaskData";
+import { getTaskData, revertTaskData } from "./handleTaskData";
 import { getSingleUrl } from "./handleResponse";
+import { allTaskTypes, TaskTypes } from "@/types/tasks";
 
 // consumers
 
@@ -68,6 +69,23 @@ function consumeTxt2ImgSD({ t, lang, type, metaData }: IImportMeta<"txt2img.sd">
 
 // import api
 
-export function importMeta<T extends MetaType>(data: IImportMeta<T>): void {
-  consumers[data.type](data);
+export function importMeta<T extends MetaType>({
+  t,
+  lang,
+  type,
+  metaData,
+}: Omit<IImportMeta<T>, "metaData"> & { metaData?: INarrowedMetaData[T] }): void {
+  if (!metaData) {
+    if (!allTaskTypes.includes(type)) {
+      Logger.warn(
+        `'metaData' is not provided but 'type' (${type}) is not a 'TaskType', so nothing will happen. ` +
+          `Please either provide 'metaData' explicitly, or specify 'type' as a 'TaskType' ` +
+          `(available 'TaskType's are: ${allTaskTypes.join(", ")})`,
+      );
+      return;
+    }
+    const task = type as TaskTypes;
+    metaData = revertTaskData(task, getTaskData(task)) as any;
+  }
+  consumers[type]({ t, lang, type, metaData });
 }
