@@ -5,6 +5,7 @@ import { useSelecting } from "@noli/business";
 
 import type { IRender } from "@/types/plugins";
 import Render from "./utils/Render";
+import { pluginFactory } from "./utils/factory";
 
 const MetaPlugin = observer((props: IRender) => {
   const info = useSelecting("raw");
@@ -18,7 +19,4 @@ const MetaPlugin = observer((props: IRender) => {
     </Render>
   );
 });
-
-export function makeMetaPlugin(props: Omit<IRender, "follow">) {
-  return <MetaPlugin follow {...props} />;
-}
+pluginFactory.register("meta")(MetaPlugin);

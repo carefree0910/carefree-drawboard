@@ -2,7 +2,6 @@ import { useMemo } from "react";
 import { observer } from "mobx-react-lite";
 import { Button, Divider, useToast } from "@chakra-ui/react";
 
-import { Logger } from "@noli/core";
 import { langStore } from "@noli/business";
 
 import type { ITaskPlugin } from "@/types/plugins";
@@ -12,6 +11,7 @@ import { themeStore } from "@/stores/theme";
 import TextField from "@/components/TextField";
 import { importMeta } from "@/actions/importMeta";
 import Render from "./utils/Render";
+import { pluginFactory } from "./utils/factory";
 
 const TaskPlugin = observer(({ task, fields, customDefinitions, ...props }: ITaskPlugin) => {
   const definitions = useMemo(() => subscribe(fields, customDefinitions), []);
@@ -47,11 +47,4 @@ const TaskPlugin = observer(({ task, fields, customDefinitions, ...props }: ITas
     </Render>
   );
 });
-
-export function makeTaskPlugin(props: ITaskPlugin) {
-  if (props.follow && props.nodeConstraint === "none") {
-    Logger.warn("cannot use `follow` with `targetNodeType` set to `none`");
-    return null;
-  }
-  return <TaskPlugin {...props} />;
-}
+pluginFactory.register("task")(TaskPlugin);

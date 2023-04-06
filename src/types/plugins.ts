@@ -47,3 +47,13 @@ export interface ITaskPlugin extends IRender {
   fields: ISubscribableFields[];
   customDefinitions?: ICustomDefinitions;
 }
+
+// factory
+
+export const allAvailablePlugins = ["task", "meta"] as const;
+export type AvailablePlugins = typeof allAvailablePlugins[number];
+
+export interface IPluginProps {
+  task: ITaskPlugin;
+  meta: IRender;
+}
