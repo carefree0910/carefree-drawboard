@@ -28,7 +28,7 @@ function BoardPanel() {
           pivot: "rt",
           offsetY: -42,
           expandOffsetY: -400,
-          nodeConstraint: "anyNode",
+          nodeConstraint: "singleNode",
         })}
         {makeTaskPlugin({
           w: 200,
