@@ -1,6 +1,7 @@
 import type { AxiosResponse, InternalAxiosRequestConfig } from "axios";
 
-export type APISources = "nolibox";
+export const allAPISources = ["nolibox"] as const;
+export type APISources = typeof allAPISources[number];
 export type Interceptors = {
   // Do something before request is sent
   beforeRequest?: (config: InternalAxiosRequestConfig) => InternalAxiosRequestConfig;
