@@ -1,7 +1,8 @@
 import type { APISources } from "./requests";
 
 // meta types
-export type MetaType = "upload" | "txt2img.sd";
+export const allMetaTypes = ["upload", "txt2img.sd"] as const;
+export type MetaType = typeof allMetaTypes[number];
 
 // (global) meta data
 export const allSDVersions = [

@@ -21,7 +21,8 @@ interface ITxt2ImgSDTaskData {
   source: APISources;
 }
 
-export type TaskTypes = "txt2img.sd";
+export const allTaskTypes = ["txt2img.sd"] as const;
+export type TaskTypes = typeof allTaskTypes[number];
 export interface ITaskData {
   "txt2img.sd": ITxt2ImgSDTaskData;
 }
