@@ -7,11 +7,11 @@ import { langStore } from "@noli/business";
 
 import type { TaskTypes } from "@/types/tasks";
 import type { ICustomDefinitions, ISubscribableFields } from "@/types/metaFields";
-import { subscribe } from "./subscribe";
+import { subscribe } from "./utils/subscribe";
 import { themeStore } from "@/stores/theme";
 import TextField from "@/components/TextField";
 import { importMeta } from "@/actions/importMeta";
-import Render, { IRender } from "./Render";
+import Render, { IRender } from "./utils/Render";
 
 export interface IPlugin extends IRender {
   task: TaskTypes;
@@ -19,7 +19,7 @@ export interface IPlugin extends IRender {
   customDefinitions?: ICustomDefinitions;
 }
 
-const Plugin = observer(({ task, fields, customDefinitions, ...props }: IPlugin) => {
+const TaskPlugin = observer(({ task, fields, customDefinitions, ...props }: IPlugin) => {
   const definitions = useMemo(() => subscribe(fields, customDefinitions), []);
 
   const t = useToast();
@@ -54,10 +54,10 @@ const Plugin = observer(({ task, fields, customDefinitions, ...props }: IPlugin)
   );
 });
 
-export function makePlugin(props: IPlugin) {
+export function makeTaskPlugin(props: IPlugin) {
   if (props.follow && props.targetNodeType === "all") {
     Logger.warn("cannot use `follow` with `targetNodeType` set to `all`");
     return null;
   }
-  return <Plugin {...props} />;
+  return <TaskPlugin {...props} />;
 }

@@ -5,7 +5,7 @@ import { useIsReady } from "@noli/business";
 
 import { themeStore } from "@/stores/theme";
 import { BOARD_CONTAINER_ID } from "@/utils/constants";
-import { makePlugin } from "@/plugins/utils/Plugin";
+import { makeTaskPlugin } from "@/plugins/TaskPlugin";
 
 function BoardPanel() {
   const isReady = useIsReady();
@@ -17,7 +17,7 @@ function BoardPanel() {
         <Box id={BOARD_CONTAINER_ID} visibility={isReady ? "visible" : "hidden"}></Box>
       </Box>
       <>
-        {makePlugin({
+        {makeTaskPlugin({
           w: 200,
           h: 64,
           task: "txt2img.sd",
