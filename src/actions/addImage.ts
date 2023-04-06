@@ -7,7 +7,7 @@ import {
 } from "@noli/core";
 import { BoardStore, BusinessOpCallbacks, useSafeExecute } from "@noli/business";
 
-import type { IMeta, IPartialMeta } from "@/types/meta";
+import type { IPartialMeta } from "@/types/meta";
 
 export type VirtualInfo = IRectangleShapeNode | { w: number; h: number; type?: undefined };
 export type NewImageInfo = VirtualInfo | (BBox & { type?: undefined });
