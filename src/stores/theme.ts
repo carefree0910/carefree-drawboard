@@ -5,14 +5,20 @@ import { ABCStore } from "@noli/business";
 type ThemeType = "light" | "dark";
 type ThemeStyles = {
   boardBg: string;
+  textColor: string;
+  dividerColor: string;
 };
 
 export const allThemes: Record<ThemeType, ThemeStyles> = {
   light: {
     boardBg: "#f7f7f7",
+    textColor: "#333333",
+    dividerColor: "#cccccc",
   },
   dark: {
     boardBg: "#242424",
+    textColor: "#333333",
+    dividerColor: "#cccccc",
   },
 };
 
@@ -40,5 +46,4 @@ class ThemeStore extends ABCStore<IThemeStore> implements IThemeStore {
 }
 
 export const themeStore = new ThemeStore();
-export const updateTheme = (theme: ThemeType) =>
-  themeStore.updateProperty("theme", theme);
+export const updateTheme = (theme: ThemeType) => themeStore.updateProperty("theme", theme);
