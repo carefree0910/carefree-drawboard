@@ -6,6 +6,7 @@ import { useIsReady } from "@noli/business";
 import { themeStore } from "@/stores/theme";
 import { BOARD_CONTAINER_ID } from "@/utils/constants";
 import { makeTaskPlugin } from "@/plugins/TaskPlugin";
+import { makeMetaPlugin } from "@/plugins/MetaPlugin";
 
 function BoardPanel() {
   const isReady = useIsReady();
@@ -17,6 +18,18 @@ function BoardPanel() {
         <Box id={BOARD_CONTAINER_ID} visibility={isReady ? "visible" : "hidden"}></Box>
       </Box>
       <>
+        {makeMetaPlugin({
+          w: 400,
+          h: 400,
+          p: "10px",
+          iconW: 42,
+          iconH: 42,
+          src: "https://ailab-huawei-cdn.nolibox.com/upload/images/0ec1b08f9c3e4ef4813ecb80bebf3b42.png",
+          pivot: "rt",
+          offsetY: -42,
+          expandOffsetY: -400,
+          nodeConstraint: "anyNode",
+        })}
         {makeTaskPlugin({
           w: 200,
           h: 140,
