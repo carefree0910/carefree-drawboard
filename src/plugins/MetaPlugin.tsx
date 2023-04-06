@@ -3,7 +3,8 @@ import { Textarea } from "@chakra-ui/react";
 
 import { useSelecting } from "@noli/business";
 
-import Render, { IRender } from "./utils/Render";
+import type { IRender } from "@/types/plugins";
+import Render from "./utils/Render";
 
 const MetaPlugin = observer((props: IRender) => {
   const info = useSelecting("raw");

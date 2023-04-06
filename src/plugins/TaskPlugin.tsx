@@ -5,13 +5,14 @@ import { Button, Divider, useToast } from "@chakra-ui/react";
 import { Logger } from "@noli/core";
 import { langStore } from "@noli/business";
 
+import type { IRender } from "@/types/plugins";
 import type { TaskTypes } from "@/types/tasks";
 import type { ICustomDefinitions, ISubscribableFields } from "@/types/metaFields";
 import { subscribe } from "./utils/subscribe";
 import { themeStore } from "@/stores/theme";
 import TextField from "@/components/TextField";
 import { importMeta } from "@/actions/importMeta";
-import Render, { IRender } from "./utils/Render";
+import Render from "./utils/Render";
 
 export interface ITaskPlugin extends IRender {
   task: TaskTypes;

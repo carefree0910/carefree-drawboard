@@ -1,7 +1,7 @@
-import type { NodeType } from "@noli/core";
 import { IResponse } from "@noli/business";
 
-export type NodeConstraints = NodeType | "none" | "anyNode" | "singleNode" | "multiNode";
+import type { NodeConstraints } from "@/types/plugins";
+
 export function getNodeFilter(constraint: NodeConstraints): (info?: IResponse) => boolean {
   return (info) => {
     if (constraint === "none") return true;

@@ -1,7 +1,7 @@
 import { useMemo, useLayoutEffect } from "react";
 import { observer } from "mobx-react-lite";
 
-import { Coordinate, getRandomHash, PivotType } from "@noli/core";
+import { Coordinate, getRandomHash } from "@noli/core";
 import {
   boardBBoxToDom,
   BoardStore,
@@ -12,30 +12,14 @@ import {
   useSelecting,
 } from "@noli/business";
 
-import { getNodeFilter, NodeConstraints } from "./renderFilters";
+import type { IRender } from "@/types/plugins";
+import { getNodeFilter } from "./renderFilters";
 import Floating, {
   floatingEvent,
   getExpandId,
   getExpandPosition,
-  IFloating,
   IFloatingEvent,
 } from "@/components/Floating";
-
-export interface IRender
-  extends Omit<
-    IFloating,
-    "id" | "pivot" | "follow" | "iconW" | "iconH" | "expandOffsetX" | "expandOffsetY"
-  > {
-  nodeConstraint: NodeConstraints;
-  pivot?: PivotType;
-  follow?: boolean;
-  offsetX?: number;
-  offsetY?: number;
-  iconW?: number;
-  iconH?: number;
-  expandOffsetX?: number;
-  expandOffsetY?: number;
-}
 
 const Render = ({
   iconW,

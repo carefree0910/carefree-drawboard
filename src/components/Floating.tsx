@@ -1,27 +1,13 @@
 import { observer } from "mobx-react-lite";
 import { useState, useEffect, useMemo } from "react";
-import { Box, BoxProps, Flex, FlexProps, Image } from "@chakra-ui/react";
+import { Box, BoxProps, Flex, Image } from "@chakra-ui/react";
 
-import { Coordinate, PivotType } from "@noli/core";
-import { IResponse, useIsReady, useSelecting } from "@noli/business";
+import { Coordinate } from "@noli/core";
+import { useIsReady, useSelecting } from "@noli/business";
 
+import type { IFloating, IPositionInfo } from "@/types/plugins";
 import { Event } from "@/utils/event";
 
-interface IPositionInfo extends FlexProps {
-  w: number;
-  h: number;
-  iconW: number;
-  iconH: number;
-  pivot: PivotType;
-  follow: boolean;
-  expandOffsetX: number;
-  expandOffsetY: number;
-}
-export interface IFloating extends IPositionInfo {
-  id: string;
-  src?: string;
-  renderFilter?: (info?: IResponse) => boolean;
-}
 export interface IFloatingEvent {
   id: string;
   needRender: boolean;
