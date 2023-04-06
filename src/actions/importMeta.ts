@@ -17,7 +17,7 @@ const consumers: Record<MetaType, (input: IImportMeta<MetaType>) => void> = {
 function consumeUpload({ t, lang, type, metaData }: IImportMeta<"upload">): void {
   const success = async () => {
     metaData.timestamp = Date.now();
-    toast(t, "success", translate(Toast_Words["upload-seccess-message"], lang));
+    toast(t, "success", translate(Toast_Words["upload-image-success-message"], lang));
   };
   const failed = async () => {
     toast(t, "error", translate(Toast_Words["upload-image-error-message"], lang));
