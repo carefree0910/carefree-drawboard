@@ -12,7 +12,7 @@ import {
   useSelecting,
 } from "@noli/business";
 
-import { getNodeFilter, TargetNodeType } from "./renderFilters";
+import { getNodeFilter, NodeConstraints } from "./renderFilters";
 import Floating, {
   floatingEvent,
   getExpandId,
@@ -26,7 +26,7 @@ export interface IRender
     IFloating,
     "id" | "pivot" | "follow" | "iconW" | "iconH" | "expandOffsetX" | "expandOffsetY"
   > {
-  targetNodeType: TargetNodeType;
+  nodeConstraint: NodeConstraints;
   pivot?: PivotType;
   follow?: boolean;
   offsetX?: number;
@@ -40,7 +40,7 @@ export interface IRender
 const Render = ({
   iconW,
   iconH,
-  targetNodeType,
+  nodeConstraint,
   pivot,
   follow,
   offsetX,
@@ -154,7 +154,7 @@ const Render = ({
       removeNodeTransformEventCallback(id);
       useSelectHooks().remove(id);
     };
-  }, [targetNodeType, pivot, follow, offsetX, offsetY, expandOffsetX, expandOffsetY]);
+  }, [nodeConstraint, pivot, follow, offsetX, offsetY, expandOffsetX, expandOffsetY]);
 
   return (
     <Floating
@@ -165,7 +165,7 @@ const Render = ({
       follow={follow}
       expandOffsetX={expandOffsetX}
       expandOffsetY={expandOffsetY}
-      renderFilter={getNodeFilter(targetNodeType)}
+      renderFilter={getNodeFilter(nodeConstraint)}
       {...props}>
       {children}
     </Floating>

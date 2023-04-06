@@ -55,8 +55,8 @@ const TaskPlugin = observer(({ task, fields, customDefinitions, ...props }: ITas
 });
 
 export function makeTaskPlugin(props: ITaskPlugin) {
-  if (props.follow && props.targetNodeType === "all") {
-    Logger.warn("cannot use `follow` with `targetNodeType` set to `all`");
+  if (props.follow && props.nodeConstraint === "none") {
+    Logger.warn("cannot use `follow` with `targetNodeType` set to `none`");
     return null;
   }
   return <TaskPlugin {...props} />;

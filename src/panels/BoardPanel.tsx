@@ -22,7 +22,7 @@ function BoardPanel() {
           h: 140,
           task: "txt2img.sd",
           fields: ["prompt"],
-          targetNodeType: "all",
+          nodeConstraint: "none",
           pivot: "left",
           follow: false,
         })}
