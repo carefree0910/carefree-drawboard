@@ -9,6 +9,7 @@ import { addNewImage, NewImageInfo } from "./addImage";
 import { pollTask, pushTask } from "./runTasks";
 import { metaStore } from "@/stores/meta";
 import { revertTaskData } from "./handleTaskData";
+import { getSingleUrl } from "./handleResponse";
 
 // consumers
 
@@ -46,9 +47,7 @@ function consumeTxt2ImgSD({ t, lang, type, metaData }: IImportMeta<"txt2img.sd">
   pushTask("txt2img.sd", metaData)
     .then(({ taskId, taskData }) => pollTask(metaData.source, taskId, taskData))
     .then(({ res, taskData }) => {
-      if (isUndefined(res.data)) throw Error("`data` not found in response");
-      if (!res.data.safe) throw Error(`generated image is not safe: ${res.data.reason}`);
-      const url = res.data.cdn;
+      const url = getSingleUrl(res);
       const newAlias = `txt2img.sd.${getRandomHash()}`;
       const bboxInfo: NewImageInfo = { w: taskData.w, h: taskData.h };
       const nodeMetaData = revertTaskData("txt2img.sd", taskData);
