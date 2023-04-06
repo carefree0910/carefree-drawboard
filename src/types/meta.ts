@@ -31,7 +31,7 @@ export interface ITomeInfo {
   merge_mlp: boolean;
 }
 
-export interface IMetaData {
+export interface IAPIMetaData {
   // common api data
   w: number;
   h: number;
@@ -49,6 +49,8 @@ export interface IMetaData {
   variations: VariationModel[];
   tome_info: Partial<ITomeInfo>;
   source: APISources;
+}
+export interface IMetaData extends IAPIMetaData {
   // specific data
   isDrag: boolean;
   timestamp?: number;
