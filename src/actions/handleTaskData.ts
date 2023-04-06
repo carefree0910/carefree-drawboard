@@ -28,12 +28,48 @@ function txt2imgSDDataConverter(meta: INarrowedMetaData["txt2img.sd"]): ITaskDat
   };
 }
 
-// get data api
+// reverters
+
+const reverters: Record<
+  TaskTypes,
+  (taskData: ITaskData[TaskTypes]) => INarrowedMetaData[TaskTypes]
+> = {
+  "txt2img.sd": txt2imgSDDataReverter,
+};
+
+function txt2imgSDDataReverter(taskData: ITaskData["txt2img.sd"]): INarrowedMetaData["txt2img.sd"] {
+  return {
+    w: taskData.w,
+    h: taskData.h,
+    prompt: taskData.text,
+    negative_prompt: taskData.negative_prompt,
+    version: taskData.version,
+    sampler: taskData.sampler,
+    num_steps: taskData.num_steps,
+    guidance_scale: taskData.guidance_scale,
+    seed: taskData.seed,
+    use_circular: taskData.use_circular,
+    max_wh: taskData.max_wh,
+    clip_skip: taskData.clip_skip,
+    variations: taskData.variations,
+    source: taskData.source,
+  };
+}
+
+// meta data -> task data api
 
 export function getTaskData<T extends TaskTypes>(
   task: T,
   metaData?: INarrowedMetaData[T],
 ): ITaskData[T] {
-  const converter = converters[task];
-  return converter(metaData ?? metaStore.metaData);
+  return converters[task](metaData ?? metaStore.metaData);
+}
+
+// task data -> meta data api
+
+export function revertTaskData<T extends TaskTypes>(
+  task: T,
+  taskData: ITaskData[T],
+): INarrowedMetaData[T] {
+  return reverters[task](taskData);
 }
