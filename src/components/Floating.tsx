@@ -19,6 +19,7 @@ interface IPositionInfo extends FlexProps {
 }
 export interface IFloating extends IPositionInfo {
   id: string;
+  src?: string;
   renderFilter?: (info?: IResponse) => boolean;
 }
 export interface IFloatingEvent {
@@ -80,6 +81,7 @@ export function getExpandPosition({
 
 function Floating({
   id,
+  src,
   w,
   h,
   iconW,
@@ -137,10 +139,7 @@ function Floating({
         }}
         {...commonProps}
         {...props}>
-        <Image
-          src="https://ailab-huawei-cdn.nolibox.com/upload/images/ec388e38bdac4f72978b895c2f686cdf.png"
-          draggable={false}
-        />
+        <Image src={src} draggable={false} />
       </Box>
       <Flex
         id={expandId}

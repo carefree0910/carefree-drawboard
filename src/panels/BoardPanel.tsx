@@ -20,6 +20,7 @@ function BoardPanel() {
         {makeTaskPlugin({
           w: 200,
           h: 140,
+          src: "https://ailab-huawei-cdn.nolibox.com/upload/images/ec388e38bdac4f72978b895c2f686cdf.png",
           task: "txt2img.sd",
           fields: ["prompt"],
           nodeConstraint: "none",
