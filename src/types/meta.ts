@@ -39,6 +39,7 @@ export interface IMetaData {
   // specific data
   isDrag: boolean;
   timestamp?: number;
+  duration?: number;
 }
 
 // meta bundle

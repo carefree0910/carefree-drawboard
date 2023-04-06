@@ -20,12 +20,15 @@ const consumers: Record<MetaType, (input: IImportMeta<any>) => void> = {
 };
 function consumeUpload({ t, lang, type, metaData }: IImportMeta<"upload">): void {
   const success = async () => {
-    metaData.timestamp = Date.now();
+    const now = Date.now();
+    metaData.timestamp = now;
+    metaData.duration = now - createTime;
     toast(t, "success", translate(Toast_Words["upload-image-success-message"], lang));
   };
   const failed = async () => {
     toast(t, "error", translate(Toast_Words["upload-image-error-message"], lang));
   };
+  const createTime = Date.now();
   const { w, h, url, isDrag } = metaData;
   const prefix = isDrag ? "drag-" : "";
   const newAlias = `${prefix}upload.${getRandomHash()}`;
@@ -41,6 +44,7 @@ function consumeTxt2ImgSD({ t, lang, type, metaData }: IImportMeta<"txt2img.sd">
   const failed = async (err: any) => {
     toast(t, "error", `${translate(Toast_Words["generate-image-error-message"], lang)} (${err})`);
   };
+  const createTime = Date.now();
   pushTask("txt2img.sd", metaData)
     .then(({ taskId, taskData }) => pollTask(metaData.source, taskId, taskData))
     .then(({ res, taskData }) => {
@@ -50,7 +54,9 @@ function consumeTxt2ImgSD({ t, lang, type, metaData }: IImportMeta<"txt2img.sd">
       const bboxInfo: NewImageInfo = { w: taskData.w, h: taskData.h };
       const nodeMetaData = revertTaskData("txt2img.sd", taskData);
       const success = async () => {
-        nodeMetaData.timestamp = Date.now();
+        const now = Date.now();
+        nodeMetaData.timestamp = now;
+        nodeMetaData.duration = now - createTime;
         toast(t, "success", translate(Toast_Words["generate-image-success-message"], lang));
       };
       addNewImage(newAlias, url, {
