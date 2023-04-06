@@ -10,7 +10,7 @@ import { addNewImage, NewImageInfo } from "./addImage";
 
 // narrow down meta data
 
-interface IUploadData {
+interface IUploadMetaData {
   w: number;
   h: number;
   url: string;
@@ -19,7 +19,7 @@ interface IUploadData {
 }
 
 export interface INarrowedMetaData {
-  upload: IUploadData;
+  upload: IUploadMetaData;
 }
 
 // consumers
