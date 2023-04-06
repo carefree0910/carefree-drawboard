@@ -13,13 +13,13 @@ import TextField from "@/components/TextField";
 import { importMeta } from "@/actions/importMeta";
 import Render, { IRender } from "./utils/Render";
 
-export interface IPlugin extends IRender {
+export interface ITaskPlugin extends IRender {
   task: TaskTypes;
   fields: ISubscribableFields[];
   customDefinitions?: ICustomDefinitions;
 }
 
-const TaskPlugin = observer(({ task, fields, customDefinitions, ...props }: IPlugin) => {
+const TaskPlugin = observer(({ task, fields, customDefinitions, ...props }: ITaskPlugin) => {
   const definitions = useMemo(() => subscribe(fields, customDefinitions), []);
 
   const t = useToast();
@@ -54,7 +54,7 @@ const TaskPlugin = observer(({ task, fields, customDefinitions, ...props }: IPlu
   );
 });
 
-export function makeTaskPlugin(props: IPlugin) {
+export function makeTaskPlugin(props: ITaskPlugin) {
   if (props.follow && props.targetNodeType === "all") {
     Logger.warn("cannot use `follow` with `targetNodeType` set to `all`");
     return null;
