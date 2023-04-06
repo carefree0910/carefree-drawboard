@@ -19,7 +19,7 @@ function BoardPanel() {
       <>
         {makeTaskPlugin({
           w: 200,
-          h: 64,
+          h: 140,
           task: "txt2img.sd",
           fields: ["prompt"],
           targetNodeType: "all",

@@ -15,15 +15,19 @@ import {
 import { getNodeFilter, TargetNodeType } from "./renderFilters";
 import Floating, { floatingEvent, IFloating, IFloatingEvent } from "@/components/Floating";
 
-export interface IRender extends Omit<IFloating, "id"> {
+export interface IRender extends Omit<IFloating, "id" | "iconW" | "iconH" | "pivot"> {
   targetNodeType: TargetNodeType;
   pivot?: PivotType;
   follow?: boolean;
   paddingX?: number;
   paddingY?: number;
+  iconW?: number;
+  iconH?: number;
 }
 
 const Render = ({
+  iconW,
+  iconH,
   targetNodeType,
   pivot,
   follow,
@@ -33,6 +37,9 @@ const Render = ({
   ...props
 }: IRender) => {
   const id = useMemo(() => `plugin_${getRandomHash()}`, []);
+  iconW ??= 48;
+  iconH ??= 48;
+  pivot ??= "bottom";
 
   /**
    * This effect handles callbacks that dynamically render the plugin's position
@@ -42,12 +49,15 @@ const Render = ({
    */
   useLayoutEffect(() => {
     const updateFloating = async () => {
+      const _pivot = pivot!;
       const _follow = follow ?? false;
-      const _pivot = pivot ?? "bottom";
       const _paddingX = paddingX ?? 8;
       const _paddingY = paddingY ?? 8;
       const domFloating = document.querySelector<HTMLDivElement>(`#${id}`);
       if (!domFloating) return;
+      const isExpand = domFloating.dataset.expand === "true";
+      const _w = isExpand ? props.w : iconW!;
+      const _h = isExpand ? props.h : iconH!;
       let x, y;
       if (!_follow) {
         const { x: left, y: top } = useBoardContainerLeftTop();
@@ -56,17 +66,17 @@ const Render = ({
         if (["lt", "left", "lb"].includes(_pivot)) {
           x = left + _paddingX;
         } else if (["rt", "right", "rb"].includes(_pivot)) {
-          x = left + bw - props.w - _paddingX;
+          x = left + bw - _w - _paddingX;
         } else {
-          x = left + (bw - props.w) / 2;
+          x = left + 0.5 * (bw - _w);
         }
         // y
         if (["lt", "top", "rt"].includes(_pivot)) {
           y = top + _paddingY;
         } else if (["lb", "bottom", "rb"].includes(_pivot)) {
-          y = top + bh - props.h - _paddingY;
+          y = top + bh - _h - _paddingY;
         } else {
-          y = top + (bh - props.h) / 2;
+          y = top + 0.5 * (bh - _h);
         }
       } else {
         const info = useSelecting("basic")({ fixed: 0 });
@@ -77,31 +87,32 @@ const Render = ({
         let offsetX, offsetY;
         // x
         if (["lt", "left", "lb"].includes(_pivot)) {
-          offsetX = -props.w - _paddingX;
+          offsetX = -_w - _paddingX;
         } else if (["rt", "right", "rb"].includes(_pivot)) {
           offsetX = _paddingX;
         } else {
-          offsetX = -0.5 * props.w;
+          offsetX = -0.5 * _w;
         }
         // y
         if (["lt", "top", "rt"].includes(_pivot)) {
-          offsetY = -props.h - _paddingY;
+          offsetY = -_h - _paddingY;
         } else if (["lb", "bottom", "rb"].includes(_pivot)) {
           offsetY = _paddingY;
         } else {
-          offsetY = -0.5 * props.h;
+          offsetY = -0.5 * _h;
         }
         ({ x, y } = domPivot.add(new Coordinate(offsetX, offsetY)));
       }
+      domFloating.dataset.x = x.toString();
+      domFloating.dataset.y = y.toString();
       domFloating.style.transform = `matrix(1,0,0,1,${x},${y})`;
     };
-    const onFloatingFirstRender = ({ id: renderedId, needRender }: IFloatingEvent) => {
+    const onFloatingReRender = ({ id: renderedId, needRender }: IFloatingEvent) => {
       if (id === renderedId && needRender) {
         updateFloating();
-        floatingEvent.off(onFloatingFirstRender);
       }
     };
-    floatingEvent.on(onFloatingFirstRender);
+    floatingEvent.on(onFloatingReRender);
     injectNodeTransformEventCallback(id, updateFloating);
     useSelectHooks().register({ key: id, after: updateFloating });
     updateFloating();
@@ -113,7 +124,13 @@ const Render = ({
   }, [targetNodeType, pivot, follow, paddingX, paddingY]);
 
   return (
-    <Floating id={id} renderFilter={getNodeFilter(targetNodeType)} {...props}>
+    <Floating
+      id={id}
+      iconW={iconW}
+      iconH={iconH}
+      pivot={pivot}
+      renderFilter={getNodeFilter(targetNodeType)}
+      {...props}>
       {children}
     </Floating>
   );
