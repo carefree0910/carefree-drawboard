@@ -2,7 +2,7 @@ import type { ImageURLs } from "@noli/core";
 
 import type { SDSamplers, SDVersions, VariationModel } from "./meta";
 
-interface ITxt2ImgSDData {
+interface ITxt2ImgSDTaskData {
   w: number;
   h: number;
   text: string;
@@ -20,7 +20,7 @@ interface ITxt2ImgSDData {
 
 export type TaskTypes = "txt2img.sd";
 export interface ITaskData {
-  "txt2img.sd": ITxt2ImgSDData;
+  "txt2img.sd": ITxt2ImgSDTaskData;
 }
 
 export interface ITaskResponse {
