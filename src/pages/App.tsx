@@ -10,15 +10,8 @@ function App() {
   useFileDropper(langStore.tgt);
 
   return (
-    <Flex
-      h="100vh"
-      className="p-editor"
-      direction="column"
-      userSelect="none"
-      overflow="hidden"
-      overflowX="auto"
-      minW="1090px">
-      <Flex w="100%" flex={1} overflow="hidden">
+    <Flex h="100vh" className="p-editor" direction="column" userSelect="none" minW="1090px">
+      <Flex w="100%" flex={1}>
         <BoardPanel />
       </Flex>
     </Flex>
