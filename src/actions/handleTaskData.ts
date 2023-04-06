@@ -24,6 +24,7 @@ function txt2imgSDDataConverter(meta: INarrowedMetaData["txt2img.sd"]): ITaskDat
     max_wh: meta.max_wh,
     clip_skip: meta.clip_skip,
     variations: meta.variations,
+    tome_info: meta.tome_info,
     source: meta.source,
   };
 }
@@ -52,6 +53,7 @@ function txt2imgSDDataReverter(taskData: ITaskData["txt2img.sd"]): INarrowedMeta
     max_wh: taskData.max_wh,
     clip_skip: taskData.clip_skip,
     variations: taskData.variations,
+    tome_info: taskData.tome_info,
     source: taskData.source,
   };
 }

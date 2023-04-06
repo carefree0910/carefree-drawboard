@@ -3,7 +3,7 @@ import { computed, makeObservable, observable } from "mobx";
 import { shallowCopy } from "@noli/core";
 import { ABCStore } from "@noli/business";
 
-import type { IMetaData, SDSamplers, SDVersions, VariationModel } from "@/types/meta";
+import type { IMetaData, ITomeInfo, SDSamplers, SDVersions, VariationModel } from "@/types/meta";
 import type { APISources } from "@/types/requests";
 
 class MetaStore extends ABCStore<IMetaData> implements IMetaData {
@@ -23,6 +23,7 @@ class MetaStore extends ABCStore<IMetaData> implements IMetaData {
   clip_skip = -1;
   variations: VariationModel[] = [];
   source: APISources = "nolibox";
+  tome_info: Partial<ITomeInfo> = {};
   // specific data
   isDrag = false;
   timestamp?: number;
@@ -68,6 +69,7 @@ class MetaStore extends ABCStore<IMetaData> implements IMetaData {
       clip_skip: this.clip_skip,
       variations: this.variations,
       source: this.source,
+      tome_info: this.tome_info,
       isDrag: this.isDrag,
       timestamp: this.timestamp,
     });

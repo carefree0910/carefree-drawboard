@@ -18,6 +18,18 @@ export interface VariationModel {
   seed: number;
   strength: number;
 }
+export interface ITomeInfo {
+  enable: boolean;
+  ratio: number;
+  max_downsample: number;
+  sx: number;
+  sy: number;
+  seed: number;
+  use_rand: boolean;
+  merge_attn: boolean;
+  merge_crossattn: boolean;
+  merge_mlp: boolean;
+}
 
 export interface IMetaData {
   // common api data
@@ -35,6 +47,7 @@ export interface IMetaData {
   max_wh: number;
   clip_skip: number;
   variations: VariationModel[];
+  tome_info: Partial<ITomeInfo>;
   source: APISources;
   // specific data
   isDrag: boolean;

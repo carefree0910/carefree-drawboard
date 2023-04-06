@@ -2,7 +2,14 @@ import type { useToast } from "@chakra-ui/toast";
 
 import type { Lang } from "@noli/core";
 
-import type { IMetaData, MetaType, SDSamplers, SDVersions, VariationModel } from "./meta";
+import type {
+  IMetaData,
+  ITomeInfo,
+  MetaType,
+  SDSamplers,
+  SDVersions,
+  VariationModel,
+} from "./meta";
 import type { APISources } from "./requests";
 
 interface IUploadMetaData extends Partial<IMetaData> {
@@ -26,6 +33,7 @@ interface ITxt2ImgSDMetaData extends Partial<IMetaData> {
   max_wh: number;
   clip_skip: number;
   variations: VariationModel[];
+  tome_info: Partial<ITomeInfo>;
   source: APISources;
   timestamp?: number;
 }

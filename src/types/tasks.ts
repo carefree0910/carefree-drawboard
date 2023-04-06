@@ -1,6 +1,6 @@
 import type { ImageURLs } from "@noli/core";
 
-import type { SDSamplers, SDVersions, VariationModel } from "./meta";
+import type { ITomeInfo, SDSamplers, SDVersions, VariationModel } from "./meta";
 import type { APISources } from "./requests";
 
 interface ITxt2ImgSDTaskData {
@@ -17,6 +17,7 @@ interface ITxt2ImgSDTaskData {
   max_wh: number;
   clip_skip: number;
   variations: VariationModel[];
+  tome_info: Partial<ITomeInfo>;
   source: APISources;
 }
 
