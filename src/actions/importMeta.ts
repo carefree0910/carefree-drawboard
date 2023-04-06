@@ -1,5 +1,5 @@
 import { getRandomHash, Logger } from "@noli/core";
-import { translate } from "@noli/business";
+import { BoardStore, translate } from "@noli/business";
 
 import type { MetaType } from "@/types/meta";
 import type { IImportMeta, INarrowedMetaData } from "@/types/narrowedMeta";
@@ -13,16 +13,22 @@ import { allTaskTypes, TaskTypes } from "@/types/tasks";
 
 // consumers
 
+function updateTimestamps(alias: string, createTime: number): void {
+  const node = BoardStore.graph.getNode(alias);
+  if (!node || node.type === "group" || !node.params.meta?.data) return;
+  const now = Date.now();
+  node.params.meta.data.timestamp = now;
+  node.params.meta.data.duration = now - createTime;
+}
+
 const consumers: Record<MetaType, (input: IImportMeta<any>) => void> = {
   upload: consumeUpload,
   "txt2img.sd": consumeTxt2ImgSD,
 };
 function consumeUpload({ t, lang, type, metaData }: IImportMeta<"upload">): void {
   const success = async () => {
-    const now = Date.now();
-    metaData.timestamp = now;
-    metaData.duration = now - createTime;
     toast(t, "success", translate(Toast_Words["upload-image-success-message"], lang));
+    updateTimestamps(newAlias, createTime);
   };
   const failed = async () => {
     toast(t, "error", translate(Toast_Words["upload-image-error-message"], lang));
@@ -52,10 +58,8 @@ function consumeTxt2ImgSD({ t, lang, type, metaData }: IImportMeta<"txt2img.sd">
       const bboxInfo: NewImageInfo = { w: taskData.w, h: taskData.h };
       const nodeMetaData = revertTaskData("txt2img.sd", taskData);
       const success = async () => {
-        const now = Date.now();
-        nodeMetaData.timestamp = now;
-        nodeMetaData.duration = now - createTime;
         toast(t, "success", translate(Toast_Words["generate-image-success-message"], lang));
+        updateTimestamps(newAlias, createTime);
       };
       addNewImage(newAlias, url, {
         info: bboxInfo,
