@@ -1,6 +1,6 @@
 import React from "react";
 
-import { checkNotExists } from "@noli/core";
+import { Logger, checkNotExists } from "@noli/core";
 
 import type { AvailablePlugins } from "@/types/plugins";
 
@@ -13,7 +13,15 @@ class PluginFactory {
     const factory = this;
     return function (fn: React.FC) {
       if (!overwrite) {
-        checkNotExists(factory.d, name, `please change another name for this ${factory.name}`);
+        try {
+          checkNotExists(factory.d, name, `please change another name for this ${factory.name}`);
+        } catch (e) {
+          if (Logger.isDebug) {
+            Logger.error(`${e}`);
+          } else {
+            throw e;
+          }
+        }
       }
       factory.d[name] = fn;
     };
