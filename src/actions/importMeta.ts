@@ -1,6 +1,4 @@
-import { useToast } from "@chakra-ui/toast";
-
-import { getRandomHash, Lang } from "@noli/core";
+import { getRandomHash, isUndefined } from "@noli/core";
 import { translate } from "@noli/business";
 
 import type { MetaType } from "@/types/meta";
@@ -48,8 +46,9 @@ function consumeTxt2ImgSD({ t, lang, type, metaData }: IImportMeta<"txt2img.sd">
   pushTask("txt2img.sd", metaData)
     .then(({ taskId, taskData }) => pollTask(metaData.source, taskId, taskData))
     .then(({ res, taskData }) => {
-      const url = res.data?.cdn;
-      if (!url) throw Error("cdn url not found in response");
+      if (isUndefined(res.data)) throw Error("`data` not found in response");
+      if (!res.data.safe) throw Error(`generated image is not safe: ${res.data.reason}`);
+      const url = res.data.cdn;
       const newAlias = `txt2img.sd.${getRandomHash()}`;
       const bboxInfo: NewImageInfo = { w: taskData.w, h: taskData.h };
       const nodeMetaData = revertTaskData("txt2img.sd", taskData);
