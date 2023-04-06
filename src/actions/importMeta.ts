@@ -4,23 +4,10 @@ import { getRandomHash, Lang } from "@noli/core";
 import { translate } from "@noli/business";
 
 import type { MetaType } from "@/types/meta";
+import type { IImportMeta } from "@/types/narrowedMeta";
 import { toast } from "@/utils/toast";
 import { Toast_Words } from "@/utils/lang/toast";
 import { addNewImage, NewImageInfo } from "./addImage";
-
-// narrow down meta data
-
-interface IUploadMetaData {
-  w: number;
-  h: number;
-  url: string;
-  isDrag: boolean;
-  timestamp?: number;
-}
-
-export interface INarrowedMetaData {
-  upload: IUploadMetaData;
-}
 
 // consumers
 
@@ -49,12 +36,6 @@ function consumeUpload({ t, lang, type, metaData }: IImportMeta<"upload">): void
 
 // import api
 
-export interface IImportMeta<T extends MetaType> {
-  t: ReturnType<typeof useToast>;
-  lang: Lang;
-  type: T;
-  metaData: INarrowedMetaData[T];
-}
 export function importMeta<T extends MetaType>(data: IImportMeta<T>): void {
   consumers[data.type](data);
 }
