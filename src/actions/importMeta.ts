@@ -10,6 +10,7 @@ import { Toast_Words } from "@/utils/lang/toast";
 import { addNewImage, NewImageInfo } from "./addImage";
 import { pollTask, pushTask } from "./runTasks";
 import { metaStore } from "@/stores/meta";
+import { revertTaskData } from "./handleTaskData";
 
 // consumers
 
@@ -37,10 +38,6 @@ function consumeUpload({ t, lang, type, metaData }: IImportMeta<"upload">): void
   });
 }
 function consumeTxt2ImgSD({ t, lang, type, metaData }: IImportMeta<"txt2img.sd">): void {
-  const success = async () => {
-    metaData.timestamp = Date.now();
-    toast(t, "success", translate(Toast_Words["generate-image-success-message"], lang));
-  };
   const failed = async (err: any) => {
     toast(t, "error", `${translate(Toast_Words["generate-image-error-message"], lang)} (${err})`);
   };
@@ -51,9 +48,14 @@ function consumeTxt2ImgSD({ t, lang, type, metaData }: IImportMeta<"txt2img.sd">
       if (!url) throw Error("cdn url not found in response");
       const newAlias = `txt2img.sd.${getRandomHash()}`;
       const bboxInfo: NewImageInfo = { w: taskData.w, h: taskData.h };
+      const nodeMetaData = revertTaskData("txt2img.sd", taskData);
+      const success = async () => {
+        nodeMetaData.timestamp = Date.now();
+        toast(t, "success", translate(Toast_Words["generate-image-success-message"], lang));
+      };
       addNewImage(newAlias, url, {
         info: bboxInfo,
-        meta: { type, data: taskData },
+        meta: { type, data: nodeMetaData },
         callbacks: { success, failed },
         noSelect: false,
       });
