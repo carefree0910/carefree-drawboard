@@ -3,6 +3,11 @@ import type { FlexProps } from "@chakra-ui/react";
 import type { NodeType, PivotType } from "@noli/core";
 import type { IResponse } from "@noli/business";
 
+import type { TaskTypes } from "./tasks";
+import type { ICustomDefinitions, ISubscribableFields } from "./metaFields";
+
+// general
+
 export type NodeConstraints = NodeType | "none" | "anyNode" | "singleNode" | "multiNode";
 export interface IPositionInfo extends FlexProps {
   w: number;
@@ -33,4 +38,12 @@ export interface IRender
   iconH?: number;
   expandOffsetX?: number;
   expandOffsetY?: number;
+}
+
+// specific
+
+export interface ITaskPlugin extends IRender {
+  task: TaskTypes;
+  fields: ISubscribableFields[];
+  customDefinitions?: ICustomDefinitions;
 }
