@@ -19,8 +19,8 @@ export interface IRender extends Omit<IFloating, "id" | "iconW" | "iconH" | "piv
   targetNodeType: TargetNodeType;
   pivot?: PivotType;
   follow?: boolean;
-  paddingX?: number;
-  paddingY?: number;
+  offsetX?: number;
+  offsetY?: number;
   iconW?: number;
   iconH?: number;
 }
@@ -31,8 +31,8 @@ const Render = ({
   targetNodeType,
   pivot,
   follow,
-  paddingX,
-  paddingY,
+  offsetX,
+  offsetY,
   children,
   ...props
 }: IRender) => {
@@ -51,8 +51,8 @@ const Render = ({
     const updateFloating = async () => {
       const _pivot = pivot!;
       const _follow = follow ?? false;
-      const _paddingX = paddingX ?? 8;
-      const _paddingY = paddingY ?? 8;
+      const _offsetX = offsetX ?? 8;
+      const _offsetY = offsetY ?? 8;
       const domFloating = document.querySelector<HTMLDivElement>(`#${id}`);
       if (!domFloating) return;
       const isExpand = domFloating.dataset.expand === "true";
@@ -64,17 +64,17 @@ const Render = ({
         const { w: bw, h: bh } = BoardStore.board.wh;
         // x
         if (["lt", "left", "lb"].includes(_pivot)) {
-          x = left + _paddingX;
+          x = left + _offsetX;
         } else if (["rt", "right", "rb"].includes(_pivot)) {
-          x = left + bw - _w - _paddingX;
+          x = left + bw - _w - _offsetX;
         } else {
           x = left + 0.5 * (bw - _w);
         }
         // y
         if (["lt", "top", "rt"].includes(_pivot)) {
-          y = top + _paddingY;
+          y = top + _offsetY;
         } else if (["lb", "bottom", "rb"].includes(_pivot)) {
-          y = top + bh - _h - _paddingY;
+          y = top + bh - _h - _offsetY;
         } else {
           y = top + 0.5 * (bh - _h);
         }
@@ -87,17 +87,17 @@ const Render = ({
         let offsetX, offsetY;
         // x
         if (["lt", "left", "lb"].includes(_pivot)) {
-          offsetX = -_w - _paddingX;
+          offsetX = -_w - _offsetX;
         } else if (["rt", "right", "rb"].includes(_pivot)) {
-          offsetX = _paddingX;
+          offsetX = _offsetX;
         } else {
           offsetX = -0.5 * _w;
         }
         // y
         if (["lt", "top", "rt"].includes(_pivot)) {
-          offsetY = -_h - _paddingY;
+          offsetY = -_h - _offsetY;
         } else if (["lb", "bottom", "rb"].includes(_pivot)) {
-          offsetY = _paddingY;
+          offsetY = _offsetY;
         } else {
           offsetY = -0.5 * _h;
         }
@@ -121,7 +121,7 @@ const Render = ({
       removeNodeTransformEventCallback(id);
       useSelectHooks().remove(id);
     };
-  }, [targetNodeType, pivot, follow, paddingX, paddingY]);
+  }, [targetNodeType, pivot, follow, offsetX, offsetY]);
 
   return (
     <Floating
