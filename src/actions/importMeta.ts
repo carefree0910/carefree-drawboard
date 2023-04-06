@@ -7,7 +7,6 @@ import { toast } from "@/utils/toast";
 import { Toast_Words } from "@/utils/lang/toast";
 import { addNewImage, NewImageInfo } from "./addImage";
 import { pollTask, pushTask } from "./runTasks";
-import { metaStore } from "@/stores/meta";
 import { revertTaskData } from "./handleTaskData";
 import { getSingleUrl } from "./handleResponse";
 
