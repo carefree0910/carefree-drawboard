@@ -14,7 +14,13 @@ import {
 } from "@noli/core";
 import { SVGUnitTest } from "@noli/svg";
 import { NoliNativeBoard } from "@noli/native";
-import { BoardStore, BoardStoresOptions, useFlags, useBoardStore } from "@noli/business";
+import {
+  BoardStore,
+  BoardStoresOptions,
+  useFlags,
+  useBoardStore,
+  useIsReady,
+} from "@noli/business";
 
 import { BOARD_CONTAINER_ID, ENV } from "@/utils/constants";
 import { themeStore } from "@/stores/theme";
@@ -98,6 +104,7 @@ export function useInitBoard(): void {
   }
 
   useEffect(() => {
+    if (useIsReady()) return;
     _initialize();
   }, []);
 }
