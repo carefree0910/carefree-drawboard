@@ -21,6 +21,12 @@ type ThemeStyles = {
     hoverBorderColor: string;
     activeBorderColor: string;
   };
+  // colors of the `CFSlider` component
+  sliderColors: {
+    sliderTrackColor: string;
+    sliderThumbBorderColor: string;
+    inputBgColor: string;
+  };
 };
 
 export const allThemes: Record<ThemeType, ThemeStyles> = {
@@ -37,6 +43,11 @@ export const allThemes: Record<ThemeType, ThemeStyles> = {
       hoverBorderColor: "#bbbbbb",
       activeBorderColor: "#999999",
     },
+    sliderColors: {
+      sliderTrackColor: "#3ad822",
+      sliderThumbBorderColor: "#3fc9a8",
+      inputBgColor: "#eeeeee",
+    },
   },
   // currently dark mode is just a placeholder
   dark: {
@@ -51,6 +62,11 @@ export const allThemes: Record<ThemeType, ThemeStyles> = {
       checkedColor: "#3ad822",
       hoverBorderColor: "#bbbbbb",
       activeBorderColor: "#999999",
+    },
+    sliderColors: {
+      sliderTrackColor: "#3ad822",
+      sliderThumbBorderColor: "#3fc9a8",
+      inputBgColor: "#eeeeee",
     },
   },
 };

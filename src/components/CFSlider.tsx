@@ -10,6 +10,8 @@ import {
 import { useUnmount } from "ahooks";
 import React, { ReactElement, useCallback, useEffect, useState } from "react";
 
+import { themeStore } from "@/stores/theme";
+
 interface SliderProps {
   className?: string;
   min: number;
@@ -115,6 +117,11 @@ const CFSlider: React.FC<SliderProps> = ({
     handleInputBlur(+inputVal);
   });
 
+  const {
+    textColor,
+    sliderColors: { sliderTrackColor, sliderThumbBorderColor, inputBgColor },
+  } = themeStore.styles;
+
   return (
     <Flex className={className} align="center" color="white">
       <Text fontSize="14px">{label}</Text>
@@ -131,24 +138,26 @@ const CFSlider: React.FC<SliderProps> = ({
         step={step}
         onChange={handleSliderChange}>
         <SliderTrack h="2px">
-          <SliderFilledTrack bg="brand.primary" />
+          <SliderFilledTrack bg={sliderTrackColor} />
         </SliderTrack>
         <SliderThumb
           boxSize={3}
           border="2px solid"
-          borderColor="#3fc9a8"
+          borderColor={sliderThumbBorderColor}
           _focusVisible={{ boxShadow: "none" }}></SliderThumb>
       </Slider>
       <Input
         w="50px"
-        bg="#464646"
+        bg={inputBgColor}
+        color={textColor}
         type="number"
-        h="24px"
+        h="28px"
         size="unset"
         p={0}
         textAlign="center"
         fontSize="14px"
         border="none"
+        borderRadius="4px"
         _focusVisible={{ boxShadow: "none" }}
         value={inputVal}
         onFocus={() => setIptFocused(true)}
