@@ -3,6 +3,7 @@ import type { AvailablePlugins, IPluginProps } from "@/types/plugins";
 import { Logger } from "@noli/core";
 import { useSelecting } from "@noli/business";
 
+import { isInvisible } from "@/stores/plugins";
 import { pluginFactory } from "./utils/factory";
 import { getNodeFilter } from "./utils/renderFilters";
 
@@ -19,6 +20,7 @@ export function makePlugin<T extends AvailablePlugins>(
     Logger.warn("cannot use `follow` with `targetNodeType` set to `none`");
     return null;
   }
+  if (isInvisible(type)) return null;
   const Plugin = pluginFactory.get(type);
   if (!Plugin) {
     Logger.warn(`Plugin '${type}' not found`);
