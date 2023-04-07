@@ -41,6 +41,7 @@ function BoardPanel() {
           pivot: "left",
           follow: false,
           useModal: true,
+          modalOpacity: 0.9,
         })}
       </>
     </Flex>

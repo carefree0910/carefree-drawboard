@@ -91,6 +91,7 @@ function Floating({
   expandOffsetY,
   renderFilter,
   useModal,
+  modalOpacity,
   children,
   ...props
 }: IFloating) {
@@ -106,7 +107,13 @@ function Floating({
   const [expand, setExpand] = useState(false);
   const [transform, setTransform] = useState<string | undefined>(undefined);
   const expandId = useMemo(() => getExpandId(id), [id]);
-  const expandBg = useMemo(() => (useModal ? `${panelBg}f0` : commonProps.bg), [useModal]);
+  // convert float to hex
+  modalOpacity ??= 0.94117647; // 240; f0
+  const modalOpacityHex = Math.round(modalOpacity * 255).toString(16);
+  const expandBg = useMemo(
+    () => (useModal ? `${panelBg}${modalOpacityHex}` : commonProps.bg),
+    [useModal],
+  );
   useLayoutEffect(() => floatingEvent.emit({ id, needRender }), [expand, needRender]);
 
   if (!needRender) return null;
