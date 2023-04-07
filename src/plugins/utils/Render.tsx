@@ -19,7 +19,7 @@ import Floating, {
   getExpandId,
   getExpandPosition,
   IFloatingEvent,
-} from "@/components/Floating";
+} from "../components/Floating";
 
 const Render = ({
   iconW,

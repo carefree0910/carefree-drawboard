@@ -8,10 +8,10 @@ import type { ITaskPlugin } from "@/types/plugins";
 import type { ISubscribableFields } from "@/types/metaFields";
 import { subscribe } from "./utils/subscribe";
 import { themeStore } from "@/stores/theme";
-import TextField from "@/components/TextField";
 import { importMeta } from "@/actions/importMeta";
 import Render from "./utils/Render";
 import { pluginFactory } from "./utils/factory";
+import TextField from "./components/TextField";
 
 const TaskPlugin = observer(({ node, task, fields, customDefinitions, ...props }: ITaskPlugin) => {
   const definitions = useMemo(() => subscribe(fields, customDefinitions), []);
