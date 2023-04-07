@@ -2,7 +2,7 @@ import ReactDOM from "react-dom/client";
 import { ChakraProvider } from "@chakra-ui/react";
 
 import "./index.scss";
-import App from "@/pages/App";
+import App from "./App";
 import { initializeLang } from "@/utils/lang";
 import { setupInceptors } from "@/requests/interceptors";
 
