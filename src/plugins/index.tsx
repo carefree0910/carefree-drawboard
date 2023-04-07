@@ -14,6 +14,10 @@ export function makePlugin<T extends AvailablePlugins>(
   type: T,
   { requireNode, ...props }: Omit<IPluginProps[T], "node"> & { requireNode?: boolean },
 ) {
+  if (props.follow && props.nodeConstraint === "none") {
+    Logger.warn("cannot use `follow` with `targetNodeType` set to `none`");
+    return null;
+  }
   const Plugin = pluginFactory.get(type);
   if (!Plugin) {
     Logger.warn(`Plugin '${type}' not found`);
