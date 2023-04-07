@@ -42,12 +42,7 @@ const Render = ({
   expandOffsetX ??= ["top", "center", "bottom"].includes(pivot) ? 0 : 8;
   expandOffsetY ??= ["left", "right"].includes(pivot) ? 0 : 8;
 
-  /**
-   * This effect handles callbacks that dynamically render the plugin's position
-   *
-   * > we use `useLayoutEffect` here and use `useEffect` in `Floating` to make sure
-   * the following code is executed before `Floating`'s `useEffect`
-   */
+  // This effect handles callbacks that dynamically render the plugin's position
   useLayoutEffect(() => {
     const updateFloating = async () => {
       const _iconW = iconW!;

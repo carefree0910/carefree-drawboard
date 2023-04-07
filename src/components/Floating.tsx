@@ -1,5 +1,5 @@
 import { observer } from "mobx-react-lite";
-import { useState, useEffect, useMemo } from "react";
+import { useState, useMemo, useLayoutEffect } from "react";
 import { Box, BoxProps, Flex, Image } from "@chakra-ui/react";
 
 import { Coordinate } from "@noli/core";
@@ -84,7 +84,7 @@ function Floating({
   const [expand, setExpand] = useState(false);
   const [transform, setTransform] = useState<string | undefined>(undefined);
   const expandId = useMemo(() => getExpandId(id), [id]);
-  useEffect(() => floatingEvent.emit({ id, needRender }), [expand, needRender]);
+  useLayoutEffect(() => floatingEvent.emit({ id, needRender }), [expand, needRender]);
 
   if (!needRender) return null;
 
