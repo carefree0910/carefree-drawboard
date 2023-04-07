@@ -42,6 +42,14 @@ function BoardPanel() {
           useModal: true,
           modalOpacity: 0.9,
         })}
+        {makePlugin("settings", {
+          w: 250,
+          h: 400,
+          src: "https://ailab-huawei-cdn.nolibox.com/upload/images/49223052f17f4f249c56ba00f43b3043.png",
+          pivot: "rt",
+          follow: false,
+          nodeConstraint: "none",
+        })}
       </>
     </Flex>
   );

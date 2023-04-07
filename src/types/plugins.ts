@@ -60,10 +60,11 @@ export interface IInternalTaskPlugin extends ITaskPlugin {
 
 // factory
 
-export const allAvailablePlugins = ["meta", "txt2img.sd"] as const;
+export const allAvailablePlugins = ["meta", "txt2img.sd", "settings"] as const;
 export type AvailablePlugins = typeof allAvailablePlugins[number];
 
 export interface IPluginProps {
   meta: IPlugin;
   "txt2img.sd": ITaskPlugin;
+  settings: IPlugin;
 }
