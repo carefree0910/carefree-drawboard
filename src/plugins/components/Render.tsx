@@ -13,13 +13,13 @@ import {
 } from "@noli/business";
 
 import type { IRender } from "@/types/plugins";
-import { getNodeFilter } from "./renderFilters";
+import { getNodeFilter } from "../utils/renderFilters";
 import Floating, {
   floatingEvent,
   getExpandId,
   getExpandPosition,
   IFloatingEvent,
-} from "../components/Floating";
+} from "./Floating";
 
 const Render = ({
   iconW,

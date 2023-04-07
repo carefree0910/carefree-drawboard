@@ -2,8 +2,8 @@ import { observer } from "mobx-react-lite";
 import { Textarea } from "@chakra-ui/react";
 
 import type { IPlugin } from "@/types/plugins";
-import Render from "./utils/Render";
 import { pluginFactory } from "./utils/factory";
+import Render from "./components/Render";
 
 const MetaPlugin = observer(({ node, ...props }: IPlugin) => {
   if (!node || node.type === "group") return null;

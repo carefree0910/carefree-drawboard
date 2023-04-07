@@ -6,11 +6,11 @@ import { langStore } from "@noli/business";
 
 import type { ITaskPlugin } from "@/types/plugins";
 import type { ISubscribableFields } from "@/types/metaFields";
-import { subscribe } from "./utils/subscribe";
 import { themeStore } from "@/stores/theme";
 import { importMeta } from "@/actions/importMeta";
-import Render from "./utils/Render";
+import { subscribe } from "./utils/subscribe";
 import { pluginFactory } from "./utils/factory";
+import Render from "./components/Render";
 import TextField from "./components/TextField";
 
 const TaskPlugin = observer(({ node, task, fields, customDefinitions, ...props }: ITaskPlugin) => {
