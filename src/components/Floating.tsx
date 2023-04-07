@@ -81,6 +81,7 @@ export function getExpandPosition(
 function Floating({
   id,
   src,
+  bgOpacity,
   w,
   h,
   iconW,
@@ -97,9 +98,10 @@ function Floating({
 }: IFloating) {
   const needRender = useIsReady() && (!renderFilter || renderFilter(useSelecting("raw")));
   const { panelBg } = themeStore.styles;
+  const bgOpacityHex = Math.round((bgOpacity ?? 0.5) * 255).toString(16);
   const commonProps: BoxProps = {
     p: "12px",
-    bg: `${panelBg}88`,
+    bg: `${panelBg}${bgOpacityHex}`,
     position: "absolute",
     boxShadow: "2px 2px 4px rgba(0, 0, 0, 0.25)",
     borderRadius: "4px",

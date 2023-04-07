@@ -22,6 +22,7 @@ export interface IPositionInfo extends FlexProps {
 export interface IFloating extends IPositionInfo {
   id: string;
   src?: string;
+  bgOpacity?: number;
   renderFilter?: (info?: IResponse) => boolean;
   useModal?: boolean;
   modalOpacity?: number;
