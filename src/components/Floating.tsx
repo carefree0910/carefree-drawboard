@@ -7,6 +7,7 @@ import { useIsReady, useSelecting } from "@noli/business";
 
 import type { IFloating, IPositionInfo } from "@/types/plugins";
 import { Event } from "@/utils/event";
+import { themeStore } from "@/stores/theme";
 
 export interface IFloatingEvent {
   id: string;
@@ -81,6 +82,7 @@ function Floating({
   ...props
 }: IFloating) {
   const needRender = useIsReady() && (!renderFilter || renderFilter(useSelecting("raw")));
+  const { panelBg } = themeStore.styles;
   const [expand, setExpand] = useState(false);
   const [transform, setTransform] = useState<string | undefined>(undefined);
   const expandId = useMemo(() => getExpandId(id), [id]);
@@ -90,6 +92,7 @@ function Floating({
 
   const commonProps: BoxProps = {
     p: "12px",
+    bg: `${panelBg}88`,
     position: "absolute",
     boxShadow: "2px 2px 4px rgba(0, 0, 0, 0.25)",
     borderRadius: "4px",

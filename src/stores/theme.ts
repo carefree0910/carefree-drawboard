@@ -4,19 +4,27 @@ import { ABCStore } from "@noli/business";
 
 type ThemeType = "light" | "dark";
 type ThemeStyles = {
+  // bg color of the infinite drawboard
   boardBg: string;
+  // bg color of various panels (button, floating, expand, etc.)
+  panelBg: string;
+  // color of the text
   textColor: string;
+  // color of the divider
   dividerColor: string;
 };
 
 export const allThemes: Record<ThemeType, ThemeStyles> = {
   light: {
     boardBg: "#f7f7f7",
+    panelBg: "#f9f9f9",
     textColor: "#333333",
     dividerColor: "#cccccc",
   },
+  // currently dark mode is just a placeholder
   dark: {
     boardBg: "#242424",
+    panelBg: "#f9f9f9",
     textColor: "#333333",
     dividerColor: "#cccccc",
   },
