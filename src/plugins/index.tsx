@@ -1,4 +1,4 @@
-import type { AvailablePlugins, IPluginProps, NodeConstraints } from "@/types/plugins";
+import type { AvailablePlugins, IPluginProps } from "@/types/plugins";
 
 import { Logger } from "@noli/core";
 import { useSelecting } from "@noli/business";
