@@ -55,12 +55,14 @@ export function getExpandPosition({
     } else {
       y -= h + expandOffsetY;
     }
-  } else {
+  } else if (["lt", "top", "rt"].includes(pivot)) {
     if (follow) {
       y -= h + expandOffsetY;
     } else {
       y += iconH + expandOffsetY;
     }
+  } else {
+    y += iconH + expandOffsetY;
   }
   // return
   return new Coordinate(x, y);
