@@ -8,6 +8,7 @@ import type { IInternalTaskPlugin } from "@/types/plugins";
 import type { ISubscribableFields } from "@/types/metaFields";
 import { themeStore } from "@/stores/theme";
 import { importMeta } from "@/actions/importMeta";
+import { CFDivider } from "@/components/CFDivider";
 import { subscribe } from "../utils/subscribe";
 import Render from "./Render";
 import TextField from "./TextField";
@@ -17,7 +18,7 @@ const TaskPlugin = ({ node, task, fields, customDefinitions, ...props }: IIntern
 
   const t = useToast();
   const lang = langStore.tgt;
-  const { textColor, dividerColor } = themeStore.styles;
+  const { textColor } = themeStore.styles;
 
   async function onSubmit() {
     importMeta({ t, lang, type: task });
@@ -39,7 +40,7 @@ const TaskPlugin = ({ node, task, fields, customDefinitions, ...props }: IIntern
         }
         return null;
       })}
-      <Divider my="12px" borderColor={dividerColor} />
+      <CFDivider />
       <Button color={textColor} flexShrink={0} onClick={onSubmit}>
         Submit
       </Button>
