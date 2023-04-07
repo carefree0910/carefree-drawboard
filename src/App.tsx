@@ -1,10 +1,11 @@
 import { Flex } from "@chakra-ui/react";
+import { observer } from "mobx-react-lite";
 
 import { langStore } from "@noli/business";
 
-import { useFileDropper } from "@/hooks/useFileDropper";
-import { useInitBoard } from "@/hooks/useInitBoard";
 import BoardPanel from "@/panels/BoardPanel";
+import { useInitBoard } from "./hooks/useInitBoard";
+import { useFileDropper } from "./hooks/useFileDropper";
 
 function App() {
   useInitBoard();
@@ -19,4 +20,4 @@ function App() {
   );
 }
 
-export default App;
+export default observer(App);
