@@ -3,7 +3,12 @@ import { useState, useMemo, useLayoutEffect } from "react";
 import { Box, BoxProps, Flex, Image } from "@chakra-ui/react";
 
 import { Coordinate } from "@noli/core";
-import { BoardStore, useBoardContainerLeftTop, useIsReady, useSelecting } from "@noli/business";
+import {
+  useBoardContainerLeftTop,
+  useBoardContainerWH,
+  useIsReady,
+  useSelecting,
+} from "@noli/business";
 
 import type { IFloating, IPositionInfo } from "@/types/plugins";
 import { Event } from "@/utils/event";
@@ -36,7 +41,7 @@ export function getExpandPosition(
 ): Coordinate {
   if (isModal) {
     pivot = "center";
-    const { w: bw, h: bh } = BoardStore.board.wh;
+    const { w: bw, h: bh } = useBoardContainerWH();
     const { x: left, y: top } = useBoardContainerLeftTop();
     x = left + 0.5 * (bw - iconW);
     y = top + 0.5 * (bh - h) - iconH;

@@ -4,10 +4,10 @@ import { observer } from "mobx-react-lite";
 import { Coordinate, getRandomHash } from "@noli/core";
 import {
   boardBBoxToDom,
-  BoardStore,
   injectNodeTransformEventCallback,
   removeNodeTransformEventCallback,
   useBoardContainerLeftTop,
+  useBoardContainerWH,
   useSelectHooks,
   useSelecting,
 } from "@noli/business";
@@ -57,7 +57,7 @@ const Render = ({
       let x, y;
       if (!_follow) {
         const { x: left, y: top } = useBoardContainerLeftTop();
-        const { w: bw, h: bh } = BoardStore.board.wh;
+        const { w: bw, h: bh } = useBoardContainerWH();
         // x
         if (["lt", "left", "lb"].includes(_pivot)) {
           x = left + _offsetX;
