@@ -2,13 +2,22 @@ import { observer } from "mobx-react-lite";
 import { Box, Checkbox, Flex, Heading } from "@chakra-ui/react";
 
 import type { Lang } from "@noli/core";
-import { langDescriptions, langStore, switchLangTo, translate } from "@noli/business";
+import {
+  BoardStore,
+  langDescriptions,
+  langStore,
+  switchLangTo,
+  translate,
+  useGlobalTransform,
+  useIsReady,
+} from "@noli/business";
 
 import { allAvailablePlugins, IPlugin } from "@/types/plugins";
 import { Plugins_Words } from "@/utils/lang/plugins";
 import { Settings_Words } from "@/utils/lang/settings";
 import { isInvisible, setVisible } from "@/stores/plugins";
 import CFSelect from "@/components/CFSelect";
+import CFSlider from "@/components/CFSlider";
 import { CFDivider } from "@/components/CFDivider";
 import { pluginFactory } from "./utils/factory";
 import Render from "./components/Render";
@@ -57,6 +66,21 @@ const SettingsPlugin = observer(({ node, ...props }: IPlugin) => {
             onOptionClick={(lang: string) => switchLangTo(lang as Lang)}
           />
         </Box>
+        {/* globalScale settings */}
+        {useIsReady() && (
+          <Box mt="24px">
+            <Heading size="sm">{translate(Settings_Words["global-scale-header"], lang)}</Heading>
+            <CFDivider />
+            <CFSlider
+              min={BoardStore.board.options.minScale}
+              max={BoardStore.board.options.maxScale}
+              step={0.001}
+              value={useGlobalTransform().globalScale}
+              scale="logarithmic"
+              onChange={(value) => BoardStore.api.setGlobalScale(value)}
+            />
+          </Box>
+        )}
       </Flex>
     </Render>
   );
