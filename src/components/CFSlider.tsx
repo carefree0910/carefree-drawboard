@@ -71,7 +71,7 @@ const CFSlider: React.FC<SliderProps> = ({
 
   const handleInputChange = useCallback<React.ChangeEventHandler<HTMLInputElement>>(
     (e) => {
-      setInputVal((+e.target.value).toFixed(precision));
+      setInputVal(e.target.value);
     },
     [setInputVal],
   );
