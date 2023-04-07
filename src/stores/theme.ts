@@ -12,6 +12,15 @@ type ThemeStyles = {
   textColor: string;
   // color of the divider
   dividerColor: string;
+  // colors of the `CFSelect` component
+  selectColors: {
+    color: string;
+    bgColor: string;
+    hoverBgColor: string;
+    checkedColor: string;
+    hoverBorderColor: string;
+    activeBorderColor: string;
+  };
 };
 
 export const allThemes: Record<ThemeType, ThemeStyles> = {
@@ -20,6 +29,14 @@ export const allThemes: Record<ThemeType, ThemeStyles> = {
     panelBg: "#f9f9f9",
     textColor: "#333333",
     dividerColor: "#cccccc",
+    selectColors: {
+      color: "#333333",
+      bgColor: "#f0f0f0",
+      hoverBgColor: "#f9f9f9",
+      checkedColor: "#3ad822",
+      hoverBorderColor: "#bbbbbb",
+      activeBorderColor: "#999999",
+    },
   },
   // currently dark mode is just a placeholder
   dark: {
@@ -27,6 +44,14 @@ export const allThemes: Record<ThemeType, ThemeStyles> = {
     panelBg: "#f9f9f9",
     textColor: "#333333",
     dividerColor: "#cccccc",
+    selectColors: {
+      color: "#333333",
+      bgColor: "#f0f0f0",
+      hoverBgColor: "#f9f9f9",
+      checkedColor: "#3ad822",
+      hoverBorderColor: "#bbbbbb",
+      activeBorderColor: "#999999",
+    },
   },
 };
 
