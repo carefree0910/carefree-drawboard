@@ -161,7 +161,7 @@ function Floating({
         transform={transform}
         opacity={expand ? 1 : 0}
         visibility={expand ? "visible" : "hidden"}
-        transition="opacity 0.3s cubic-bezier(.08,.52,.52,1), visibility 0.3s cubic-bezier(.08,.52,.52,1)"
+        transition={VISIBILITY_TRANSITION}
         {...commonProps}
         bg={expandBg}
         {...props}>
