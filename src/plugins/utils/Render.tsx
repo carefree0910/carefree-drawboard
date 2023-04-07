@@ -39,8 +39,8 @@ const Render = ({
   iconH ??= 48;
   pivot ??= "bottom";
   follow ??= false;
-  expandOffsetX ??= ["top", "center", "bottom"].includes(pivot) ? 0 : 8;
-  expandOffsetY ??= ["left", "right"].includes(pivot) ? 0 : 8;
+  expandOffsetX ??= props.useModal || ["top", "center", "bottom"].includes(pivot) ? 0 : 8;
+  expandOffsetY ??= props.useModal || ["left", "right"].includes(pivot) ? 0 : 8;
 
   // This effect handles callbacks that dynamically render the plugin's position
   useLayoutEffect(() => {
@@ -105,7 +105,7 @@ const Render = ({
       // adjust expand of the floating
       const domFloatingExpand = document.querySelector<HTMLDivElement>(`#${getExpandId(id)}`);
       if (!domFloatingExpand) return;
-      const { x: ex, y: ey } = getExpandPosition({
+      const { x: ex, y: ey } = getExpandPosition(props.useModal ?? false, {
         x,
         y,
         w: props.w,
@@ -133,7 +133,16 @@ const Render = ({
       removeNodeTransformEventCallback(id);
       useSelectHooks().remove(id);
     };
-  }, [nodeConstraint, pivot, follow, offsetX, offsetY, expandOffsetX, expandOffsetY]);
+  }, [
+    nodeConstraint,
+    pivot,
+    follow,
+    offsetX,
+    offsetY,
+    expandOffsetX,
+    expandOffsetY,
+    props.useModal,
+  ]);
 
   return (
     <Floating

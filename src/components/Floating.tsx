@@ -3,7 +3,7 @@ import { useState, useMemo, useLayoutEffect } from "react";
 import { Box, BoxProps, Flex, Image } from "@chakra-ui/react";
 
 import { Coordinate } from "@noli/core";
-import { useIsReady, useSelecting } from "@noli/business";
+import { BoardStore, useBoardContainerLeftTop, useIsReady, useSelecting } from "@noli/business";
 
 import type { IFloating, IPositionInfo } from "@/types/plugins";
 import { Event } from "@/utils/event";
@@ -18,18 +18,28 @@ export const floatingEvent = new Event<IFloatingEvent>();
 export function getExpandId(id: string): string {
   return `${id}_expand`;
 }
-export function getExpandPosition({
-  x,
-  y,
-  w,
-  h,
-  iconW,
-  iconH,
-  pivot,
-  follow,
-  expandOffsetX,
-  expandOffsetY,
-}: { x: number; y: number } & IPositionInfo): Coordinate {
+export function getExpandPosition(
+  isModal: boolean,
+  {
+    x,
+    y,
+    w,
+    h,
+    iconW,
+    iconH,
+    pivot,
+    follow,
+    expandOffsetX,
+    expandOffsetY,
+  }: { x: number; y: number } & IPositionInfo,
+): Coordinate {
+  if (isModal) {
+    pivot = "center";
+    const { w: bw, h: bh } = BoardStore.board.wh;
+    const { x: left, y: top } = useBoardContainerLeftTop();
+    x = left + 0.5 * (bw - iconW);
+    y = top + 0.5 * (bh - h) - iconH;
+  }
   // x
   if (["top", "center", "bottom"].includes(pivot)) {
     x += 0.5 * (iconW - w) + expandOffsetX;
@@ -80,18 +90,12 @@ function Floating({
   expandOffsetX,
   expandOffsetY,
   renderFilter,
+  useModal,
   children,
   ...props
 }: IFloating) {
   const needRender = useIsReady() && (!renderFilter || renderFilter(useSelecting("raw")));
   const { panelBg } = themeStore.styles;
-  const [expand, setExpand] = useState(false);
-  const [transform, setTransform] = useState<string | undefined>(undefined);
-  const expandId = useMemo(() => getExpandId(id), [id]);
-  useLayoutEffect(() => floatingEvent.emit({ id, needRender }), [expand, needRender]);
-
-  if (!needRender) return null;
-
   const commonProps: BoxProps = {
     p: "12px",
     bg: `${panelBg}88`,
@@ -99,6 +103,13 @@ function Floating({
     boxShadow: "2px 2px 4px rgba(0, 0, 0, 0.25)",
     borderRadius: "4px",
   };
+  const [expand, setExpand] = useState(false);
+  const [transform, setTransform] = useState<string | undefined>(undefined);
+  const expandId = useMemo(() => getExpandId(id), [id]);
+  const expandBg = useMemo(() => (useModal ? `${panelBg}f0` : commonProps.bg), [useModal]);
+  useLayoutEffect(() => floatingEvent.emit({ id, needRender }), [expand, needRender]);
+
+  if (!needRender) return null;
 
   return (
     <>
@@ -112,7 +123,7 @@ function Floating({
           if (self && self.dataset.x && self.dataset.y) {
             let x = parseFloat(self.dataset.x);
             let y = parseFloat(self.dataset.y);
-            ({ x, y } = getExpandPosition({
+            ({ x, y } = getExpandPosition(useModal ?? false, {
               x,
               y,
               w,
@@ -143,6 +154,7 @@ function Floating({
         visibility={expand ? "visible" : "hidden"}
         transition="opacity 0.3s cubic-bezier(.08,.52,.52,1), visibility 0.3s cubic-bezier(.08,.52,.52,1)"
         {...commonProps}
+        bg={expandBg}
         {...props}>
         {children}
       </Flex>

@@ -23,6 +23,7 @@ export interface IFloating extends IPositionInfo {
   id: string;
   src?: string;
   renderFilter?: (info?: IResponse) => boolean;
+  useModal?: boolean;
 }
 export interface IRender
   extends Omit<
