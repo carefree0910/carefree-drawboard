@@ -127,11 +127,13 @@ const Render = ({
     floatingEvent.on(onFloatingReRender);
     injectNodeTransformEventCallback(id, updateFloating);
     useSelectHooks().register({ key: id, after: updateFloating });
+    window.addEventListener("resize", updateFloating);
     updateFloating();
 
     return () => {
       removeNodeTransformEventCallback(id);
       useSelectHooks().remove(id);
+      window.removeEventListener("resize", updateFloating);
     };
   }, [
     iconW,
