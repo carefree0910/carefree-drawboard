@@ -134,6 +134,8 @@ const Render = ({
       useSelectHooks().remove(id);
     };
   }, [
+    iconW,
+    iconH,
     nodeConstraint,
     pivot,
     follow,
@@ -141,7 +143,8 @@ const Render = ({
     offsetY,
     expandOffsetX,
     expandOffsetY,
-    props.useModal,
+    children,
+    props,
   ]);
 
   return (
