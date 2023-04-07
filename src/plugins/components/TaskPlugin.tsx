@@ -1,6 +1,6 @@
 import { useMemo } from "react";
 import { observer } from "mobx-react-lite";
-import { Button, Divider, useToast } from "@chakra-ui/react";
+import { Button, useToast } from "@chakra-ui/react";
 
 import { langStore } from "@noli/business";
 
@@ -14,15 +14,15 @@ import Render from "./Render";
 import TextField from "./TextField";
 
 const TaskPlugin = ({ node, task, fields, customDefinitions, ...props }: IInternalTaskPlugin) => {
-  const definitions = useMemo(() => subscribe(fields, customDefinitions), []);
+  const definitions = useMemo(
+    () => subscribe(fields, customDefinitions),
+    [fields, customDefinitions],
+  );
+  const onSubmit = useMemo(() => () => importMeta({ t, lang, type: task }), [task]);
 
   const t = useToast();
   const lang = langStore.tgt;
   const { textColor } = themeStore.styles;
-
-  async function onSubmit() {
-    importMeta({ t, lang, type: task });
-  }
 
   return (
     <Render {...props}>
