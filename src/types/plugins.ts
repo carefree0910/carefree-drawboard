@@ -50,17 +50,20 @@ export interface IPlugin extends IRender {
 // specific
 
 export interface ITaskPlugin extends IPlugin {
-  task: TaskTypes;
   fields: ISubscribableFields[];
   customDefinitions?: ICustomDefinitions;
 }
 
+export interface IInternalTaskPlugin extends ITaskPlugin {
+  task: TaskTypes;
+}
+
 // factory
 
-export const allAvailablePlugins = ["task", "meta"] as const;
+export const allAvailablePlugins = ["meta", "txt2img.sd"] as const;
 export type AvailablePlugins = typeof allAvailablePlugins[number];
 
 export interface IPluginProps {
-  task: ITaskPlugin;
   meta: IPlugin;
+  "txt2img.sd": ITaskPlugin;
 }

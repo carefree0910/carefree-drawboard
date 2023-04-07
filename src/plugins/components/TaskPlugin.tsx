@@ -4,16 +4,15 @@ import { Button, Divider, useToast } from "@chakra-ui/react";
 
 import { langStore } from "@noli/business";
 
-import type { ITaskPlugin } from "@/types/plugins";
+import type { IInternalTaskPlugin } from "@/types/plugins";
 import type { ISubscribableFields } from "@/types/metaFields";
 import { themeStore } from "@/stores/theme";
 import { importMeta } from "@/actions/importMeta";
-import { subscribe } from "./utils/subscribe";
-import { pluginFactory } from "./utils/factory";
-import Render from "./components/Render";
-import TextField from "./components/TextField";
+import { subscribe } from "../utils/subscribe";
+import Render from "./Render";
+import TextField from "./TextField";
 
-const TaskPlugin = observer(({ node, task, fields, customDefinitions, ...props }: ITaskPlugin) => {
+const TaskPlugin = ({ node, task, fields, customDefinitions, ...props }: IInternalTaskPlugin) => {
   const definitions = useMemo(() => subscribe(fields, customDefinitions), []);
 
   const t = useToast();
@@ -46,5 +45,6 @@ const TaskPlugin = observer(({ node, task, fields, customDefinitions, ...props }
       </Button>
     </Render>
   );
-});
-pluginFactory.register("task")(TaskPlugin);
+};
+
+export default observer(TaskPlugin);

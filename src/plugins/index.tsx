@@ -7,8 +7,9 @@ import { pluginFactory } from "./utils/factory";
 import { getNodeFilter } from "./utils/renderFilters";
 
 // these lines are needed to make sure the plugins are registered
-export * from "./TaskPlugin";
 export * from "./MetaPlugin";
+export * from "./Txt2ImgSDPlugin";
+export * from "./SettingsPlugin";
 
 export function makePlugin<T extends AvailablePlugins>(
   type: T,

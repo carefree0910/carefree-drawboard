@@ -31,11 +31,10 @@ function BoardPanel() {
           nodeConstraint: "singleNode",
           requireNode: true,
         })}
-        {makePlugin("task", {
+        {makePlugin("txt2img.sd", {
           w: 1000,
           h: 600,
           src: "https://ailab-huawei-cdn.nolibox.com/upload/images/ec388e38bdac4f72978b895c2f686cdf.png",
-          task: "txt2img.sd",
           fields: ["prompt"],
           nodeConstraint: "none",
           pivot: "left",
