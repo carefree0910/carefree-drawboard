@@ -20,7 +20,6 @@ export function makePlugin<T extends AvailablePlugins>(
     Logger.warn("cannot use `follow` with `targetNodeType` set to `none`");
     return null;
   }
-  if (isInvisible(type)) return null;
   const Plugin = pluginFactory.get(type);
   if (!Plugin) {
     Logger.warn(`Plugin '${type}' not found`);
@@ -32,5 +31,5 @@ export function makePlugin<T extends AvailablePlugins>(
     if (!getNodeFilter(props.nodeConstraint)(info)) return null;
     node = info.displayNode;
   }
-  return <Plugin node={node} {...props} />;
+  return <Plugin node={node} isInvisible={isInvisible(type)} {...props} />;
 }

@@ -26,6 +26,7 @@ export interface IFloating extends IPositionInfo {
   renderFilter?: (info?: IResponse) => boolean;
   useModal?: boolean;
   modalOpacity?: number;
+  isInvisible?: boolean;
 }
 export interface IRender
   extends Omit<

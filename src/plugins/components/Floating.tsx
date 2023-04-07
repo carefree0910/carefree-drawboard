@@ -8,6 +8,7 @@ import { BoardStore, useBoardContainerLeftTop, useIsReady, useSelecting } from "
 import type { IFloating, IPositionInfo } from "@/types/plugins";
 import { Event } from "@/utils/event";
 import { themeStore } from "@/stores/theme";
+import { VISIBILITY_TRANSITION } from "@/utils/constants";
 
 export interface IFloatingEvent {
   id: string;
@@ -93,6 +94,7 @@ function Floating({
   renderFilter,
   useModal,
   modalOpacity,
+  isInvisible,
   children,
   ...props
 }: IFloating) {
@@ -148,6 +150,9 @@ function Floating({
           }
           setExpand(!expand);
         }}
+        opacity={isInvisible ? 0 : 1}
+        visibility={isInvisible ? "hidden" : "visible"}
+        transition={VISIBILITY_TRANSITION}
         {...commonProps}
         {...props}>
         <Image src={src} draggable={false} />
