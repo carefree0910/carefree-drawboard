@@ -1,0 +1,38 @@
+$blockName: c-icon;
+
+.#{$blockName} {
+  &__squared {
+    width: 1em;
+    height: 1em;
+    vertical-align: -0.15em;
+  }
+
+  &--disabled {
+    opacity: 0.2;
+    pointer-events: none;
+    cursor: not-allowed;
+  }
+
+  &--fill-all {
+    fill: currentColor;
+    stroke: currentColor;
+  }
+
+  &--fill-current-color {
+    path {
+      fill: currentColor;
+    }
+
+    rect {
+      stroke: currentColor;
+    }
+  }
+
+  &--stroke-current-color {
+    path,
+    rect {
+      fill: none;
+      stroke: currentColor;
+    }
+  }
+}
