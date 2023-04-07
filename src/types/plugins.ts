@@ -1,6 +1,6 @@
 import type { FlexProps } from "@chakra-ui/react";
 
-import type { NodeType, PivotType } from "@noli/core";
+import type { INode, NodeType, PivotType } from "@noli/core";
 import type { IResponse } from "@noli/business";
 
 import type { TaskTypes } from "./tasks";
@@ -40,9 +40,13 @@ export interface IRender
   expandOffsetY?: number;
 }
 
+export interface IPlugin extends IRender {
+  node: INode | null;
+}
+
 // specific
 
-export interface ITaskPlugin extends IRender {
+export interface ITaskPlugin extends IPlugin {
   task: TaskTypes;
   fields: ISubscribableFields[];
   customDefinitions?: ICustomDefinitions;
@@ -55,5 +59,5 @@ export type AvailablePlugins = typeof allAvailablePlugins[number];
 
 export interface IPluginProps {
   task: ITaskPlugin;
-  meta: IRender;
+  meta: IPlugin;
 }

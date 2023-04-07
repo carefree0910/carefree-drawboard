@@ -29,6 +29,7 @@ function BoardPanel() {
           offsetY: -42,
           expandOffsetY: -400,
           nodeConstraint: "singleNode",
+          requireNode: true,
         })}
         {makePlugin("task", {
           w: 200,

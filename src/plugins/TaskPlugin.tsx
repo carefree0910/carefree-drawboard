@@ -13,7 +13,7 @@ import { importMeta } from "@/actions/importMeta";
 import Render from "./utils/Render";
 import { pluginFactory } from "./utils/factory";
 
-const TaskPlugin = observer(({ task, fields, customDefinitions, ...props }: ITaskPlugin) => {
+const TaskPlugin = observer(({ node, task, fields, customDefinitions, ...props }: ITaskPlugin) => {
   const definitions = useMemo(() => subscribe(fields, customDefinitions), []);
 
   const t = useToast();
