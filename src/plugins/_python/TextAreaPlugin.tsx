@@ -27,4 +27,4 @@ const PythonTextAreaPlugin = observer(
     );
   },
 );
-drawboardPluginFactory.register("_python.textArea")(PythonTextAreaPlugin);
+drawboardPluginFactory.register("_python.textArea", true)(PythonTextAreaPlugin);
