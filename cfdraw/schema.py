@@ -30,7 +30,7 @@ class IConfig:
 class IPluginRequest(BaseModel):
     identifier: str = Field(..., description="The identifier of the plugin")
     node: Optional[Dict[str, Any]] = Field(
-        ...,
+        None,
         description="JSON data of the selected node",
     )
 
@@ -43,7 +43,7 @@ class IPluginRequest(BaseModel):
 
 
 class IParsedPluginRequest(IPluginRequest):
-    node: Optional[noli.INode] = Field(..., description="The parsed selected node")
+    node: Optional[noli.INode] = Field(None, description="The parsed selected node")
 
 
 class IPlugin(Generic[TPluginResponse], metaclass=ABCMeta):
