@@ -2,7 +2,7 @@ import { observer } from "mobx-react-lite";
 import { Textarea } from "@chakra-ui/react";
 
 import type { IPlugin } from "@/types/plugins";
-import { pluginFactory } from "./utils/factory";
+import { drawboardPluginFactory } from "./utils/factory";
 import Render from "./components/Render";
 
 const MetaPlugin = observer(({ node, ...props }: IPlugin) => {
@@ -16,4 +16,4 @@ const MetaPlugin = observer(({ node, ...props }: IPlugin) => {
     </Render>
   );
 });
-pluginFactory.register("meta")(MetaPlugin);
+drawboardPluginFactory.register("meta")(MetaPlugin);

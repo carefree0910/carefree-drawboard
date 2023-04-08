@@ -19,7 +19,7 @@ import { isInvisible, setVisible } from "@/stores/plugins";
 import CFSelect from "@/components/CFSelect";
 import CFSlider from "@/components/CFSlider";
 import { CFDivider } from "@/components/CFDivider";
-import { pluginFactory } from "./utils/factory";
+import { drawboardPluginFactory } from "./utils/factory";
 import Render from "./components/Render";
 
 const SettingsPlugin = observer(({ node, ...props }: IPlugin) => {
@@ -85,4 +85,4 @@ const SettingsPlugin = observer(({ node, ...props }: IPlugin) => {
     </Render>
   );
 });
-pluginFactory.register("settings")(SettingsPlugin);
+drawboardPluginFactory.register("settings")(SettingsPlugin);

@@ -4,7 +4,7 @@ import { Logger } from "@noli/core";
 import { useSelecting } from "@noli/business";
 
 import { isInvisible } from "@/stores/plugins";
-import { pluginFactory } from "./utils/factory";
+import { drawboardPluginFactory } from "./utils/factory";
 import { getNodeFilter } from "./utils/renderFilters";
 
 // these lines are needed to make sure the plugins are registered
@@ -20,7 +20,7 @@ export function makePlugin<T extends AvailablePlugins>(
     Logger.warn("cannot use `follow` with `targetNodeType` set to `none`");
     return null;
   }
-  const Plugin = pluginFactory.get(type);
+  const Plugin = drawboardPluginFactory.get(type);
   if (!Plugin) {
     Logger.warn(`Plugin '${type}' not found`);
     return null;

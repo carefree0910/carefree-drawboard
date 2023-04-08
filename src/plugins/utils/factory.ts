@@ -4,8 +4,8 @@ import { Logger, checkNotExists } from "@noli/core";
 
 import type { AvailablePlugins } from "@/types/plugins";
 
-class PluginFactory {
-  d: Partial<Record<AvailablePlugins, React.FC>> = {};
+class DrawboardPluginFactory {
+  d: Partial<Record<AvailablePluginsAndPythonPlugins, React.FC>> = {};
 
   constructor(public name: string) {}
 
@@ -31,4 +31,4 @@ class PluginFactory {
     return this.d[name] ?? null;
   }
 }
-export const pluginFactory = new PluginFactory("plugin");
+export const drawboardPluginFactory = new DrawboardPluginFactory("drawboard.plugin");
