@@ -1,3 +1,4 @@
+from typing import Any
 from typing import Dict
 from typing import List
 from typing import Type
@@ -102,7 +103,7 @@ class App:
                 name=endpoint[1:].replace("/", "_"),
                 responses=get_responses(IResponse),
             )
-            def fn(data: IPluginRequest) -> IResponse:
+            def fn(data: IPluginRequest) -> Any:
                 for plugin in plugins:
                     if self.hash_identifier(plugin.identifier) == data.identifier:
                         return plugin(data)
