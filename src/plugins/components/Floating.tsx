@@ -12,8 +12,8 @@ import {
 
 import type { IFloating, IPositionInfo } from "@/types/plugins";
 import { Event } from "@/utils/event";
+import { DEFAULT_PLUGIN_SETTINGS, VISIBILITY_TRANSITION } from "@/utils/constants";
 import { themeStore } from "@/stores/theme";
-import { VISIBILITY_TRANSITION } from "@/utils/constants";
 
 export interface IFloatingEvent {
   id: string;
@@ -105,7 +105,8 @@ function Floating({
 }: IFloating) {
   const needRender = useIsReady() && (!renderFilter || renderFilter(useSelecting("raw")));
   const { panelBg } = themeStore.styles;
-  const bgOpacityHex = Math.round((bgOpacity ?? 0.5) * 255).toString(16);
+  bgOpacity ??= DEFAULT_PLUGIN_SETTINGS.bgOpacity;
+  const bgOpacityHex = Math.round(bgOpacity * 255).toString(16);
   const commonProps: BoxProps = {
     p: "12px",
     bg: `${panelBg}${bgOpacityHex}`,
@@ -117,7 +118,7 @@ function Floating({
   const [transform, setTransform] = useState<string | undefined>(undefined);
   const expandId = useMemo(() => getExpandId(id), [id]);
   // convert float to hex
-  modalOpacity ??= 0.94117647; // 240; f0
+  modalOpacity ??= DEFAULT_PLUGIN_SETTINGS.modalOpacity;
   const modalOpacityHex = Math.round(modalOpacity * 255).toString(16);
   const expandBg = useMemo(
     () => (useModal ? `${panelBg}${modalOpacityHex}` : commonProps.bg),

@@ -1,7 +1,7 @@
 import { useMemo, useLayoutEffect } from "react";
 import { observer } from "mobx-react-lite";
 
-import { Coordinate, getRandomHash } from "@noli/core";
+import { Coordinate, getRandomHash, PivotType } from "@noli/core";
 import {
   boardBBoxToDom,
   injectNodeTransformEventCallback,
@@ -13,6 +13,7 @@ import {
 } from "@noli/business";
 
 import type { IRender } from "@/types/plugins";
+import { DEFAULT_PLUGIN_SETTINGS } from "@/utils/constants";
 import { getNodeFilter } from "../utils/renderFilters";
 import Floating, {
   floatingEvent,
@@ -35,12 +36,16 @@ const Render = ({
   ...props
 }: IRender) => {
   const id = useMemo(() => `plugin_${getRandomHash()}`, []);
-  iconW ??= 48;
-  iconH ??= 48;
-  pivot ??= "bottom";
-  follow ??= false;
-  expandOffsetX ??= props.useModal || ["top", "center", "bottom"].includes(pivot) ? 0 : 8;
-  expandOffsetY ??= props.useModal || ["left", "right"].includes(pivot) ? 0 : 8;
+  iconW ??= DEFAULT_PLUGIN_SETTINGS.iconW;
+  iconH ??= DEFAULT_PLUGIN_SETTINGS.iconH;
+  pivot ??= DEFAULT_PLUGIN_SETTINGS.pivot as PivotType;
+  follow ??= DEFAULT_PLUGIN_SETTINGS.follow;
+  expandOffsetX ??=
+    props.useModal || ["top", "center", "bottom"].includes(pivot)
+      ? 0
+      : DEFAULT_PLUGIN_SETTINGS.expandOffsetX;
+  expandOffsetY ??=
+    props.useModal || ["left", "right"].includes(pivot) ? 0 : DEFAULT_PLUGIN_SETTINGS.expandOffsetY;
 
   // This effect handles callbacks that dynamically render the plugin's position
   useLayoutEffect(() => {
@@ -49,8 +54,12 @@ const Render = ({
       const _iconH = iconH!;
       const _pivot = pivot!;
       const _follow = follow!;
-      const _offsetX = offsetX ?? (["top", "center", "bottom"].includes(_pivot) ? 0 : 8);
-      const _offsetY = offsetY ?? (["left", "center", "right"].includes(_pivot) ? 0 : 8);
+      const _offsetX =
+        offsetX ??
+        (["top", "center", "bottom"].includes(_pivot) ? 0 : DEFAULT_PLUGIN_SETTINGS.offsetX);
+      const _offsetY =
+        offsetY ??
+        (["left", "center", "right"].includes(_pivot) ? 0 : DEFAULT_PLUGIN_SETTINGS.offsetY);
       // adjust floating
       const domFloating = document.querySelector<HTMLDivElement>(`#${id}`);
       if (!domFloating) return;
