@@ -8,6 +8,9 @@ CONFIG_MODULE = "cfconfig"
 APP_VAR = "app"
 API_VAR = "api"
 
+# frontend
+FRONTEND_PORT = "5123"
+
 # socket
 CORS_ALLOWED_ORIGINS = "*"
 POLLING_MAX_HTTP_BUFFER_SIZE = 1000 * 1000

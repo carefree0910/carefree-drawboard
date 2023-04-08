@@ -20,4 +20,7 @@ export default defineConfig({
       keepNames: true,
     },
   },
+  server: {
+    port: parseInt(process.env.PORT || "5173"),
+  },
 });

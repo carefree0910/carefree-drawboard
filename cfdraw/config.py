@@ -11,6 +11,8 @@ from cfdraw.schema import IConfig
 class Config(IConfig):
     # global
     app_name: str = "cfdraw"
+    # frontend
+    frontend_port: str = constants.FRONTEND_PORT
     # socket
     cors_credentials: bool = True
     cors_allowed_origins: List[str] = field(
