@@ -14,9 +14,17 @@ export * from "./SettingsPlugin";
 
 export function makePlugin<T extends AvailablePlugins>(
   type: T,
-  { requireNode, ...props }: Omit<IPluginProps[T], "node"> & { requireNode?: boolean },
+  {
+    requireNode,
+    renderInfo,
+    pluginInfo,
+    ...props
+  }: Omit<IPluginProps[T], "pluginInfo"> & {
+    requireNode?: boolean;
+    pluginInfo: Omit<IPluginProps[T]["pluginInfo"], "node">;
+  },
 ) {
-  if (props.follow && props.nodeConstraint === "none") {
+  if (renderInfo.follow && props.nodeConstraint === "none") {
     Logger.warn("cannot use `follow` with `targetNodeType` set to `none`");
     return null;
   }
@@ -31,5 +39,7 @@ export function makePlugin<T extends AvailablePlugins>(
     if (!getNodeFilter(props.nodeConstraint)(info)) return null;
     node = info.displayNode;
   }
-  return <Plugin node={node} isInvisible={isInvisible(type)} {...props} />;
+  const updatedPluginInfo = { ...pluginInfo, node };
+  renderInfo.isInvisible = isInvisible(type);
+  return <Plugin renderInfo={renderInfo} pluginInfo={updatedPluginInfo} {...props} />;
 }

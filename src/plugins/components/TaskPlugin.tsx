@@ -13,7 +13,10 @@ import { subscribe } from "../utils/subscribe";
 import Render from "./Render";
 import TextField from "./TextField";
 
-const TaskPlugin = ({ node, task, fields, customDefinitions, ...props }: IInternalTaskPlugin) => {
+const TaskPlugin = ({
+  pluginInfo: { node, task, fields, customDefinitions },
+  ...props
+}: IInternalTaskPlugin) => {
   const definitions = useMemo(
     () => subscribe(fields, customDefinitions),
     [fields, customDefinitions],

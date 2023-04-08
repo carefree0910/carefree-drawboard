@@ -7,10 +7,10 @@ import type { IPythonResponse } from "@/types/_python";
 import { Requests } from "@/requests/actions";
 
 export interface IUsePython<R> {
-  node: IPythonPlugin["node"];
-  endpoint: IPythonPlugin["endpoint"];
-  identifier: IPythonPlugin["identifier"];
-  updateInterval?: IPythonPlugin["updateInterval"];
+  node: IPythonPlugin["pluginInfo"]["node"];
+  endpoint: IPythonPlugin["pluginInfo"]["endpoint"];
+  identifier: IPythonPlugin["pluginInfo"]["identifier"];
+  updateInterval?: IPythonPlugin["pluginInfo"]["updateInterval"];
   onSuccess: (res: IPythonResponse<R>) => Promise<void>;
   beforeRequest?: () => Promise<void>;
   onError?: (err: any) => Promise<void>;

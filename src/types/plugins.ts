@@ -9,7 +9,7 @@ import type { ICustomDefinitions, ISubscribableFields } from "./metaFields";
 // general
 
 export type NodeConstraints = NodeType | "none" | "anyNode" | "singleNode" | "multiNode";
-export interface IPositionInfo extends FlexProps {
+export interface IPositionInfo {
   w: number;
   h: number;
   iconW: number;
@@ -19,8 +19,7 @@ export interface IPositionInfo extends FlexProps {
   expandOffsetX: number;
   expandOffsetY: number;
 }
-export interface IFloating extends IPositionInfo {
-  id: string;
+export interface IRenderInfo extends IPositionInfo {
   src?: string;
   bgOpacity?: number;
   renderFilter?: (info?: IResponse) => boolean;
@@ -28,43 +27,43 @@ export interface IFloating extends IPositionInfo {
   modalOpacity?: number;
   isInvisible?: boolean;
 }
-export interface IRender
-  extends Omit<
-    IFloating,
-    "id" | "pivot" | "follow" | "iconW" | "iconH" | "expandOffsetX" | "expandOffsetY"
-  > {
-  nodeConstraint: NodeConstraints;
-  pivot?: PivotType;
-  follow?: boolean;
+export interface IFloating extends FlexProps {
+  id: string;
+  renderInfo: IRenderInfo;
+}
+export interface IRender extends Omit<IFloating, "id" | "renderInfo"> {
   offsetX?: number;
   offsetY?: number;
-  iconW?: number;
-  iconH?: number;
-  expandOffsetX?: number;
-  expandOffsetY?: number;
+  nodeConstraint: NodeConstraints;
+  renderInfo: Partial<IRenderInfo> & { w: number; h: number };
+  pluginInfo?: {};
 }
 
 export interface IPlugin extends IRender {
-  node: INode | null;
+  pluginInfo: { node: INode | null };
 }
 
 // specific
 
 export interface ITaskPlugin extends IPlugin {
-  fields: ISubscribableFields[];
-  customDefinitions?: ICustomDefinitions;
+  pluginInfo: IPlugin["pluginInfo"] & {
+    fields: ISubscribableFields[];
+    customDefinitions?: ICustomDefinitions;
+  };
 }
 
 export interface IInternalTaskPlugin extends ITaskPlugin {
-  task: TaskTypes;
+  pluginInfo: ITaskPlugin["pluginInfo"] & { task: TaskTypes };
 }
 
 // python
 
 export interface IPythonPlugin extends IPlugin {
-  endpoint: string;
-  identifier: string;
-  updateInterval?: number;
+  pluginInfo: IPlugin["pluginInfo"] & {
+    endpoint: string;
+    identifier: string;
+    updateInterval?: number;
+  };
 }
 
 // factory

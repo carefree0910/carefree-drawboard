@@ -8,7 +8,7 @@ import { drawboardPluginFactory } from "@/plugins/utils/factory";
 import Render from "@/plugins/components/Render";
 
 const PythonTextAreaPlugin = observer(
-  ({ node, endpoint, identifier, updateInterval, ...props }: IPythonPlugin) => {
+  ({ pluginInfo: { node, endpoint, identifier, updateInterval }, ...props }: IPythonPlugin) => {
     const [value, setValue] = useState("");
 
     usePython<{ text: string }>({

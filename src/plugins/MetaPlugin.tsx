@@ -5,7 +5,7 @@ import type { IPlugin } from "@/types/plugins";
 import { drawboardPluginFactory } from "./utils/factory";
 import Render from "./components/Render";
 
-const MetaPlugin = observer(({ node, ...props }: IPlugin) => {
+const MetaPlugin = observer(({ pluginInfo: { node }, ...props }: IPlugin) => {
   if (!node || node.type === "group") return null;
   const meta = node.params.meta;
   if (!meta) return null;

@@ -22,7 +22,7 @@ import { CFDivider } from "@/components/CFDivider";
 import { drawboardPluginFactory } from "./utils/factory";
 import Render from "./components/Render";
 
-const SettingsPlugin = observer(({ node, ...props }: IPlugin) => {
+const SettingsPlugin = observer(({ pluginInfo, ...props }: IPlugin) => {
   const lang = langStore.tgt;
 
   return (

@@ -86,20 +86,24 @@ export function getExpandPosition(
 
 function Floating({
   id,
-  src,
-  bgOpacity,
-  w,
-  h,
-  iconW,
-  iconH,
-  pivot,
-  follow,
-  expandOffsetX,
-  expandOffsetY,
-  renderFilter,
-  useModal,
-  modalOpacity,
-  isInvisible,
+  w: _w, // will not take effect
+  h: _h, // will not take effect
+  renderInfo: {
+    w,
+    h,
+    iconW,
+    iconH,
+    pivot,
+    follow,
+    expandOffsetX,
+    expandOffsetY,
+    src,
+    bgOpacity,
+    renderFilter,
+    useModal,
+    modalOpacity,
+    isInvisible,
+  },
   children,
   ...props
 }: IFloating) {

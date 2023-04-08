@@ -94,6 +94,16 @@ def _get_default_plugin_settings() -> DefaultPluginSettings:
 DEFAULT_PLUGIN_SETTINGS = _get_default_plugin_settings()
 
 
+class IPluginInfo(BaseModel):
+    """The actual data used in `usePython` hook & each React component."""
+
+    updateInterval: int = Field(
+        0,
+        ge=0,
+        description="If > 0, the plugin will be called every `updateInterval` ms",
+    )
+
+
 class IPluginSettings(BaseModel):
     # required fields
     w: int = Field(..., gt=0, description="Width of the expanded plugin")
@@ -111,11 +121,6 @@ Spcify when the plugin will be shown.
 """,
     )
     # functional fields
-    updateInterval: int = Field(
-        0,
-        ge=0,
-        description="If > 0, the plugin will be called every `updateInterval` ms",
-    )
     requireNode: bool = Field(
         True,
         description="Whether the plugin requires the drawboard to send the JSON data of the selected node to it",
@@ -175,11 +180,29 @@ Pivot of the plugin.
     )
     # chakra fields
     p: Optional[str] = Field(None, description="Padding of the plugin")
+    # React fields
+    pluginInfo: IPluginInfo = Field(IPluginInfo(), description="Plugin info")
 
-    def dict(self, *args: Any, **kwargs: Any) -> Dict[str, Any]:
-        d = super().dict(*args, **kwargs)
-        d["type"] = f"_python.{self.type}"
-        return d
+    def to_plugin_settings(self, identifier: str) -> Dict[str, Any]:
+        d = self.dict()
+        plugin_info = d.pop("pluginInfo")
+        # `identifier` has hashed into `{identifier}.{hash}`
+        plugin_info["endpoint"] = f"/{'.'.join(identifier.split('.')[:-1])}"
+        plugin_info["identifier"] = identifier
+        plugin_type = f"_python.{d.pop('type')}"
+        offset_x = d.pop("offsetX")
+        offset_y = d.pop("offsetY")
+        node_constraint = d.pop("nodeConstraint")
+        return dict(
+            type=plugin_type,
+            props=dict(
+                offsetX=offset_x,
+                offsetY=offset_y,
+                nodeConstraint=node_constraint,
+                pluginInfo=plugin_info,
+                renderInfo=d,
+            ),
+        )
 
 
 # data structures
@@ -361,5 +384,6 @@ __all__ = [
     "PivotType",
     "PluginType",
     "NodeConstraints",
+    "IPluginInfo",
     "IPluginSettings",
 ]

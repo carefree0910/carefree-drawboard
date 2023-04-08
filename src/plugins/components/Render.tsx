@@ -12,7 +12,7 @@ import {
   useSelecting,
 } from "@noli/business";
 
-import type { IRender } from "@/types/plugins";
+import type { IRender, IRenderInfo } from "@/types/plugins";
 import { DEFAULT_PLUGIN_SETTINGS } from "@/utils/constants";
 import { getNodeFilter } from "../utils/renderFilters";
 import Floating, {
@@ -22,30 +22,34 @@ import Floating, {
   IFloatingEvent,
 } from "./Floating";
 
-const Render = ({
-  iconW,
-  iconH,
-  nodeConstraint,
-  pivot,
-  follow,
-  offsetX,
-  offsetY,
-  expandOffsetX,
-  expandOffsetY,
-  children,
-  ...props
-}: IRender) => {
+const Render = ({ offsetX, offsetY, nodeConstraint, renderInfo, children, ...props }: IRender) => {
   const id = useMemo(() => `plugin_${getRandomHash()}`, []);
+  let { w, h, iconW, iconH, pivot, follow, expandOffsetX, expandOffsetY } = renderInfo;
   iconW ??= DEFAULT_PLUGIN_SETTINGS.iconW;
   iconH ??= DEFAULT_PLUGIN_SETTINGS.iconH;
   pivot ??= DEFAULT_PLUGIN_SETTINGS.pivot as PivotType;
   follow ??= DEFAULT_PLUGIN_SETTINGS.follow;
   expandOffsetX ??=
-    props.useModal || ["top", "center", "bottom"].includes(pivot)
+    renderInfo.useModal || ["top", "center", "bottom"].includes(pivot)
       ? 0
       : DEFAULT_PLUGIN_SETTINGS.expandOffsetX;
   expandOffsetY ??=
-    props.useModal || ["left", "right"].includes(pivot) ? 0 : DEFAULT_PLUGIN_SETTINGS.expandOffsetY;
+    renderInfo.useModal || ["left", "right"].includes(pivot)
+      ? 0
+      : DEFAULT_PLUGIN_SETTINGS.expandOffsetY;
+
+  const updatedRenderInfo = {
+    ...renderInfo,
+    w,
+    h,
+    iconW,
+    iconH,
+    pivot,
+    follow,
+    expandOffsetX,
+    expandOffsetY,
+    renderFilter: getNodeFilter(nodeConstraint),
+  };
 
   // This effect handles callbacks that dynamically render the plugin's position
   useLayoutEffect(() => {
@@ -85,7 +89,11 @@ const Render = ({
         }
       } else {
         const info = useSelecting("basic")({ fixed: 0 });
-        if (!info || !info.displayNode || (props.renderFilter && !props.renderFilter(info))) {
+        if (
+          !info ||
+          !info.displayNode ||
+          (updatedRenderInfo.renderFilter && !updatedRenderInfo.renderFilter(info))
+        ) {
           return;
         }
         const domPivot = boardBBoxToDom(info.displayNode.bbox.bounding).pivot(_pivot);
@@ -114,11 +122,11 @@ const Render = ({
       // adjust expand of the floating
       const domFloatingExpand = document.querySelector<HTMLDivElement>(`#${getExpandId(id)}`);
       if (!domFloatingExpand) return;
-      const { x: ex, y: ey } = getExpandPosition(props.useModal ?? false, {
+      const { x: ex, y: ey } = getExpandPosition(updatedRenderInfo.useModal ?? false, {
         x,
         y,
-        w: props.w,
-        h: props.h,
+        w,
+        h,
         iconW: _iconW,
         iconH: _iconH,
         pivot: _pivot,
@@ -159,16 +167,7 @@ const Render = ({
   ]);
 
   return (
-    <Floating
-      id={id}
-      iconW={iconW}
-      iconH={iconH}
-      pivot={pivot}
-      follow={follow}
-      expandOffsetX={expandOffsetX}
-      expandOffsetY={expandOffsetY}
-      renderFilter={getNodeFilter(nodeConstraint)}
-      {...props}>
+    <Floating id={id} renderInfo={updatedRenderInfo} {...props}>
       {children}
     </Floating>
   );

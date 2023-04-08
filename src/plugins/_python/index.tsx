@@ -12,9 +12,9 @@ export * from "./TextAreaPlugin";
 export function makePythonPlugin<T extends AvailablePythonPlugins>({
   key,
   type,
-  props: { requireNode, ...props },
+  props: { requireNode, renderInfo, pluginInfo, ...props },
 }: IMakePythonPlugin<T> & { key: string }) {
-  if (props.follow && props.nodeConstraint === "none") {
+  if (renderInfo.follow && props.nodeConstraint === "none") {
     Logger.warn("cannot use `follow` with `targetNodeType` set to `none`");
     return null;
   }
@@ -29,8 +29,10 @@ export function makePythonPlugin<T extends AvailablePythonPlugins>({
     if (!getNodeFilter(props.nodeConstraint)(info)) return null;
     node = info.displayNode;
   }
-  if (!props.src)
-    props.src =
+  if (!renderInfo.src)
+    renderInfo.src =
       "https://ailab-huawei-cdn.nolibox.com/upload/images/7eb5a38f422049948dc8655123f2d96a.png";
-  return <PythonPlugin key={key} node={node} isInvisible={isInvisible(type)} {...props} />;
+  pluginInfo.node = node;
+  renderInfo.isInvisible = isInvisible(type);
+  return <PythonPlugin key={key} renderInfo={renderInfo} pluginInfo={pluginInfo} {...props} />;
 }
