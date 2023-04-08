@@ -95,6 +95,7 @@ DEFAULT_PLUGIN_SETTINGS = _get_default_plugin_settings()
 
 
 class IPluginSettings(BaseModel):
+    # required fields
     w: int = Field(..., gt=0, description="Width of the expanded plugin")
     h: int = Field(..., gt=0, description="Height of the expanded plugin")
     type: PluginType = Field(..., description="Type of the plugin")
@@ -109,6 +110,17 @@ Spcify when the plugin will be shown.
 > Otherwise, the plugin will be shown when the selected node is of the specified type.
 """,
     )
+    # functional fields
+    updateInterval: int = Field(
+        0,
+        ge=0,
+        description="If > 0, the plugin will be called every `updateInterval` ms",
+    )
+    requireNode: bool = Field(
+        True,
+        description="Whether the plugin requires the drawboard to send the JSON data of the selected node to it",
+    )
+    # style fields
     src: str = Field(
         "",
         description="""
@@ -160,10 +172,6 @@ Pivot of the plugin.
     modalOpacity: float = Field(
         DEFAULT_PLUGIN_SETTINGS.modalOpacity,
         description="Opacity of the modal panel",
-    )
-    requireNode: bool = Field(
-        True,
-        description="Whether the plugin requires the drawboard to send the JSON data of the selected node to it",
     )
     # chakra fields
     p: Optional[str] = Field(None, description="Padding of the plugin")

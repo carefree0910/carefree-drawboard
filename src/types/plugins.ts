@@ -64,6 +64,7 @@ export interface IInternalTaskPlugin extends ITaskPlugin {
 export interface IPythonPlugin extends IPlugin {
   endpoint: string;
   identifier: string;
+  updateInterval?: number;
 }
 
 // factory

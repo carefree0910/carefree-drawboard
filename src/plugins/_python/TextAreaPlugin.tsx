@@ -7,21 +7,24 @@ import { usePython } from "@/hooks/usePython";
 import { drawboardPluginFactory } from "@/plugins/utils/factory";
 import Render from "@/plugins/components/Render";
 
-const PythonTextAreaPlugin = observer(({ node, endpoint, identifier, ...props }: IPythonPlugin) => {
-  const [value, setValue] = useState("");
+const PythonTextAreaPlugin = observer(
+  ({ node, endpoint, identifier, updateInterval, ...props }: IPythonPlugin) => {
+    const [value, setValue] = useState("");
 
-  usePython<{ text: string }>({
-    node,
-    endpoint,
-    identifier,
-    onSuccess: async (res) => setValue(res.data.text),
-    beforeRequest: async () => setValue("Loading..."),
-  });
+    usePython<{ text: string }>({
+      node,
+      endpoint,
+      identifier,
+      updateInterval,
+      onSuccess: async (res) => setValue(res.data.text),
+      beforeRequest: async () => setValue("Loading..."),
+    });
 
-  return (
-    <Render {...props}>
-      <Textarea w="100%" h="100%" value={value} readOnly />
-    </Render>
-  );
-});
+    return (
+      <Render {...props}>
+        <Textarea w="100%" h="100%" value={value} readOnly />
+      </Render>
+    );
+  },
+);
 drawboardPluginFactory.register("_python.textArea")(PythonTextAreaPlugin);
