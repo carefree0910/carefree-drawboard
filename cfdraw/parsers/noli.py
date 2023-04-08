@@ -14,6 +14,7 @@ from pydantic import Field
 from pydantic import BaseModel
 
 from cfdraw import constants
+from cfdraw.parsers import chakra
 
 
 class PivotType(str, Enum):
@@ -110,7 +111,7 @@ class ITextAreaPluginInfo(IPluginInfo):
     )
 
 
-class IPluginSettings(BaseModel):
+class IPluginSettings(chakra.IChakra):
     # required fields
     w: int = Field(..., gt=0, description="Width of the expanded plugin")
     h: int = Field(..., gt=0, description="Height of the expanded plugin")
@@ -184,8 +185,6 @@ Pivot of the plugin.
         DEFAULT_PLUGIN_SETTINGS.modalOpacity,
         description="Opacity of the modal panel",
     )
-    # chakra fields
-    p: Optional[str] = Field(None, description="Padding of the plugin")
     # React fields
     pluginInfo: IPluginInfo = Field(IPluginInfo(), description="Plugin info")
 
