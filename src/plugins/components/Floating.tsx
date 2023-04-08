@@ -114,6 +114,10 @@ function Floating({
     boxShadow: "2px 2px 4px rgba(0, 0, 0, 0.25)",
     borderRadius: "4px",
   };
+  Object.entries(props).forEach(([key, value]) => {
+    const commonV = commonProps[key as keyof BoxProps];
+    (props as any)[key] ??= commonV;
+  });
   const [expand, setExpand] = useState(false);
   const [transform, setTransform] = useState<string | undefined>(undefined);
   const expandId = useMemo(() => getExpandId(id), [id]);
