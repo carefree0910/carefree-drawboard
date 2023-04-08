@@ -104,6 +104,12 @@ class IPluginInfo(BaseModel):
     )
 
 
+class ITextAreaPluginInfo(IPluginInfo):
+    noLoading: bool = Field(
+        False, description="Whether to show the 'Loading...' text or not"
+    )
+
+
 class IPluginSettings(BaseModel):
     # required fields
     w: int = Field(..., gt=0, description="Width of the expanded plugin")
@@ -385,5 +391,6 @@ __all__ = [
     "PluginType",
     "NodeConstraints",
     "IPluginInfo",
+    "ITextAreaPluginInfo",
     "IPluginSettings",
 ]

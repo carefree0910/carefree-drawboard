@@ -2,13 +2,16 @@ import { useState } from "react";
 import { observer } from "mobx-react-lite";
 import { Textarea } from "@chakra-ui/react";
 
-import type { IPythonPlugin } from "@/types/plugins";
+import type { IPythonTextAreaPlugin } from "@/types/plugins";
 import { usePython } from "@/hooks/usePython";
 import { drawboardPluginFactory } from "@/plugins/utils/factory";
 import Render from "@/plugins/components/Render";
 
 const PythonTextAreaPlugin = observer(
-  ({ pluginInfo: { node, endpoint, identifier, updateInterval }, ...props }: IPythonPlugin) => {
+  ({
+    pluginInfo: { node, endpoint, identifier, updateInterval, noLoading },
+    ...props
+  }: IPythonTextAreaPlugin) => {
     const [value, setValue] = useState("");
 
     usePython<{ text: string }>({
@@ -17,7 +20,7 @@ const PythonTextAreaPlugin = observer(
       identifier,
       updateInterval,
       onSuccess: async (res) => setValue(res.data.text),
-      beforeRequest: async () => setValue("Loading..."),
+      beforeRequest: noLoading ? undefined : async () => setValue("Loading..."),
     });
 
     return (

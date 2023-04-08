@@ -66,6 +66,12 @@ export interface IPythonPlugin extends IPlugin {
   };
 }
 
+export interface IPythonTextAreaPlugin extends IPythonPlugin {
+  pluginInfo: IPythonPlugin["pluginInfo"] & {
+    noLoading?: boolean;
+  };
+}
+
 // factory
 
 export const allAvailablePlugins = ["txt2img.sd", "settings"] as const;
@@ -80,5 +86,5 @@ export interface IPluginProps {
   settings: IPlugin;
 }
 export interface IPythonPluginProps {
-  "_python.textArea": IPythonPlugin;
+  "_python.textArea": IPythonTextAreaPlugin;
 }
