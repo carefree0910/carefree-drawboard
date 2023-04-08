@@ -4,6 +4,7 @@ from cftool.misc import print_info
 
 from cfdraw import constants
 from cfdraw.utils import exec
+from cfdraw.utils import console
 from cfdraw.utils import prerequisites
 from cfdraw.config import get_config
 
@@ -18,11 +19,14 @@ def run(
         help="The log level to use.",
     ),
 ) -> None:
+    # fetch module
     if module is None:
         module = get_config().default_module
-    print_info(f"Running {module}")
+    console.rule(f"[bold green]Running {module}")
+    # fetch app
     app_module = prerequisites.get_app_module(module)
     print_info(f"Fetched app ({app_module.app})")
+    # fetch configs
     backend_port = get_config().backend_port
     backend_fn = exec.run_backend
     print_info(f"Launching backend ({backend_fn.__name__})")

@@ -14,6 +14,7 @@ setup(
     include_package_data=True,
     entry_points={"console_scripts": ["cfdraw = cfdraw.cli:cli"]},
     install_requires=[
+        "rich",
         "typer",
         "fastapi",
         "gunicorn",
