@@ -16,4 +16,4 @@ const MetaPlugin = observer(({ pluginInfo: { node }, ...props }: IPlugin) => {
     </Render>
   );
 });
-drawboardPluginFactory.register("meta")(MetaPlugin);
+// drawboardPluginFactory.register("meta")(MetaPlugin);

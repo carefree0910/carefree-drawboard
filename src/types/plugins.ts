@@ -68,7 +68,7 @@ export interface IPythonPlugin extends IPlugin {
 
 // factory
 
-export const allAvailablePlugins = ["meta", "txt2img.sd", "settings"] as const;
+export const allAvailablePlugins = ["txt2img.sd", "settings"] as const;
 export const allAvailablePythonPlugins = ["_python.textArea"] as const;
 export type AvailablePlugins = typeof allAvailablePlugins[number];
 export type AvailablePythonPlugins = typeof allAvailablePythonPlugins[number];
