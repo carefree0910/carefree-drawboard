@@ -1,3 +1,6 @@
+# Injections
+src/panels/_python.ts
+
 # Logs
 logs
 *.log
