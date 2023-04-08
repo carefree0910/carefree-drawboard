@@ -98,13 +98,6 @@ class IPluginSettings(BaseModel):
     w: int = Field(..., gt=0, description="Width of the expanded plugin")
     h: int = Field(..., gt=0, description="Height of the expanded plugin")
     type: PluginType = Field(..., description="Type of the plugin")
-    endpoint: str = Field(
-        ...,
-        description=f"""
-Endpoint of the plugin.
-> If set to '{constants.Endpoint.WEBSOCKET}', the plugin will be use websocket for communication.
-""",
-    )
     nodeConstraint: NodeConstraints = Field(
         ...,
         description="""

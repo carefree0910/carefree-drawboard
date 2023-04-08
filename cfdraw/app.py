@@ -143,16 +143,12 @@ class App:
                 raise_err(err)
 
     def add_plugins(self) -> None:
-        endpoint_to_plugins: Dict[str, List[IPlugin]] = {}
-        for plugin in self.plugins.values():
-            endpoint = plugin.settings.endpoint
-            if endpoint != str(constants.Endpoint.WEBSOCKET):
-                endpoint_to_plugins.setdefault(endpoint, []).append(plugin)
-        for endpoint, plugins in endpoint_to_plugins.items():
-            print_info(
-                f"registering endpoint '{endpoint}' with plugins: "
-                f"{', '.join(plugin.identifier for plugin in plugins)}"
-            )
+        for identifier, plugin in self.plugins.items():
+            # TODO : handle socket plugins
+            if plugin.is_socket:
+                continue
+            endpoint = f"/{identifier}"
+            print_info(f"registering endpoint '{endpoint}'")
 
             @self.api.post(
                 endpoint,
@@ -160,14 +156,13 @@ class App:
                 responses=get_responses(IResponse),
             )
             def fn(data: IPluginRequest) -> Any:
-                for plugin in plugins:
-                    if self.hash_identifier(plugin.identifier) == data.identifier:
-                        return plugin(data)
-                return IResponse(
-                    success=False,
-                    message=f"cannot find plugin with identifier '{data.identifier}'",
-                    data=BaseModel(),
-                )
+                if self.hash_identifier(plugin.identifier) != data.identifier:
+                    return IResponse(
+                        success=False,
+                        message="internal error occurred: identifier mismatch",
+                        data=BaseModel(),
+                    )
+                return plugin(data)
 
     def add_on_startup(self) -> None:
         @self.api.on_event("startup")

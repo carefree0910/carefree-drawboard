@@ -42,6 +42,8 @@ def set_plugin_settings(settings: Dict[str, noli.IPluginSettings]) -> None:
     inserted_lines = []
     for identifier, setting in settings.items():
         d = setting.dict()
+        # `identifier` has hashed into `{identifier}.{hash}`
+        d["endpoint"] = f"/{'.'.join(identifier.split('.')[:-1])}"
         d["identifier"] = identifier
         plugin_type = d.pop("type")
         d = dict(type=plugin_type, props=d)

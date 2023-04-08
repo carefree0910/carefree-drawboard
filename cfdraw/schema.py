@@ -47,6 +47,7 @@ class IParsedPluginRequest(IPluginRequest):
 
 
 class IPlugin(Generic[TPluginResponse], metaclass=ABCMeta):
+    is_socket: bool = False
     identifier: str
 
     @property
@@ -60,6 +61,10 @@ class IPlugin(Generic[TPluginResponse], metaclass=ABCMeta):
 
     def __call__(self, data: IPluginRequest) -> TPluginResponse:
         return self.process(data.parse())
+
+
+class ISocketPlugin(IPlugin[TPluginResponse]):
+    is_socket: bool = True
 
 
 class IResponse(BaseModel):
