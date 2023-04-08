@@ -22,7 +22,7 @@ const PythonTextAreaPlugin = observer(
 
     return (
       <Render {...props}>
-        <Textarea w="100%" h="100%" value={value} readOnly />
+        <Textarea w="100%" h="100%" minH="0px" value={value} readOnly />
       </Render>
     );
   },
