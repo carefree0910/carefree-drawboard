@@ -6,6 +6,8 @@ import { useIsReady } from "@noli/business";
 import { themeStore } from "@/stores/theme";
 import { BOARD_CONTAINER_ID } from "@/utils/constants";
 import { makePlugin } from "@/plugins";
+import { makePythonPlugin } from "@/plugins/_python";
+import { pythonPluginSettings } from "./_python";
 
 function BoardPanel() {
   const isReady = useIsReady();
@@ -17,20 +19,6 @@ function BoardPanel() {
         <Box id={BOARD_CONTAINER_ID} visibility={isReady ? "visible" : "hidden"}></Box>
       </Box>
       <>
-        {makePlugin("meta", {
-          w: 400,
-          h: 400,
-          p: "10px",
-          iconW: 42,
-          iconH: 42,
-          src: "https://ailab-huawei-cdn.nolibox.com/upload/images/0ec1b08f9c3e4ef4813ecb80bebf3b42.png",
-          pivot: "rt",
-          follow: true,
-          offsetY: -42,
-          expandOffsetY: -400,
-          nodeConstraint: "singleNode",
-          requireNode: true,
-        })}
         {makePlugin("txt2img.sd", {
           w: 1000,
           h: 600,
@@ -50,6 +38,9 @@ function BoardPanel() {
           follow: false,
           nodeConstraint: "none",
         })}
+        {pythonPluginSettings.map((settings) =>
+          makePythonPlugin({ key: settings.props.identifier, ...settings }),
+        )}
       </>
     </Flex>
   );

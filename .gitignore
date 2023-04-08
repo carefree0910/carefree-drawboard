@@ -22,3 +22,13 @@ dist-ssr
 *.njsproj
 *.sln
 *.sw?
+
+# python
+*.pyc
+build/*
+*.egg-info
+pip-wheel-metadata
+**/.ipynb_checkpoints/*
+dist/*
+**/mlruns/*
+*.zip

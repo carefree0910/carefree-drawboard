@@ -59,13 +59,26 @@ export interface IInternalTaskPlugin extends ITaskPlugin {
   task: TaskTypes;
 }
 
+// python
+
+export interface IPythonPlugin extends IPlugin {
+  endpoint: string;
+  identifier: string;
+}
+
 // factory
 
 export const allAvailablePlugins = ["meta", "txt2img.sd", "settings"] as const;
+export const allAvailablePythonPlugins = ["_python.textArea"] as const;
 export type AvailablePlugins = typeof allAvailablePlugins[number];
+export type AvailablePythonPlugins = typeof allAvailablePythonPlugins[number];
+export type AvailablePluginsAndPythonPlugins = AvailablePlugins | AvailablePythonPlugins;
 
 export interface IPluginProps {
   meta: IPlugin;
   "txt2img.sd": ITaskPlugin;
   settings: IPlugin;
+}
+export interface IPythonPluginProps {
+  "_python.textArea": IPythonPlugin;
 }

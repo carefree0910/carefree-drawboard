@@ -16,5 +16,8 @@ export default defineConfig({
   ],
   optimizeDeps: {
     include: ["@noli/core", "@noli/business"],
+    esbuildOptions: {
+      keepNames: true,
+    },
   },
 });

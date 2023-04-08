@@ -1,8 +1,12 @@
 import type { APISources, Interceptors } from "@/types/requests";
 import { apis } from "../apis";
 import { noliboxInceptors } from "./nolibox";
+import { _pythonInceptors } from "./_python";
 
-const interceptors: Record<APISources, Interceptors> = { nolibox: noliboxInceptors };
+const interceptors: Record<APISources, Interceptors> = {
+  nolibox: noliboxInceptors,
+  _python: _pythonInceptors,
+};
 
 export function setupInceptors(): void {
   Object.entries(apis).forEach(([source, api]) => {

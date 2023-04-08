@@ -1,21 +1,27 @@
 import { Dictionary, Lang } from "@noli/core";
 
-import { allAvailablePlugins, AvailablePlugins } from "@/types/plugins";
+import {
+  allAvailablePlugins,
+  allAvailablePythonPlugins,
+  AvailablePluginsAndPythonPlugins,
+} from "@/types/plugins";
 
-const _pluginsLangRecords: Record<Lang, Record<AvailablePlugins, string>> = {
+const _pluginsLangRecords: Record<Lang, Record<AvailablePluginsAndPythonPlugins, string>> = {
   zh: {
     meta: "参数信息",
     "txt2img.sd": "文本转图片",
     settings: "设置",
+    "_python.textArea": "文本框",
   },
   en: {
     meta: "Meta",
     "txt2img.sd": "Txt2Img",
     settings: "Settings",
+    "_python.textArea": "TextArea",
   },
 };
 
-export const Plugins_Words: Record<AvailablePlugins, string> = {} as any;
+export const Plugins_Words: Record<AvailablePluginsAndPythonPlugins, string> = {} as any;
 export const pluginsLangRecords: Dictionary<Dictionary<string>> = {};
 
 function injectScope(scope: string, data: Dictionary<string>) {
@@ -28,6 +34,9 @@ function reverseMapping(data: Dictionary<string>) {
 }
 
 allAvailablePlugins.forEach((plugin) => {
+  (Plugins_Words as any)[plugin] = plugin;
+});
+allAvailablePythonPlugins.forEach((plugin) => {
   (Plugins_Words as any)[plugin] = plugin;
 });
 const scope = "plugins";

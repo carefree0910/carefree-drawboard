@@ -2,14 +2,14 @@ import React from "react";
 
 import { Logger, checkNotExists } from "@noli/core";
 
-import type { AvailablePlugins } from "@/types/plugins";
+import type { AvailablePluginsAndPythonPlugins } from "@/types/plugins";
 
 class DrawboardPluginFactory {
   d: Partial<Record<AvailablePluginsAndPythonPlugins, React.FC>> = {};
 
   constructor(public name: string) {}
 
-  register(name: AvailablePlugins, overwrite: boolean = false): Function {
+  register(name: AvailablePluginsAndPythonPlugins, overwrite: boolean = false): Function {
     const factory = this;
     return function (fn: React.FC) {
       if (!overwrite) {
@@ -27,7 +27,7 @@ class DrawboardPluginFactory {
     };
   }
 
-  get(name: AvailablePlugins): React.FC | null {
+  get(name: AvailablePluginsAndPythonPlugins): React.FC | null {
     return this.d[name] ?? null;
   }
 }
