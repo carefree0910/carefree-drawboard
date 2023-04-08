@@ -26,31 +26,31 @@ export function usePython<R>({
   onError,
 }: IUsePython<R>) {
   const deps = [node, endpoint, identifier, updateInterval];
-  const requestFn = useCallback(
-    () =>
-      beforeRequest?.()
-        .then(() =>
-          Requests.postJson<IPythonResponse<R>>("_python", endpoint, {
-            node: node?.toJsonPack(),
-            identifier,
-          }).then((res) => {
-            if (res.success) onSuccess(res);
-            else throw Error(res.message);
-          }),
-        )
-        .catch((err) => {
-          if (onError) onError(err);
-          else Logger.error(err);
+  // TODO : handle socket
+  const requestFn = useCallback(() => {
+    const preprocess = beforeRequest ? beforeRequest() : Promise.resolve();
+    return preprocess
+      .then(() =>
+        Requests.postJson<IPythonResponse<R>>("_python", endpoint, {
+          node: node?.toJsonPack(),
+          identifier,
+        }).then((res) => {
+          if (res.success) onSuccess(res);
+          else throw Error(res.message);
         }),
-    deps,
-  );
+      )
+      .catch((err) => {
+        if (onError) onError(err);
+        else Logger.error(err);
+      });
+  }, deps);
 
   useEffect(() => {
     let timer: any;
     let shouldIgnore = false; // IMPORTANT!
     function requestWithTimeout() {
       if (shouldIgnore) return;
-      requestFn()?.then(() => (timer = setTimeout(requestWithTimeout, updateInterval)));
+      requestFn().then(() => (timer = setTimeout(requestWithTimeout, updateInterval)));
     }
     if (!updateInterval) requestFn();
     else requestWithTimeout();
