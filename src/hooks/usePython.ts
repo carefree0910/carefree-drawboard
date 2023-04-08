@@ -1,6 +1,6 @@
-import { useCallback, useEffect, useMemo } from "react";
+import { useCallback, useEffect } from "react";
 
-import { Logger, isUndefined } from "@noli/core";
+import { Logger } from "@noli/core";
 
 import type { IPythonPlugin } from "@/types/plugins";
 import type { IPythonResponse } from "@/types/_python";
