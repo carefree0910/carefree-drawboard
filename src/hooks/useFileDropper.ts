@@ -36,22 +36,15 @@ export function useFileDropper(lang: Lang): void {
     const file = new File([source], `image.${type}`, { type });
     const uploadRes = await uploadImage(t, lang, file, {
       failed: async () => void 0,
-      returnWH: true,
     });
     if (!uploadRes) {
       return { success: false, reason: "upload" };
     }
-    const { cdn } = uploadRes.urls;
     importMeta({
       t,
       lang,
       type: "upload",
-      metaData: {
-        w: uploadRes.wh.w,
-        h: uploadRes.wh.h,
-        url: cdn,
-        isDrag: true,
-      },
+      metaData: { ...uploadRes, isDrag: true },
     });
     return { success: true, reason: "none" };
   }

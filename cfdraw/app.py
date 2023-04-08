@@ -1,11 +1,20 @@
+import numpy as np
+
+from io import BytesIO
+from PIL import Image
 from typing import Any
 from typing import Dict
 from typing import List
 from typing import Type
 from typing import Callable
+from typing import Optional
 from fastapi import FastAPI
+from fastapi import File
+from fastapi import Response
 from fastapi import WebSocket
+from fastapi import UploadFile
 from pydantic import BaseModel
+from cftool.cv import np_to_bytes
 from cftool.misc import print_info
 from cftool.misc import random_hash
 from fastapi.middleware import cors
@@ -16,7 +25,10 @@ from cfdraw.schema import IPlugin
 from cfdraw.schema import IResponse
 from cfdraw.schema import IPluginRequest
 from cfdraw.compilers import plugin
+from cfdraw.utils.server import raise_err
+from cfdraw.utils.server import get_err_msg
 from cfdraw.utils.server import get_responses
+from cfdraw.utils.server import get_image_response_kwargs
 
 
 TPlugin = Type[IPlugin]
@@ -38,6 +50,7 @@ class App:
         self.add_cors()
         self.add_default_endpoints()
         self.add_websocket()
+        self.add_upload_image()
         self.add_plugins()
         self.add_on_startup()
         self.hash = random_hash()
@@ -85,6 +98,49 @@ class App:
             while True:
                 data = await websocket.receive_text()
                 await websocket.send_text(f"Message text was: {data}")
+
+    def add_upload_image(self) -> None:
+        class ImageDataModel(BaseModel):
+            url: str
+            w: int
+            h: int
+
+        class UploadImageModel(BaseModel):
+            success: bool
+            message: str
+            data: Optional[ImageDataModel]
+
+        @self.api.post("/upload_image", responses=get_responses(UploadImageModel))
+        def upload(image: UploadFile = File(...)) -> UploadImageModel:
+            try:
+                contents = image.file.read()
+                loaded_image = Image.open(BytesIO(contents))
+                w, h = loaded_image.size
+                path = constants.UPLOAD_FOLDER / f"{random_hash()}.png"
+                loaded_image.save(path)
+            except Exception as err:
+                err_msg = get_err_msg(err)
+                return UploadImageModel(success=False, message=err_msg, data=None)
+            finally:
+                image.file.close()
+            url_path = path.relative_to(constants.PARENT).as_posix()
+            return UploadImageModel(
+                success=True,
+                message="",
+                data=ImageDataModel(url=f"{constants.API_URL}/{url_path}", w=w, h=h),
+            )
+
+        @self.api.get(
+            f"/{constants.UPLOAD_FOLDER_NAME}/{{file:path}}",
+            **get_image_response_kwargs(),
+        )
+        async def fetch_image(file: str) -> Response:
+            try:
+                image = Image.open(constants.UPLOAD_FOLDER / file)
+                content = np_to_bytes(np.array(image))
+                return Response(content=content, media_type="image/png")
+            except Exception as err:
+                raise_err(err)
 
     def add_plugins(self) -> None:
         endpoint_to_plugins: Dict[str, List[IPlugin]] = {}

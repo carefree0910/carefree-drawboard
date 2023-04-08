@@ -1,53 +1,44 @@
 import { useToast } from "@chakra-ui/toast";
 
-import {
-  getAIHost,
-  ImageURLs,
-  Lang,
-  loadImage,
-  safeCall,
-  uploadImage as uploadImage_,
-} from "@noli/core";
+import { getAIHost, ImageURLs, Lang, loadImage, safeCall } from "@noli/core";
 import { translate } from "@noli/business";
 
 import { toast } from "@/utils/toast";
 import { Toast_Words } from "@/utils/lang/toast";
+import { Requests } from "@/requests/actions";
 
-type UploadImageOptions<T extends boolean> = {
+type UploadImageOptions = {
   failed: () => Promise<void>;
-  returnWH: T;
-  noAudit?: boolean;
 };
 
-export async function uploadImage<T extends boolean>(
+interface IUploadImageResponse {
+  url: string;
+  w: number;
+  h: number;
+}
+
+export async function uploadImage(
   t: ReturnType<typeof useToast>,
   lang: Lang,
   blob: Blob,
-  { failed, returnWH, noAudit }: UploadImageOptions<T>,
-): Promise<
-  (T extends true ? { urls: ImageURLs; wh: { w: number; h: number } } : ImageURLs) | void
-> {
+  { failed }: UploadImageOptions,
+): Promise<IUploadImageResponse | void> {
   return safeCall(
     async () => {
-      const urls = await uploadImage_(getAIHost("prod"), blob, noAudit);
-      if (!urls.safe) {
+      const res = await Requests.postBlob<{
+        success: boolean;
+        message: string;
+        data: IUploadImageResponse;
+      }>("_python", "/upload_image", { key: "image", blob });
+      if (!res.success) {
         toast(
           t,
           "warning",
-          `${translate(Toast_Words["upload-image-not-safe-warning-message"], lang)}`,
+          `${translate(Toast_Words["upload-image-error-message"], lang)} - ${res.message}`,
         );
         throw Error;
       }
-      if (!returnWH) return urls as any;
-      const image = await safeCall(() => loadImage(blob), {
-        success: async () => void 0,
-        failed: async () => void 0,
-      });
-      if (!image) throw Error;
-      return {
-        urls,
-        wh: { w: image.naturalWidth, h: image.naturalHeight },
-      };
+      return res.data;
     },
     {
       success: async () => void 0,

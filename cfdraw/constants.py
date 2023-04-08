@@ -48,7 +48,14 @@ class LogLevel(str, Enum):
 
 # compiler
 ROOT = Path(os.path.dirname(__file__))
-SRC_FOLDER = ROOT.parent.absolute() / "src"
+PARENT = ROOT.parent.absolute()
+SRC_FOLDER = PARENT / "src"
 PANELS_FOLDER = SRC_FOLDER / "panels"
 PYTHON_PLUGINS_SETTINGS_FILE = PANELS_FOLDER / "_python.ts"
 TS_CONSTANTS_FILE = SRC_FOLDER / "utils" / "constants.ts"
+
+
+# upload
+UPLOAD_FOLDER_NAME = ".images"
+UPLOAD_FOLDER = PARENT / UPLOAD_FOLDER_NAME
+UPLOAD_FOLDER.mkdir(exist_ok=True)
