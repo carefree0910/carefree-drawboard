@@ -9,7 +9,7 @@ import Render from "@/plugins/components/Render";
 
 const PythonTextAreaPlugin = observer(
   ({
-    pluginInfo: { node, endpoint, identifier, updateInterval, noLoading },
+    pluginInfo: { node, endpoint, identifier, updateInterval, noLoading, textAlign },
     ...props
   }: IPythonTextAreaPlugin) => {
     const [value, setValue] = useState("");
@@ -25,7 +25,7 @@ const PythonTextAreaPlugin = observer(
 
     return (
       <Render {...props}>
-        <Textarea w="100%" h="100%" minH="0px" value={value} readOnly />
+        <Textarea w="100%" h="100%" minH="0px" value={value} textAlign={textAlign} readOnly />
       </Render>
     );
   },

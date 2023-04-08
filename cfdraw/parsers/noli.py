@@ -109,6 +109,7 @@ class ITextAreaPluginInfo(IPluginInfo):
     noLoading: bool = Field(
         False, description="Whether to show the 'Loading...' text or not"
     )
+    textAlign: Optional[chakra.TextAlign] = Field(None, description="Text align")
 
 
 class IPluginSettings(chakra.IChakra):
