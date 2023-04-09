@@ -14,7 +14,7 @@ from cfdraw.parsers import noli
 
 
 TPluginModel = TypeVar("TPluginModel")
-THttpsResponse = TypeVar("THttpsResponse", bound="IHttpsResponse", covariant=True)
+THttpResponse = TypeVar("THttpResponse", bound="IHttpResponse", covariant=True)
 
 
 class IConfig:
@@ -44,37 +44,37 @@ class IPlugin(ABC):
 # https
 
 
-class IHttpsPluginRequest(BaseModel):
+class IHttpPluginRequest(BaseModel):
     identifier: str = Field(..., description="The identifier of the plugin")
     node: Optional[Dict[str, Any]] = Field(
         None,
         description="JSON data of the selected node",
     )
 
-    def parse(self) -> "IParsedHttpsPluginRequest":
+    def parse(self) -> "IParsedHttpPluginRequest":
         if self.node is None:
             return self
         d = self.dict()
         d["node"] = noli.parse_node(self.node)
-        return IParsedHttpsPluginRequest(**d)
+        return IParsedHttpPluginRequest(**d)
 
 
-class IParsedHttpsPluginRequest(IHttpsPluginRequest):
+class IParsedHttpPluginRequest(IHttpPluginRequest):
     node: Optional[noli.INode] = Field(None, description="The parsed selected node")
 
 
-class IHttpsResponse(BaseModel):
+class IHttpResponse(BaseModel):
     success: bool = Field(..., description="Whether returned successfully")
     message: str = Field(..., description="The message of the response")
     data: BaseModel = Field(..., description="The data of the response")
 
 
-class IHttpsPlugin(Generic[THttpsResponse], IPlugin, metaclass=ABCMeta):
+class IHttpPlugin(Generic[THttpResponse], IPlugin, metaclass=ABCMeta):
     @abstractmethod
-    def process(self, data: IParsedHttpsPluginRequest) -> THttpsResponse:
+    def process(self, data: IParsedHttpPluginRequest) -> THttpResponse:
         pass
 
-    def __call__(self, data: IHttpsPluginRequest) -> THttpsResponse:
+    def __call__(self, data: IHttpPluginRequest) -> THttpResponse:
         return self.process(data.parse())
 
 
@@ -86,7 +86,7 @@ class ISocketPlugin(IPlugin):
 
 
 __all__ = [
-    "IHttpsPlugin",
-    "IParsedHttpsPluginRequest",
+    "IHttpPlugin",
+    "IParsedHttpPluginRequest",
     "ISocketPlugin",
 ]

@@ -18,7 +18,7 @@ export interface IUsePython extends IUsePythonInfo {
   getDeps?: (deps: IUsePythonInfo) => any[];
 }
 
-export interface IUseHttpsPython<R> extends IUsePython {
+export interface IUseHttpPython<R> extends IUsePython {
   onSuccess: (res: IPythonResponse<R>) => Promise<void>;
   beforeRequest?: () => Promise<void>;
 }
@@ -36,7 +36,7 @@ export function useDeps(
   );
 }
 
-export function useHttpsPython<R>({
+export function useHttpPython<R>({
   node,
   endpoint,
   identifier,
@@ -46,7 +46,7 @@ export function useHttpsPython<R>({
   beforeRequest,
   onError,
   getDeps,
-}: IUseHttpsPython<R>) {
+}: IUseHttpPython<R>) {
   const deps = useDeps({ node, endpoint, identifier, updateInterval, isInvisible }, getDeps);
   const requestFn = useCallback(() => {
     if (isInvisible) return Promise.resolve();

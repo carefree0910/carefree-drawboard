@@ -22,8 +22,8 @@ from cfdraw import constants
 from cfdraw.config import get_config
 from cfdraw.schema import IPlugin
 from cfdraw.schema import ISocketPlugin
-from cfdraw.schema import IHttpsResponse
-from cfdraw.schema import IHttpsPluginRequest
+from cfdraw.schema import IHttpResponse
+from cfdraw.schema import IHttpPluginRequest
 from cfdraw.compilers import plugin
 from cfdraw.compilers import settings
 from cfdraw.utils.server import raise_err
@@ -154,11 +154,11 @@ class App:
             @self.api.post(
                 endpoint,
                 name=endpoint[1:].replace("/", "_"),
-                responses=get_responses(IHttpsResponse),
+                responses=get_responses(IHttpResponse),
             )
-            def fn(data: IHttpsPluginRequest) -> Any:
+            def fn(data: IHttpPluginRequest) -> Any:
                 if self.hash_identifier(identifier) != data.identifier:
-                    return IHttpsResponse(
+                    return IHttpResponse(
                         success=False,
                         message="internal error occurred: identifier mismatch",
                         data=BaseModel(),

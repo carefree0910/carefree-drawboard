@@ -4,7 +4,7 @@ from cftool.constants import TIME_FORMAT
 from cfdraw import *
 
 
-class TimerPlugin(IHttpsPlugin[TextAreaResponse]):
+class TimerPlugin(IHttpPlugin[TextAreaResponse]):
     @property
     def settings(self) -> IPluginSettings:
         return IPluginSettings(
@@ -22,7 +22,7 @@ class TimerPlugin(IHttpsPlugin[TextAreaResponse]):
             ),
         )
 
-    def process(self, data: IParsedHttpsPluginRequest) -> TextAreaResponse:
+    def process(self, data: IParsedHttpPluginRequest) -> TextAreaResponse:
         return TextAreaResponse(
             success=True,
             message="",
