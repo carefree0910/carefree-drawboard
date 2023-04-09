@@ -8,13 +8,11 @@ import {
 
 const _pluginsLangRecords: Record<Lang, Record<AvailablePluginsAndPythonPlugins, string>> = {
   zh: {
-    meta: "参数信息",
     "txt2img.sd": "文本转图片",
     settings: "设置",
     "_python.textArea": "文本框",
   },
   en: {
-    meta: "Meta",
     "txt2img.sd": "Txt2Img",
     settings: "Settings",
     "_python.textArea": "TextArea",
