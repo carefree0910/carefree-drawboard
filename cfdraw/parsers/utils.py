@@ -21,7 +21,7 @@ def _parse_dict(pivot: str, path: str, require_all_lines: bool) -> ParseResponse
     with open(path, "r") as f:
         start = False
         all_lines = [] if require_all_lines else None
-        target_lines = []
+        target_lines: List[str] = []
         start_idx = end_idx = 0
         for i, line in enumerate(f):
             if all_lines is not None:
@@ -33,7 +33,8 @@ def _parse_dict(pivot: str, path: str, require_all_lines: bool) -> ParseResponse
                 target_lines.append("{")
             elif start:
                 if line.endswith("};"):
-                    target_lines[-1] = target_lines[-1][:-1]  # strip the trailing comma
+                    # strip the trailing comma
+                    target_lines[-1] = target_lines[-1].rstrip(",")
                     target_lines.append("}")
                     end_idx = i
                     start = False
@@ -41,7 +42,9 @@ def _parse_dict(pivot: str, path: str, require_all_lines: bool) -> ParseResponse
                         break
                 else:
                     left, right = line.split(": ")
-                    line = f'"{left}": {right}'
+                    left = left.lstrip('"').rstrip('"')
+                    left = f'"{left}"'
+                    line = f"{left}: {right}"
                     target_lines.append(line)
     json_str = "".join(target_lines)
     d = json.loads(json_str)
