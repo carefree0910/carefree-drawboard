@@ -10,6 +10,7 @@ export interface IUsePython<R> {
   node: IPythonPlugin["pluginInfo"]["node"];
   endpoint: IPythonPlugin["pluginInfo"]["endpoint"];
   identifier: IPythonPlugin["pluginInfo"]["identifier"];
+  isInvisible: boolean;
   updateInterval?: IPythonPlugin["pluginInfo"]["updateInterval"];
   onSuccess: (res: IPythonResponse<R>) => Promise<void>;
   beforeRequest?: () => Promise<void>;
@@ -20,14 +21,16 @@ export function usePython<R>({
   node,
   endpoint,
   identifier,
+  isInvisible,
   updateInterval,
   onSuccess,
   beforeRequest,
   onError,
 }: IUsePython<R>) {
-  const deps = [node, endpoint, identifier, updateInterval];
+  const deps = [node, endpoint, identifier, updateInterval, isInvisible];
   // TODO : handle socket
   const requestFn = useCallback(() => {
+    if (isInvisible) return Promise.resolve();
     const preprocess = beforeRequest ? beforeRequest() : Promise.resolve();
     return preprocess
       .then(() =>
@@ -49,7 +52,7 @@ export function usePython<R>({
     let timer: any;
     let shouldIgnore = false; // IMPORTANT!
     function requestWithTimeout() {
-      if (shouldIgnore) return;
+      if (isInvisible || shouldIgnore) return;
       requestFn().then(() => (timer = setTimeout(requestWithTimeout, updateInterval)));
     }
     if (!updateInterval) requestFn();

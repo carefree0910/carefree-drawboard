@@ -18,6 +18,7 @@ const PythonTextAreaPlugin = observer(
       node,
       endpoint,
       identifier,
+      isInvisible: props.renderInfo.isInvisible ?? false,
       updateInterval,
       onSuccess: async (res) => setValue(res.data.text),
       beforeRequest: noLoading ? undefined : async () => setValue("Loading..."),
