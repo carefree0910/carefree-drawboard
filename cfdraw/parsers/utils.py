@@ -6,8 +6,8 @@ from typing import Dict
 from cfdraw import constants
 
 
-def parse_dict_from_ts_constants(pivot: str) -> Dict[str, Any]:
-    with open(constants.TS_CONSTANTS_FILE, "r") as f:
+def parse_dict_from(pivot: str, path: str) -> Dict[str, Any]:
+    with open(path, "r") as f:
         start = False
         target_lines = []
         for line in f:
@@ -25,3 +25,7 @@ def parse_dict_from_ts_constants(pivot: str) -> Dict[str, Any]:
                 target_lines.append(line)
     json_str = "".join(target_lines)
     return json.loads(json_str)
+
+
+def parse_dict_from_ts_constants(pivot: str) -> Dict[str, Any]:
+    return parse_dict_from(pivot, constants.TS_CONSTANTS_FILE)
