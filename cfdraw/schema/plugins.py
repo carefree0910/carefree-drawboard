@@ -111,17 +111,20 @@ Pivot of the plugin.
             chakra_value = d.pop(field)
             if chakra_value is not None:
                 chakra_props[field] = chakra_value
-        return dict(
-            type=plugin_type,
-            props=dict(
-                offsetX=offset_x,
-                offsetY=offset_y,
-                nodeConstraint=node_constraint,
-                pluginInfo=plugin_info,
-                renderInfo=d,
-                **chakra_props,
-            ),
+        for k, v in list(d.items()):
+            if v is None:
+                d.pop(k)
+        props = dict(
+            nodeConstraint=node_constraint,
+            pluginInfo=plugin_info,
+            renderInfo=d,
+            **chakra_props,
         )
+        if offset_x is not None:
+            props["offsetX"] = offset_x
+        if offset_y is not None:
+            props["offsetY"] = offset_y
+        return dict(type=plugin_type, props=props)
 
 
 # web
