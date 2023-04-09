@@ -14,7 +14,7 @@ import Render from "./Render";
 import TextField from "./TextField";
 
 const TaskPlugin = ({
-  pluginInfo: { node, task, fields, customDefinitions },
+  pluginInfo: { task, fields, customDefinitions },
   ...props
 }: IInternalTaskPlugin) => {
   const definitions = useMemo(
