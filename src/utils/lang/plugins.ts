@@ -11,11 +11,13 @@ const _pluginsLangRecords: Record<Lang, Record<AvailablePluginsAndPythonPlugins,
     "txt2img.sd": "文本转图片",
     settings: "设置",
     "_python.httpTextArea": "文本框",
+    "_python.httpQA": "问答",
   },
   en: {
     "txt2img.sd": "Txt2Img",
     settings: "Settings",
     "_python.httpTextArea": "TextArea",
+    "_python.httpQA": "Q & A",
   },
 };
 

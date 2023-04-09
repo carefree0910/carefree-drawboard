@@ -12,6 +12,7 @@ export * from "./MetaPlugin";
 export * from "./Txt2ImgSDPlugin";
 export * from "./SettingsPlugin";
 export * from "./_python/HttpTextAreaPlugin";
+export * from "./_python/HttpQAPlugin";
 
 export function makePlugin<T extends AvailablePluginsAndPythonPlugins>({
   key,

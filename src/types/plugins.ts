@@ -77,11 +77,16 @@ export interface IPythonHttpTextAreaPlugin extends IPythonPlugin {
     textAlign?: TextareaProps["textAlign"];
   };
 }
+export interface IPythonHttpQAPlugin extends IPythonPlugin {
+  pluginInfo: IPythonPlugin["pluginInfo"] & {
+    initialText: string;
+  };
+}
 
 // factory
 
 export const allAvailablePlugins = ["txt2img.sd", "settings"] as const;
-export const allAvailablePythonPlugins = ["_python.httpTextArea"] as const;
+export const allAvailablePythonPlugins = ["_python.httpTextArea", "_python.httpQA"] as const;
 export type AvailablePlugins = typeof allAvailablePlugins[number];
 export type AvailablePythonPlugins = typeof allAvailablePythonPlugins[number];
 export type AvailablePluginsAndPythonPlugins = AvailablePlugins | AvailablePythonPlugins;
@@ -93,6 +98,7 @@ export interface IPluginProps {
   settings: IPlugin;
   // python plugins
   "_python.httpTextArea": IPythonHttpTextAreaPlugin;
+  "_python.httpQA": IPythonHttpQAPlugin;
 }
 
 export interface IMakePlugin<T extends AvailablePluginsAndPythonPlugins> {
