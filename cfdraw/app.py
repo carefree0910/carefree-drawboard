@@ -21,6 +21,7 @@ from fastapi.middleware import cors
 from cfdraw import constants
 from cfdraw.config import get_config
 from cfdraw.schema import IPlugin
+from cfdraw.schema import ISocketPlugin
 from cfdraw.schema import ITHttpsResponse
 from cfdraw.schema import IHttpsPluginRequest
 from cfdraw.compilers import plugin
@@ -145,7 +146,7 @@ class App:
     def add_plugins(self) -> None:
         for identifier, plugin in self.plugins.items():
             # TODO : handle socket plugins
-            if plugin.is_socket:
+            if isinstance(plugin, ISocketPlugin):
                 continue
             endpoint = f"/{identifier}"
             print_info(f"registering endpoint '{endpoint}'")

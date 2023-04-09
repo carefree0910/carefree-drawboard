@@ -29,7 +29,6 @@ class IConfig:
 
 
 class IPlugin(ABC):
-    is_socket: bool
     identifier: str
 
     @property
@@ -71,8 +70,6 @@ class ITHttpsResponse(BaseModel):
 
 
 class IHttpsPlugin(Generic[THttpsResponse], IPlugin, metaclass=ABCMeta):
-    is_socket: bool = False
-
     @abstractmethod
     def process(self, data: IParsedHttpsPluginRequest) -> THttpsResponse:
         pass
@@ -85,10 +82,11 @@ class IHttpsPlugin(Generic[THttpsResponse], IPlugin, metaclass=ABCMeta):
 
 
 class ISocketPlugin(IPlugin):
-    is_socket: bool = True
+    pass
 
 
 __all__ = [
     "IHttpsPlugin",
     "IParsedHttpsPluginRequest",
+    "ISocketPlugin",
 ]
