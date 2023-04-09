@@ -3,7 +3,7 @@ import { useSelecting } from "@noli/business";
 
 import type { IMakePythonPlugin } from "@/types/_python";
 import type { AvailablePythonPlugins } from "@/types/plugins";
-import { isInvisible } from "@/stores/plugins";
+import { pythonIsInvisible } from "@/stores/plugins";
 import { getNodeFilter } from "../utils/renderFilters";
 import { drawboardPluginFactory } from "../utils/factory";
 
@@ -33,6 +33,6 @@ export function makePythonPlugin<T extends AvailablePythonPlugins>({
     renderInfo.src =
       "https://ailab-huawei-cdn.nolibox.com/upload/images/7eb5a38f422049948dc8655123f2d96a.png";
   pluginInfo.node = node;
-  renderInfo.isInvisible = isInvisible(type);
+  renderInfo.isInvisible = pythonIsInvisible(pluginInfo.identifier);
   return <PythonPlugin key={key} renderInfo={renderInfo} pluginInfo={pluginInfo} {...props} />;
 }

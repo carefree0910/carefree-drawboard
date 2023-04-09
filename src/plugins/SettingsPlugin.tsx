@@ -15,15 +15,17 @@ import {
 import { allAvailablePlugins, IPlugin } from "@/types/plugins";
 import { Plugins_Words } from "@/utils/lang/plugins";
 import { Settings_Words } from "@/utils/lang/settings";
-import { isInvisible, setVisible } from "@/stores/plugins";
+import { isInvisible, pythonIsInvisible, setPythonVisible, setVisible } from "@/stores/plugins";
 import CFSelect from "@/components/CFSelect";
 import CFSlider from "@/components/CFSlider";
 import { CFDivider } from "@/components/CFDivider";
 import { drawboardPluginFactory } from "./utils/factory";
 import Render from "./components/Render";
+import { pythonPluginSettings } from "@/panels/_python";
 
 const SettingsPlugin = observer(({ pluginInfo, ...props }: IPlugin) => {
   const lang = langStore.tgt;
+  const commonProps = { fontWeight: 400, size: "md" };
 
   return (
     <Render {...props}>
@@ -38,14 +40,28 @@ const SettingsPlugin = observer(({ pluginInfo, ...props }: IPlugin) => {
               .map((plugin) => (
                 <Checkbox
                   key={plugin}
-                  fontWeight={400}
-                  size="md"
                   value={plugin}
                   isChecked={!isInvisible(plugin)}
-                  onChange={() => setVisible(plugin, isInvisible(plugin))}>
+                  onChange={() => setVisible(plugin, isInvisible(plugin))}
+                  {...commonProps}>
                   {translate(Plugins_Words[plugin], lang)}
                 </Checkbox>
               ))}
+            {pythonPluginSettings.map((settings) => {
+              const identifierWithHash = settings.props.pluginInfo.identifier; // {identifier}.{hash}
+              const identifier = identifierWithHash.split(".").slice(0, -1).join(".");
+              const pIsInvisible = pythonIsInvisible(identifierWithHash);
+              return (
+                <Checkbox
+                  key={identifierWithHash}
+                  value={identifier}
+                  isChecked={!pIsInvisible}
+                  onChange={() => setPythonVisible(identifierWithHash, pIsInvisible)}
+                  {...commonProps}>
+                  {`${translate(Plugins_Words[settings.type], lang)} (${identifier})`}
+                </Checkbox>
+              );
+            })}
           </Flex>
         </Box>
         {/* language settings */}
