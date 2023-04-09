@@ -77,7 +77,7 @@ function CFSelect<T extends string>({
         <Flex>
           {value ? value : null}
           {value ? <Spacer /> : null}
-          <Center color={selectColors.color} fontSize="8px" {...(iconProps ?? {})}>
+          <Center color={selectColors.color} fontSize="8px" {...iconProps}>
             {icon ?? <Icon svg={ArrowDownIcon} className={block()} fillbyCurrentColor />}
           </Center>
         </Flex>
