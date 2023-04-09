@@ -17,3 +17,7 @@ export const DEFAULT_PLUGIN_SETTINGS = {
   expandOffsetX: 8,
   expandOffsetY: 8,
 };
+
+export const PYTHON_RELATED_SETTINGS = {
+  backendPort: 8123,
+};
