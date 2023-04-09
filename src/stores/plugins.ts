@@ -2,9 +2,9 @@ import { makeObservable, observable } from "mobx";
 
 import { ABCStore } from "@noli/business";
 
-import type { AvailablePluginsAndPythonPlugins } from "@/types/plugins";
+import type { AvailablePlugins } from "@/types/plugins";
 
-export type IPluginsInvisible = Partial<Record<AvailablePluginsAndPythonPlugins, boolean>>;
+export type IPluginsInvisible = Partial<Record<AvailablePlugins, boolean>>;
 class PluginsInvisibleStore extends ABCStore<IPluginsInvisible> {
   invisible: IPluginsInvisible = {};
 
@@ -21,7 +21,7 @@ class PluginsInvisibleStore extends ABCStore<IPluginsInvisible> {
 }
 
 export const pluginsInvisibleStore = new PluginsInvisibleStore();
-export const isInvisible = (plugin: AvailablePluginsAndPythonPlugins) =>
+export const isInvisible = (plugin: AvailablePlugins) =>
   pluginsInvisibleStore.info[plugin] ?? false;
-export const setVisible = (plugin: AvailablePluginsAndPythonPlugins, visible: boolean) =>
+export const setVisible = (plugin: AvailablePlugins, visible: boolean) =>
   pluginsInvisibleStore.updateProperty(plugin, !visible);
