@@ -24,9 +24,9 @@ export function useHttpPython<R>({
   identifier,
   isInvisible,
   updateInterval,
-  onHttpSuccess,
+  onUseHttpPythonSuccess,
+  onUseHttpPythonError,
   beforeRequest,
-  onHttpError,
   getDeps,
 }: IUseHttpPython<R>) {
   const deps = useDeps({ node, endpoint, identifier, updateInterval, isInvisible }, getDeps);
@@ -39,12 +39,12 @@ export function useHttpPython<R>({
           node: node?.toJsonPack(),
           identifier,
         }).then((res) => {
-          if (res.success) onHttpSuccess(res);
+          if (res.success) onUseHttpPythonSuccess(res);
           else throw Error(res.message);
         }),
       )
       .catch((err) => {
-        if (onHttpError) onHttpError(err);
+        if (onUseHttpPythonError) onUseHttpPythonError(err);
         else Logger.error(err);
       });
   }, deps);

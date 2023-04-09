@@ -19,7 +19,7 @@ const PythonHttpTextAreaPlugin = ({
     identifier,
     isInvisible: props.renderInfo.isInvisible ?? false,
     updateInterval,
-    onHttpSuccess: async (res) => setValue(res.data.text),
+    onUseHttpPythonSuccess: async (res) => setValue(res.data.text),
     beforeRequest: noLoading ? undefined : async () => setValue("Loading..."),
   });
 
