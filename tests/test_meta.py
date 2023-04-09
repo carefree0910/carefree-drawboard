@@ -1,7 +1,7 @@
 from cfdraw import *
 
 
-class MyMetaPlugin(MetaPlugin):
+class MyHttpMetaPlugin(HttpMetaPlugin):
     @property
     def settings(self) -> IPluginSettings:
         settings: IPluginSettings = super().settings
@@ -9,5 +9,5 @@ class MyMetaPlugin(MetaPlugin):
         return settings
 
 
-register_plugin("meta")(MyMetaPlugin)
+register_plugin("meta")(MyHttpMetaPlugin)
 app = App()

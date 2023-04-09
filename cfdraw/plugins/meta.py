@@ -3,7 +3,7 @@ import json
 from ..schema.plugins import *
 
 
-class MetaPlugin(IHttpPlugin[TextAreaResponse]):
+class HttpMetaPlugin(IHttpPlugin[HttpTextAreaResponse]):
     @property
     def settings(self) -> IPluginSettings:
         return IPluginSettings(
@@ -21,16 +21,16 @@ class MetaPlugin(IHttpPlugin[TextAreaResponse]):
             expandOffsetY=-400,
         )
 
-    def process(self, data: IHttpPluginRequest) -> TextAreaResponse:
+    def process(self, data: IHttpPluginRequest) -> HttpTextAreaResponse:
         meta = data.node.params["meta"]
         meta_json = json.dumps(meta, indent=4)
-        return TextAreaResponse(
+        return HttpTextAreaResponse(
             success=True,
             message="",
-            data=TextAreaModel(text=meta_json),
+            data=HttpTextAreaModel(text=meta_json),
         )
 
 
 __all__ = [
-    "MetaPlugin",
+    "HttpMetaPlugin",
 ]

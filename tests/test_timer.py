@@ -1,5 +1,5 @@
 from cfdraw import *
 
 
-register_plugin("timer")(TimerPlugin)
+register_plugin("timer")(HttpTimerPlugin)
 app = App()

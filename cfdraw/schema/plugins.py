@@ -222,28 +222,28 @@ class ISocketPlugin(IPlugin):
 
 # (react) bindings
 
-## text area
+## (http) text area
 
 
-class ITextAreaPluginInfo(IPluginInfo):
+class IHttpTextAreaPluginInfo(IPluginInfo):
     noLoading: bool = Field(
         False, description="Whether to show the 'Loading...' text or not"
     )
     textAlign: Optional[TextAlign] = Field(None, description="Text align")
 
 
-class TextAreaModel(BaseModel):
+class HttpTextAreaModel(BaseModel):
     text: str = Field(..., description="The text to be displayed")
 
 
-class TextAreaResponse(IHttpResponse):
-    data: TextAreaModel = Field(..., description="The data of the response")
+class HttpTextAreaResponse(IHttpResponse):
+    data: HttpTextAreaModel = Field(..., description="The data of the response")
 
 
-## qa
+## (http) qa
 
 
-class IQAPluginInfo(IPluginInfo):
+class IHttpQAPluginInfo(IPluginInfo):
     initialText: str = Field(
         ...,
         description="The initial text to be displayed in the text area",
@@ -265,8 +265,8 @@ __all__ = [
     "IPlugin",
     "IHttpPlugin",
     # bindings
-    "ITextAreaPluginInfo",
-    "TextAreaModel",
-    "TextAreaResponse",
-    "IQAPluginInfo",
+    "IHttpTextAreaPluginInfo",
+    "HttpTextAreaModel",
+    "HttpTextAreaResponse",
+    "IHttpQAPluginInfo",
 ]

@@ -1,7 +1,7 @@
 from ..schema.plugins import *
 
 
-class HelloQAPlugin(IHttpPlugin[TextAreaResponse]):
+class HttpHelloQAPlugin(IHttpPlugin[HttpTextAreaResponse]):
     @property
     def settings(self) -> IPluginSettings:
         return IPluginSettings(
@@ -11,17 +11,17 @@ class HelloQAPlugin(IHttpPlugin[TextAreaResponse]):
             nodeConstraint=NodeConstraints.NONE,
             src="https://ailab-huawei-cdn.nolibox.com/upload/images/de36770b26144a2c9c25f229e98167c8.png",
             pivot=PivotType.CENTER,
-            pluginInfo=IQAPluginInfo(initialText="Hello, world!"),
+            pluginInfo=IHttpQAPluginInfo(initialText="Hello, world!"),
         )
 
-    def process(self, data: IHttpPluginRequest) -> TextAreaResponse:
-        return TextAreaResponse(
+    def process(self, data: IHttpPluginRequest) -> HttpTextAreaResponse:
+        return HttpTextAreaResponse(
             success=True,
             message="",
-            data=TextAreaModel(text=f"Hello, {data.data['text']}!"),
+            data=HttpTextAreaModel(text=f"Hello, {data.data['text']}!"),
         )
 
 
 __all__ = [
-    "HelloQAPlugin",
+    "HttpHelloQAPlugin",
 ]
