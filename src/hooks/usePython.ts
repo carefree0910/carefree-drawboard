@@ -24,7 +24,7 @@ export function useHttpPython<R>({
   identifier,
   isInvisible,
   updateInterval,
-  onSuccess,
+  onHttpSuccess,
   beforeRequest,
   onHttpError,
   getDeps,
@@ -39,7 +39,7 @@ export function useHttpPython<R>({
           node: node?.toJsonPack(),
           identifier,
         }).then((res) => {
-          if (res.success) onSuccess(res);
+          if (res.success) onHttpSuccess(res);
           else throw Error(res.message);
         }),
       )

@@ -16,7 +16,7 @@ export interface IUsePythonInfo {
 export interface IUseHttpPython<R> extends IUsePythonInfo {
   forceNotSend?: boolean;
   getDeps?: (deps: IUsePythonInfo) => any[];
-  onSuccess: (res: IPythonHttpResponse<R>) => Promise<void>;
+  onHttpSuccess: (res: IPythonHttpResponse<R>) => Promise<void>;
   onHttpError?: (err: any) => Promise<void>;
   beforeRequest?: () => Promise<void>;
 }
