@@ -28,4 +28,4 @@ def parse_dict_from(pivot: str, path: str) -> Dict[str, Any]:
 
 
 def parse_dict_from_ts_constants(pivot: str) -> Dict[str, Any]:
-    return parse_dict_from(pivot, constants.TS_CONSTANTS_FILE)
+    return parse_dict_from(pivot, constants.TS_CONSTANTS_PATH)

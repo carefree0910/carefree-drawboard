@@ -54,8 +54,8 @@ ROOT = Path(os.path.dirname(__file__))
 PARENT = ROOT.parent.absolute()
 SRC_FOLDER = PARENT / "src"
 PANELS_FOLDER = SRC_FOLDER / "panels"
-PYTHON_PLUGINS_SETTINGS_FILE = PANELS_FOLDER / "_python.ts"
-TS_CONSTANTS_FILE = SRC_FOLDER / "utils" / "constants.ts"
+PYTHON_PLUGINS_SETTINGS_PATH = PANELS_FOLDER / "_python.ts"
+TS_CONSTANTS_PATH = SRC_FOLDER / "utils" / "constants.ts"
 
 
 # upload

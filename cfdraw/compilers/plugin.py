@@ -15,7 +15,7 @@ class PluginSettingsFileInfo(NamedTuple):
 
 
 def _get_plugin_settings_file_info() -> PluginSettingsFileInfo:
-    with open(constants.PYTHON_PLUGINS_SETTINGS_FILE, "r") as f:
+    with open(constants.PYTHON_PLUGINS_SETTINGS_PATH, "r") as f:
         lines = []
         start_idx = end_idx = None
         for i, line in enumerate(f):
@@ -31,7 +31,7 @@ def _get_plugin_settings_file_info() -> PluginSettingsFileInfo:
 
 
 def _write_plugin_settings(lines: List[str]) -> None:
-    with open(constants.PYTHON_PLUGINS_SETTINGS_FILE, "w") as f:
+    with open(constants.PYTHON_PLUGINS_SETTINGS_PATH, "w") as f:
         f.writelines(lines)
 
 
