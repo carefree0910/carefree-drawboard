@@ -26,7 +26,7 @@ export function useHttpPython<R>({
   updateInterval,
   onSuccess,
   beforeRequest,
-  onError,
+  onHttpError,
   getDeps,
 }: IUseHttpPython<R>) {
   const deps = useDeps({ node, endpoint, identifier, updateInterval, isInvisible }, getDeps);
@@ -44,7 +44,7 @@ export function useHttpPython<R>({
         }),
       )
       .catch((err) => {
-        if (onError) onError(err);
+        if (onHttpError) onHttpError(err);
         else Logger.error(err);
       });
   }, deps);

@@ -14,7 +14,7 @@ export interface IUsePythonInfo {
   updateInterval?: IPythonPlugin["pluginInfo"]["updateInterval"];
 }
 export interface IUsePython extends IUsePythonInfo {
-  onError?: (err: any) => Promise<void>;
+  onHttpError?: (err: any) => Promise<void>;
   getDeps?: (deps: IUsePythonInfo) => any[];
 }
 export interface IUseHttpPython<R> extends IUsePython {
