@@ -56,6 +56,7 @@ SRC_FOLDER = PARENT / "src"
 PANELS_FOLDER = SRC_FOLDER / "panels"
 PYTHON_PLUGINS_SETTINGS_PATH = PANELS_FOLDER / "_python.ts"
 TS_CONSTANTS_PATH = SRC_FOLDER / "utils" / "constants.ts"
+TS_PYTHON_CONSTANTS_PATH = SRC_FOLDER / "utils" / "_pythonConstants.ts"
 
 
 # upload

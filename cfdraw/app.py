@@ -25,6 +25,7 @@ from cfdraw.schema import IPlugin
 from cfdraw.schema import IResponse
 from cfdraw.schema import IPluginRequest
 from cfdraw.compilers import plugin
+from cfdraw.compilers import settings
 from cfdraw.utils.server import raise_err
 from cfdraw.utils.server import get_err_msg
 from cfdraw.utils.server import get_responses
@@ -175,5 +176,10 @@ class App:
                     self.hash_identifier(identifier): plugin.settings
                     for identifier, plugin in self.plugins.items()
                 }
+            )
+            settings.set_constants(
+                dict(
+                    backendPort=int(self.config.backend_port),
+                )
             )
             print_info("🎉 Server is Ready!")
