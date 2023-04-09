@@ -1,4 +1,4 @@
-import { useCallback, useEffect } from "react";
+import { useCallback, useEffect, useMemo } from "react";
 
 import { Logger } from "@noli/core";
 
@@ -6,18 +6,34 @@ import type { IPythonPlugin } from "@/types/plugins";
 import type { IPythonResponse } from "@/types/_python";
 import { Requests } from "@/requests/actions";
 
-export interface IUsePython {
+interface IUsePythonInfo {
   node: IPythonPlugin["pluginInfo"]["node"];
   endpoint: IPythonPlugin["pluginInfo"]["endpoint"];
   identifier: IPythonPlugin["pluginInfo"]["identifier"];
   isInvisible: boolean;
   updateInterval?: IPythonPlugin["pluginInfo"]["updateInterval"];
+}
+export interface IUsePython extends IUsePythonInfo {
   onError?: (err: any) => Promise<void>;
+  getDeps?: (deps: IUsePythonInfo) => any[];
 }
 
 export interface IUseHttpsPython<R> extends IUsePython {
   onSuccess: (res: IPythonResponse<R>) => Promise<void>;
   beforeRequest?: () => Promise<void>;
+}
+
+export function useDeps(
+  { node, endpoint, identifier, updateInterval, isInvisible }: IUsePythonInfo,
+  getDeps?: (deps: IUsePythonInfo) => any[],
+) {
+  return useMemo(
+    () =>
+      getDeps
+        ? getDeps({ node, endpoint, identifier, updateInterval, isInvisible })
+        : [node, endpoint, identifier, updateInterval, isInvisible],
+    [node, endpoint, identifier, updateInterval, isInvisible],
+  );
 }
 
 export function useHttpsPython<R>({
@@ -29,8 +45,9 @@ export function useHttpsPython<R>({
   onSuccess,
   beforeRequest,
   onError,
+  getDeps,
 }: IUseHttpsPython<R>) {
-  const deps = [node, endpoint, identifier, updateInterval, isInvisible];
+  const deps = useDeps({ node, endpoint, identifier, updateInterval, isInvisible }, getDeps);
   const requestFn = useCallback(() => {
     if (isInvisible) return Promise.resolve();
     const preprocess = beforeRequest ? beforeRequest() : Promise.resolve();
