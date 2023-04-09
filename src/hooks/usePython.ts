@@ -5,10 +5,14 @@ import { Logger } from "@noli/core";
 import type { IPythonHttpResponse, IUseHttpPython, IUsePythonInfo } from "@/types/_python";
 import { Requests } from "@/requests/actions";
 
-export function useDeps(
-  { node, endpoint, identifier, updateInterval, isInvisible }: IUsePythonInfo,
-  getDeps?: (deps: IUsePythonInfo) => any[],
-) {
+export function useDeps({
+  node,
+  endpoint,
+  identifier,
+  updateInterval,
+  isInvisible,
+  getDeps,
+}: IUsePythonInfo) {
   return useMemo(
     () =>
       getDeps
@@ -24,14 +28,14 @@ export function useHttpPython<R>({
   identifier,
   isInvisible,
   updateInterval,
+  getDeps,
   forceNotSend,
   onUseHttpPythonSuccess,
   onUseHttpPythonError,
   beforeRequest,
   getRequestData,
-  getDeps,
 }: IUseHttpPython<R>) {
-  let deps = useDeps({ node, endpoint, identifier, updateInterval, isInvisible }, getDeps);
+  let deps = useDeps({ node, endpoint, identifier, updateInterval, isInvisible, getDeps });
   deps = deps.concat([forceNotSend]);
   const requestFn = useCallback(() => {
     if (isInvisible || forceNotSend) return Promise.resolve();
