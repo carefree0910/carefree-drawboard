@@ -108,11 +108,6 @@ Spcify when the plugin will be shown.
 > Otherwise, the plugin will be shown when the selected node is of the specified type.
 """,
     )
-    # functional fields
-    requireNode: bool = Field(
-        True,
-        description="Whether the plugin requires the drawboard to send the JSON data of the selected node to it",
-    )
     # style fields
     src: str = Field(
         "",
@@ -178,14 +173,12 @@ Pivot of the plugin.
         plugin_type = f"_python.{d.pop('type')}"
         offset_x = d.pop("offsetX")
         offset_y = d.pop("offsetY")
-        require_node = d.pop("requireNode")
         node_constraint = d.pop("nodeConstraint")
         return dict(
             type=plugin_type,
             props=dict(
                 offsetX=offset_x,
                 offsetY=offset_y,
-                requireNode=require_node,
                 nodeConstraint=node_constraint,
                 pluginInfo=plugin_info,
                 renderInfo=d,

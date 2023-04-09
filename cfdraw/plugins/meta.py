@@ -19,7 +19,6 @@ class MetaPlugin(IHttpsPlugin[TextAreaResponse]):
             iconH=42,
             offsetY=-42,
             expandOffsetY=-400,
-            requireNode=True,
         )
 
     def process(self, data: IParsedHttpsPluginRequest) -> TextAreaResponse:

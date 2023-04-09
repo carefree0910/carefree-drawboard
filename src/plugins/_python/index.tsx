@@ -12,7 +12,7 @@ export * from "./TextAreaPlugin";
 export function makePythonPlugin<T extends AvailablePythonPlugins>({
   key,
   type,
-  props: { requireNode, renderInfo, pluginInfo, ...props },
+  props: { renderInfo, pluginInfo, ...props },
 }: IMakePythonPlugin<T> & { key: string }) {
   renderInfo = shallowCopy(renderInfo);
   pluginInfo = shallowCopy(pluginInfo);
@@ -25,12 +25,9 @@ export function makePythonPlugin<T extends AvailablePythonPlugins>({
     Logger.warn(`Plugin '${type}' not found`);
     return null;
   }
-  let node = null;
-  if (requireNode) {
-    const info = useSelecting("raw");
-    if (!getNodeFilter(props.nodeConstraint)(info)) return null;
-    node = info.displayNode;
-  }
+  const info = useSelecting("raw");
+  if (!getNodeFilter(props.nodeConstraint)(info)) return null;
+  const node = info.displayNode;
   if (!renderInfo.src)
     renderInfo.src =
       "https://ailab-huawei-cdn.nolibox.com/upload/images/7eb5a38f422049948dc8655123f2d96a.png";

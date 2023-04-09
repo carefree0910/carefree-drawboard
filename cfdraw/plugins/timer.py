@@ -15,7 +15,6 @@ class TimerPlugin(IHttpsPlugin[TextAreaResponse]):
             src="https://ailab-huawei-cdn.nolibox.com/upload/images/63c07ca52b2b42ef943bcf04c8e78878.png",
             pivot=PivotType.TOP,
             align="center",
-            requireNode=False,
             pluginInfo=ITextAreaPluginInfo(
                 updateInterval=1000,
                 noLoading=True,

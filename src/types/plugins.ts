@@ -93,7 +93,6 @@ export interface IPythonPluginProps {
 export interface IMakePlugin<T extends AvailablePlugins> {
   type: T;
   props: Omit<IPluginProps[T], "pluginInfo"> & {
-    requireNode?: boolean;
     pluginInfo: Omit<IPluginProps[T]["pluginInfo"], "node">;
   };
 }

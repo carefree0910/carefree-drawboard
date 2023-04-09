@@ -15,7 +15,7 @@ export * from "./SettingsPlugin";
 export function makePlugin<T extends AvailablePlugins>({
   key,
   type,
-  props: { requireNode, renderInfo, pluginInfo, ...props },
+  props: { renderInfo, pluginInfo, ...props },
 }: IMakePlugin<T> & { key: string }) {
   renderInfo = shallowCopy(renderInfo);
   pluginInfo = shallowCopy(pluginInfo);
@@ -28,12 +28,9 @@ export function makePlugin<T extends AvailablePlugins>({
     Logger.warn(`Plugin '${type}' not found`);
     return null;
   }
-  let node = null;
-  if (requireNode) {
-    const info = useSelecting("raw");
-    if (!getNodeFilter(props.nodeConstraint)(info)) return null;
-    node = info.displayNode;
-  }
+  const info = useSelecting("raw");
+  if (!getNodeFilter(props.nodeConstraint)(info)) return null;
+  const node = info.displayNode;
   const updatedPluginInfo = { ...pluginInfo, node };
   renderInfo.isInvisible = isInvisible(type);
   return <Plugin key={key} renderInfo={renderInfo} pluginInfo={updatedPluginInfo} {...props} />;

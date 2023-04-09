@@ -7,5 +7,5 @@ export interface IPythonResponse<T> {
 }
 export interface IMakePythonPlugin<T extends AvailablePythonPlugins> {
   type: T;
-  props: Omit<IPythonPluginProps[T], "node"> & { requireNode?: boolean };
+  props: Omit<IPythonPluginProps[T], "node">;
 }
