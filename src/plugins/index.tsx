@@ -13,9 +13,10 @@ export * from "./Txt2ImgSDPlugin";
 export * from "./SettingsPlugin";
 
 export function makePlugin<T extends AvailablePlugins>({
+  key,
   type,
   props: { requireNode, renderInfo, pluginInfo, ...props },
-}: IMakePlugin<T>) {
+}: IMakePlugin<T> & { key: string }) {
   if (renderInfo.follow && props.nodeConstraint === "none") {
     Logger.warn("cannot use `follow` with `targetNodeType` set to `none`");
     return null;
@@ -33,5 +34,5 @@ export function makePlugin<T extends AvailablePlugins>({
   }
   const updatedPluginInfo = { ...pluginInfo, node };
   renderInfo.isInvisible = isInvisible(type);
-  return <Plugin renderInfo={renderInfo} pluginInfo={updatedPluginInfo} {...props} />;
+  return <Plugin key={key} renderInfo={renderInfo} pluginInfo={updatedPluginInfo} {...props} />;
 }
