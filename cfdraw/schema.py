@@ -14,7 +14,7 @@ from cfdraw.parsers import noli
 
 
 TPluginModel = TypeVar("TPluginModel")
-THttpsResponse = TypeVar("THttpsResponse", bound="ITHttpsResponse", covariant=True)
+THttpsResponse = TypeVar("THttpsResponse", bound="IHttpsResponse", covariant=True)
 
 
 class IConfig:
@@ -63,7 +63,7 @@ class IParsedHttpsPluginRequest(IHttpsPluginRequest):
     node: Optional[noli.INode] = Field(None, description="The parsed selected node")
 
 
-class ITHttpsResponse(BaseModel):
+class IHttpsResponse(BaseModel):
     success: bool = Field(..., description="Whether returned successfully")
     message: str = Field(..., description="The message of the response")
     data: BaseModel = Field(..., description="The data of the response")

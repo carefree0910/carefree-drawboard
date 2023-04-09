@@ -1,14 +1,14 @@
 from pydantic import Field
 from pydantic import BaseModel
 
-from cfdraw.schema import ITHttpsResponse
+from cfdraw.schema import IHttpsResponse
 
 
 class TextAreaModel(BaseModel):
     text: str = Field(..., description="The text to be displayed")
 
 
-class TextAreaResponse(ITHttpsResponse):
+class TextAreaResponse(IHttpsResponse):
     data: TextAreaModel = Field(..., description="The data of the response")
 
 
