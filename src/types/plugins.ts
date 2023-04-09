@@ -38,7 +38,6 @@ export interface IRender extends Omit<IFloating, "id" | "renderInfo"> {
   renderInfo: Partial<IRenderInfo> & { w: number; h: number };
   pluginInfo?: {};
 }
-
 export interface IPlugin extends IRender {
   pluginInfo: { node: INode | null };
 }
@@ -51,7 +50,6 @@ export interface ITaskPlugin extends IPlugin {
     customDefinitions?: ICustomDefinitions;
   };
 }
-
 export interface IInternalTaskPlugin extends ITaskPlugin {
   pluginInfo: ITaskPlugin["pluginInfo"] & { task: TaskTypes };
 }
@@ -65,7 +63,6 @@ export interface IPythonPlugin extends IPlugin {
     updateInterval?: number;
   };
 }
-
 export interface IPythonTextAreaPlugin extends IPythonPlugin {
   pluginInfo: IPythonPlugin["pluginInfo"] & {
     noLoading?: boolean;
