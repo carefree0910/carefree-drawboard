@@ -13,12 +13,10 @@ export interface IUsePythonInfo {
   isInvisible: boolean;
   updateInterval?: IPythonPlugin["pluginInfo"]["updateInterval"];
 }
-export interface IUsePython extends IUsePythonInfo {
-  onHttpError?: (err: any) => Promise<void>;
-  getDeps?: (deps: IUsePythonInfo) => any[];
-}
-export interface IUseHttpPython<R> extends IUsePython {
+export interface IUseHttpPython<R> extends IUsePythonInfo {
   forceNotSend?: boolean;
+  getDeps?: (deps: IUsePythonInfo) => any[];
   onSuccess: (res: IPythonHttpResponse<R>) => Promise<void>;
+  onHttpError?: (err: any) => Promise<void>;
   beforeRequest?: () => Promise<void>;
 }
