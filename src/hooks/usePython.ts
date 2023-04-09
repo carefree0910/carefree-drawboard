@@ -6,18 +6,21 @@ import type { IPythonPlugin } from "@/types/plugins";
 import type { IPythonResponse } from "@/types/_python";
 import { Requests } from "@/requests/actions";
 
-export interface IUsePython<R> {
+export interface IUsePython {
   node: IPythonPlugin["pluginInfo"]["node"];
   endpoint: IPythonPlugin["pluginInfo"]["endpoint"];
   identifier: IPythonPlugin["pluginInfo"]["identifier"];
   isInvisible: boolean;
   updateInterval?: IPythonPlugin["pluginInfo"]["updateInterval"];
-  onSuccess: (res: IPythonResponse<R>) => Promise<void>;
-  beforeRequest?: () => Promise<void>;
   onError?: (err: any) => Promise<void>;
 }
 
-export function usePython<R>({
+export interface IUseHttpsPython<R> extends IUsePython {
+  onSuccess: (res: IPythonResponse<R>) => Promise<void>;
+  beforeRequest?: () => Promise<void>;
+}
+
+export function useHttpsPython<R>({
   node,
   endpoint,
   identifier,
@@ -26,9 +29,8 @@ export function usePython<R>({
   onSuccess,
   beforeRequest,
   onError,
-}: IUsePython<R>) {
+}: IUseHttpsPython<R>) {
   const deps = [node, endpoint, identifier, updateInterval, isInvisible];
-  // TODO : handle socket
   const requestFn = useCallback(() => {
     if (isInvisible) return Promise.resolve();
     const preprocess = beforeRequest ? beforeRequest() : Promise.resolve();

@@ -3,7 +3,7 @@ import { observer } from "mobx-react-lite";
 import { Textarea } from "@chakra-ui/react";
 
 import type { IPythonTextAreaPlugin } from "@/types/plugins";
-import { usePython } from "@/hooks/usePython";
+import { useHttpsPython } from "@/hooks/usePython";
 import { drawboardPluginFactory } from "@/plugins/utils/factory";
 import Render from "@/plugins/components/Render";
 
@@ -13,7 +13,7 @@ const PythonTextAreaPlugin = ({
 }: IPythonTextAreaPlugin) => {
   const [value, setValue] = useState("");
 
-  usePython<{ text: string }>({
+  useHttpsPython<{ text: string }>({
     node,
     endpoint,
     identifier,
