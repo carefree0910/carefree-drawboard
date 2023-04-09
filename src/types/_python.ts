@@ -1,3 +1,5 @@
+import type { Dictionary } from "@noli/core";
+
 import type { IPythonPlugin } from "./plugins";
 
 export interface IPythonHttpResponse<T> {
@@ -19,4 +21,5 @@ export interface IUseHttpPython<R> extends IUsePythonInfo {
   onUseHttpPythonSuccess: (res: IPythonHttpResponse<R>) => Promise<void>;
   onUseHttpPythonError?: (err: any) => Promise<void>;
   beforeRequest?: () => Promise<void>;
+  getRequestData?: () => Dictionary<any>;
 }

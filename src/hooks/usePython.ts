@@ -27,6 +27,7 @@ export function useHttpPython<R>({
   onUseHttpPythonSuccess,
   onUseHttpPythonError,
   beforeRequest,
+  getRequestData,
   getDeps,
 }: IUseHttpPython<R>) {
   const deps = useDeps({ node, endpoint, identifier, updateInterval, isInvisible }, getDeps);
@@ -34,15 +35,17 @@ export function useHttpPython<R>({
     if (isInvisible) return Promise.resolve();
     const preprocess = beforeRequest ? beforeRequest() : Promise.resolve();
     return preprocess
-      .then(() =>
+      .then(() => {
+        const data = getRequestData ? getRequestData() : {};
         Requests.postJson<IPythonHttpResponse<R>>("_python", endpoint, {
-          node: node?.toJsonPack(),
           identifier,
+          data,
+          node: node?.toJsonPack(),
         }).then((res) => {
           if (res.success) onUseHttpPythonSuccess(res);
           else throw Error(res.message);
-        }),
-      )
+        });
+      })
       .catch((err) => {
         if (onUseHttpPythonError) onUseHttpPythonError(err);
         else Logger.error(err);
