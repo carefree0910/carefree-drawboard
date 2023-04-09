@@ -1,6 +1,8 @@
 import { observer } from "mobx-react-lite";
 import { Input, InputProps } from "@chakra-ui/react";
 
+import { langStore, translate } from "@noli/business";
+
 import type { ISubscribableFields, ITextField } from "@/types/metaFields";
 import { metaStore } from "@/stores/meta";
 
@@ -16,7 +18,7 @@ function TextField({ field, value, onChange, ...props }: TextFieldProps) {
         metaStore.updateProperty(field, event.target.value);
         onChange?.(event);
       }}
-      placeholder={field}
+      placeholder={translate(`${field}-field-placeholder`, langStore.tgt)}
       {...props}></Input>
   );
 }

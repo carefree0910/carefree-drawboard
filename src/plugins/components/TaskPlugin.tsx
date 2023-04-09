@@ -2,9 +2,10 @@ import { useMemo } from "react";
 import { observer } from "mobx-react-lite";
 import { Button, useToast } from "@chakra-ui/react";
 
-import { langStore } from "@noli/business";
+import { langStore, translate } from "@noli/business";
 
 import type { IInternalTaskPlugin } from "@/types/plugins";
+import { UI_Words } from "@/utils/lang/ui";
 import { themeStore } from "@/stores/theme";
 import { importMeta } from "@/actions/importMeta";
 import { CFDivider } from "@/components/CFDivider";
@@ -22,7 +23,7 @@ const TaskPlugin = (props: IInternalTaskPlugin) => {
     <FieldsPlugin {...props}>
       <CFDivider />
       <Button color={textColor} flexShrink={0} onClick={onSubmit}>
-        Submit
+        {translate(UI_Words["submit-task"], lang)}
       </Button>
     </FieldsPlugin>
   );
