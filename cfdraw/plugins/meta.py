@@ -3,7 +3,7 @@ import json
 from cfdraw import *
 
 
-class MetaPlugin(IPlugin[TextAreaResponse]):
+class MetaPlugin(IHttpsPlugin[TextAreaResponse]):
     @property
     def settings(self) -> IPluginSettings:
         return IPluginSettings(
@@ -22,7 +22,7 @@ class MetaPlugin(IPlugin[TextAreaResponse]):
             requireNode=True,
         )
 
-    def process(self, data: IParsedPluginRequest) -> TextAreaResponse:
+    def process(self, data: IParsedHttpsPluginRequest) -> TextAreaResponse:
         meta = data.node.params["meta"]
         meta_json = json.dumps(meta, indent=4)
         return TextAreaResponse(

@@ -4,7 +4,6 @@ from io import BytesIO
 from PIL import Image
 from typing import Any
 from typing import Dict
-from typing import List
 from typing import Type
 from typing import Callable
 from typing import Optional
@@ -22,8 +21,8 @@ from fastapi.middleware import cors
 from cfdraw import constants
 from cfdraw.config import get_config
 from cfdraw.schema import IPlugin
-from cfdraw.schema import IResponse
-from cfdraw.schema import IPluginRequest
+from cfdraw.schema import ITHttpsResponse
+from cfdraw.schema import IHttpsPluginRequest
 from cfdraw.compilers import plugin
 from cfdraw.compilers import settings
 from cfdraw.utils.server import raise_err
@@ -154,11 +153,11 @@ class App:
             @self.api.post(
                 endpoint,
                 name=endpoint[1:].replace("/", "_"),
-                responses=get_responses(IResponse),
+                responses=get_responses(ITHttpsResponse),
             )
-            def fn(data: IPluginRequest) -> Any:
+            def fn(data: IHttpsPluginRequest) -> Any:
                 if self.hash_identifier(plugin.identifier) != data.identifier:
-                    return IResponse(
+                    return ITHttpsResponse(
                         success=False,
                         message="internal error occurred: identifier mismatch",
                         data=BaseModel(),
