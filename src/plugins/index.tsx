@@ -1,6 +1,6 @@
 import type { AvailablePlugins, IMakePlugin } from "@/types/plugins";
 
-import { Logger } from "@noli/core";
+import { Logger, shallowCopy } from "@noli/core";
 import { useSelecting } from "@noli/business";
 
 import { isInvisible } from "@/stores/plugins";
@@ -17,6 +17,8 @@ export function makePlugin<T extends AvailablePlugins>({
   type,
   props: { requireNode, renderInfo, pluginInfo, ...props },
 }: IMakePlugin<T> & { key: string }) {
+  renderInfo = shallowCopy(renderInfo);
+  pluginInfo = shallowCopy(pluginInfo);
   if (renderInfo.follow && props.nodeConstraint === "none") {
     Logger.warn("cannot use `follow` with `targetNodeType` set to `none`");
     return null;
