@@ -2,7 +2,7 @@ import { useCallback, useEffect, useMemo } from "react";
 
 import { Logger } from "@noli/core";
 
-import type { IPythonResponse, IUseHttpPython, IUsePythonInfo } from "@/types/_python";
+import type { IPythonHttpResponse, IUseHttpPython, IUsePythonInfo } from "@/types/_python";
 import { Requests } from "@/requests/actions";
 
 export function useDeps(
@@ -35,7 +35,7 @@ export function useHttpPython<R>({
     const preprocess = beforeRequest ? beforeRequest() : Promise.resolve();
     return preprocess
       .then(() =>
-        Requests.postJson<IPythonResponse<R>>("_python", endpoint, {
+        Requests.postJson<IPythonHttpResponse<R>>("_python", endpoint, {
           node: node?.toJsonPack(),
           identifier,
         }).then((res) => {

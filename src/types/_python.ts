@@ -1,6 +1,6 @@
 import type { IPythonPlugin } from "./plugins";
 
-export interface IPythonResponse<T> {
+export interface IPythonHttpResponse<T> {
   success: boolean;
   message: string;
   data: T;
@@ -19,6 +19,6 @@ export interface IUsePython extends IUsePythonInfo {
 }
 export interface IUseHttpPython<R> extends IUsePython {
   forceNotSend?: boolean;
-  onSuccess: (res: IPythonResponse<R>) => Promise<void>;
+  onSuccess: (res: IPythonHttpResponse<R>) => Promise<void>;
   beforeRequest?: () => Promise<void>;
 }
