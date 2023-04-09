@@ -5,6 +5,7 @@ import type { IResponse } from "@noli/business";
 
 import type { TaskTypes } from "./tasks";
 import type { ICustomDefinitions, ISubscribableFields } from "./metaFields";
+import type { IUseHttpPython } from "./_python";
 
 // general
 
@@ -62,6 +63,13 @@ export interface IPythonPlugin extends IPlugin {
     identifier: string;
     updateInterval?: number;
   };
+}
+export interface IPythonHttpPluginWithSubmit<R> extends IPythonPlugin {
+  buttonText: string;
+  onUseHttpPythonError?: IUseHttpPython<R>["onUseHttpPythonError"];
+  onUseHttpPythonSuccess: IUseHttpPython<R>["onUseHttpPythonSuccess"];
+  beforeRequest?: IUseHttpPython<R>["beforeRequest"];
+  getRequestData?: IUseHttpPython<R>["getRequestData"];
 }
 export interface IPythonHttpTextAreaPlugin extends IPythonPlugin {
   pluginInfo: IPythonPlugin["pluginInfo"] & {

@@ -24,15 +24,17 @@ export function useHttpPython<R>({
   identifier,
   isInvisible,
   updateInterval,
+  forceNotSend,
   onUseHttpPythonSuccess,
   onUseHttpPythonError,
   beforeRequest,
   getRequestData,
   getDeps,
 }: IUseHttpPython<R>) {
-  const deps = useDeps({ node, endpoint, identifier, updateInterval, isInvisible }, getDeps);
+  let deps = useDeps({ node, endpoint, identifier, updateInterval, isInvisible }, getDeps);
+  deps = deps.concat([forceNotSend]);
   const requestFn = useCallback(() => {
-    if (isInvisible) return Promise.resolve();
+    if (isInvisible || forceNotSend) return Promise.resolve();
     const preprocess = beforeRequest ? beforeRequest() : Promise.resolve();
     return preprocess
       .then(() => {
