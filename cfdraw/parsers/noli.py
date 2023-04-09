@@ -174,6 +174,11 @@ Pivot of the plugin.
         offset_x = d.pop("offsetX")
         offset_y = d.pop("offsetY")
         node_constraint = d.pop("nodeConstraint")
+        chakra_props = {}
+        for field in chakra.IChakra.__fields__:
+            chakra_value = d.pop(field)
+            if chakra_value is not None:
+                chakra_props[field] = chakra_value
         return dict(
             type=plugin_type,
             props=dict(
@@ -182,6 +187,7 @@ Pivot of the plugin.
                 nodeConstraint=node_constraint,
                 pluginInfo=plugin_info,
                 renderInfo=d,
+                **chakra_props,
             ),
         )
 
