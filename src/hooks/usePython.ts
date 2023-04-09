@@ -2,26 +2,8 @@ import { useCallback, useEffect, useMemo } from "react";
 
 import { Logger } from "@noli/core";
 
-import type { IPythonPlugin } from "@/types/plugins";
-import type { IPythonResponse } from "@/types/_python";
+import type { IPythonResponse, IUseHttpPython, IUsePythonInfo } from "@/types/_python";
 import { Requests } from "@/requests/actions";
-
-interface IUsePythonInfo {
-  node: IPythonPlugin["pluginInfo"]["node"];
-  endpoint: IPythonPlugin["pluginInfo"]["endpoint"];
-  identifier: IPythonPlugin["pluginInfo"]["identifier"];
-  isInvisible: boolean;
-  updateInterval?: IPythonPlugin["pluginInfo"]["updateInterval"];
-}
-export interface IUsePython extends IUsePythonInfo {
-  onError?: (err: any) => Promise<void>;
-  getDeps?: (deps: IUsePythonInfo) => any[];
-}
-
-export interface IUseHttpPython<R> extends IUsePython {
-  onSuccess: (res: IPythonResponse<R>) => Promise<void>;
-  beforeRequest?: () => Promise<void>;
-}
 
 export function useDeps(
   { node, endpoint, identifier, updateInterval, isInvisible }: IUsePythonInfo,
