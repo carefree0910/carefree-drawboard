@@ -23,7 +23,7 @@ import { drawboardPluginFactory } from "./utils/factory";
 import Render from "./components/Render";
 import { pythonPluginSettings } from "@/panels/_python";
 
-const SettingsPlugin = observer(({ pluginInfo, ...props }: IPlugin) => {
+const SettingsPlugin = ({ pluginInfo, ...props }: IPlugin) => {
   const lang = langStore.tgt;
   const commonProps = { fontWeight: 400, size: "md" };
 
@@ -100,5 +100,5 @@ const SettingsPlugin = observer(({ pluginInfo, ...props }: IPlugin) => {
       </Flex>
     </Render>
   );
-});
-drawboardPluginFactory.register("settings")(SettingsPlugin);
+};
+drawboardPluginFactory.register("settings")(observer(SettingsPlugin));
