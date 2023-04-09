@@ -127,7 +127,7 @@ class App:
             return UploadImageModel(
                 success=True,
                 message="",
-                data=ImageDataModel(url=f"{constants.API_URL}/{url_path}", w=w, h=h),
+                data=ImageDataModel(url=f"{self.config.api_url}/{url_path}", w=w, h=h),
             )
 
         @self.api.get(
@@ -168,7 +168,7 @@ class App:
         @self.api.on_event("startup")
         def startup() -> None:
             self.hash = random_hash()
-            print_info("🚀 Starting Server...")
+            print_info(f"🚀 Starting Server at {self.config.api_url} ...")
             print_info("🔨 Compiling Plugins...")
             plugin.set_plugin_settings(
                 {

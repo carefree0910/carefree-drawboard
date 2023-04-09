@@ -22,10 +22,14 @@ class Config(IConfig):
     ping_interval: int = constants.PING_INTERVAL
     ping_timeout: int = constants.PING_TIMEOUT
     # api
-    api_url: str = constants.API_URL
+    api_host: str = constants.API_HOST
     backend_port: str = constants.BACKEND_PORT
     # misc
     debug: bool = True
+
+    @property
+    def api_url(self) -> str:
+        return f"{self.api_host}:{self.backend_port}"
 
     @property
     def default_module(self) -> str:

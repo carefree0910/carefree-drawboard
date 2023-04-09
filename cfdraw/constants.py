@@ -27,7 +27,7 @@ class SocketEvent(str, Enum):
 ERR_CODE = 406
 BACKEND_PORT = "8123"
 DEV_BACKEND_HOST = "0.0.0.0"
-API_URL = f"http://localhost:{BACKEND_PORT}"
+API_HOST = "http://localhost"
 
 
 class Endpoint(Enum):
