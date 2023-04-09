@@ -1,4 +1,4 @@
-import { Logger } from "@noli/core";
+import { Logger, shallowCopy } from "@noli/core";
 import { useSelecting } from "@noli/business";
 
 import type { IMakePythonPlugin } from "@/types/_python";
@@ -14,6 +14,8 @@ export function makePythonPlugin<T extends AvailablePythonPlugins>({
   type,
   props: { requireNode, renderInfo, pluginInfo, ...props },
 }: IMakePythonPlugin<T> & { key: string }) {
+  renderInfo = shallowCopy(renderInfo);
+  pluginInfo = shallowCopy(pluginInfo);
   if (renderInfo.follow && props.nodeConstraint === "none") {
     Logger.warn("cannot use `follow` with `targetNodeType` set to `none`");
     return null;
