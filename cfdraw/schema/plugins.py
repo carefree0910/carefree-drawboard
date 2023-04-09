@@ -32,24 +32,6 @@ class PluginType(str, Enum):
 # general
 
 
-class DefaultPluginSettings(NamedTuple):
-    iconW: int
-    iconH: int
-    pivot: PivotType
-    follow: bool
-    bgOpacity: float
-    modalOpacity: float
-    offsetX: int
-    offsetY: int
-    expandOffsetX: int
-    expandOffsetY: int
-
-
-_plugin_settings_pivot = "export const DEFAULT_PLUGIN_SETTINGS = "
-_plugin_settings = utils.parse_dict_from_ts_constants(_plugin_settings_pivot)
-DEFAULT_PLUGIN_SETTINGS = DefaultPluginSettings(**_plugin_settings)
-
-
 class IPluginInfo(BaseModel):
     """The actual data used in `usePython` hook & each React component."""
 
@@ -84,51 +66,33 @@ The image url that will be shown for the plugin.
 > If not specified, we will use a default plugin-ish image.
 """,
     )
-    pivot: PivotType = Field(
-        DEFAULT_PLUGIN_SETTINGS.pivot,
+    pivot: Optional[PivotType] = Field(
+        None,
         description="""
 Pivot of the plugin.
 > If `follow` is set to `true`, the plugin will be shown at the pivot of the selected node.
 > Otherwise, the plugin will be shown at the pivot of the entire drawboard.
 """,
     )
-    follow: bool = Field(
-        DEFAULT_PLUGIN_SETTINGS.follow,
+    follow: Optional[bool] = Field(
+        None,
         description="Whether the plugin follows the node",
     )
-    expandOffsetX: int = Field(
-        DEFAULT_PLUGIN_SETTINGS.expandOffsetX,
+    expandOffsetX: Optional[int] = Field(
+        None,
         description="X offset of the expanded plugin",
     )
-    expandOffsetY: int = Field(
-        DEFAULT_PLUGIN_SETTINGS.expandOffsetY,
+    expandOffsetY: Optional[int] = Field(
+        None,
         description="Y offset of the expanded plugin",
     )
-    iconW: int = Field(
-        DEFAULT_PLUGIN_SETTINGS.iconW,
-        description="Width of the plugin button",
-    )
-    iconH: int = Field(
-        DEFAULT_PLUGIN_SETTINGS.iconH,
-        description="Height of the plugin button",
-    )
-    offsetX: int = Field(
-        DEFAULT_PLUGIN_SETTINGS.offsetX,
-        description="X offset of the plugin button",
-    )
-    offsetY: int = Field(
-        DEFAULT_PLUGIN_SETTINGS.offsetY,
-        description="Y offset of the plugin button",
-    )
-    bgOpacity: float = Field(
-        DEFAULT_PLUGIN_SETTINGS.bgOpacity,
-        description="Opacity of the plugin button",
-    )
+    iconW: Optional[int] = Field(None, description="Width of the plugin button")
+    iconH: Optional[int] = Field(None, description="Height of the plugin button")
+    offsetX: Optional[int] = Field(None, description="X offset of the plugin button")
+    offsetY: Optional[int] = Field(None, description="Y offset of the plugin button")
+    bgOpacity: Optional[float] = Field(None, description="Opacity of the plugin button")
     useModal: bool = Field(False, description="Whether popup a modal for the plugin")
-    modalOpacity: float = Field(
-        DEFAULT_PLUGIN_SETTINGS.modalOpacity,
-        description="Opacity of the modal panel",
-    )
+    modalOpacity: Optional[float] = Field(None, description="Opacity of the modal")
     # React fields
     pluginInfo: IPluginInfo = Field(IPluginInfo(), description="Plugin info")
 
