@@ -5,6 +5,7 @@ from typing import Dict
 from typing import List
 from typing import Optional
 from typing import NamedTuple
+from cftool.misc import update_dict
 
 from cfdraw import constants
 
@@ -53,3 +54,14 @@ def parse_dict_from(pivot: str, path: str) -> Dict[str, Any]:
 
 def parse_dict_from_ts_constants(pivot: str) -> Dict[str, Any]:
     return parse_dict_from(pivot, constants.TS_CONSTANTS_PATH)
+
+
+def update_dict_with(pivot: str, path: str, updates: Dict[str, Any]) -> None:
+    parsed = _parse_dict(pivot, path, True)
+    update_dict(updates, parsed.d)
+    json_string = json.dumps(parsed.d, indent=2)
+    new_line = f"{pivot}{json_string};"
+    before = parsed.all_lines[: parsed.start_idx]
+    new_lines = before + [new_line] + parsed.all_lines[parsed.end_idx + 1 :]
+    with open(path, "w") as f:
+        f.writelines(new_lines)
