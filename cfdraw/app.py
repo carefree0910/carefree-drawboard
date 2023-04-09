@@ -20,16 +20,16 @@ from fastapi.middleware import cors
 
 from cfdraw import constants
 from cfdraw.config import get_config
-from cfdraw.schema import IPlugin
-from cfdraw.schema import ISocketPlugin
-from cfdraw.schema import IHttpResponse
-from cfdraw.schema import IHttpPluginRequest
 from cfdraw.compilers import plugin
 from cfdraw.compilers import settings
 from cfdraw.utils.server import raise_err
 from cfdraw.utils.server import get_err_msg
 from cfdraw.utils.server import get_responses
 from cfdraw.utils.server import get_image_response_kwargs
+from cfdraw.schema.plugins import IPlugin
+from cfdraw.schema.plugins import ISocketPlugin
+from cfdraw.schema.plugins import IHttpResponse
+from cfdraw.schema.plugins import IHttpPluginRequest
 
 
 TPlugin = Type[IPlugin]

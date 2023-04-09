@@ -1,7 +1,7 @@
 from datetime import datetime
 from cftool.constants import TIME_FORMAT
 
-from cfdraw import *
+from ..schema.plugins import *
 
 
 class TimerPlugin(IHttpPlugin[TextAreaResponse]):

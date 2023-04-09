@@ -1,4 +1,3 @@
-import json
 import math
 
 from enum import Enum
@@ -9,13 +8,7 @@ from typing import Tuple
 from typing import Union
 from typing import Optional
 from typing import Generator
-from typing import NamedTuple
-from pydantic import Field
 from pydantic import BaseModel
-
-from cfdraw import constants
-from cfdraw.parsers import utils
-from cfdraw.parsers import chakra
 
 
 class PivotType(str, Enum):
@@ -28,10 +21,6 @@ class PivotType(str, Enum):
     LB = "lb"
     BOTTOM = "bottom"
     RB = "rb"
-
-
-class PluginType(str, Enum):
-    HTTP_TEXT_AREA = "httpTextArea"
 
 
 class NodeConstraints(str, Enum):
@@ -55,141 +44,6 @@ class NodeConstraints(str, Enum):
     ANY_NODE = "anyNode"
     SINGLE_NODE = "singleNode"
     MULTI_NODE = "multiNode"
-
-
-class DefaultPluginSettings(NamedTuple):
-    iconW: int
-    iconH: int
-    pivot: PivotType
-    follow: bool
-    bgOpacity: float
-    modalOpacity: float
-    offsetX: int
-    offsetY: int
-    expandOffsetX: int
-    expandOffsetY: int
-
-
-_plugin_settings_pivot = "export const DEFAULT_PLUGIN_SETTINGS = "
-_plugin_settings = utils.parse_dict_from_ts_constants(_plugin_settings_pivot)
-DEFAULT_PLUGIN_SETTINGS = DefaultPluginSettings(**_plugin_settings)
-
-
-class IPluginInfo(BaseModel):
-    """The actual data used in `usePython` hook & each React component."""
-
-    updateInterval: int = Field(
-        0,
-        ge=0,
-        description="If > 0, the plugin will be called every `updateInterval` ms",
-    )
-
-
-class ITextAreaPluginInfo(IPluginInfo):
-    noLoading: bool = Field(
-        False, description="Whether to show the 'Loading...' text or not"
-    )
-    textAlign: Optional[chakra.TextAlign] = Field(None, description="Text align")
-
-
-class IPluginSettings(chakra.IChakra):
-    # required fields
-    w: int = Field(..., gt=0, description="Width of the expanded plugin")
-    h: int = Field(..., gt=0, description="Height of the expanded plugin")
-    type: PluginType = Field(..., description="Type of the plugin")
-    nodeConstraint: NodeConstraints = Field(
-        ...,
-        description="""
-Spcify when the plugin will be shown.
-> If set to 'none', the plugin will always be shown.
-> If set to 'anyNode', the plugin will be shown when any node is selected.
-> If set to 'singleNode', the plugin will be shown when only one node is selected.
-> If set to 'multiNode', the plugin will be shown when more than one node is selected.
-> Otherwise, the plugin will be shown when the selected node is of the specified type.
-""",
-    )
-    # style fields
-    src: str = Field(
-        "",
-        description="""
-The image url that will be shown for the plugin.
-> If not specified, we will use a default plugin-ish image.
-""",
-    )
-    pivot: PivotType = Field(
-        DEFAULT_PLUGIN_SETTINGS.pivot,
-        description="""
-Pivot of the plugin.
-> If `follow` is set to `true`, the plugin will be shown at the pivot of the selected node.
-> Otherwise, the plugin will be shown at the pivot of the entire drawboard.
-""",
-    )
-    follow: bool = Field(
-        DEFAULT_PLUGIN_SETTINGS.follow,
-        description="Whether the plugin follows the node",
-    )
-    expandOffsetX: int = Field(
-        DEFAULT_PLUGIN_SETTINGS.expandOffsetX,
-        description="X offset of the expanded plugin",
-    )
-    expandOffsetY: int = Field(
-        DEFAULT_PLUGIN_SETTINGS.expandOffsetY,
-        description="Y offset of the expanded plugin",
-    )
-    iconW: int = Field(
-        DEFAULT_PLUGIN_SETTINGS.iconW,
-        description="Width of the plugin button",
-    )
-    iconH: int = Field(
-        DEFAULT_PLUGIN_SETTINGS.iconH,
-        description="Height of the plugin button",
-    )
-    offsetX: int = Field(
-        DEFAULT_PLUGIN_SETTINGS.offsetX,
-        description="X offset of the plugin button",
-    )
-    offsetY: int = Field(
-        DEFAULT_PLUGIN_SETTINGS.offsetY,
-        description="Y offset of the plugin button",
-    )
-    bgOpacity: float = Field(
-        DEFAULT_PLUGIN_SETTINGS.bgOpacity,
-        description="Opacity of the plugin button",
-    )
-    useModal: bool = Field(False, description="Whether popup a modal for the plugin")
-    modalOpacity: float = Field(
-        DEFAULT_PLUGIN_SETTINGS.modalOpacity,
-        description="Opacity of the modal panel",
-    )
-    # React fields
-    pluginInfo: IPluginInfo = Field(IPluginInfo(), description="Plugin info")
-
-    def to_plugin_settings(self, identifier: str) -> Dict[str, Any]:
-        d = self.dict()
-        plugin_info = d.pop("pluginInfo")
-        # `identifier` has hashed into `{identifier}.{hash}`
-        plugin_info["endpoint"] = f"/{'.'.join(identifier.split('.')[:-1])}"
-        plugin_info["identifier"] = identifier
-        plugin_type = f"_python.{d.pop('type')}"
-        offset_x = d.pop("offsetX")
-        offset_y = d.pop("offsetY")
-        node_constraint = d.pop("nodeConstraint")
-        chakra_props = {}
-        for field in chakra.IChakra.__fields__:
-            chakra_value = d.pop(field)
-            if chakra_value is not None:
-                chakra_props[field] = chakra_value
-        return dict(
-            type=plugin_type,
-            props=dict(
-                offsetX=offset_x,
-                offsetY=offset_y,
-                nodeConstraint=node_constraint,
-                pluginInfo=plugin_info,
-                renderInfo=d,
-                **chakra_props,
-            ),
-        )
 
 
 # data structures
@@ -369,9 +223,5 @@ def parse_graph(render_info_list: List[Dict[str, Any]]) -> Graph:
 
 __all__ = [
     "PivotType",
-    "PluginType",
     "NodeConstraints",
-    "IPluginInfo",
-    "ITextAreaPluginInfo",
-    "IPluginSettings",
 ]
