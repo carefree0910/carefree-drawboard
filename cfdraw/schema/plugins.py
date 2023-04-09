@@ -26,6 +26,7 @@ THttpResponse = TypeVar("THttpResponse", bound="IHttpResponse", covariant=True)
 
 class PluginType(str, Enum):
     HTTP_TEXT_AREA = "httpTextArea"
+    HTTP_QA = "httpQA"
 
 
 # general
@@ -239,21 +240,33 @@ class TextAreaResponse(IHttpResponse):
     data: TextAreaModel = Field(..., description="The data of the response")
 
 
+## qa
+
+
+class IQAPluginInfo(IPluginInfo):
+    initialText: str = Field(
+        ...,
+        description="The initial text to be displayed in the text area",
+    )
+
+
 __all__ = [
+    "PluginType",
     # noli
     "PivotType",
     "NodeConstraints",
     # chakra
     "TextAlign",
     # plugins
+    "IPluginSettings",
     "IRawHttpPluginRequest",
     "IHttpPluginRequest",
     "IHttpResponse",
-    "PluginType",
-    "IPluginSettings",
     "IPlugin",
     "IHttpPlugin",
+    # bindings
     "ITextAreaPluginInfo",
     "TextAreaModel",
     "TextAreaResponse",
+    "IQAPluginInfo",
 ]
