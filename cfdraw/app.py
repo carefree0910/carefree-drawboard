@@ -29,7 +29,7 @@ from cfdraw.utils.server import get_image_response_kwargs
 from cfdraw.schema.plugins import IPlugin
 from cfdraw.schema.plugins import ISocketPlugin
 from cfdraw.schema.plugins import IHttpResponse
-from cfdraw.schema.plugins import IHttpPluginRequest
+from cfdraw.schema.plugins import IRawHttpPluginRequest
 
 
 TPlugin = Type[IPlugin]
@@ -156,7 +156,7 @@ class App:
                 name=endpoint[1:].replace("/", "_"),
                 responses=get_responses(IHttpResponse),
             )
-            def fn(data: IHttpPluginRequest) -> Any:
+            def fn(data: IRawHttpPluginRequest) -> Any:
                 if self.hash_identifier(identifier) != data.identifier:
                     return IHttpResponse(
                         success=False,

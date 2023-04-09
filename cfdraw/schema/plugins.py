@@ -164,22 +164,22 @@ Pivot of the plugin.
 ## http
 
 
-class IHttpPluginRequest(BaseModel):
+class IRawHttpPluginRequest(BaseModel):
     identifier: str = Field(..., description="The identifier of the plugin")
     node: Optional[Dict[str, Any]] = Field(
         None,
         description="JSON data of the selected node",
     )
 
-    def parse(self) -> "IParsedHttpPluginRequest":
+    def parse(self) -> "IHttpPluginRequest":
         if self.node is None:
             return self
         d = self.dict()
         d["node"] = parse_node(self.node)
-        return IParsedHttpPluginRequest(**d)
+        return IHttpPluginRequest(**d)
 
 
-class IParsedHttpPluginRequest(IHttpPluginRequest):
+class IHttpPluginRequest(IRawHttpPluginRequest):
     node: Optional[INode] = Field(None, description="The parsed selected node")
 
 
@@ -207,10 +207,10 @@ class IPlugin(ABC):
 
 class IHttpPlugin(Generic[THttpResponse], IPlugin, metaclass=ABCMeta):
     @abstractmethod
-    def process(self, data: IParsedHttpPluginRequest) -> THttpResponse:
+    def process(self, data: IHttpPluginRequest) -> THttpResponse:
         pass
 
-    def __call__(self, data: IHttpPluginRequest) -> THttpResponse:
+    def __call__(self, data: IRawHttpPluginRequest) -> THttpResponse:
         return self.process(data.parse())
 
 
@@ -245,8 +245,8 @@ __all__ = [
     # chakra
     "TextAlign",
     # plugins
+    "IRawHttpPluginRequest",
     "IHttpPluginRequest",
-    "IParsedHttpPluginRequest",
     "IHttpResponse",
     "PluginType",
     "IPluginSettings",

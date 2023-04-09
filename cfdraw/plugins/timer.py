@@ -21,7 +21,7 @@ class TimerPlugin(IHttpPlugin[TextAreaResponse]):
             ),
         )
 
-    def process(self, data: IParsedHttpPluginRequest) -> TextAreaResponse:
+    def process(self, data: IHttpPluginRequest) -> TextAreaResponse:
         return TextAreaResponse(
             success=True,
             message="",
