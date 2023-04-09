@@ -1,4 +1,4 @@
-import type { AvailablePlugins, IPluginProps } from "@/types/plugins";
+import type { AvailablePlugins, IMakePlugin } from "@/types/plugins";
 
 import { Logger } from "@noli/core";
 import { useSelecting } from "@noli/business";
@@ -12,18 +12,10 @@ export * from "./MetaPlugin";
 export * from "./Txt2ImgSDPlugin";
 export * from "./SettingsPlugin";
 
-export function makePlugin<T extends AvailablePlugins>(
-  type: T,
-  {
-    requireNode,
-    renderInfo,
-    pluginInfo,
-    ...props
-  }: Omit<IPluginProps[T], "pluginInfo"> & {
-    requireNode?: boolean;
-    pluginInfo: Omit<IPluginProps[T]["pluginInfo"], "node">;
-  },
-) {
+export function makePlugin<T extends AvailablePlugins>({
+  type,
+  props: { requireNode, renderInfo, pluginInfo, ...props },
+}: IMakePlugin<T>) {
   if (renderInfo.follow && props.nodeConstraint === "none") {
     Logger.warn("cannot use `follow` with `targetNodeType` set to `none`");
     return null;

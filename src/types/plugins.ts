@@ -89,3 +89,11 @@ export interface IPluginProps {
 export interface IPythonPluginProps {
   "_python.textArea": IPythonTextAreaPlugin;
 }
+
+export interface IMakePlugin<T extends AvailablePlugins> {
+  type: T;
+  props: Omit<IPluginProps[T], "pluginInfo"> & {
+    requireNode?: boolean;
+    pluginInfo: Omit<IPluginProps[T]["pluginInfo"], "node">;
+  };
+}
