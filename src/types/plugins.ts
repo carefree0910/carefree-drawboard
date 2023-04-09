@@ -82,15 +82,15 @@ export type AvailablePythonPlugins = typeof allAvailablePythonPlugins[number];
 export type AvailablePluginsAndPythonPlugins = AvailablePlugins | AvailablePythonPlugins;
 
 export interface IPluginProps {
+  // react plugins
   meta: IPlugin;
   "txt2img.sd": ITaskPlugin;
   settings: IPlugin;
-}
-export interface IPythonPluginProps {
+  // python plugins
   "_python.textArea": IPythonTextAreaPlugin;
 }
 
-export interface IMakePlugin<T extends AvailablePlugins> {
+export interface IMakePlugin<T extends AvailablePluginsAndPythonPlugins> {
   type: T;
   props: Omit<IPluginProps[T], "pluginInfo"> & {
     pluginInfo: Omit<IPluginProps[T]["pluginInfo"], "node">;

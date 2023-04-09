@@ -6,7 +6,6 @@ import { useIsReady } from "@noli/business";
 import { themeStore } from "@/stores/theme";
 import { BOARD_CONTAINER_ID } from "@/utils/constants";
 import { makePlugin } from "@/plugins";
-import { makePythonPlugin } from "@/plugins/_python";
 import { reactPluginSettings } from "./_react";
 import { pythonPluginSettings } from "./_python";
 
@@ -22,7 +21,7 @@ function BoardPanel() {
       <>
         {reactPluginSettings.map((settings) => makePlugin({ key: settings.type, ...settings }))}
         {pythonPluginSettings.map((settings) =>
-          makePythonPlugin({ key: settings.props.pluginInfo.identifier, ...settings }),
+          makePlugin({ key: settings.props.pluginInfo.identifier, ...settings }),
         )}
       </>
     </Flex>

@@ -29,4 +29,4 @@ const PythonTextAreaPlugin = ({
     </Render>
   );
 };
-drawboardPluginFactory.register("_python.textArea", true)(observer(PythonTextAreaPlugin));
+drawboardPluginFactory.registerPython("_python.textArea", true)(observer(PythonTextAreaPlugin));

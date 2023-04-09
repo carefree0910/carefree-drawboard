@@ -1,7 +1,6 @@
-import type { IMakePythonPlugin } from "@/types/_python";
-import type { AvailablePythonPlugins } from "@/types/plugins";
+import type { AvailablePythonPlugins, IMakePlugin } from "@/types/plugins";
 
-export const pythonPluginSettings: IMakePythonPlugin<AvailablePythonPlugins>[] = [
+export const pythonPluginSettings: IMakePlugin<AvailablePythonPlugins>[] = [
   /**
    * !!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!
    * !!!!!                                 Please use                                   !!!!!
