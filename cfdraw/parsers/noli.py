@@ -31,7 +31,7 @@ class PivotType(str, Enum):
 
 
 class PluginType(str, Enum):
-    TEXT_AREA = "textArea"
+    HTTP_TEXT_AREA = "httpTextArea"
 
 
 class NodeConstraints(str, Enum):

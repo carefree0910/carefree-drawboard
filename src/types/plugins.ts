@@ -63,7 +63,7 @@ export interface IPythonPlugin extends IPlugin {
     updateInterval?: number;
   };
 }
-export interface IPythonTextAreaPlugin extends IPythonPlugin {
+export interface IPythonHttpTextAreaPlugin extends IPythonPlugin {
   pluginInfo: IPythonPlugin["pluginInfo"] & {
     noLoading?: boolean;
     textAlign?: TextareaProps["textAlign"];
@@ -73,7 +73,7 @@ export interface IPythonTextAreaPlugin extends IPythonPlugin {
 // factory
 
 export const allAvailablePlugins = ["txt2img.sd", "settings"] as const;
-export const allAvailablePythonPlugins = ["_python.textArea"] as const;
+export const allAvailablePythonPlugins = ["_python.httpTextArea"] as const;
 export type AvailablePlugins = typeof allAvailablePlugins[number];
 export type AvailablePythonPlugins = typeof allAvailablePythonPlugins[number];
 export type AvailablePluginsAndPythonPlugins = AvailablePlugins | AvailablePythonPlugins;
@@ -84,7 +84,7 @@ export interface IPluginProps {
   "txt2img.sd": ITaskPlugin;
   settings: IPlugin;
   // python plugins
-  "_python.textArea": IPythonTextAreaPlugin;
+  "_python.httpTextArea": IPythonHttpTextAreaPlugin;
 }
 
 export interface IMakePlugin<T extends AvailablePluginsAndPythonPlugins> {

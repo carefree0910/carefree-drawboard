@@ -10,12 +10,12 @@ const _pluginsLangRecords: Record<Lang, Record<AvailablePluginsAndPythonPlugins,
   zh: {
     "txt2img.sd": "文本转图片",
     settings: "设置",
-    "_python.textArea": "文本框",
+    "_python.httpTextArea": "文本框",
   },
   en: {
     "txt2img.sd": "Txt2Img",
     settings: "Settings",
-    "_python.textArea": "TextArea",
+    "_python.httpTextArea": "TextArea",
   },
 };
 

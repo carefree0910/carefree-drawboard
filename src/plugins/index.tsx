@@ -11,7 +11,7 @@ import { getNodeFilter } from "./utils/renderFilters";
 export * from "./MetaPlugin";
 export * from "./Txt2ImgSDPlugin";
 export * from "./SettingsPlugin";
-export * from "./_python/TextAreaPlugin";
+export * from "./_python/HttpTextAreaPlugin";
 
 export function makePlugin<T extends AvailablePluginsAndPythonPlugins>({
   key,

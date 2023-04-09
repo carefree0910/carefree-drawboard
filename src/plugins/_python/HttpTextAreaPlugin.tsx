@@ -2,15 +2,15 @@ import { useState } from "react";
 import { observer } from "mobx-react-lite";
 import { Textarea } from "@chakra-ui/react";
 
-import type { IPythonTextAreaPlugin } from "@/types/plugins";
+import type { IPythonHttpTextAreaPlugin } from "@/types/plugins";
 import { useHttpPython } from "@/hooks/usePython";
 import { drawboardPluginFactory } from "@/plugins/utils/factory";
 import Render from "@/plugins/components/Render";
 
-const PythonTextAreaPlugin = ({
+const PythonHttpTextAreaPlugin = ({
   pluginInfo: { node, endpoint, identifier, updateInterval, noLoading, textAlign },
   ...props
-}: IPythonTextAreaPlugin) => {
+}: IPythonHttpTextAreaPlugin) => {
   const [value, setValue] = useState("");
 
   useHttpPython<{ text: string }>({
@@ -29,4 +29,7 @@ const PythonTextAreaPlugin = ({
     </Render>
   );
 };
-drawboardPluginFactory.registerPython("_python.textArea", true)(observer(PythonTextAreaPlugin));
+drawboardPluginFactory.registerPython(
+  "_python.httpTextArea",
+  true,
+)(observer(PythonHttpTextAreaPlugin));

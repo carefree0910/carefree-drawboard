@@ -10,7 +10,7 @@ class TimerPlugin(IHttpPlugin[TextAreaResponse]):
         return IPluginSettings(
             w=300,
             h=70,
-            type=PluginType.TEXT_AREA,
+            type=PluginType.HTTP_TEXT_AREA,
             nodeConstraint=NodeConstraints.NONE,
             src="https://ailab-huawei-cdn.nolibox.com/upload/images/63c07ca52b2b42ef943bcf04c8e78878.png",
             pivot=PivotType.TOP,
