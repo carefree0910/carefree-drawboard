@@ -166,7 +166,7 @@ Pivot of the plugin.
 
 class IRawHttpPluginRequest(BaseModel):
     identifier: str = Field(..., description="The identifier of the plugin")
-    data: BaseModel = Field(..., description="The extra data of the request")
+    data: Dict[str, Any] = Field(..., description="The extra data of the request")
     node: Optional[Dict[str, Any]] = Field(
         None,
         description="JSON data of the selected node",
