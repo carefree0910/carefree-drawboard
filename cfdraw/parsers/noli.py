@@ -14,6 +14,7 @@ from pydantic import Field
 from pydantic import BaseModel
 
 from cfdraw import constants
+from cfdraw.parsers import utils
 from cfdraw.parsers import chakra
 
 
@@ -69,30 +70,9 @@ class DefaultPluginSettings(NamedTuple):
     expandOffsetY: int
 
 
-def _get_default_plugin_settings() -> DefaultPluginSettings:
-    pivot = "export const DEFAULT_PLUGIN_SETTINGS = "
-    with open(constants.TS_CONSTANTS_FILE, "r") as f:
-        start = False
-        target_lines = []
-        for line in f:
-            line = line.strip()
-            if line.startswith(pivot):
-                start = True
-                target_lines.append("{")
-            elif start:
-                if line.endswith("};"):
-                    target_lines[-1] = target_lines[-1][:-1]  # strip the trailing comma
-                    target_lines.append("}")
-                    break
-                left, right = line.split(": ")
-                line = f'"{left}": {right}'
-                target_lines.append(line)
-    json_str = "".join(target_lines)
-    d = json.loads(json_str)
-    return DefaultPluginSettings(**d)
-
-
-DEFAULT_PLUGIN_SETTINGS = _get_default_plugin_settings()
+_plugin_settings_pivot = "export const DEFAULT_PLUGIN_SETTINGS = "
+_plugin_settings = utils.parse_dict_from_ts_constants(_plugin_settings_pivot)
+DEFAULT_PLUGIN_SETTINGS = DefaultPluginSettings(**_plugin_settings)
 
 
 class IPluginInfo(BaseModel):
