@@ -5,7 +5,11 @@ import type { IResponse } from "@noli/business";
 
 import type { TaskTypes } from "./tasks";
 import type { ICustomDefinitions, ISubscribableFields } from "./metaFields";
-import type { IPythonHttpQAPlugin, IPythonHttpTextAreaPlugin } from "./_python";
+import type {
+  IPythonHttpFieldsPlugin,
+  IPythonHttpQAPlugin,
+  IPythonHttpTextAreaPlugin,
+} from "./_python";
 
 // general
 
@@ -58,7 +62,11 @@ export interface ITaskPlugin extends IFieldsPlugin {
 // factory
 
 export const allAvailablePlugins = ["txt2img.sd", "settings"] as const;
-export const allAvailablePythonPlugins = ["_python.httpTextArea", "_python.httpQA"] as const;
+export const allAvailablePythonPlugins = [
+  "_python.httpTextArea",
+  "_python.httpQA",
+  "_python.httpFields",
+] as const;
 export type AvailablePlugins = typeof allAvailablePlugins[number];
 export type AvailablePythonPlugins = typeof allAvailablePythonPlugins[number];
 export type AvailablePluginsAndPythonPlugins = AvailablePlugins | AvailablePythonPlugins;
@@ -71,6 +79,7 @@ export interface IPluginProps {
   // python plugins
   "_python.httpTextArea": IPythonHttpTextAreaPlugin;
   "_python.httpQA": IPythonHttpQAPlugin;
+  "_python.httpFields": IPythonHttpFieldsPlugin;
 }
 
 export interface IMakePlugin<T extends AvailablePluginsAndPythonPlugins> {

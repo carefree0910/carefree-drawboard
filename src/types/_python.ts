@@ -3,6 +3,7 @@ import type { TextareaProps } from "@chakra-ui/react";
 import type { Dictionary, Matrix2DFields } from "@noli/core";
 
 import type { IPlugin } from "./plugins";
+import type { ICustomDefinitions } from "./metaFields";
 
 // general
 
@@ -56,6 +57,11 @@ export interface IPythonHttpTextAreaPlugin extends IPythonPlugin {
 export interface IPythonHttpQAPlugin extends IPythonPlugin {
   pluginInfo: IPythonPlugin["pluginInfo"] & {
     initialText: string;
+  };
+}
+export interface IPythonHttpFieldsPlugin extends IPythonPlugin {
+  pluginInfo: IPythonPlugin["pluginInfo"] & {
+    customDefinitions: ICustomDefinitions;
   };
 }
 

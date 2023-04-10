@@ -13,6 +13,7 @@ from typing import Optional
 from pydantic import Field
 from pydantic import BaseModel
 
+from cfdraw.schema.fields import IFieldDefinition
 from cfdraw.parsers.noli import parse_node
 from cfdraw.parsers.noli import INode
 from cfdraw.parsers.noli import Matrix2D
@@ -28,6 +29,7 @@ TPluginModel = TypeVar("TPluginModel")
 class PluginType(str, Enum):
     HTTP_TEXT_AREA = "httpTextArea"
     HTTP_QA = "httpQA"
+    HTTP_FIELDS = "httpFields"
 
 
 # general
@@ -263,6 +265,16 @@ class IHttpQAPluginInfo(IPluginInfo):
     )
 
 
+## (http) fields
+
+
+class IHttpFieldsPluginInfo(IPluginInfo):
+    customDefinitions: Dict[str, IFieldDefinition] = Field(
+        ...,
+        description="Field definitions",
+    )
+
+
 __all__ = [
     "PluginType",
     # noli
@@ -282,4 +294,5 @@ __all__ = [
     # bindings
     "IHttpTextAreaPluginInfo",
     "IHttpQAPluginInfo",
+    "IHttpFieldsPluginInfo",
 ]

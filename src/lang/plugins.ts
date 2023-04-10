@@ -12,12 +12,14 @@ const _pluginsLangRecords: Record<Lang, Record<AvailablePluginsAndPythonPlugins,
     settings: "设置",
     "_python.httpTextArea": "文本框",
     "_python.httpQA": "问答",
+    "_python.httpFields": "插件",
   },
   en: {
     "txt2img.sd": "Txt2Img",
     settings: "Settings",
     "_python.httpTextArea": "TextArea",
     "_python.httpQA": "Q & A",
+    "_python.httpFields": "Plugin",
   },
 };
 

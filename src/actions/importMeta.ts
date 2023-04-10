@@ -1,4 +1,4 @@
-import { getRandomHash, Logger } from "@noli/core";
+import { getRandomHash, Logger, shallowCopy } from "@noli/core";
 import { BoardStore, translate } from "@noli/business";
 
 import type { MetaType } from "@/types/meta";
@@ -26,6 +26,7 @@ function updateTimestamps(alias: string, createTime?: number): void {
 const consumers: Record<MetaType, (input: IImportMeta<any>) => void> = {
   upload: consumeUpload,
   "txt2img.sd": consumeTxt2ImgSD,
+  "python.httpFields": consumePythonHttpFields,
 };
 function consumeUpload({ t, lang, type, metaData }: IImportMeta<"upload">): void {
   const success = async () => {
@@ -70,6 +71,38 @@ function consumeTxt2ImgSD({ t, lang, type, metaData }: IImportMeta<"txt2img.sd">
       });
     })
     .catch((err) => failed(err));
+}
+function consumePythonHttpFields({
+  t,
+  lang,
+  type,
+  metaData,
+}: IImportMeta<"python.httpFields">): void {
+  const failed = async (err: any) => {
+    toast(
+      t,
+      "error",
+      `${translate(Toast_Words["post-python-http-fields-plugin-error-message"], lang)} (${err})`,
+    );
+  };
+  if (metaData.type === "image") {
+    metaData.value.forEach(({ w, h, url }, i) => {
+      const newAlias = `python.httpFields.${metaData.data.identifier}.${getRandomHash()}`;
+      const bboxInfo: NewImageInfo = { w, h };
+      const success = async () => {
+        toast(t, "success", translate(Toast_Words["generate-image-success-message"], lang));
+        updateTimestamps(newAlias);
+      };
+      const iMetaData = shallowCopy(metaData);
+      iMetaData.value = metaData.value[i] as any;
+      addNewImage(newAlias, url, {
+        info: bboxInfo,
+        meta: { type, data: iMetaData } as any,
+        callbacks: { success, failed },
+        noSelect: i !== 0,
+      });
+    });
+  }
 }
 
 // import api

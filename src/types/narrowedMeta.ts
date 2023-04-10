@@ -1,6 +1,6 @@
 import type { useToast } from "@chakra-ui/toast";
 
-import type { Lang } from "@noli/core";
+import type { Dictionary, Lang } from "@noli/core";
 
 import type {
   IMetaData,
@@ -37,10 +37,19 @@ interface ITxt2ImgSDMetaData extends Partial<IMetaData> {
   source: APISources;
   timestamp?: number;
 }
+export type IPythonHttpFieldsResponse =
+  | { type: "text"; value: string }
+  | { type: "image"; value: { w: number; h: number; url: string }[] };
+export type IPythonHttpFieldsData = Dictionary<any> & { externalData: Dictionary<any> };
+type IPythonHttpFieldsMetaData = IPythonHttpFieldsResponse & {
+  identifier: string;
+  data: IPythonHttpFieldsData;
+};
 
 export interface INarrowedMetaData {
   upload: IUploadMetaData;
   "txt2img.sd": ITxt2ImgSDMetaData;
+  "python.httpFields": IPythonHttpFieldsMetaData;
 }
 
 export interface IImportMeta<T extends MetaType> {

@@ -8,6 +8,7 @@ export enum Toast_Words {
   "strange-image-error-message" = "strange-image-error-message",
   "generate-image-success-message" = "generate-image-success-message",
   "generate-image-error-message" = "generate-image-error-message",
+  "post-python-http-fields-plugin-error-message" = "post-python-http-fields-plugin-error-message",
 }
 
 export const toastLangRecords: Record<Lang, Record<Toast_Words, string>> = {
@@ -19,6 +20,7 @@ export const toastLangRecords: Record<Lang, Record<Toast_Words, string>> = {
     [Toast_Words["strange-image-error-message"]]: "图片类型错误，当前仅支持上传 jpg/png 图片 😫",
     [Toast_Words["generate-image-success-message"]]: "生成图片成功！🥳",
     [Toast_Words["generate-image-error-message"]]: "生成图片失败 😫",
+    [Toast_Words["post-python-http-fields-plugin-error-message"]]: "请求 Python 服务时失败 😫",
   },
   en: {
     [Toast_Words["dropping-message"]]: "Detecting 🤔",
@@ -28,5 +30,7 @@ export const toastLangRecords: Record<Lang, Record<Toast_Words, string>> = {
     [Toast_Words["strange-image-error-message"]]: "Only jpg/png images are supported 😫",
     [Toast_Words["generate-image-success-message"]]: "Generate image successfully! 🥳",
     [Toast_Words["generate-image-error-message"]]: "Generate image failed 😫",
+    [Toast_Words["post-python-http-fields-plugin-error-message"]]:
+      "Request Python service failed 😫",
   },
 };
