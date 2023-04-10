@@ -14,7 +14,7 @@ const PythonHttpPluginWithSubmit = ({
   onUseHttpPythonError,
   onUseHttpPythonSuccess,
   beforeRequest,
-  getRequestData,
+  getExtraRequestData,
   children,
   ...props
 }: IPythonHttpPluginWithSubmit<any>) => {
@@ -33,7 +33,7 @@ const PythonHttpPluginWithSubmit = ({
       setSend(false);
       beforeRequest && (await beforeRequest());
     },
-    getRequestData,
+    getExtraRequestData,
   });
 
   const { textColor } = themeStore.styles;

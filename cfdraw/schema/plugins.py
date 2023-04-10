@@ -97,9 +97,14 @@ Pivot of the plugin.
 ## http
 
 
+class INodeData(BaseModel):
+    pass
+
+
 class IRawHttpPluginRequest(BaseModel):
     identifier: str = Field(..., description="The identifier of the plugin")
-    data: Dict[str, Any] = Field(..., description="The extra data of the request")
+    nodeData: INodeData = Field(..., description="Data extracted from `node`")
+    extraData: Dict[str, Any] = Field(..., description="Extra data of each plugin")
     node: Optional[Dict[str, Any]] = Field(
         None,
         description="JSON data of the selected node",

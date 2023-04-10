@@ -14,7 +14,7 @@ const PythonHttpQAPlugin = ({ pluginInfo, ...props }: IPythonHttpQAPlugin) => {
   const [serverText, setServerText] = useState(pluginInfo.initialText);
   const lang = langStore.tgt;
 
-  function getRequestData() {
+  function getExtraRequestData() {
     return { text: userInput };
   }
   async function onUseHttpPythonSuccess(res: IPythonHttpResponse<{ text: string }>) {
@@ -24,7 +24,7 @@ const PythonHttpQAPlugin = ({ pluginInfo, ...props }: IPythonHttpQAPlugin) => {
   return (
     <PythonHttpPluginWithSubmit
       buttonText={translate(UI_Words["submit-task"], lang)}
-      getRequestData={getRequestData}
+      getExtraRequestData={getExtraRequestData}
       onUseHttpPythonSuccess={onUseHttpPythonSuccess}
       pluginInfo={pluginInfo}
       {...props}>

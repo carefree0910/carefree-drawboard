@@ -10,6 +10,7 @@ export interface IUsePythonInfo {
   updateInterval?: IPythonPlugin["pluginInfo"]["updateInterval"];
   getDeps?: (deps: IUsePythonInfo) => any[];
 }
+export interface INodeData {}
 
 // http
 export interface IUseHttpPython<R> extends IUsePythonInfo {
@@ -17,7 +18,7 @@ export interface IUseHttpPython<R> extends IUsePythonInfo {
   onUseHttpPythonSuccess: (res: IPythonHttpResponse<R>) => Promise<void>;
   onUseHttpPythonError?: (err: any) => Promise<void>;
   beforeRequest?: () => Promise<void>;
-  getRequestData?: () => Dictionary<any>;
+  getExtraRequestData?: () => Dictionary<any>;
 }
 export interface IPythonHttpResponse<T> {
   success: boolean;

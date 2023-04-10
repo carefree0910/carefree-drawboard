@@ -1,8 +1,13 @@
 import { useCallback, useEffect, useMemo } from "react";
 
-import { Logger } from "@noli/core";
+import { INode, Logger } from "@noli/core";
 
-import type { IPythonHttpResponse, IUseHttpPython, IUsePythonInfo } from "@/types/_python";
+import type {
+  INodeData,
+  IPythonHttpResponse,
+  IUseHttpPython,
+  IUsePythonInfo,
+} from "@/types/_python";
 import { Requests } from "@/requests/actions";
 
 export function useDeps({
@@ -22,6 +27,10 @@ export function useDeps({
   );
 }
 
+export function getNodeData(node: INode | null): INodeData {
+  return {};
+}
+
 export function useHttpPython<R>({
   node,
   endpoint,
@@ -33,7 +42,7 @@ export function useHttpPython<R>({
   onUseHttpPythonSuccess,
   onUseHttpPythonError,
   beforeRequest,
-  getRequestData,
+  getExtraRequestData,
 }: IUseHttpPython<R>) {
   let deps = useDeps({ node, endpoint, identifier, updateInterval, isInvisible, getDeps });
   deps = deps.concat([forceNotSend]);
@@ -42,10 +51,10 @@ export function useHttpPython<R>({
     const preprocess = beforeRequest ? beforeRequest() : Promise.resolve();
     return preprocess
       .then(() => {
-        const data = getRequestData ? getRequestData() : {};
         Requests.postJson<IPythonHttpResponse<R>>("_python", endpoint, {
           identifier,
-          data,
+          nodeData: getNodeData(node),
+          extraData: getExtraRequestData ? getExtraRequestData() : {},
           node: node?.toJsonPack(),
         }).then((res) => {
           if (res.success) onUseHttpPythonSuccess(res);

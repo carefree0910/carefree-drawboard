@@ -69,7 +69,7 @@ export interface IPythonHttpPluginWithSubmit<R> extends IPythonPlugin {
   onUseHttpPythonError?: IUseHttpPython<R>["onUseHttpPythonError"];
   onUseHttpPythonSuccess: IUseHttpPython<R>["onUseHttpPythonSuccess"];
   beforeRequest?: IUseHttpPython<R>["beforeRequest"];
-  getRequestData?: IUseHttpPython<R>["getRequestData"];
+  getExtraRequestData?: IUseHttpPython<R>["getExtraRequestData"];
 }
 export interface IPythonHttpTextAreaPlugin extends IPythonPlugin {
   pluginInfo: IPythonPlugin["pluginInfo"] & {
