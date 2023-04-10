@@ -65,20 +65,26 @@ export function getExpandPosition(
   // y
   if (["left", "right"].includes(pivot)) {
     y += 0.5 * (iconH - h) + expandOffsetY;
-  } else if (["lb", "bottom", "rb"].includes(pivot)) {
-    if (follow) {
-      y += iconH + expandOffsetY;
-    } else {
-      y -= h + expandOffsetY;
-    }
-  } else if (["lt", "top", "rt"].includes(pivot)) {
-    if (follow) {
-      y -= h + expandOffsetY;
-    } else {
-      y += iconH + expandOffsetY;
-    }
-  } else {
+  } else if (pivot === "center") {
     y += iconH + expandOffsetY;
+  } else {
+    if (!follow) {
+      if (["lb", "bottom", "rb"].includes(pivot)) {
+        y -= h + expandOffsetY;
+      } else if (["lt", "top", "rt"].includes(pivot)) {
+        y += iconH + expandOffsetY;
+      }
+    } else {
+      if (pivot === "bottom") {
+        y += iconH + expandOffsetY;
+      } else if (pivot === "top") {
+        y -= h + expandOffsetY;
+      } else if (["lb", "rb"].includes(pivot)) {
+        y -= h + expandOffsetY - iconH;
+      } else if (["lt", "rt"].includes(pivot)) {
+        y += expandOffsetY;
+      }
+    }
   }
   // return
   return new Coordinate(x, y);

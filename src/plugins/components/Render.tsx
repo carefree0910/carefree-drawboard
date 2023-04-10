@@ -12,7 +12,7 @@ import {
   useSelecting,
 } from "@noli/business";
 
-import type { IRender, IRenderInfo } from "@/types/plugins";
+import type { IRender } from "@/types/plugins";
 import { DEFAULT_PLUGIN_SETTINGS } from "@/utils/constants";
 import { getNodeFilter } from "../utils/renderFilters";
 import Floating, {
@@ -34,7 +34,7 @@ const Render = ({ offsetX, offsetY, nodeConstraint, renderInfo, children, ...pro
       ? 0
       : DEFAULT_PLUGIN_SETTINGS.expandOffsetX;
   expandOffsetY ??=
-    renderInfo.useModal || ["left", "right"].includes(pivot)
+    renderInfo.useModal || ["left", "right", "lt", "rt", "lb", "rb"].includes(pivot)
       ? 0
       : DEFAULT_PLUGIN_SETTINGS.expandOffsetY;
 

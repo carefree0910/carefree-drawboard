@@ -16,7 +16,6 @@ class HttpShowUrlPlugin(IHttpPlugin):
             follow=True,
             pivot=PivotType.RT,
             offsetY=-48,
-            expandOffsetY=-100,
         )
 
     def process(self, data: IHttpPluginRequest) -> str:
