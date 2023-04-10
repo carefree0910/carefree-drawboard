@@ -2,12 +2,12 @@ import { useState } from "react";
 import { observer } from "mobx-react-lite";
 import { Input, Textarea } from "@chakra-ui/react";
 
-import type { IPythonHttpQAPlugin } from "@/types/_python";
+import { langStore, translate } from "@noli/business";
+
+import type { IPythonHttpQAPlugin, IPythonHttpResponse } from "@/types/_python";
+import { UI_Words } from "@/utils/lang/ui";
 import { drawboardPluginFactory } from "@/plugins/utils/factory";
 import PythonHttpPluginWithSubmit from "./HttpPluginWithSubmit";
-import { langStore, translate } from "@noli/business";
-import { UI_Words } from "@/utils/lang/ui";
-import { IPythonHttpResponse } from "@/types/_python";
 
 const PythonHttpQAPlugin = ({ pluginInfo, ...props }: IPythonHttpQAPlugin) => {
   const [userInput, setUserInput] = useState("");
