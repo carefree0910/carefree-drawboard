@@ -28,6 +28,7 @@ from cfdraw.utils.server import get_image_response_kwargs
 from cfdraw.schema.plugins import IPlugin
 from cfdraw.schema.plugins import IHttpPluginResponse
 from cfdraw.schema.plugins import IRawHttpPluginRequest
+from cfdraw.plugins.base import IHttpPlugin
 from cfdraw.plugins.base import ISocketPlugin
 from cfdraw.plugins.factory import PluginFactory
 
@@ -135,19 +136,26 @@ class App:
             endpoint = f"/{identifier}"
             print_info(f"registering endpoint '{endpoint}'")
 
-            @self.api.post(
-                endpoint,
-                name=endpoint[1:].replace("/", "_"),
-                responses=get_responses(IHttpPluginResponse),
-            )
-            def fn(data: IRawHttpPluginRequest) -> Any:
-                if self.hash_identifier(identifier) != data.identifier:
-                    return IHttpPluginResponse(
-                        success=False,
-                        message="internal error occurred: identifier mismatch",
-                        data=BaseModel(),
-                    )
-                return plugin(data)
+            def _register(_id: str, _p: IHttpPlugin) -> None:
+                @self.api.post(
+                    endpoint,
+                    name=endpoint[1:].replace("/", "_"),
+                    responses=get_responses(IHttpPluginResponse),
+                )
+                def fn(data: IRawHttpPluginRequest) -> Any:
+                    if self.hash_identifier(_id) != data.identifier:
+                        return IHttpPluginResponse(
+                            success=False,
+                            message=(
+                                f"internal error occurred: identifier mismatch, "
+                                f"current hash is {self.hash_identifier(_id)} "
+                                f"but incoming identifier is {data.identifier}"
+                            ),
+                            data=BaseModel(),
+                        )
+                    return _p(data)
+
+            _register(identifier, plugin)
 
     def add_on_startup(self) -> None:
         @self.api.on_event("startup")
