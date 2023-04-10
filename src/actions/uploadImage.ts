@@ -11,7 +11,7 @@ type UploadImageOptions = {
   failed: () => Promise<void>;
 };
 
-interface IUploadImageResponse {
+interface IUploadImageResponseData {
   w: number;
   h: number;
   url: string;
@@ -22,13 +22,13 @@ export async function uploadImage(
   lang: Lang,
   blob: Blob,
   { failed }: UploadImageOptions,
-): Promise<IUploadImageResponse | void> {
+): Promise<IUploadImageResponseData | void> {
   return safeCall(
     async () => {
       const res = await Requests.postBlob<{
         success: boolean;
         message: string;
-        data: IUploadImageResponse;
+        data: IUploadImageResponseData;
       }>("_python", "/upload_image", { key: "image", blob });
       if (!res.success) {
         toast(
