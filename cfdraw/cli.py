@@ -39,6 +39,8 @@ def run(
     frontend_port = get_config().frontend_port
     backend_port = get_config().backend_port
     # execute
+    if processes.is_process_on_port(frontend_port):
+        frontend_port = processes.change_or_terminate_port(frontend_port, "frontend")
     if processes.is_process_on_port(backend_port):
         backend_port = processes.change_or_terminate_port(backend_port, "backend")
     frontend_fn, backend_fn = exec.run_frontend, exec.run_backend
