@@ -1,6 +1,6 @@
 import json
 
-from ..schema.plugins import *
+from cfdraw.schema.plugins import *
 
 
 class HttpMetaPlugin(IHttpPlugin[HttpTextAreaResponse]):
