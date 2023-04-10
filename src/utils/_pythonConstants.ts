@@ -9,5 +9,7 @@
  */
 
 // START PYTHON RELATED SETTINGS
-export default function getPythonRelatedSettings(): any {}
+export default function getPythonRelatedSettings(): any {
+  return {};
+}
 // END PYTHON RELATED SETTINGS
