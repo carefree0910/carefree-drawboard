@@ -13,12 +13,14 @@ import { allTaskTypes, TaskTypes } from "@/types/tasks";
 
 // consumers
 
-function updateTimestamps(alias: string, createTime: number): void {
+function updateTimestamps(alias: string, createTime?: number): void {
   const node = BoardStore.graph.getNode(alias);
   if (!node || node.type === "group" || !node.params.meta?.data) return;
   const now = Date.now();
   node.params.meta.data.timestamp = now;
-  node.params.meta.data.duration = now - createTime;
+  if (createTime) {
+    node.params.meta.data.duration = now - createTime;
+  }
 }
 
 const consumers: Record<MetaType, (input: IImportMeta<any>) => void> = {
