@@ -15,6 +15,7 @@ import {
 import { allAvailablePlugins, IPlugin } from "@/types/plugins";
 import { Plugins_Words } from "@/lang/plugins";
 import { Settings_Words } from "@/lang/settings";
+import { stripHashFromIdentifier } from "@/utils/misc";
 import { isInvisible, pythonIsInvisible, setPythonVisible, setVisible } from "@/stores/plugins";
 import CFSelect from "@/components/CFSelect";
 import CFSlider from "@/components/CFSlider";
@@ -48,8 +49,8 @@ const SettingsPlugin = ({ pluginInfo, ...props }: IPlugin) => {
                 </Checkbox>
               ))}
             {getPythonPluginSettings().map((settings) => {
-              const identifierWithHash = settings.props.pluginInfo.identifier; // {identifier}.{hash}
-              const identifier = identifierWithHash.split(".").slice(0, -1).join(".");
+              const identifierWithHash = settings.props.pluginInfo.identifier;
+              const identifier = stripHashFromIdentifier(identifierWithHash);
               const pIsInvisible = pythonIsInvisible(identifierWithHash);
               return (
                 <Checkbox
