@@ -1,12 +1,12 @@
 import { useToast } from "@chakra-ui/toast";
 
-import { Lang, safeCall } from "@noli/core";
+import { INodePack, Lang, Matrix2DFields, safeCall } from "@noli/core";
 import { BoardStore, translate, useGlobalTransform } from "@noli/business";
 
 import { toast } from "@/utils/toast";
 import { Toast_Words } from "@/lang/toast";
 import { Requests } from "@/requests/actions";
-import { useCurrentProject } from "@/stores/projects";
+import { IProjectsStore, useCurrentProject } from "@/stores/projects";
 
 export async function saveProject(
   t: ReturnType<typeof useToast>,
@@ -38,4 +38,37 @@ export async function saveProject(
       failed: async () => void 0,
     },
   );
+}
+
+interface ILoadedProject extends IProjectsStore {
+  graphInfo: INodePack[];
+  globalTransform: Matrix2DFields;
+}
+export async function loadProject(
+  t: ReturnType<typeof useToast>,
+  lang: Lang,
+  uid: string,
+  onSuccess: (res: ILoadedProject) => Promise<void>,
+): Promise<void> {
+  toast(t, "info", translate(Toast_Words["loading-project-message"], lang));
+
+  return safeCall(
+    async () =>
+      Requests.get<ILoadedProject>("_python", `/get_project/${uid}`).then((res) => onSuccess(res)),
+    {
+      success: async () => void 0,
+      failed: async () => void 0,
+    },
+  );
+}
+
+interface IProjectItem {
+  uid: string;
+  name: string;
+}
+export async function fetchAllProjects(): Promise<IProjectItem[] | undefined> {
+  return safeCall(async () => Requests.get<IProjectItem[]>("_python", "/all_projects"), {
+    success: async () => void 0,
+    failed: async () => void 0,
+  });
 }
