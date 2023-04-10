@@ -93,7 +93,7 @@ const SettingsPlugin = ({ pluginInfo, ...props }: IPlugin) => {
               step={0.001}
               value={useGlobalTransform().globalScale}
               scale="logarithmic"
-              onChange={(value) => BoardStore.api.setGlobalScale(value)}
+              onSliderChange={(value) => BoardStore.api.setGlobalScale(value)}
             />
           </Box>
         )}

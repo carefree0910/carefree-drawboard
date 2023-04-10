@@ -23,10 +23,11 @@ function NumberField({ field, definition, ...props }: NumberFieldProps) {
       max={definition.max}
       step={step}
       value={getMetaField(field) as number}
-      onChange={(value) => setMetaField(field, value)}
+      onSliderChange={(value) => setMetaField(field, value)}
       scale={definition.scale}
       label={definition.label ?? translate(`${field}-field-label`, langStore.tgt)}
       precision={definition.isInt ? 0 : definition.precision}
+      {...definition.props}
     />
   );
 }

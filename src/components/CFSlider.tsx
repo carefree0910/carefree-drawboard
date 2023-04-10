@@ -6,13 +6,14 @@ import {
   Flex,
   Text,
   Input,
+  FlexProps,
 } from "@chakra-ui/react";
 import { useUnmount } from "ahooks";
 import React, { ReactElement, useCallback, useEffect, useState } from "react";
 
 import { themeStore } from "@/stores/theme";
 
-export interface ICFSlider {
+export interface ICFSlider extends FlexProps {
   className?: string;
   min: number;
   max: number;
@@ -20,7 +21,7 @@ export interface ICFSlider {
   step?: number;
   scale?: "linear" | "logarithmic";
   label?: string | ReactElement;
-  onChange(val: number): void;
+  onSliderChange(value: number): void;
   precision?: number;
 }
 
@@ -32,8 +33,9 @@ const CFSlider: React.FC<ICFSlider> = ({
   step = 0.01,
   scale = "linear",
   label,
-  onChange,
+  onSliderChange,
   precision = 2,
+  ...props
 }) => {
   const [val, setVal] = useState(value ?? 0);
   const [inputVal, setInputVal] = useState<string>(value?.toString() ?? "0");
@@ -46,9 +48,9 @@ const CFSlider: React.FC<ICFSlider> = ({
       }
       v = +v.toFixed(precision);
       setVal(v);
-      onChange(v);
+      onSliderChange(v);
     },
-    [setVal, onChange],
+    [setVal, onSliderChange],
   );
 
   const inputValueFormatter = useCallback(
@@ -84,9 +86,9 @@ const CFSlider: React.FC<ICFSlider> = ({
       const val = inputValueFormatter(inputVal);
       setInputVal(val.toString());
       setVal(val);
-      onChange(val);
+      onSliderChange(val);
     },
-    [onChange, setVal, setInputVal, setIptFocused, inputValueFormatter],
+    [onSliderChange, setVal, setInputVal, setIptFocused, inputValueFormatter],
   );
 
   const handleInputPress = useCallback(
@@ -95,10 +97,10 @@ const CFSlider: React.FC<ICFSlider> = ({
         const val = inputValueFormatter(+e.currentTarget.value);
         setInputVal(val.toString());
         setVal(val);
-        onChange(val);
+        onSliderChange(val);
       }
     },
-    [onChange, setVal, setInputVal, inputValueFormatter],
+    [onSliderChange, setVal, setInputVal, inputValueFormatter],
   );
 
   // controlled
@@ -123,7 +125,7 @@ const CFSlider: React.FC<ICFSlider> = ({
   } = themeStore.styles;
 
   return (
-    <Flex className={className} align="center" color={textColor}>
+    <Flex className={className} align="center" color={textColor} {...props}>
       {label && (
         <Text w="10%" align="center" fontSize="14px">
           {label}
