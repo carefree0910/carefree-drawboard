@@ -23,7 +23,7 @@ const FieldsPlugin = ({
 
   return (
     <Render {...props}>
-      {Object.entries(definitions).map(([field, definition]) => {
+      {Object.entries(definitions).map(([field, definition], i) => {
         let Field: any | null = null;
         if (definition.type === "text") {
           Field = TextField;
@@ -31,6 +31,9 @@ const FieldsPlugin = ({
           Field = NumberField;
         }
         if (!Field) return null;
+        const props = definition.props ?? {};
+        if (isUndefined(props.mt) && i !== 0) props.mt = "8px";
+        definition.props = props;
         return <Field key={field} field={field} definition={definition} flexShrink={0} />;
       })}
       {children}
