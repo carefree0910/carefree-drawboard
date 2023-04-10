@@ -12,6 +12,7 @@ import { stripHashFromIdentifier } from "@/utils/misc";
 import { importMeta } from "@/actions/importMeta";
 import { getMetaField } from "@/stores/meta";
 import { drawboardPluginFactory } from "@/plugins/utils/factory";
+import { CFHeading } from "@/components/CFHeading";
 import PythonHttpPluginWithSubmit from "./HttpPluginWithSubmit";
 import { useDefinitions, useFieldsWith } from "../components/Fields";
 
@@ -55,6 +56,7 @@ const PythonHttpFieldsPlugin = ({ pluginInfo, ...props }: IPythonHttpFieldsPlugi
     });
   }
 
+  const header = pluginInfo.header ?? pureIdentifier;
   return (
     <PythonHttpPluginWithSubmit
       buttonText={translate(UI_Words["submit-task"], lang)}
@@ -62,6 +64,7 @@ const PythonHttpFieldsPlugin = ({ pluginInfo, ...props }: IPythonHttpFieldsPlugi
       onUseHttpPythonSuccess={onUseHttpPythonSuccess}
       pluginInfo={pluginInfo}
       {...props}>
+      <CFHeading>{header}</CFHeading>
       {useFieldsWith(definitions)}
     </PythonHttpPluginWithSubmit>
   );

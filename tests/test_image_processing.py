@@ -13,12 +13,12 @@ class HttpGrayScalePlugin(IHttpPlugin):
     def settings(self) -> IPluginSettings:
         return IPluginSettings(
             w=200,
-            h=90,
+            h=110,
             nodeConstraint=NodeConstraints.IMAGE,
             src="https://ailab-huawei-cdn.nolibox.com/upload/images/2f236a9291a04cadb9a0d8705f5537c3.png",
             pivot=PivotType.RT,
             follow=True,
-            pluginInfo=IHttpFieldsPluginInfo(customDefinitions={}),
+            pluginInfo=IHttpFieldsPluginInfo(header="To Gray", customDefinitions={}),
             p="6px",
         )
 
@@ -35,7 +35,7 @@ class HttpEdgePlugin(IHttpPlugin):
     def settings(self) -> IPluginSettings:
         return IPluginSettings(
             w=200,
-            h=90,
+            h=110,
             nodeConstraint=NodeConstraints.IMAGE,
             src="https://ailab-huawei-cdn.nolibox.com/upload/images/37a7936897494bd9ae96de5912210841.png",
             pivot=PivotType.RT,
@@ -61,7 +61,7 @@ class HttpGaussianBlurPlugin(IHttpPlugin):
     def settings(self) -> IPluginSettings:
         return IPluginSettings(
             w=300,
-            h=125,
+            h=140,
             nodeConstraint=NodeConstraints.IMAGE,
             src="https://ailab-huawei-cdn.nolibox.com/upload/images/c60613dcaf514975a211a75535a5b81b.png",
             pivot=PivotType.RT,

@@ -269,6 +269,7 @@ class IHttpQAPluginInfo(IPluginInfo):
 
 
 class IHttpFieldsPluginInfo(IPluginInfo):
+    header: Optional[str] = Field(None, description="Header of the plugin")
     customDefinitions: Dict[str, IFieldDefinition] = Field(
         ...,
         description="Field definitions",

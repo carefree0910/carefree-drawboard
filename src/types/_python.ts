@@ -61,6 +61,7 @@ export interface IPythonHttpQAPlugin extends IPythonPlugin {
 }
 export interface IPythonHttpFieldsPlugin extends IPythonPlugin {
   pluginInfo: IPythonPlugin["pluginInfo"] & {
+    header?: string;
     customDefinitions: ICustomDefinitions;
   };
 }
