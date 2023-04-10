@@ -5,8 +5,8 @@ import type { IInternalTaskPlugin } from "@/types/plugins";
 import type { ISubscribableFields } from "@/types/metaFields";
 import { subscribe } from "../utils/subscribe";
 import Render from "./Render";
-import TextField from "./TextField";
-import NumberField from "./NumberField";
+import TextField from "./Fields/TextField";
+import NumberField from "./Fields/NumberField";
 
 const FieldsPlugin = ({
   pluginInfo: { fields, customDefinitions },
