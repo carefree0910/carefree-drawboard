@@ -79,5 +79,5 @@ export interface IMeta {
 }
 export interface IPartialMeta {
   type: IMeta["type"];
-  data: Partial<IMeta["data"]>;
+  data: Partial<IMetaData>;
 }

@@ -1,6 +1,6 @@
 import { useToast } from "@chakra-ui/toast";
 
-import { getAIHost, ImageURLs, Lang, loadImage, safeCall } from "@noli/core";
+import { Lang, safeCall } from "@noli/core";
 import { translate } from "@noli/business";
 
 import { toast } from "@/utils/toast";
@@ -12,9 +12,9 @@ type UploadImageOptions = {
 };
 
 interface IUploadImageResponse {
-  url: string;
   w: number;
   h: number;
+  url: string;
 }
 
 export async function uploadImage(
