@@ -27,14 +27,9 @@ class HttpMetaPlugin(IHttpPlugin[HttpTextAreaResponse]):
             expandOffsetY=-400,
         )
 
-    def process(self, data: IHttpPluginRequest) -> HttpTextAreaResponse:
+    def process(self, data: IHttpPluginRequest) -> str:
         meta = data.node.params["meta"]
-        meta_json = json.dumps(meta, indent=4)
-        return HttpTextAreaResponse(
-            success=True,
-            message="",
-            data=HttpTextAreaModel(text=meta_json),
-        )
+        return json.dumps(meta, indent=4)
 
 
 __all__ = [

@@ -17,6 +17,10 @@ class IHttpPlugin(Generic[THttpResponse], IPlugin, metaclass=ABCMeta):
     def process(self, data: IHttpPluginRequest) -> THttpResponse:
         pass
 
+    @property
+    def middlewares(self) -> List[IMiddleWare]:
+        return [TextAreaMiddleWare()]
+
     def __call__(self, data: IRawHttpPluginRequest) -> THttpResponse:
         response = self.process(data.parse())
         for middleware in self.middlewares:

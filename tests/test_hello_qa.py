@@ -17,12 +17,8 @@ class HttpHelloQAPlugin(IHttpPlugin[HttpTextAreaResponse]):
             pluginInfo=IHttpQAPluginInfo(initialText="Hello, world!"),
         )
 
-    def process(self, data: IHttpPluginRequest) -> HttpTextAreaResponse:
-        return HttpTextAreaResponse(
-            success=True,
-            message="",
-            data=HttpTextAreaModel(text=f"Hello, {data.data['text']}!"),
-        )
+    def process(self, data: IHttpPluginRequest) -> str:
+        return f"Hello, {data.data['text']}!"
 
 
 register_plugin("hello_qa")(HttpHelloQAPlugin)

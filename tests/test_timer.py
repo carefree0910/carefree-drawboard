@@ -24,12 +24,8 @@ class HttpTimerPlugin(IHttpPlugin[HttpTextAreaResponse]):
             ),
         )
 
-    def process(self, data: IHttpPluginRequest) -> HttpTextAreaResponse:
-        return HttpTextAreaResponse(
-            success=True,
-            message="",
-            data=HttpTextAreaModel(text=datetime.now().strftime(TIME_FORMAT)),
-        )
+    def process(self, data: IHttpPluginRequest) -> str:
+        return datetime.now().strftime(TIME_FORMAT)
 
 
 register_plugin("timer")(HttpTimerPlugin)
