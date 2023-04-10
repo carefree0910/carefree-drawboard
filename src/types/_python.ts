@@ -14,6 +14,12 @@ export interface IUsePythonInfo {
   updateInterval?: IPythonPlugin["pluginInfo"]["updateInterval"];
   getDeps?: (deps: IUsePythonInfo) => any[];
 }
+export interface IPythonHttpPluginCallbacks<R> {
+  onUseHttpPythonSuccess: (res: IPythonHttpResponse<R>) => Promise<void>;
+  onUseHttpPythonError?: (err: any) => Promise<void>;
+  beforeRequest?: () => Promise<void>;
+  getExtraRequestData?: () => Dictionary<any>;
+}
 export interface INodeData {}
 
 // plugin
@@ -25,12 +31,10 @@ export interface IPythonPlugin extends IPlugin {
     updateInterval?: number;
   };
 }
-export interface IPythonHttpPluginWithSubmit<R> extends IPythonPlugin {
+export interface IPythonHttpPluginWithSubmit<R>
+  extends IPythonPlugin,
+    IPythonHttpPluginCallbacks<R> {
   buttonText: string;
-  onUseHttpPythonError?: IUseHttpPython<R>["onUseHttpPythonError"];
-  onUseHttpPythonSuccess: IUseHttpPython<R>["onUseHttpPythonSuccess"];
-  beforeRequest?: IUseHttpPython<R>["beforeRequest"];
-  getExtraRequestData?: IUseHttpPython<R>["getExtraRequestData"];
 }
 export interface IPythonHttpTextAreaPlugin extends IPythonPlugin {
   pluginInfo: IPythonPlugin["pluginInfo"] & {
@@ -46,12 +50,8 @@ export interface IPythonHttpQAPlugin extends IPythonPlugin {
 
 // http
 
-export interface IUseHttpPython<R> extends IUsePythonInfo {
+export interface IUseHttpPython<R> extends IUsePythonInfo, IPythonHttpPluginCallbacks<R> {
   forceNotSend?: boolean;
-  onUseHttpPythonSuccess: (res: IPythonHttpResponse<R>) => Promise<void>;
-  onUseHttpPythonError?: (err: any) => Promise<void>;
-  beforeRequest?: () => Promise<void>;
-  getExtraRequestData?: () => Dictionary<any>;
 }
 export interface IPythonHttpResponse<T> {
   success: boolean;
