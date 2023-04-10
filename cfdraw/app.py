@@ -135,12 +135,16 @@ class App:
                 raise_err(err)
 
     def add_project_managements(self) -> None:
-        class ProjectModel(BaseModel):
+        class ProjectItem(BaseModel):
+            uid: str
+            name: str
+
+        class ProjectModel(ProjectItem):
             uid: str
             name: str
             createTime: float
             updateTime: float
-            graphInfo: Dict[str, Any]
+            graphInfo: List[Any]
             globalTransform: noli.Matrix2D
 
         class SaveProjectResponse(BaseModel):
@@ -151,6 +155,8 @@ class App:
         def save_project(data: ProjectModel) -> SaveProjectResponse:
             try:
                 uid = data.uid
+                if not constants.UPLOAD_PROJECT_FOLDER.exists():
+                    constants.UPLOAD_PROJECT_FOLDER.mkdir(parents=True)
                 with open(constants.UPLOAD_PROJECT_FOLDER / f"{uid}.noli", "w") as f:
                     json.dump(data.dict(), f)
             except Exception as err:
@@ -159,7 +165,7 @@ class App:
             return SaveProjectResponse(success=True, message="")
 
         @self.api.get(
-            f"/{constants.UPLOAD_PROJECT_FOLDER_NAME}/{{uid:path}}",
+            f"/get_project/{{uid:path}}",
             responses=get_responses(ProjectModel),
         )
         async def fetch_project(uid: str) -> ProjectModel:
@@ -171,13 +177,17 @@ class App:
                 raise_err(err)
 
         @self.api.get(f"/all_projects")
-        async def fetch_all_projects() -> List[str]:
+        async def fetch_all_projects() -> List[ProjectItem]:
+            if not constants.UPLOAD_PROJECT_FOLDER.exists():
+                return []
             try:
-                return [
-                    file.stem
-                    for file in constants.UPLOAD_PROJECT_FOLDER.iterdir()
-                    if file.is_file()
-                ]
+                results: List[ProjectItem] = []
+                for file in constants.UPLOAD_PROJECT_FOLDER.iterdir():
+                    path = constants.UPLOAD_PROJECT_FOLDER / file
+                    with open(path, "r") as f:
+                        d = json.load(f)
+                    results.append(ProjectItem(uid=d["uid"], name=d["name"]))
+                return results
             except Exception as err:
                 raise_err(err)
 
