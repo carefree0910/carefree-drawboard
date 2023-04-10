@@ -1,5 +1,4 @@
 import { observer } from "mobx-react-lite";
-import { InputProps } from "@chakra-ui/react";
 
 import { isUndefined } from "@noli/core";
 import { langStore, translate } from "@noli/business";
@@ -10,10 +9,10 @@ import { getMetaField, setMetaField } from "@/stores/meta";
 import CFSlider from "@/components/CFSlider";
 import TextField from "./TextField";
 
-export interface NumberFieldProps extends InputProps, IField<INumberField> {}
-function NumberField({ field, definition, ...props }: NumberFieldProps) {
+export interface NumberFieldProps extends IField<INumberField> {}
+function NumberField({ field, definition }: NumberFieldProps) {
   if (isUndefined(definition.min) || isUndefined(definition.max)) {
-    return <TextField field={field} definition={{ type: "text" }} {...props} />;
+    return <TextField field={field} definition={{ type: "text", props: definition.props }} />;
   }
   let step = definition.step;
   if (!isUndefined(step) && definition.isInt) step = Math.round(step);

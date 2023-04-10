@@ -61,7 +61,7 @@ export interface IImageField {
   type: "image";
 }
 
-export type IFieldDefinition =
+type _IFieldDefinition =
   | INumberField
   | ISelectField<any>
   | ITextField
@@ -69,7 +69,8 @@ export type IFieldDefinition =
   | IListField
   | IObjectField
   | IImageField;
-export type IFieldDefinitions = Record<ISubscribableFields, IFieldDefinition & { props?: any }>;
+export type IFieldDefinition = _IFieldDefinition & { props?: any };
+export type IFieldDefinitions = Record<ISubscribableFields, IFieldDefinition>;
 export type ICustomDefinitions = Partial<Record<ISubscribableFields, Partial<IFieldDefinitions>>>;
 
 const seedDefinition: INumberField = {

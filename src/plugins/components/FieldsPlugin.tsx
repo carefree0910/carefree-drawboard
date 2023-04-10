@@ -1,6 +1,8 @@
 import { useMemo } from "react";
 import { observer } from "mobx-react-lite";
 
+import { isUndefined } from "@noli/core";
+
 import type { IInternalTaskPlugin } from "@/types/plugins";
 import { subscribe } from "../utils/subscribe";
 import Render from "./Render";
@@ -22,22 +24,14 @@ const FieldsPlugin = ({
   return (
     <Render {...props}>
       {Object.entries(definitions).map(([field, definition]) => {
-        let Field = null;
+        let Field: any | null = null;
         if (definition.type === "text") {
           Field = TextField;
         } else if (definition.type === "number") {
           Field = NumberField;
         }
         if (!Field) return null;
-        return (
-          <Field
-            key={field}
-            field={field}
-            definition={definition}
-            flexShrink={0}
-            {...definition.props}
-          />
-        );
+        return <Field key={field} field={field} definition={definition} flexShrink={0} />;
       })}
       {children}
     </Render>
