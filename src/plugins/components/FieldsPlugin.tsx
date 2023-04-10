@@ -3,7 +3,7 @@ import { observer } from "mobx-react-lite";
 
 import { isUndefined } from "@noli/core";
 
-import type { IInternalTaskPlugin } from "@/types/plugins";
+import type { IFieldsPlugin } from "@/types/plugins";
 import { subscribe } from "../utils/subscribe";
 import Render from "./Render";
 import TextField from "./Fields/TextField";
@@ -13,9 +13,7 @@ const FieldsPlugin = ({
   pluginInfo: { fields, customDefinitions },
   children,
   ...props
-}: Omit<IInternalTaskPlugin, "pluginInfo"> & {
-  pluginInfo: Omit<IInternalTaskPlugin["pluginInfo"], "task">;
-}) => {
+}: IFieldsPlugin) => {
   const definitions = useMemo(
     () => subscribe(fields, customDefinitions),
     [fields, customDefinitions],

@@ -45,14 +45,14 @@ export interface IPlugin extends IRender {
 
 // specific
 
-export interface ITaskPlugin extends IPlugin {
+export interface IFieldsPlugin extends IPlugin {
   pluginInfo: IPlugin["pluginInfo"] & {
     fields: ISubscribableFields[];
     customDefinitions?: ICustomDefinitions;
   };
 }
-export interface IInternalTaskPlugin extends ITaskPlugin {
-  pluginInfo: ITaskPlugin["pluginInfo"] & { task: TaskTypes };
+export interface ITaskPlugin extends IFieldsPlugin {
+  pluginInfo: IFieldsPlugin["pluginInfo"] & { task: TaskTypes };
 }
 
 // factory
@@ -66,7 +66,7 @@ export type AvailablePluginsAndPythonPlugins = AvailablePlugins | AvailablePytho
 export interface IPluginProps {
   // react plugins
   meta: IPlugin;
-  "txt2img.sd": ITaskPlugin;
+  "txt2img.sd": IFieldsPlugin;
   settings: IPlugin;
   // python plugins
   "_python.httpTextArea": IPythonHttpTextAreaPlugin;
