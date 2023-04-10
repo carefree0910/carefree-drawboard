@@ -1,5 +1,9 @@
+import requests
+
+from io import BytesIO
 from abc import abstractmethod
 from abc import ABC
+from PIL import Image
 from enum import Enum
 from typing import Any
 from typing import Dict
@@ -216,6 +220,9 @@ class IPlugin(ABC):
         if offset_y is not None:
             props["offsetY"] = offset_y
         return dict(type=plugin_type, props=props)
+
+    def load_image(self, src: str) -> Image.Image:
+        return Image.open(BytesIO(requests.get(src).content))
 
 
 class IMiddleWare(ABC):
