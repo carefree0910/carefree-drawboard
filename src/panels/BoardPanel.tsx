@@ -7,7 +7,7 @@ import { themeStore } from "@/stores/theme";
 import { BOARD_CONTAINER_ID } from "@/utils/constants";
 import { makePlugin } from "@/plugins";
 import { reactPluginSettings } from "./_react";
-import { pythonPluginSettings } from "./_python";
+import getPythonPluginSettings from "./_python";
 
 function BoardPanel() {
   const isReady = useIsReady();
@@ -20,7 +20,7 @@ function BoardPanel() {
       </Box>
       <>
         {reactPluginSettings.map((settings) => makePlugin({ key: settings.type, ...settings }))}
-        {pythonPluginSettings.map((settings) =>
+        {getPythonPluginSettings().map((settings) =>
           makePlugin({ key: settings.props.pluginInfo.identifier, ...settings }),
         )}
       </>

@@ -21,7 +21,7 @@ import CFSlider from "@/components/CFSlider";
 import { CFDivider } from "@/components/CFDivider";
 import { drawboardPluginFactory } from "./utils/factory";
 import Render from "./components/Render";
-import { pythonPluginSettings } from "@/panels/_python";
+import getPythonPluginSettings from "@/panels/_python";
 
 const SettingsPlugin = ({ pluginInfo, ...props }: IPlugin) => {
   const lang = langStore.tgt;
@@ -47,7 +47,7 @@ const SettingsPlugin = ({ pluginInfo, ...props }: IPlugin) => {
                   {translate(Plugins_Words[plugin], lang)}
                 </Checkbox>
               ))}
-            {pythonPluginSettings.map((settings) => {
+            {getPythonPluginSettings().map((settings) => {
               const identifierWithHash = settings.props.pluginInfo.identifier; // {identifier}.{hash}
               const identifier = identifierWithHash.split(".").slice(0, -1).join(".");
               const pIsInvisible = pythonIsInvisible(identifierWithHash);
