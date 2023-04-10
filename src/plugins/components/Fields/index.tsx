@@ -1,20 +1,20 @@
 import { useMemo } from "react";
 
-import { isUndefined } from "@noli/core";
+import { Dictionary, isUndefined } from "@noli/core";
 import type { IFieldsPlugin } from "@/types/plugins";
 import { subscribe } from "@/plugins/utils/subscribe";
 import TextField from "./TextField";
 import NumberField from "./NumberField";
+import { IFieldDefinition } from "@/types/metaFields";
 
-export function useFields(
-  fields: IFieldsPlugin["pluginInfo"]["fields"],
-  customDefinitions: IFieldsPlugin["pluginInfo"]["customDefinitions"],
-) {
-  const definitions = useMemo(
-    () => subscribe(fields, customDefinitions),
-    [fields, customDefinitions],
-  );
+type IFields = IFieldsPlugin["pluginInfo"]["fields"];
+type ICustomDefinitions = IFieldsPlugin["pluginInfo"]["customDefinitions"];
 
+export function useDefinitions(fields: IFields, customDefinitions: ICustomDefinitions) {
+  return useMemo(() => subscribe(fields, customDefinitions), [fields, customDefinitions]);
+}
+
+export function useFieldsWith(definitions: Dictionary<IFieldDefinition>) {
   return (
     <>
       {Object.entries(definitions).map(([field, definition], i) => {
@@ -32,4 +32,8 @@ export function useFields(
       })}
     </>
   );
+}
+
+export function useFields(fields: IFields, customDefinitions: ICustomDefinitions) {
+  return useFieldsWith(useDefinitions(fields, customDefinitions));
 }
