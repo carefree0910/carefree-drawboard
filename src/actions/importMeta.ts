@@ -30,12 +30,11 @@ const consumers: Record<MetaType, (input: IImportMeta<any>) => void> = {
 function consumeUpload({ t, lang, type, metaData }: IImportMeta<"upload">): void {
   const success = async () => {
     toast(t, "success", translate(Toast_Words["upload-image-success-message"], lang));
-    updateTimestamps(newAlias, createTime);
+    updateTimestamps(newAlias);
   };
   const failed = async () => {
     toast(t, "error", translate(Toast_Words["upload-image-error-message"], lang));
   };
-  const createTime = Date.now();
   const { w, h, url, isDrag } = metaData;
   const prefix = isDrag ? "drag-" : "";
   const newAlias = `${prefix}upload.${getRandomHash()}`;
