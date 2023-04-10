@@ -123,8 +123,12 @@ const CFSlider: React.FC<ICFSlider> = ({
   } = themeStore.styles;
 
   return (
-    <Flex className={className} align="center" color="white">
-      <Text fontSize="14px">{label}</Text>
+    <Flex className={className} align="center" color={textColor}>
+      {label && (
+        <Text w="10%" align="center" fontSize="14px">
+          {label}
+        </Text>
+      )}
       <Slider
         focusThumbOnChange={!iptFocused}
         flex={1}
