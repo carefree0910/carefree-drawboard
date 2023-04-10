@@ -188,8 +188,7 @@ function Floating({
         visibility={expand ? "visible" : "hidden"}
         transition={VISIBILITY_TRANSITION}
         {...commonProps}
-        bg={expandBg}
-        {...props}>
+        bg={expandBg}>
         {children}
       </Flex>
     </>
