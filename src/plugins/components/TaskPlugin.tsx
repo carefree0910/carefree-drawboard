@@ -5,7 +5,7 @@ import { Button, useToast } from "@chakra-ui/react";
 import { langStore, translate } from "@noli/business";
 
 import type { IInternalTaskPlugin } from "@/types/plugins";
-import { UI_Words } from "@/utils/lang/ui";
+import { UI_Words } from "@/lang/ui";
 import { themeStore } from "@/stores/theme";
 import { importMeta } from "@/actions/importMeta";
 import { CFDivider } from "@/components/CFDivider";

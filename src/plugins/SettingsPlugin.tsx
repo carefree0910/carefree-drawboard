@@ -13,8 +13,8 @@ import {
 } from "@noli/business";
 
 import { allAvailablePlugins, IPlugin } from "@/types/plugins";
-import { Plugins_Words } from "@/utils/lang/plugins";
-import { Settings_Words } from "@/utils/lang/settings";
+import { Plugins_Words } from "@/lang/plugins";
+import { Settings_Words } from "@/lang/settings";
 import { isInvisible, pythonIsInvisible, setPythonVisible, setVisible } from "@/stores/plugins";
 import CFSelect from "@/components/CFSelect";
 import CFSlider from "@/components/CFSlider";

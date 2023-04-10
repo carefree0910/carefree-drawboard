@@ -4,7 +4,7 @@ import { getAIHost, ImageURLs, Lang, loadImage, safeCall } from "@noli/core";
 import { translate } from "@noli/business";
 
 import { toast } from "@/utils/toast";
-import { Toast_Words } from "@/utils/lang/toast";
+import { Toast_Words } from "@/lang/toast";
 import { Requests } from "@/requests/actions";
 
 type UploadImageOptions = {

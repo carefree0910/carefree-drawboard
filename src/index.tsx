@@ -3,7 +3,7 @@ import { ChakraProvider } from "@chakra-ui/react";
 
 import "./index.scss";
 import App from "./App";
-import { initializeLang } from "@/utils/lang";
+import { initializeLang } from "@/lang";
 import { setupInceptors } from "@/requests/interceptors";
 
 initializeLang();

@@ -4,7 +4,7 @@ import { BoardStore, translate } from "@noli/business";
 import type { MetaType } from "@/types/meta";
 import type { IImportMeta, INarrowedMetaData } from "@/types/narrowedMeta";
 import { toast } from "@/utils/toast";
-import { Toast_Words } from "@/utils/lang/toast";
+import { Toast_Words } from "@/lang/toast";
 import { addNewImage, NewImageInfo } from "./addImage";
 import { pollTask, pushTask } from "./runTasks";
 import { getTaskData, revertTaskData } from "./handleTaskData";

@@ -5,7 +5,7 @@ import { FileDropper, FileDropperResponse, Lang } from "@noli/core";
 import { translate, useIsReady } from "@noli/business";
 
 import { toast } from "@/utils/toast";
-import { Toast_Words } from "@/utils/lang/toast";
+import { Toast_Words } from "@/lang/toast";
 import { BOARD_CONTAINER_ID } from "@/utils/constants";
 import { setDropping, hooksStore } from "@/stores/hooks";
 import { uploadImage } from "@/actions/uploadImage";
