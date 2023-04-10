@@ -67,6 +67,7 @@ class HttpGaussianBlurPlugin(IHttpPlugin):
             pivot=PivotType.RT,
             follow=True,
             offsetX=-48,
+            expandOffsetY=-148,
             pluginInfo=IHttpFieldsPluginInfo(
                 customDefinitions=dict(
                     size=INumberField(
