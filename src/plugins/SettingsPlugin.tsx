@@ -1,5 +1,5 @@
 import { observer } from "mobx-react-lite";
-import { Box, Checkbox, Flex, Heading } from "@chakra-ui/react";
+import { Box, Checkbox, Flex } from "@chakra-ui/react";
 
 import type { Lang } from "@noli/core";
 import {
@@ -20,6 +20,7 @@ import { isInvisible, pythonIsInvisible, setPythonVisible, setVisible } from "@/
 import CFSelect from "@/components/CFSelect";
 import CFSlider from "@/components/CFSlider";
 import { CFDivider } from "@/components/CFDivider";
+import { CFHeading } from "@/components/CFHeading";
 import { drawboardPluginFactory } from "./utils/factory";
 import Render from "./components/Render";
 import getPythonPluginSettings from "@/board/_python";
@@ -33,7 +34,7 @@ const SettingsPlugin = ({ pluginInfo, ...props }: IPlugin) => {
       <Flex w="100%" h="100%" direction="column">
         {/* plugin settings */}
         <Box>
-          <Heading size="sm">{translate(Settings_Words["plugins-header"], lang)}</Heading>
+          <CFHeading>{translate(Settings_Words["plugins-header"], lang)}</CFHeading>
           <CFDivider />
           <Flex w="100%" gap="8px" wrap="wrap" align="center" justifyContent="space-around">
             {allAvailablePlugins
@@ -67,7 +68,7 @@ const SettingsPlugin = ({ pluginInfo, ...props }: IPlugin) => {
         </Box>
         {/* language settings */}
         <Box mt="24px">
-          <Heading size="sm">语言 / Language</Heading>
+          <CFHeading>语言 / Language</CFHeading>
           <CFDivider />
           <CFSelect
             flex={1}
@@ -86,7 +87,7 @@ const SettingsPlugin = ({ pluginInfo, ...props }: IPlugin) => {
         {/* globalScale settings */}
         {useIsReady() && (
           <Box mt="24px">
-            <Heading size="sm">{translate(Settings_Words["global-scale-header"], lang)}</Heading>
+            <CFHeading>{translate(Settings_Words["global-scale-header"], lang)}</CFHeading>
             <CFDivider />
             <CFSlider
               min={BoardStore.board.options.minScale}
