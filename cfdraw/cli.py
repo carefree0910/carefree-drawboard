@@ -1,3 +1,4 @@
+import os
 import typer
 
 from cftool.misc import print_info
@@ -25,6 +26,11 @@ def run(
     # fetch module
     if module is None:
         module = get_config().default_module
+    if module.endswith(".py"):
+        module = module[:-3]
+    path_prefix = f".{os.path.sep}"
+    if module.startswith(path_prefix):
+        module = module[len(path_prefix) :]
     console.rule(f"[bold green]Running {module}")
     # fetch app
     app_module = prerequisites.get_app_module(module)
