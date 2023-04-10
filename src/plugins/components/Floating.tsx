@@ -53,11 +53,11 @@ export function getExpandPosition(
     if (follow) {
       x += iconW + expandOffsetX;
     } else {
-      x -= w + expandOffsetX;
+      x += expandOffsetX - w;
     }
   } else {
     if (follow) {
-      x -= w + expandOffsetX;
+      x += expandOffsetX - w;
     } else {
       x += iconW + expandOffsetX;
     }
@@ -70,7 +70,7 @@ export function getExpandPosition(
   } else {
     if (!follow) {
       if (["lb", "bottom", "rb"].includes(pivot)) {
-        y -= h + expandOffsetY;
+        y += expandOffsetY - h;
       } else if (["lt", "top", "rt"].includes(pivot)) {
         y += iconH + expandOffsetY;
       }
@@ -78,9 +78,9 @@ export function getExpandPosition(
       if (pivot === "bottom") {
         y += iconH + expandOffsetY;
       } else if (pivot === "top") {
-        y -= h + expandOffsetY;
+        y += expandOffsetY - h;
       } else if (["lb", "rb"].includes(pivot)) {
-        y -= h + expandOffsetY - iconH;
+        y += expandOffsetY + iconH - h;
       } else if (["lt", "rt"].includes(pivot)) {
         y += expandOffsetY;
       }

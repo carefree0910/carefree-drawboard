@@ -20,7 +20,7 @@ class HttpMetaPlugin(IHttpPlugin):
             src="https://ailab-huawei-cdn.nolibox.com/upload/images/0ec1b08f9c3e4ef4813ecb80bebf3b42.png",
             pivot=PivotType.RT,
             follow=True,
-            offsetY=-48,
+            offsetY=48,
         )
 
     def process(self, data: IHttpPluginRequest) -> str:

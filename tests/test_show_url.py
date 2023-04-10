@@ -15,7 +15,7 @@ class HttpShowUrlPlugin(IHttpPlugin):
             src="https://ailab-huawei-cdn.nolibox.com/upload/images/effd9650ce934b239242c6122b701514.png",
             follow=True,
             pivot=PivotType.RT,
-            offsetY=-48,
+            offsetY=48,
         )
 
     def process(self, data: IHttpPluginRequest) -> str:

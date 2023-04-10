@@ -32,10 +32,16 @@ const Render = ({ offsetX, offsetY, nodeConstraint, renderInfo, children, ...pro
   expandOffsetX ??=
     renderInfo.useModal || ["top", "center", "bottom"].includes(pivot)
       ? 0
+      : ["lt", "left", "lb"].includes(pivot) === follow
+      ? -DEFAULT_PLUGIN_SETTINGS.expandOffsetX
       : DEFAULT_PLUGIN_SETTINGS.expandOffsetX;
   expandOffsetY ??=
     renderInfo.useModal || ["left", "right", "lt", "rt", "lb", "rb"].includes(pivot)
       ? 0
+      : pivot === "center"
+      ? DEFAULT_PLUGIN_SETTINGS.expandOffsetY
+      : (pivot === "top") === follow
+      ? -DEFAULT_PLUGIN_SETTINGS.expandOffsetY
       : DEFAULT_PLUGIN_SETTINGS.expandOffsetY;
 
   const updatedRenderInfo = {
@@ -60,10 +66,18 @@ const Render = ({ offsetX, offsetY, nodeConstraint, renderInfo, children, ...pro
       const _follow = follow!;
       const _offsetX =
         offsetX ??
-        (["top", "center", "bottom"].includes(_pivot) ? 0 : DEFAULT_PLUGIN_SETTINGS.offsetX);
+        (["top", "center", "bottom"].includes(_pivot)
+          ? 0
+          : ["lt", "left", "lb"].includes(_pivot) === _follow
+          ? -DEFAULT_PLUGIN_SETTINGS.offsetX
+          : DEFAULT_PLUGIN_SETTINGS.offsetX);
       const _offsetY =
         offsetY ??
-        (["left", "center", "right"].includes(_pivot) ? 0 : DEFAULT_PLUGIN_SETTINGS.offsetY);
+        (["left", "center", "right"].includes(_pivot)
+          ? 0
+          : ["lt", "top", "rt"].includes(_pivot) === _follow
+          ? -DEFAULT_PLUGIN_SETTINGS.offsetY
+          : DEFAULT_PLUGIN_SETTINGS.offsetY);
       // adjust floating
       const domFloating = document.querySelector<HTMLDivElement>(`#${id}`);
       if (!domFloating) return;
@@ -75,7 +89,7 @@ const Render = ({ offsetX, offsetY, nodeConstraint, renderInfo, children, ...pro
         if (["lt", "left", "lb"].includes(_pivot)) {
           x = left + _offsetX;
         } else if (["rt", "right", "rb"].includes(_pivot)) {
-          x = left + bw - _iconW - _offsetX;
+          x = left + bw - _iconW + _offsetX;
         } else {
           x = left + 0.5 * (bw - _iconW) + _offsetX;
         }
@@ -83,7 +97,7 @@ const Render = ({ offsetX, offsetY, nodeConstraint, renderInfo, children, ...pro
         if (["lt", "top", "rt"].includes(_pivot)) {
           y = top + _offsetY;
         } else if (["lb", "bottom", "rb"].includes(_pivot)) {
-          y = top + bh - _iconH - _offsetY;
+          y = top + bh - _iconH + _offsetY;
         } else {
           y = top + 0.5 * (bh - _iconH) + _offsetY;
         }
@@ -100,7 +114,7 @@ const Render = ({ offsetX, offsetY, nodeConstraint, renderInfo, children, ...pro
         let offsetX, offsetY;
         // x
         if (["lt", "left", "lb"].includes(_pivot)) {
-          offsetX = -_iconW - _offsetX;
+          offsetX = -_iconW + _offsetX;
         } else if (["rt", "right", "rb"].includes(_pivot)) {
           offsetX = _offsetX;
         } else {
@@ -108,7 +122,7 @@ const Render = ({ offsetX, offsetY, nodeConstraint, renderInfo, children, ...pro
         }
         // y
         if (["lt", "top", "rt"].includes(_pivot)) {
-          offsetY = -_iconH - _offsetY;
+          offsetY = -_iconH + _offsetY;
         } else if (["lb", "bottom", "rb"].includes(_pivot)) {
           offsetY = _offsetY;
         } else {
