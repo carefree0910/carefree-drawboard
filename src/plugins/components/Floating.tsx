@@ -17,6 +17,7 @@ import { themeStore } from "@/stores/theme";
 
 export interface IFloatingEvent {
   id: string;
+  expand: boolean;
   needRender: boolean;
 }
 export const floatingEvent = new Event<IFloatingEvent>();
@@ -138,7 +139,7 @@ function Floating({
     () => (useModal ? `${panelBg}${modalOpacityHex}` : commonProps.bg),
     [useModal],
   );
-  useLayoutEffect(() => floatingEvent.emit({ id, needRender }), [expand, needRender]);
+  useLayoutEffect(() => floatingEvent.emit({ id, expand, needRender }), [expand, needRender]);
 
   if (!needRender) return null;
 
