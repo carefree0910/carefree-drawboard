@@ -8,6 +8,6 @@
  * !!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!
  */
 
-export const PYTHON_RELATED_SETTINGS = {
-  backendPort: 8123,
-};
+// START PYTHON RELATED SETTINGS
+export const PYTHON_RELATED_SETTINGS = {};
+// END PYTHON RELATED SETTINGS
