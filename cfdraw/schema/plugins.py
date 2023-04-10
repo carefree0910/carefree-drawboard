@@ -11,6 +11,7 @@ from pydantic import BaseModel
 
 from cfdraw.parsers.noli import parse_node
 from cfdraw.parsers.noli import INode
+from cfdraw.parsers.noli import Matrix2D
 from cfdraw.parsers.noli import PivotType
 from cfdraw.parsers.noli import NodeConstraints
 from cfdraw.parsers.chakra import IChakra
@@ -99,6 +100,23 @@ Pivot of the plugin.
 
 class INodeData(BaseModel):
     """This should align with `INodeData` at `src/types/_python.ts`"""
+
+    x: Optional[float] = Field(None, description="X of the node")
+    y: Optional[float] = Field(None, description="Y of the node")
+    w: Optional[float] = Field(None, description="Width of the node")
+    h: Optional[float] = Field(None, description="Height of the node")
+    transform: Optional[Matrix2D] = Field(
+        None,
+        description="Transform matrix of the node",
+    )
+    text: Optional[str] = Field(
+        None,
+        description="Content of the (text) node, will be `None` if the node is not a text node",
+    )
+    src: Optional[str] = Field(
+        None,
+        description="Image url of the node, will be `None` if the node is not an image node",
+    )
 
 
 class IRawHttpPluginRequest(BaseModel):

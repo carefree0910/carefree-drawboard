@@ -1,6 +1,6 @@
 import type { TextareaProps } from "@chakra-ui/react";
 
-import type { Dictionary } from "@noli/core";
+import type { Dictionary, Matrix2DFields } from "@noli/core";
 
 import type { IPlugin } from "./plugins";
 
@@ -20,7 +20,18 @@ export interface IPythonHttpPluginCallbacks<R> {
   beforeRequest?: () => Promise<void>;
   getExtraRequestData?: () => Dictionary<any>;
 }
-export interface INodeData {}
+export interface INodeData {
+  // transform info
+  x?: number;
+  y?: number;
+  w?: number;
+  h?: number;
+  transform?: Matrix2DFields;
+  // text info
+  text?: string;
+  // image info
+  src?: string;
+}
 
 // plugin
 

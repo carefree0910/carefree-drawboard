@@ -28,7 +28,13 @@ export function useDeps({
 }
 
 export function getNodeData(node: INode | null): INodeData {
-  return {};
+  if (!node) return {};
+  const { x, y } = node.position;
+  const { w, h } = node.wh;
+  const transform = node.transform.fields;
+  const text = node.type === "text" ? node.params.content : undefined;
+  const src = node.type === "image" ? node.renderParams.src : undefined;
+  return { x, y, w, h, transform, text, src };
 }
 
 export function useHttpPython<R>({
