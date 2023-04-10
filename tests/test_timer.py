@@ -6,11 +6,14 @@ from cfdraw import *
 
 class HttpTimerPlugin(IHttpPlugin[HttpTextAreaResponse]):
     @property
+    def type(self) -> PluginType:
+        return PluginType.HTTP_TEXT_AREA
+
+    @property
     def settings(self) -> IPluginSettings:
         return IPluginSettings(
             w=300,
             h=70,
-            type=PluginType.HTTP_TEXT_AREA,
             nodeConstraint=NodeConstraints.NONE,
             src="https://ailab-huawei-cdn.nolibox.com/upload/images/63c07ca52b2b42ef943bcf04c8e78878.png",
             pivot=PivotType.TOP,

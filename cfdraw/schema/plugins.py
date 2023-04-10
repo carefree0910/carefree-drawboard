@@ -46,7 +46,6 @@ class IPluginSettings(IChakra):
     # required fields
     w: int = Field(..., gt=0, description="Width of the expanded plugin")
     h: int = Field(..., gt=0, description="Height of the expanded plugin")
-    type: "PluginType" = Field(..., description="Type of the plugin")
     nodeConstraint: NodeConstraints = Field(
         ...,
         description="""
@@ -96,36 +95,6 @@ Pivot of the plugin.
     # React fields
     pluginInfo: IPluginInfo = Field(IPluginInfo(), description="Plugin info")
 
-    def to_plugin_settings(self, identifier: str) -> Dict[str, Any]:
-        d = self.dict()
-        plugin_info = d.pop("pluginInfo")
-        # `identifier` has hashed into `{identifier}.{hash}`
-        plugin_info["endpoint"] = f"/{'.'.join(identifier.split('.')[:-1])}"
-        plugin_info["identifier"] = identifier
-        plugin_type = f"_python.{d.pop('type')}"
-        offset_x = d.pop("offsetX")
-        offset_y = d.pop("offsetY")
-        node_constraint = d.pop("nodeConstraint")
-        chakra_props = {}
-        for field in IChakra.__fields__:
-            chakra_value = d.pop(field)
-            if chakra_value is not None:
-                chakra_props[field] = chakra_value
-        for k, v in list(d.items()):
-            if v is None:
-                d.pop(k)
-        props = dict(
-            nodeConstraint=node_constraint,
-            pluginInfo=plugin_info,
-            renderInfo=d,
-            **chakra_props,
-        )
-        if offset_x is not None:
-            props["offsetX"] = offset_x
-        if offset_y is not None:
-            props["offsetY"] = offset_y
-        return dict(type=plugin_type, props=props)
-
 
 # web
 
@@ -166,12 +135,47 @@ class IPlugin(ABC):
 
     @property
     @abstractmethod
+    def type(self) -> PluginType:
+        pass
+
+    @property
+    @abstractmethod
     def settings(self) -> IPluginSettings:
         pass
 
     @abstractmethod
     def __call__(self, data: Any) -> Any:
         pass
+
+    def to_plugin_settings(self, identifier: str) -> Dict[str, Any]:
+        d = self.settings.dict()
+        plugin_info = d.pop("pluginInfo")
+        # `identifier` has hashed into `{identifier}.{hash}`
+        plugin_info["endpoint"] = f"/{'.'.join(identifier.split('.')[:-1])}"
+        plugin_info["identifier"] = identifier
+        plugin_type = f"_python.{self.type}"
+        offset_x = d.pop("offsetX")
+        offset_y = d.pop("offsetY")
+        node_constraint = d.pop("nodeConstraint")
+        chakra_props = {}
+        for field in IChakra.__fields__:
+            chakra_value = d.pop(field)
+            if chakra_value is not None:
+                chakra_props[field] = chakra_value
+        for k, v in list(d.items()):
+            if v is None:
+                d.pop(k)
+        props = dict(
+            nodeConstraint=node_constraint,
+            pluginInfo=plugin_info,
+            renderInfo=d,
+            **chakra_props,
+        )
+        if offset_x is not None:
+            props["offsetX"] = offset_x
+        if offset_y is not None:
+            props["offsetY"] = offset_y
+        return dict(type=plugin_type, props=props)
 
 
 class IHttpPlugin(Generic[THttpResponse], IPlugin, metaclass=ABCMeta):

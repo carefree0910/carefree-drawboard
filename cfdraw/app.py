@@ -161,7 +161,7 @@ class App:
             print_info("🔨 Compiling Plugins...")
             plugin.set_plugin_settings(
                 {
-                    self.hash_identifier(identifier): plugin.settings
+                    self.hash_identifier(identifier): plugin
                     for identifier, plugin in self.plugins.items()
                 }
             )

@@ -5,7 +5,7 @@ from typing import List
 from typing import NamedTuple
 
 from cfdraw import constants
-from cfdraw.schema.plugins import IPluginSettings
+from cfdraw.schema.plugins import IPlugin
 
 
 class PluginSettingsFileInfo(NamedTuple):
@@ -35,13 +35,13 @@ def _write_plugin_settings(lines: List[str]) -> None:
         f.writelines(lines)
 
 
-def set_plugin_settings(settings: Dict[str, IPluginSettings]) -> None:
+def set_plugin_settings(plugins: Dict[str, IPlugin]) -> None:
     info = _get_plugin_settings_file_info()
     before_lines = info.lines[: info.start_idx + 1]
     after_lines = info.lines[info.end_idx :]
     inserted_lines = []
-    for identifier, setting in settings.items():
-        d = setting.to_plugin_settings(identifier)
+    for identifier, plugin in plugins.items():
+        d = plugin.to_plugin_settings(identifier)
         inserted_lines.append(f"  {json.dumps(d)}\n")
     _write_plugin_settings(before_lines + inserted_lines + after_lines)
 
