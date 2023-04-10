@@ -9,5 +9,5 @@
  */
 
 // START PYTHON RELATED SETTINGS
-export const PYTHON_RELATED_SETTINGS = {};
+export default function getPythonRelatedSettings(): any {}
 // END PYTHON RELATED SETTINGS

@@ -14,6 +14,9 @@ def set_constants(updates: Dict[str, Any]) -> None:
         "// START PYTHON RELATED SETTINGS",
         "// END PYTHON RELATED SETTINGS",
     )
-    json_str = json.dumps(updates, indent=2)
-    new_lines = [f"export const PYTHON_RELATED_SETTINGS = {json_str};\n"]
+    new_lines = [
+        "export default function getPythonRelatedSettings(): any {\n",
+        f"return {json.dumps(updates, indent=2)};\n",
+        "}\n",
+    ]
     set_file_info(info, new_lines)
