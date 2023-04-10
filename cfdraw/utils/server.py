@@ -69,6 +69,8 @@ def raise_err(err: Exception) -> None:
 
 def upload_image(image: Image.Image) -> Dict[str, Any]:
     w, h = image.size
+    if not constants.UPLOAD_IMAGE_FOLDER.is_dir():
+        constants.UPLOAD_IMAGE_FOLDER.mkdir(parents=True)
     path = constants.UPLOAD_IMAGE_FOLDER / f"{random_hash()}.png"
     image.save(path)
     url_path = path.relative_to(constants.PARENT).as_posix()
