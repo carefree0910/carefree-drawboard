@@ -1,23 +1,20 @@
-import { shallowCopy } from "@noli/core";
+import { Dictionary, shallowCopy } from "@noli/core";
 
 import {
   defaultFieldDefinitions,
   ICustomDefinitions,
-  IFieldDefinitions,
+  IFieldDefinition,
   ISubscribableFields,
 } from "@/types/metaFields";
 
 export function subscribe(
   fields: ISubscribableFields[],
   customDefinitions?: ICustomDefinitions,
-): Partial<IFieldDefinitions> {
+): Dictionary<IFieldDefinition> {
   customDefinitions ??= {};
-  const result: Partial<IFieldDefinitions> = {};
+  const result = shallowCopy(customDefinitions ?? {});
   for (const field of fields) {
-    result[field] = {
-      ...shallowCopy(defaultFieldDefinitions[field]),
-      ...shallowCopy(customDefinitions[field] ?? {}),
-    };
+    result[field] = shallowCopy(defaultFieldDefinitions[field]);
   }
   return result;
 }

@@ -1,6 +1,6 @@
-import type { IFieldDefinition, ISubscribableFields } from "@/types/metaFields";
+import type { IFieldDefinition, IGeneralFields } from "@/types/metaFields";
 
 export interface IField<T extends IFieldDefinition> {
-  field: ISubscribableFields | string;
+  field: IGeneralFields;
   definition: T;
 }

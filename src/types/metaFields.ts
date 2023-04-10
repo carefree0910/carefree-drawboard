@@ -24,6 +24,7 @@ export const allSubscribableFields = [
   "source",
 ] as const;
 export type ISubscribableFields = typeof allSubscribableFields[number];
+export type IGeneralFields = ISubscribableFields | string;
 
 export interface INumberField {
   type: "number";
@@ -71,7 +72,7 @@ type _IFieldDefinition =
   | IImageField;
 export type IFieldDefinition = _IFieldDefinition & { props?: any };
 export type IFieldDefinitions = Record<ISubscribableFields, IFieldDefinition>;
-export type ICustomDefinitions = Partial<Record<ISubscribableFields, Partial<IFieldDefinitions>>>;
+export type ICustomDefinitions = Dictionary<IFieldDefinition>;
 
 const seedDefinition: INumberField = {
   type: "number",
