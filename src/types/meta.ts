@@ -1,3 +1,5 @@
+import type { Dictionary } from "@noli/core";
+
 import type { APISources } from "./requests";
 
 // meta types
@@ -67,6 +69,7 @@ export interface IMetaData extends IAPIMetaData {
   isDrag: boolean;
   timestamp?: number;
   duration?: number;
+  externalData: Dictionary<any>;
 }
 
 // meta bundle

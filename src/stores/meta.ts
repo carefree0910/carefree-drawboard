@@ -1,6 +1,6 @@
 import { computed, makeObservable, observable } from "mobx";
 
-import { shallowCopy } from "@noli/core";
+import { Dictionary, shallowCopy } from "@noli/core";
 import { ABCStore } from "@noli/business";
 
 import type { IMetaData, ITomeInfo, SDSamplers, SDVersions, VariationModel } from "@/types/meta";
@@ -28,6 +28,7 @@ class MetaStore extends ABCStore<IMetaData> implements IMetaData {
   isDrag = false;
   duration?: number;
   timestamp?: number;
+  externalData: Dictionary<any> = {};
 
   constructor() {
     super();
@@ -45,6 +46,7 @@ class MetaStore extends ABCStore<IMetaData> implements IMetaData {
       max_wh: observable,
       clip_skip: observable,
       variations: observable,
+      externalData: observable,
       metaData: computed,
     });
   }
@@ -73,6 +75,7 @@ class MetaStore extends ABCStore<IMetaData> implements IMetaData {
       tome_info: this.tome_info,
       isDrag: this.isDrag,
       timestamp: this.timestamp,
+      externalData: this.externalData,
     });
   }
 }
