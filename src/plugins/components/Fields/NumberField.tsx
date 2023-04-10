@@ -14,6 +14,7 @@ function NumberField({ field, definition }: NumberFieldProps) {
   if (isUndefined(definition.min) || isUndefined(definition.max)) {
     return <TextField field={field} definition={{ type: "text", props: definition.props }} />;
   }
+  if (isUndefined(getMetaField(field))) setMetaField(field, definition.default);
   let step = definition.step;
   if (!isUndefined(step) && definition.isInt) step = Math.round(step);
   return (
