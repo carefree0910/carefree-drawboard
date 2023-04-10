@@ -6,6 +6,7 @@ import type { ISubscribableFields } from "@/types/metaFields";
 import { subscribe } from "../utils/subscribe";
 import Render from "./Render";
 import TextField from "./TextField";
+import NumberField from "./NumberField";
 
 const FieldsPlugin = ({
   pluginInfo: { fields, customDefinitions },
@@ -25,6 +26,17 @@ const FieldsPlugin = ({
         if (definition.type === "text") {
           return (
             <TextField
+              key={field}
+              field={field as ISubscribableFields}
+              definition={definition}
+              flexShrink={0}
+              {...definition.props}
+            />
+          );
+        }
+        if (definition.type === "number") {
+          return (
+            <NumberField
               key={field}
               field={field as ISubscribableFields}
               definition={definition}

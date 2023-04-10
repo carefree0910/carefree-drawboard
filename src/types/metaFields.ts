@@ -30,8 +30,12 @@ export interface INumberField {
   default: number;
   min?: number;
   max?: number;
+  // slider
   step?: number;
   isInt?: boolean;
+  scale?: "linear" | "logarithmic";
+  label?: string | ReactElement;
+  precision?: number;
 }
 export interface ISelectField<T> {
   type: "select";
