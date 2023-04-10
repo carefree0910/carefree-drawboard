@@ -3,13 +3,11 @@ import { Input, InputProps } from "@chakra-ui/react";
 
 import { langStore, translate } from "@noli/business";
 
-import type { ISubscribableFields, ITextField } from "@/types/metaFields";
+import type { ITextField } from "@/types/metaFields";
+import type { IField } from "./_schema";
 import { getMetaField, setMetaField } from "@/stores/meta";
 
-export interface TextFieldProps extends InputProps {
-  field: ISubscribableFields;
-  definition: ITextField;
-}
+export interface TextFieldProps extends InputProps, IField<ITextField> {}
 function TextField({ field, value, onChange, ...props }: TextFieldProps) {
   return (
     <Input

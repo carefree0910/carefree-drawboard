@@ -4,15 +4,13 @@ import { InputProps } from "@chakra-ui/react";
 import { isUndefined } from "@noli/core";
 import { langStore, translate } from "@noli/business";
 
-import type { INumberField, ISubscribableFields } from "@/types/metaFields";
+import type { INumberField } from "@/types/metaFields";
+import type { IField } from "./_schema";
 import { getMetaField, setMetaField } from "@/stores/meta";
 import CFSlider from "@/components/CFSlider";
 import TextField from "./TextField";
 
-export interface NumberFieldProps extends InputProps {
-  field: ISubscribableFields;
-  definition: INumberField;
-}
+export interface NumberFieldProps extends InputProps, IField<INumberField> {}
 function NumberField({ field, definition, ...props }: NumberFieldProps) {
   if (isUndefined(definition.min) || isUndefined(definition.max)) {
     return <TextField field={field} definition={{ type: "text" }} {...props} />;

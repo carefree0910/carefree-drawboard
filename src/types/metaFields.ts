@@ -61,7 +61,7 @@ export interface IImageField {
   type: "image";
 }
 
-type IFieldDefinition =
+export type IFieldDefinition =
   | INumberField
   | ISelectField<any>
   | ITextField

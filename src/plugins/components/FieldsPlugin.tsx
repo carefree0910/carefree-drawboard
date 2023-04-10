@@ -2,7 +2,6 @@ import { useMemo } from "react";
 import { observer } from "mobx-react-lite";
 
 import type { IInternalTaskPlugin } from "@/types/plugins";
-import type { ISubscribableFields } from "@/types/metaFields";
 import { subscribe } from "../utils/subscribe";
 import Render from "./Render";
 import TextField from "./Fields/TextField";
@@ -33,7 +32,7 @@ const FieldsPlugin = ({
         return (
           <Field
             key={field}
-            field={field as ISubscribableFields}
+            field={field}
             definition={definition}
             flexShrink={0}
             {...definition.props}
