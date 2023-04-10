@@ -1,6 +1,7 @@
 # Injections
 src/panels/_python.ts
 .images/*
+.projects/*
 
 # Logs
 logs

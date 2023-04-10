@@ -1,9 +1,13 @@
+import os
+import json
+
 import numpy as np
 
 from io import BytesIO
 from PIL import Image
 from typing import Any
 from typing import Dict
+from typing import List
 from typing import Optional
 from fastapi import FastAPI
 from fastapi import File
@@ -17,6 +21,7 @@ from cftool.misc import random_hash
 from fastapi.middleware import cors
 
 from cfdraw import constants
+from cfdraw.utils import server
 from cfdraw.config import get_config
 from cfdraw.parsers import noli
 from cfdraw.compilers import plugin
@@ -48,6 +53,7 @@ class App:
         self.add_default_endpoints()
         self.add_websocket()
         self.add_upload_image()
+        self.add_project_managements()
         self.add_plugins()
         self.add_on_startup()
         self.hash = random_hash()
@@ -125,6 +131,53 @@ class App:
                 image = Image.open(constants.UPLOAD_IMAGE_FOLDER / file)
                 content = np_to_bytes(np.array(image))
                 return Response(content=content, media_type="image/png")
+            except Exception as err:
+                raise_err(err)
+
+    def add_project_managements(self) -> None:
+        class ProjectModel(BaseModel):
+            uid: str
+            name: str
+            createTime: float
+            updateTime: float
+            graphInfo: Dict[str, Any]
+            globalTransform: noli.Matrix2D
+
+        class SaveProjectResponse(BaseModel):
+            success: bool
+            message: str
+
+        @self.api.post("/save_project", responses=get_responses(SaveProjectResponse))
+        def save_project(data: ProjectModel) -> SaveProjectResponse:
+            try:
+                uid = data.uid
+                with open(constants.UPLOAD_PROJECT_FOLDER / f"{uid}.noli", "w") as f:
+                    json.dump(data.dict(), f)
+            except Exception as err:
+                err_msg = get_err_msg(err)
+                return SaveProjectResponse(success=False, message=err_msg)
+            return SaveProjectResponse(success=True, message="")
+
+        @self.api.get(
+            f"/{constants.UPLOAD_PROJECT_FOLDER_NAME}/{{uid:path}}",
+            responses=get_responses(ProjectModel),
+        )
+        async def fetch_project(uid: str) -> ProjectModel:
+            try:
+                with open(constants.UPLOAD_PROJECT_FOLDER / f"{uid}.noli", "r") as f:
+                    d = json.load(f)
+                return ProjectModel(**d)
+            except Exception as err:
+                raise_err(err)
+
+        @self.api.get(f"/all_projects")
+        async def fetch_all_projects() -> List[str]:
+            try:
+                return [
+                    file.stem
+                    for file in constants.UPLOAD_PROJECT_FOLDER.iterdir()
+                    if file.is_file()
+                ]
             except Exception as err:
                 raise_err(err)
 
