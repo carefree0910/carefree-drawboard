@@ -25,6 +25,7 @@ setup(
         "python-multipart",
         "carefree-toolkit>=0.3.4",
         "pillow",
+        "requests",
     ],
     author="carefree0910",
     author_email="syameimaru.saki@gmail.com",
