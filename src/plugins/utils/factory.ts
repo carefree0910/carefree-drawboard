@@ -19,7 +19,7 @@ function registerPlugin<T extends string>(
         checkNotExists(d, name, `please change another name for this plugin`);
       } catch (e) {
         if (Logger.isDebug) {
-          Logger.error(`${e}`);
+          Logger.warn(`${e}`);
         } else {
           throw e;
         }
