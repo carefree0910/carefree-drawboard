@@ -1,9 +1,29 @@
+import type { ReactElement } from "react";
+
 import type { Dictionary } from "@noli/core";
 
-import { allSDSamplers, allSDVersions, IAPIMetaData } from "./meta";
+import { allSDSamplers, allSDVersions } from "./meta";
 import { allAPISources } from "./requests";
 
-export type ISubscribableFields = keyof IAPIMetaData;
+export const allSubscribableFields = [
+  "w",
+  "h",
+  "url",
+  "prompt",
+  "negative_prompt",
+  "version",
+  "sampler",
+  "num_steps",
+  "guidance_scale",
+  "seed",
+  "use_circular",
+  "max_wh",
+  "clip_skip",
+  "variations",
+  "tome_info",
+  "source",
+] as const;
+export type ISubscribableFields = typeof allSubscribableFields[number];
 
 export interface INumberField {
   type: "number";
