@@ -80,4 +80,20 @@ class MetaStore extends ABCStore<IMetaData> implements IMetaData {
   }
 }
 
-export const metaStore = new MetaStore();
+const metaStore = new MetaStore();
+type IInternalMetaKeys = keyof Omit<IMetaData, "externalData">;
+export const getMetaData = () => metaStore.metaData;
+export function getMetaField<T extends IInternalMetaKeys>(field: T): IMetaData[T] {
+  return metaStore[field];
+}
+export function setMetaField<T extends IInternalMetaKeys>(field: T, value: IMetaData[T]): void;
+export function setMetaField<T = "externalData">(field: T, key: string, value: any): void;
+export function setMetaField() {
+  if (arguments.length === 2) {
+    metaStore.updateProperty(arguments[0], arguments[1]);
+  } else {
+    const externalData = shallowCopy(metaStore.externalData);
+    externalData[arguments[1]] = arguments[2];
+    metaStore.updateProperty("externalData", externalData);
+  }
+}

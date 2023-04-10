@@ -4,7 +4,7 @@ import { Input, InputProps } from "@chakra-ui/react";
 import { langStore, translate } from "@noli/business";
 
 import type { ISubscribableFields, ITextField } from "@/types/metaFields";
-import { metaStore } from "@/stores/meta";
+import { getMetaField, setMetaField } from "@/stores/meta";
 
 export interface TextFieldProps extends InputProps {
   field: ISubscribableFields;
@@ -13,9 +13,9 @@ export interface TextFieldProps extends InputProps {
 function TextField({ field, value, onChange, ...props }: TextFieldProps) {
   return (
     <Input
-      value={value ?? (metaStore[field] as string)}
+      value={value ?? (getMetaField(field) as string)}
       onChange={(event) => {
-        metaStore.updateProperty(field, event.target.value);
+        setMetaField(field, event.target.value);
         onChange?.(event);
       }}
       placeholder={translate(`${field}-field-placeholder`, langStore.tgt)}

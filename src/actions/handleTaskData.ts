@@ -1,6 +1,6 @@
 import type { TaskTypes, ITaskData } from "@/types/tasks";
 import type { INarrowedMetaData } from "@/types/narrowedMeta";
-import { metaStore } from "@/stores/meta";
+import { getMetaData } from "@/stores/meta";
 
 // converters
 
@@ -64,7 +64,7 @@ export function getTaskData<T extends TaskTypes>(
   task: T,
   metaData?: INarrowedMetaData[T],
 ): ITaskData[T] {
-  return converters[task](metaData ?? metaStore.metaData);
+  return converters[task](metaData ?? getMetaData());
 }
 
 // task data -> meta data api
