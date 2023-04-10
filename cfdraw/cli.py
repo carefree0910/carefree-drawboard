@@ -16,8 +16,8 @@ cli = typer.Typer()
 @cli.command()
 def run(
     module: str = typer.Option(None, help="The module to run."),
-    run_frontend: bool = typer.Option(True, help="Whether to run the frontend."),
-    run_backend: bool = typer.Option(True, help="Whether to run the backend."),
+    no_frontend: bool = typer.Option(False, help="Whether not to run the frontend."),
+    no_backend: bool = typer.Option(False, help="Whether not to run the backend."),
     log_level: constants.LogLevel = typer.Option(
         constants.LogLevel.ERROR,
         help="The log level to use.",
@@ -43,9 +43,9 @@ def run(
         backend_port = processes.change_or_terminate_port(backend_port, "backend")
     frontend_fn, backend_fn = exec.run_frontend, exec.run_backend
     try:
-        if run_frontend:
+        if not no_frontend:
             frontend_fn(int(frontend_port))
-        if run_backend:
+        if not no_backend:
             backend_fn(app_module.__name__, port=int(backend_port), log_level=log_level)
     finally:
         console.rule("[bold]Shutting down")
