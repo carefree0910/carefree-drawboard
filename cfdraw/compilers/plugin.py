@@ -17,5 +17,5 @@ def set_plugin_settings(plugins: Dict[str, IPlugin]) -> None:
     new_lines = []
     for identifier, plugin in plugins.items():
         d = plugin.to_plugin_settings(identifier)
-        new_lines.append(f"  {json.dumps(d)}\n")
+        new_lines.append(f"  {json.dumps(d)},\n")
     set_file_info(info, new_lines)
