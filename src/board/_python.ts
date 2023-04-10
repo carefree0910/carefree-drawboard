@@ -6,7 +6,7 @@ export default function getPythonPluginSettings(): IMakePlugin<AvailablePythonPl
      * !!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!
      * !!!!!                                 Please use                                   !!!!!
      * !!!!!                                                                              !!!!!
-     * !!!!!          `git update-index --skip-worktree ./src/panels/_python.ts`          !!!!!
+     * !!!!!          `git update-index --skip-worktree ./src/board/_python.ts`           !!!!!
      * !!!!!                                                                              !!!!!
      * !!!!!                       to ignore changes of this file                         !!!!!
      * !!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!

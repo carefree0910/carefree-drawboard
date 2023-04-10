@@ -21,7 +21,7 @@ import CFSlider from "@/components/CFSlider";
 import { CFDivider } from "@/components/CFDivider";
 import { drawboardPluginFactory } from "./utils/factory";
 import Render from "./components/Render";
-import getPythonPluginSettings from "@/panels/_python";
+import getPythonPluginSettings from "@/board/_python";
 
 const SettingsPlugin = ({ pluginInfo, ...props }: IPlugin) => {
   const lang = langStore.tgt;
