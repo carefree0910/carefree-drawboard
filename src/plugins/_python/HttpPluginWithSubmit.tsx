@@ -1,10 +1,9 @@
 import { useState } from "react";
 import { observer } from "mobx-react-lite";
-import { Button } from "@chakra-ui/react";
 
 import type { IPythonHttpPluginWithSubmit } from "@/types/_python";
 import { useHttpPython } from "@/hooks/usePython";
-import { themeStore } from "@/stores/theme";
+import { CFButton } from "@/components/CFButton";
 import { CFDivider } from "@/components/CFDivider";
 import Render from "../components/Render";
 
@@ -36,15 +35,11 @@ const PythonHttpPluginWithSubmit = ({
     getExtraRequestData,
   });
 
-  const { textColor } = themeStore.styles;
-
   return (
     <Render {...props}>
       {children}
       <CFDivider />
-      <Button color={textColor} flexShrink={0} onClick={() => setSend(true)}>
-        {buttonText}
-      </Button>
+      <CFButton onClick={() => setSend(true)}>{buttonText}</CFButton>
     </Render>
   );
 };

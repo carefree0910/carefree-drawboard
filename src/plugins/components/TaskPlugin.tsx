@@ -1,6 +1,6 @@
 import { useMemo } from "react";
 import { observer } from "mobx-react-lite";
-import { Button, useToast } from "@chakra-ui/react";
+import { useToast } from "@chakra-ui/react";
 
 import { langStore, translate } from "@noli/business";
 
@@ -8,6 +8,7 @@ import type { ITaskPlugin } from "@/types/plugins";
 import { UI_Words } from "@/lang/ui";
 import { themeStore } from "@/stores/theme";
 import { importMeta } from "@/actions/importMeta";
+import { CFButton } from "@/components/CFButton";
 import { CFDivider } from "@/components/CFDivider";
 import FieldsPlugin from "./FieldsPlugin";
 
@@ -22,9 +23,7 @@ const TaskPlugin = (props: ITaskPlugin) => {
   return (
     <FieldsPlugin {...props}>
       <CFDivider />
-      <Button color={textColor} flexShrink={0} onClick={onSubmit}>
-        {translate(UI_Words["submit-task"], lang)}
-      </Button>
+      <CFButton onClick={onSubmit}>{translate(UI_Words["submit-task"], lang)}</CFButton>
     </FieldsPlugin>
   );
 };
