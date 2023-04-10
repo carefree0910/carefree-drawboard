@@ -69,7 +69,7 @@ def raise_err(err: Exception) -> None:
 
 def upload_image(image: Image.Image) -> Dict[str, Any]:
     w, h = image.size
-    path = constants.UPLOAD_FOLDER / f"{random_hash()}.png"
+    path = constants.UPLOAD_IMAGE_FOLDER / f"{random_hash()}.png"
     image.save(path)
     url_path = path.relative_to(constants.PARENT).as_posix()
     url = f"{get_config().api_url}/{url_path}"

@@ -117,12 +117,12 @@ class App:
             )
 
         @self.api.get(
-            f"/{constants.UPLOAD_FOLDER_NAME}/{{file:path}}",
+            f"/{constants.UPLOAD_IMAGE_FOLDER_NAME}/{{file:path}}",
             **get_image_response_kwargs(),
         )
         async def fetch_image(file: str) -> Response:
             try:
-                image = Image.open(constants.UPLOAD_FOLDER / file)
+                image = Image.open(constants.UPLOAD_IMAGE_FOLDER / file)
                 content = np_to_bytes(np.array(image))
                 return Response(content=content, media_type="image/png")
             except Exception as err:
