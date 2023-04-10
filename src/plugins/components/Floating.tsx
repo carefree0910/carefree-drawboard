@@ -124,7 +124,7 @@ function Floating({
     boxShadow: "2px 2px 4px rgba(0, 0, 0, 0.25)",
     borderRadius: "4px",
   };
-  Object.entries(props).forEach(([key, value]) => {
+  Object.keys(props).forEach((key) => {
     const commonV = commonProps[key as keyof BoxProps];
     (props as any)[key] ??= commonV;
   });
