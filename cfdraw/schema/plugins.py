@@ -117,7 +117,7 @@ class IHttpPluginRequest(IRawHttpPluginRequest):
     node: Optional[INode] = Field(None, description="The parsed selected node")
 
 
-class IHttpResponse(BaseModel):
+class IHttpPluginResponse(BaseModel):
     success: bool = Field(..., description="Whether returned successfully")
     message: str = Field(..., description="The message of the response")
     data: Dict[str, Any] = Field(..., description="The data of the response")
@@ -244,7 +244,7 @@ __all__ = [
     "IPluginSettings",
     "IRawHttpPluginRequest",
     "IHttpPluginRequest",
-    "IHttpResponse",
+    "IHttpPluginResponse",
     "ISocketPluginMessage",
     "ISocketResponse",
     "IPlugin",
