@@ -6,7 +6,7 @@ from cfdraw.plugins.factory import PluginFactory
 
 
 @PluginFactory.record("meta")
-class HttpMetaPlugin(IHttpPlugin[HttpTextAreaResponse]):
+class HttpMetaPlugin(IHttpPlugin):
     @property
     def type(self) -> PluginType:
         return PluginType.HTTP_TEXT_AREA

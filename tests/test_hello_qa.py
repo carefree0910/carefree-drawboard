@@ -1,7 +1,7 @@
 from cfdraw import *
 
 
-class HttpHelloQAPlugin(IHttpPlugin[HttpTextAreaResponse]):
+class HttpHelloQAPlugin(IHttpPlugin):
     @property
     def type(self) -> PluginType:
         return PluginType.HTTP_QA

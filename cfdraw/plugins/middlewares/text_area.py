@@ -3,11 +3,7 @@ from typing import Union
 
 from cfdraw.schema.plugins import PluginType
 from cfdraw.schema.plugins import IMiddleWare
-from cfdraw.schema.plugins import HttpTextAreaModel
-from cfdraw.schema.plugins import HttpTextAreaResponse
-
-
-TTextAreaResponse = Union[str, HttpTextAreaResponse]
+from cfdraw.schema.plugins import IHttpResponse
 
 
 class TextAreaMiddleWare(IMiddleWare):
@@ -15,14 +11,10 @@ class TextAreaMiddleWare(IMiddleWare):
     def subscriptions(self) -> List[PluginType]:
         return [PluginType.HTTP_TEXT_AREA, PluginType.HTTP_QA]
 
-    def process(self, response: TTextAreaResponse) -> HttpTextAreaResponse:
-        if isinstance(response, HttpTextAreaResponse):
+    def process(self, response: Union[str, IHttpResponse]) -> IHttpResponse:
+        if isinstance(response, IHttpResponse):
             return response
-        return HttpTextAreaResponse(
-            success=True,
-            message="",
-            data=HttpTextAreaModel(text=response),
-        )
+        return IHttpResponse(success=True, message="", data=dict(text=response))
 
 
 __all__ = [

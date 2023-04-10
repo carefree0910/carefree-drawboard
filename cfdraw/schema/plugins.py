@@ -120,7 +120,7 @@ class IHttpPluginRequest(IRawHttpPluginRequest):
 class IHttpResponse(BaseModel):
     success: bool = Field(..., description="Whether returned successfully")
     message: str = Field(..., description="The message of the response")
-    data: BaseModel = Field(..., description="The data of the response")
+    data: Dict[str, Any] = Field(..., description="The data of the response")
 
 
 ## socket
@@ -223,14 +223,6 @@ class IHttpTextAreaPluginInfo(IPluginInfo):
     textAlign: Optional[TextAlign] = Field(None, description="Text align")
 
 
-class HttpTextAreaModel(BaseModel):
-    text: str = Field(..., description="The text to be displayed")
-
-
-class HttpTextAreaResponse(IHttpResponse):
-    data: HttpTextAreaModel = Field(..., description="The data of the response")
-
-
 ## (http) qa
 
 
@@ -259,7 +251,5 @@ __all__ = [
     "IMiddleWare",
     # bindings
     "IHttpTextAreaPluginInfo",
-    "HttpTextAreaModel",
-    "HttpTextAreaResponse",
     "IHttpQAPluginInfo",
 ]

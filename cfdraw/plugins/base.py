@@ -8,20 +8,19 @@ from cfdraw.schema.plugins import *
 from cfdraw.plugins.middlewares import *
 
 
-THttpResponse = TypeVar("THttpResponse", bound="IHttpResponse", covariant=True)
 TSocketResponse = TypeVar("TSocketResponse", bound="ISocketResponse", covariant=True)
 
 
-class IHttpPlugin(Generic[THttpResponse], IPlugin, metaclass=ABCMeta):
+class IHttpPlugin(IPlugin, metaclass=ABCMeta):
     @abstractmethod
-    def process(self, data: IHttpPluginRequest) -> THttpResponse:
+    def process(self, data: IHttpPluginRequest) -> IHttpResponse:
         pass
 
     @property
     def middlewares(self) -> List[IMiddleWare]:
         return [TextAreaMiddleWare()]
 
-    def __call__(self, data: IRawHttpPluginRequest) -> THttpResponse:
+    def __call__(self, data: IRawHttpPluginRequest) -> IHttpResponse:
         response = self.process(data.parse())
         for middleware in self.middlewares:
             response = middleware(self, response)
