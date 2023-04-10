@@ -23,29 +23,22 @@ const FieldsPlugin = ({
   return (
     <Render {...props}>
       {Object.entries(definitions).map(([field, definition]) => {
+        let Field = null;
         if (definition.type === "text") {
-          return (
-            <TextField
-              key={field}
-              field={field as ISubscribableFields}
-              definition={definition}
-              flexShrink={0}
-              {...definition.props}
-            />
-          );
+          Field = TextField;
+        } else if (definition.type === "number") {
+          Field = NumberField;
         }
-        if (definition.type === "number") {
-          return (
-            <NumberField
-              key={field}
-              field={field as ISubscribableFields}
-              definition={definition}
-              flexShrink={0}
-              {...definition.props}
-            />
-          );
-        }
-        return null;
+        if (!Field) return null;
+        return (
+          <Field
+            key={field}
+            field={field as ISubscribableFields}
+            definition={definition}
+            flexShrink={0}
+            {...definition.props}
+          />
+        );
       })}
       {children}
     </Render>
