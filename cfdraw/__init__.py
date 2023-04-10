@@ -4,3 +4,4 @@ from cfdraw.parsers import *
 from cfdraw.plugins import *
 
 register_plugin = PluginFactory.register
+available_plugins = PluginFactory.available

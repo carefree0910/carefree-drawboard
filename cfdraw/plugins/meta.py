@@ -1,8 +1,10 @@
 import json
 
 from cfdraw.schema.plugins import *
+from cfdraw.plugins.factory import PluginFactory
 
 
+@PluginFactory.record("meta")
 class HttpMetaPlugin(IHttpPlugin[HttpTextAreaResponse]):
     @property
     def settings(self) -> IPluginSettings:
