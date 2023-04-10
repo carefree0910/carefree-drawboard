@@ -3,6 +3,7 @@ from abc import ABC
 from enum import Enum
 from typing import Any
 from typing import Dict
+from typing import List
 from typing import TypeVar
 from typing import Optional
 from pydantic import Field
@@ -155,6 +156,12 @@ class IPlugin(ABC):
     def __call__(self, data: Any) -> Any:
         pass
 
+    # optional
+
+    @property
+    def middlewares(self) -> List["IMiddleWare"]:
+        return []
+
     # api
 
     def to_plugin_settings(self, identifier: str) -> Dict[str, Any]:
@@ -186,6 +193,22 @@ class IPlugin(ABC):
         if offset_y is not None:
             props["offsetY"] = offset_y
         return dict(type=plugin_type, props=props)
+
+
+class IMiddleWare(ABC):
+    @property
+    @abstractmethod
+    def subscriptions(self) -> List[PluginType]:
+        pass
+
+    @abstractmethod
+    def process(self, response: Any) -> Any:
+        pass
+
+    def __call__(self, plugin: IPlugin, response: Any) -> Any:
+        if plugin.type not in self.subscriptions:
+            return response
+        return self.process(response)
 
 
 # (react) bindings
@@ -233,6 +256,7 @@ __all__ = [
     "ISocketPluginMessage",
     "ISocketResponse",
     "IPlugin",
+    "IMiddleWare",
     # bindings
     "IHttpTextAreaPluginInfo",
     "HttpTextAreaModel",
