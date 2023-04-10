@@ -26,13 +26,11 @@ from cfdraw.utils.server import raise_err
 from cfdraw.utils.server import get_err_msg
 from cfdraw.utils.server import get_responses
 from cfdraw.utils.server import get_image_response_kwargs
-from cfdraw.schema.plugins import IPlugin
 from cfdraw.schema.plugins import ISocketPlugin
 from cfdraw.schema.plugins import IHttpResponse
 from cfdraw.schema.plugins import IRawHttpPluginRequest
-
-
-TPlugin = Type[IPlugin]
+from cfdraw.plugins.factory import TPlugin
+from cfdraw.plugins.factory import PluginFactory
 
 
 async def ping() -> str:
@@ -40,8 +38,6 @@ async def ping() -> str:
 
 
 class App:
-    plugins: Dict[str, IPlugin] = {}
-
     def __init__(self):
         # config
         self.config = get_config()
@@ -63,17 +59,9 @@ class App:
 
     # plugins
 
-    @classmethod
-    def register_plugin(cls, identifier: str) -> Callable[[TPlugin], TPlugin]:
-        if identifier in cls.plugins:
-            raise ValueError(f"plugin {identifier} already exists")
-
-        def _register(plugin: TPlugin) -> TPlugin:
-            plugin.identifier = identifier
-            cls.plugins[identifier] = plugin()
-            return plugin
-
-        return _register
+    @property
+    def plugins(self) -> Dict[str, TPlugin]:
+        return PluginFactory.plugins
 
     def hash_identifier(self, identifier: str) -> str:
         return f"{identifier}.{self.hash}"
