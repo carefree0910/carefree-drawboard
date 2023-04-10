@@ -5,6 +5,7 @@ import { ABCStore } from "@noli/business";
 
 import type { IMetaData, ITomeInfo, SDSamplers, SDVersions, VariationModel } from "@/types/meta";
 import type { APISources } from "@/types/requests";
+import { allSubscribableFields } from "@/types/metaFields";
 
 class MetaStore extends ABCStore<IMetaData> implements IMetaData {
   // common api data
@@ -82,18 +83,19 @@ class MetaStore extends ABCStore<IMetaData> implements IMetaData {
 
 const metaStore = new MetaStore();
 type IInternalMetaKeys = keyof Omit<IMetaData, "externalData">;
+type IExposedMetaKeys = IInternalMetaKeys | string;
+type IMetaValue<T extends IExposedMetaKeys> = T extends IInternalMetaKeys ? IMetaData[T] : any;
 export const getMetaData = () => metaStore.metaData;
 export function getMetaField<T extends IInternalMetaKeys>(field: T): IMetaData[T] {
   return metaStore[field];
 }
-export function setMetaField<T extends IInternalMetaKeys>(field: T, value: IMetaData[T]): void;
-export function setMetaField<T = "externalData">(field: T, key: string, value: any): void;
-export function setMetaField() {
-  if (arguments.length === 2) {
-    metaStore.updateProperty(arguments[0], arguments[1]);
+
+export function setMetaField<T extends IExposedMetaKeys>(field: T, value: IMetaValue<T>): void {
+  if (allSubscribableFields.includes(field)) {
+    metaStore.updateProperty(field as IInternalMetaKeys, value);
   } else {
     const externalData = shallowCopy(metaStore.externalData);
-    externalData[arguments[1]] = arguments[2];
+    externalData[field] = value;
     metaStore.updateProperty("externalData", externalData);
   }
 }
