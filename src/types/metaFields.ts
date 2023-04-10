@@ -62,7 +62,7 @@ export interface IImageField {
   type: "image";
 }
 
-type _IFieldDefinition =
+export type _IFieldDefinition =
   | INumberField
   | ISelectField<any>
   | ITextField
@@ -70,7 +70,7 @@ type _IFieldDefinition =
   | IListField
   | IObjectField
   | IImageField;
-export type IFieldDefinition = _IFieldDefinition & { props?: any };
+export type IFieldDefinition<T extends _IFieldDefinition = _IFieldDefinition> = T & { props?: any };
 export type IFieldDefinitions = Record<ISubscribableFields, IFieldDefinition>;
 export type ICustomDefinitions = Dictionary<IFieldDefinition>;
 
