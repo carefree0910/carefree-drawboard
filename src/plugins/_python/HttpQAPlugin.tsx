@@ -2,7 +2,7 @@ import { useState } from "react";
 import { observer } from "mobx-react-lite";
 import { Input, Textarea } from "@chakra-ui/react";
 
-import type { IPythonHttpQAPlugin } from "@/types/plugins";
+import type { IPythonHttpQAPlugin } from "@/types/_python";
 import { drawboardPluginFactory } from "@/plugins/utils/factory";
 import PythonHttpPluginWithSubmit from "./HttpPluginWithSubmit";
 import { langStore, translate } from "@noli/business";

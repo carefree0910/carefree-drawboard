@@ -1,6 +1,10 @@
+import type { TextareaProps } from "@chakra-ui/react";
+
 import type { Dictionary } from "@noli/core";
 
-import type { IPythonPlugin } from "./plugins";
+import type { IPlugin } from "./plugins";
+
+// general
 
 export interface IUsePythonInfo {
   node: IPythonPlugin["pluginInfo"]["node"];
@@ -12,7 +16,36 @@ export interface IUsePythonInfo {
 }
 export interface INodeData {}
 
+// plugin
+
+export interface IPythonPlugin extends IPlugin {
+  pluginInfo: IPlugin["pluginInfo"] & {
+    endpoint: string;
+    identifier: string;
+    updateInterval?: number;
+  };
+}
+export interface IPythonHttpPluginWithSubmit<R> extends IPythonPlugin {
+  buttonText: string;
+  onUseHttpPythonError?: IUseHttpPython<R>["onUseHttpPythonError"];
+  onUseHttpPythonSuccess: IUseHttpPython<R>["onUseHttpPythonSuccess"];
+  beforeRequest?: IUseHttpPython<R>["beforeRequest"];
+  getExtraRequestData?: IUseHttpPython<R>["getExtraRequestData"];
+}
+export interface IPythonHttpTextAreaPlugin extends IPythonPlugin {
+  pluginInfo: IPythonPlugin["pluginInfo"] & {
+    noLoading?: boolean;
+    textAlign?: TextareaProps["textAlign"];
+  };
+}
+export interface IPythonHttpQAPlugin extends IPythonPlugin {
+  pluginInfo: IPythonPlugin["pluginInfo"] & {
+    initialText: string;
+  };
+}
+
 // http
+
 export interface IUseHttpPython<R> extends IUsePythonInfo {
   forceNotSend?: boolean;
   onUseHttpPythonSuccess: (res: IPythonHttpResponse<R>) => Promise<void>;

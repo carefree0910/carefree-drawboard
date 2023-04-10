@@ -2,7 +2,7 @@ import { useState } from "react";
 import { observer } from "mobx-react-lite";
 import { Textarea } from "@chakra-ui/react";
 
-import type { IPythonHttpTextAreaPlugin } from "@/types/plugins";
+import type { IPythonHttpTextAreaPlugin } from "@/types/_python";
 import { useHttpPython } from "@/hooks/usePython";
 import { drawboardPluginFactory } from "@/plugins/utils/factory";
 import Render from "@/plugins/components/Render";

@@ -2,7 +2,7 @@ import { useState } from "react";
 import { observer } from "mobx-react-lite";
 import { Button } from "@chakra-ui/react";
 
-import type { IPythonHttpPluginWithSubmit } from "@/types/plugins";
+import type { IPythonHttpPluginWithSubmit } from "@/types/_python";
 import { useHttpPython } from "@/hooks/usePython";
 import { themeStore } from "@/stores/theme";
 import { CFDivider } from "@/components/CFDivider";
