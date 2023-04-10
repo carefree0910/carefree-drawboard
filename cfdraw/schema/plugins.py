@@ -98,7 +98,7 @@ Pivot of the plugin.
 
 
 class INodeData(BaseModel):
-    pass
+    """This should align with `INodeData` at `src/types/_python.ts`"""
 
 
 class IRawHttpPluginRequest(BaseModel):
