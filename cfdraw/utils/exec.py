@@ -13,7 +13,7 @@ def run_frontend(port: int) -> None:
     prerequisites.install_frontend_packages()
     console.rule("[bold green]Launching App")
     os.environ["PORT"] = str(port)
-    print_info(f"Your app will be ready at http://127.0.0.1:{port}")
+    print_info(f"Your app will be ready at http://localhost:{port}")
     subprocess.Popen(
         [prerequisites.get_yarn(), "dev", "--force"],
         cwd=constants.PARENT,
