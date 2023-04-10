@@ -1,6 +1,7 @@
 import sys
 import logging
 
+from PIL import Image
 from typing import Any
 from typing import Dict
 from typing import Type
@@ -8,8 +9,10 @@ from typing import Optional
 from fastapi import Response
 from fastapi import HTTPException
 from pydantic import BaseModel
+from cftool.misc import random_hash
 
 from cfdraw import constants
+from cfdraw.config import get_config
 
 
 class RuntimeError(BaseModel):
@@ -62,3 +65,12 @@ def get_err_msg(err: Exception) -> str:
 def raise_err(err: Exception) -> None:
     logging.exception(err)
     raise HTTPException(status_code=constants.ERR_CODE, detail=get_err_msg(err))
+
+
+def upload_image(image: Image.Image) -> Dict[str, Any]:
+    w, h = image.size
+    path = constants.UPLOAD_FOLDER / f"{random_hash()}.png"
+    image.save(path)
+    url_path = path.relative_to(constants.PARENT).as_posix()
+    url = f"{get_config().api_url}/{url_path}"
+    return dict(w=w, h=h, url=url)

@@ -4,8 +4,6 @@ from io import BytesIO
 from PIL import Image
 from typing import Any
 from typing import Dict
-from typing import Type
-from typing import Callable
 from typing import Optional
 from fastapi import FastAPI
 from fastapi import File
@@ -24,6 +22,7 @@ from cfdraw.compilers import plugin
 from cfdraw.compilers import settings
 from cfdraw.utils.server import raise_err
 from cfdraw.utils.server import get_err_msg
+from cfdraw.utils.server import upload_image
 from cfdraw.utils.server import get_responses
 from cfdraw.utils.server import get_image_response_kwargs
 from cfdraw.schema.plugins import IPlugin
@@ -90,9 +89,9 @@ class App:
 
     def add_upload_image(self) -> None:
         class ImageDataModel(BaseModel):
-            url: str
             w: int
             h: int
+            url: str
 
         class UploadImageModel(BaseModel):
             success: bool
@@ -104,19 +103,16 @@ class App:
             try:
                 contents = image.file.read()
                 loaded_image = Image.open(BytesIO(contents))
-                w, h = loaded_image.size
-                path = constants.UPLOAD_FOLDER / f"{random_hash()}.png"
-                loaded_image.save(path)
+                res = upload_image(loaded_image)
             except Exception as err:
                 err_msg = get_err_msg(err)
                 return UploadImageModel(success=False, message=err_msg, data=None)
             finally:
                 image.file.close()
-            url_path = path.relative_to(constants.PARENT).as_posix()
             return UploadImageModel(
                 success=True,
                 message="",
-                data=ImageDataModel(url=f"{self.config.api_url}/{url_path}", w=w, h=h),
+                data=ImageDataModel(**res),
             )
 
         @self.api.get(
