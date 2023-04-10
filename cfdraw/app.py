@@ -100,7 +100,7 @@ class App:
             data: Optional[ImageDataModel]
 
         @self.api.post("/upload_image", responses=get_responses(UploadImageResponse))
-        def upload(image: UploadFile = File(...)) -> UploadImageResponse:
+        def upload_image(image: UploadFile = File(...)) -> UploadImageResponse:
             try:
                 contents = image.file.read()
                 loaded_image = Image.open(BytesIO(contents))
