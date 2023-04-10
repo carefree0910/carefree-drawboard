@@ -86,10 +86,12 @@ type IInternalMetaKeys = keyof Omit<IMetaData, "externalData">;
 type IExposedMetaKeys = IInternalMetaKeys | string;
 type IMetaValue<T extends IExposedMetaKeys> = T extends IInternalMetaKeys ? IMetaData[T] : any;
 export const getMetaData = () => metaStore.metaData;
-export function getMetaField<T extends IInternalMetaKeys>(field: T): IMetaData[T] {
-  return metaStore[field];
+export function getMetaField<T extends IExposedMetaKeys>(field: T): IMetaValue<T> {
+  if (allSubscribableFields.includes(field)) {
+    return (metaStore as any)[field];
+  }
+  return metaStore.externalData[field];
 }
-
 export function setMetaField<T extends IExposedMetaKeys>(field: T, value: IMetaValue<T>): void {
   if (allSubscribableFields.includes(field)) {
     metaStore.updateProperty(field as IInternalMetaKeys, value);
