@@ -12,7 +12,7 @@ import React, { ReactElement, useCallback, useEffect, useState } from "react";
 
 import { themeStore } from "@/stores/theme";
 
-interface SliderProps {
+export interface ICFSlider {
   className?: string;
   min: number;
   max: number;
@@ -24,7 +24,7 @@ interface SliderProps {
   precision?: number;
 }
 
-const CFSlider: React.FC<SliderProps> = ({
+const CFSlider: React.FC<ICFSlider> = ({
   className,
   min,
   max,
