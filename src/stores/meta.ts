@@ -26,6 +26,7 @@ class MetaStore extends ABCStore<IMetaData> implements IMetaData {
   tome_info: Partial<ITomeInfo> = {};
   // specific data
   isDrag = false;
+  duration?: number;
   timestamp?: number;
 
   constructor() {
