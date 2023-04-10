@@ -41,21 +41,23 @@ def change_or_terminate_port(port: str, _type: str) -> str:
         f"This is the port the {_type} runs on."
     )
     frontend_action = console.ask("Kill or change it?", choices=["k", "c", "n"])
+
     if frontend_action == "k":
         kill_process_on_port(port)
         return port
-    elif frontend_action == "c":
+
+    if frontend_action == "c":
         new_port = console.ask("Specify the new port")
 
         # Check if also the new port is used
         if is_process_on_port(new_port):
             return change_or_terminate_port(new_port, _type)
-        else:
-            console.print(
-                f"The {_type} will run on port "
-                f"[bold underline]{new_port}[/bold underline]."
-            )
-            return new_port
-    else:
-        console.print("Exiting...")
-        sys.exit()
+
+        console.print(
+            f"The {_type} will run on port "
+            f"[bold underline]{new_port}[/bold underline]."
+        )
+        return new_port
+
+    console.print("Exiting...")
+    sys.exit()
