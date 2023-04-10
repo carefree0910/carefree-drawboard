@@ -30,6 +30,10 @@ const PythonHttpFieldsPlugin = ({ pluginInfo, ...props }: IPythonHttpFieldsPlugi
     });
     return data;
   }, [definitions]);
+  const pureIdentifier = useMemo(
+    () => stripHashFromIdentifier(pluginInfo.identifier),
+    [pluginInfo.identifier],
+  );
 
   function getExtraRequestData() {
     const { externalData, ...others } = data;
@@ -45,7 +49,7 @@ const PythonHttpFieldsPlugin = ({ pluginInfo, ...props }: IPythonHttpFieldsPlugi
       metaData: {
         type,
         value,
-        identifier: stripHashFromIdentifier(pluginInfo.identifier),
+        identifier: pureIdentifier,
         data,
       } as any,
     });
