@@ -5,6 +5,8 @@ export enum Projects_Words {
   "save-project" = "save-project",
   "load-project" = "load-project",
   "get-available-projects" = "get-available-projects",
+  "no-projects-available" = "no-projects-available",
+  "loading-available-project" = "loading-available-project",
 }
 
 export const projectsLangRecords: Record<Lang, Record<Projects_Words, string>> = {
@@ -13,11 +15,15 @@ export const projectsLangRecords: Record<Lang, Record<Projects_Words, string>> =
     [Projects_Words["save-project"]]: "保存项目",
     [Projects_Words["load-project"]]: "加载项目",
     [Projects_Words["get-available-projects"]]: "获取所有项目",
+    [Projects_Words["no-projects-available"]]: "暂无项目",
+    [Projects_Words["loading-available-project"]]: "拉取项目中...",
   },
   en: {
     [Projects_Words["project-header"]]: "Project Management",
     [Projects_Words["save-project"]]: "Save Project",
     [Projects_Words["load-project"]]: "Load Project",
     [Projects_Words["get-available-projects"]]: "Get Available Projects",
+    [Projects_Words["no-projects-available"]]: "No Projects Available",
+    [Projects_Words["loading-available-project"]]: "Loading...",
   },
 };

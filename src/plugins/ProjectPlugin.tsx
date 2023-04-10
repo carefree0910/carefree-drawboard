@@ -1,27 +1,64 @@
 import { observer } from "mobx-react-lite";
-import { Box, Button, Checkbox, Flex, useToast } from "@chakra-ui/react";
+import { useMemo, useState, useEffect, useCallback } from "react";
+import { Flex, useToast } from "@chakra-ui/react";
 
+import type { Dictionary } from "@noli/core";
 import { langStore, translate } from "@noli/business";
 
 import type { IPlugin } from "@/types/plugins";
 import { toast } from "@/utils/toast";
 import { Toast_Words } from "@/lang/toast";
 import { Projects_Words } from "@/lang/projects";
-import { saveProject } from "@/actions/manageProjects";
+import { useCurrentProject } from "@/stores/projects";
+import { fetchAllProjects, loadProject, saveProject } from "@/actions/manageProjects";
+import CFSelect from "@/components/CFSelect";
+import { CFText } from "@/components/CFText";
 import { CFButton } from "@/components/CFButton";
 import { CFDivider } from "@/components/CFDivider";
 import { CFHeading } from "@/components/CFHeading";
 import { drawboardPluginFactory } from "./utils/factory";
 import Render from "./components/Render";
+import { floatingEvent } from "./components/Floating";
 
 const ProjectPlugin = ({ pluginInfo, ...props }: IPlugin) => {
   const t = useToast();
   const lang = langStore.tgt;
+  const { uid } = useCurrentProject();
+  const [selectedUid, setSelectedUid] = useState("");
+  const [allProjects, setAllProjects] = useState<Dictionary<string> | undefined>();
+  const allProjectUids = useMemo(() => Object.keys(allProjects ?? {}), [allProjects]);
+
+  const updateUids = useCallback(() => {
+    fetchAllProjects().then((projects) => {
+      projects ??= [];
+      const uid2name = projects.reduce((acc, { uid, name }) => {
+        acc[uid] = name;
+        return acc;
+      }, {} as Dictionary<string>);
+      setAllProjects(uid2name);
+      if (!!uid2name[uid]) {
+        setSelectedUid(uid);
+      }
+    });
+  }, []);
+
+  useEffect(() => {
+    floatingEvent.on(({ expand }) => {
+      if (expand) updateUids();
+    });
+  }, []);
 
   function onSaveProject() {
-    saveProject(t, lang, async () =>
-      toast(t, "success", translate(Toast_Words["save-project-success-message"], lang)),
-    );
+    saveProject(t, lang, async () => {
+      toast(t, "success", translate(Toast_Words["save-project-success-message"], lang));
+      updateUids();
+    });
+  }
+
+  function onLoadProject() {
+    loadProject(t, lang, selectedUid, async (res) => {
+      console.log("> res", res);
+    });
   }
 
   return (
@@ -31,6 +68,28 @@ const ProjectPlugin = ({ pluginInfo, ...props }: IPlugin) => {
         <CFDivider />
         <CFButton onClick={onSaveProject}>
           {translate(Projects_Words["save-project"], lang)}
+        </CFButton>
+        <CFDivider />
+        {allProjects ? (
+          allProjectUids.length > 0 ? (
+            <CFSelect
+              value={allProjects[selectedUid]}
+              options={allProjectUids}
+              onOptionClick={(uid) => setSelectedUid(uid)}
+              optionConverter={(uid) => allProjects[uid]}
+              menuListProps={{
+                maxH: "116px",
+                overflowY: "scroll",
+              }}
+            />
+          ) : (
+            <CFText>{translate(Projects_Words["no-projects-available"], lang)}</CFText>
+          )
+        ) : (
+          <CFText>{translate(Projects_Words["loading-available-project"], lang)}</CFText>
+        )}
+        <CFButton mt="12px" onClick={onLoadProject}>
+          {translate(Projects_Words["load-project"], lang)}
         </CFButton>
       </Flex>
     </Render>
