@@ -1,6 +1,7 @@
 import json
 
 from cfdraw.schema.plugins import *
+from cfdraw.plugins.base import *
 from cfdraw.plugins.factory import PluginFactory
 
 

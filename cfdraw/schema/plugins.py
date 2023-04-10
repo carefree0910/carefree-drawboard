@@ -1,17 +1,13 @@
 from abc import abstractmethod
 from abc import ABC
-from abc import ABCMeta
 from enum import Enum
 from typing import Any
 from typing import Dict
-from typing import Generic
 from typing import TypeVar
 from typing import Optional
-from typing import NamedTuple
 from pydantic import Field
 from pydantic import BaseModel
 
-from cfdraw.parsers import utils
 from cfdraw.parsers.noli import parse_node
 from cfdraw.parsers.noli import INode
 from cfdraw.parsers.noli import PivotType
@@ -21,7 +17,6 @@ from cfdraw.parsers.chakra import TextAlign
 
 
 TPluginModel = TypeVar("TPluginModel")
-THttpResponse = TypeVar("THttpResponse", bound="IHttpResponse", covariant=True)
 
 
 class PluginType(str, Enum):
@@ -127,11 +122,24 @@ class IHttpResponse(BaseModel):
     data: BaseModel = Field(..., description="The data of the response")
 
 
-# interface
+## socket
+
+
+class ISocketPluginMessage(IHttpPluginRequest):
+    data: Dict[str, Any] = Field(..., description="The extra data of the message")
+
+
+class ISocketResponse(BaseModel):
+    data: BaseModel = Field(..., description="The data of the response")
+
+
+# plugin interface
 
 
 class IPlugin(ABC):
     identifier: str
+
+    # abstract
 
     @property
     @abstractmethod
@@ -146,6 +154,8 @@ class IPlugin(ABC):
     @abstractmethod
     def __call__(self, data: Any) -> Any:
         pass
+
+    # api
 
     def to_plugin_settings(self, identifier: str) -> Dict[str, Any]:
         d = self.settings.dict()
@@ -176,19 +186,6 @@ class IPlugin(ABC):
         if offset_y is not None:
             props["offsetY"] = offset_y
         return dict(type=plugin_type, props=props)
-
-
-class IHttpPlugin(Generic[THttpResponse], IPlugin, metaclass=ABCMeta):
-    @abstractmethod
-    def process(self, data: IHttpPluginRequest) -> THttpResponse:
-        pass
-
-    def __call__(self, data: IRawHttpPluginRequest) -> THttpResponse:
-        return self.process(data.parse())
-
-
-class ISocketPlugin(IPlugin):
-    pass
 
 
 # (react) bindings
@@ -233,8 +230,9 @@ __all__ = [
     "IRawHttpPluginRequest",
     "IHttpPluginRequest",
     "IHttpResponse",
+    "ISocketPluginMessage",
+    "ISocketResponse",
     "IPlugin",
-    "IHttpPlugin",
     # bindings
     "IHttpTextAreaPluginInfo",
     "HttpTextAreaModel",

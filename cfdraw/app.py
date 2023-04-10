@@ -27,9 +27,9 @@ from cfdraw.utils.server import get_err_msg
 from cfdraw.utils.server import get_responses
 from cfdraw.utils.server import get_image_response_kwargs
 from cfdraw.schema.plugins import IPlugin
-from cfdraw.schema.plugins import ISocketPlugin
 from cfdraw.schema.plugins import IHttpResponse
 from cfdraw.schema.plugins import IRawHttpPluginRequest
+from cfdraw.plugins.base import ISocketPlugin
 from cfdraw.plugins.factory import PluginFactory
 
 
