@@ -26,10 +26,10 @@ from cfdraw.utils.server import raise_err
 from cfdraw.utils.server import get_err_msg
 from cfdraw.utils.server import get_responses
 from cfdraw.utils.server import get_image_response_kwargs
+from cfdraw.schema.plugins import IPlugin
 from cfdraw.schema.plugins import ISocketPlugin
 from cfdraw.schema.plugins import IHttpResponse
 from cfdraw.schema.plugins import IRawHttpPluginRequest
-from cfdraw.plugins.factory import TPlugin
 from cfdraw.plugins.factory import PluginFactory
 
 
@@ -60,7 +60,7 @@ class App:
     # plugins
 
     @property
-    def plugins(self) -> Dict[str, TPlugin]:
+    def plugins(self) -> Dict[str, IPlugin]:
         return PluginFactory.plugins
 
     def hash_identifier(self, identifier: str) -> str:
