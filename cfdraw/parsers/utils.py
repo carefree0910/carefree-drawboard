@@ -31,6 +31,10 @@ def _parse_dict(pivot: str, path: str, require_all_lines: bool) -> ParseResponse
                 start = True
                 start_idx = i
                 target_lines.append("{")
+                # empty dict
+                if line.endswith("};"):
+                    target_lines.append("}")
+                    break
             elif start:
                 if line.endswith("};"):
                     # strip the trailing comma
