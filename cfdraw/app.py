@@ -18,11 +18,11 @@ from fastapi.middleware import cors
 
 from cfdraw import constants
 from cfdraw.config import get_config
+from cfdraw.parsers import noli
 from cfdraw.compilers import plugin
 from cfdraw.compilers import settings
 from cfdraw.utils.server import raise_err
 from cfdraw.utils.server import get_err_msg
-from cfdraw.utils.server import upload_image
 from cfdraw.utils.server import get_responses
 from cfdraw.utils.server import get_image_response_kwargs
 from cfdraw.schema.plugins import IPlugin
@@ -104,7 +104,7 @@ class App:
             try:
                 contents = image.file.read()
                 loaded_image = Image.open(BytesIO(contents))
-                res = upload_image(loaded_image)
+                res = server.upload_image(loaded_image)
             except Exception as err:
                 err_msg = get_err_msg(err)
                 return UploadImageResponse(success=False, message=err_msg, data=None)
