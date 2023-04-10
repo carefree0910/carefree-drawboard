@@ -101,4 +101,7 @@ const SettingsPlugin = ({ pluginInfo, ...props }: IPlugin) => {
     </Render>
   );
 };
-drawboardPluginFactory.register("settings")(observer(SettingsPlugin));
+
+const _ = observer(SettingsPlugin);
+drawboardPluginFactory.register("settings")(_);
+export default _;
