@@ -10,6 +10,7 @@ import {
   MenuItem,
   MenuItemProps,
   MenuList,
+  MenuListProps,
   Spacer,
 } from "@chakra-ui/react";
 
@@ -21,12 +22,13 @@ import Icon from "@/components/CFIcon";
 
 export interface ISelect<T extends string> extends MenuButtonProps {
   icon?: ReactElement;
-  value?: string;
+  value: string;
   options: T[];
   iconProps?: BoxProps;
   itemSize?: string;
   optionConverter?: (option: T) => string;
   onOptionClick: (option: T) => void;
+  menuListProps?: MenuListProps;
 }
 
 const block = genBlock("c-select");
@@ -39,8 +41,17 @@ function CFSelect<T extends string>({
   itemSize,
   optionConverter,
   onOptionClick,
+  menuListProps,
   ...props
 }: ISelect<T>) {
+  props.w ??= "100%";
+  props.h ??= "32px";
+  props.pl ??= "12px";
+  props.fontSize ??= "14px";
+  itemSize ??= "14px";
+  iconProps ??= {};
+  iconProps.pr ??= "8px";
+
   const { textColor, selectColors } = themeStore.styles;
   const checkedProps = (checked: boolean): MenuItemProps => {
     if (checked) {
@@ -88,7 +99,8 @@ function CFSelect<T extends string>({
           bgColor={selectColors.bgColor}
           borderColor={selectColors.bgColor}
           fontSize={itemSize ?? "12px"}
-          zIndex={10}>
+          zIndex={10}
+          {...menuListProps}>
           {options.map((option) => {
             return (
               <MenuItem

@@ -72,12 +72,6 @@ const SettingsPlugin = ({ pluginInfo, ...props }: IPlugin) => {
           <CFDivider />
           <CFSelect
             flex={1}
-            w="100%"
-            h="32px"
-            pl="12px"
-            fontSize="14px"
-            itemSize="14px"
-            iconProps={{ pr: "8px" }}
             value={langDescriptions[lang]}
             options={Object.keys(langDescriptions)}
             optionConverter={(lang: string) => langDescriptions[lang as Lang]}
