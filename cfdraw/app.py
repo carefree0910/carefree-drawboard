@@ -94,23 +94,23 @@ class App:
             h: int
             url: str
 
-        class UploadImageModel(BaseModel):
+        class UploadImageResponse(BaseModel):
             success: bool
             message: str
             data: Optional[ImageDataModel]
 
-        @self.api.post("/upload_image", responses=get_responses(UploadImageModel))
-        def upload(image: UploadFile = File(...)) -> UploadImageModel:
+        @self.api.post("/upload_image", responses=get_responses(UploadImageResponse))
+        def upload(image: UploadFile = File(...)) -> UploadImageResponse:
             try:
                 contents = image.file.read()
                 loaded_image = Image.open(BytesIO(contents))
                 res = upload_image(loaded_image)
             except Exception as err:
                 err_msg = get_err_msg(err)
-                return UploadImageModel(success=False, message=err_msg, data=None)
+                return UploadImageResponse(success=False, message=err_msg, data=None)
             finally:
                 image.file.close()
-            return UploadImageModel(
+            return UploadImageResponse(
                 success=True,
                 message="",
                 data=ImageDataModel(**res),
