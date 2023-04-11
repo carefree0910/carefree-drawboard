@@ -38,7 +38,7 @@ const SettingsPlugin = ({ pluginInfo, ...props }: IPlugin) => {
           <CFDivider />
           <Flex w="100%" gap="8px" wrap="wrap" align="center" justifyContent="space-around">
             {allAvailablePlugins
-              .filter((plugin) => plugin !== "settings")
+              .filter((plugin) => !["settings", "undo", "redo"].includes(plugin))
               .map((plugin) => (
                 <Checkbox
                   key={plugin}
