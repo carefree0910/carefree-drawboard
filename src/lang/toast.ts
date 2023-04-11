@@ -10,6 +10,7 @@ export enum Toast_Words {
   "generate-image-error-message" = "generate-image-error-message",
   "post-python-http-fields-plugin-error-message" = "post-python-http-fields-plugin-error-message",
   "uploading-project-message" = "uploading-project-message",
+  "add-project-success-message" = "add-project-success-message",
   "save-project-success-message" = "save-project-success-message",
   "save-project-error-message" = "save-project-error-message",
   "loading-project-message" = "loading-project-message",
@@ -30,6 +31,7 @@ export const toastLangRecords: Record<Lang, Record<Toast_Words, string>> = {
     [Toast_Words["generate-image-error-message"]]: "生成图片失败 😫",
     [Toast_Words["post-python-http-fields-plugin-error-message"]]: "请求 Python 服务时失败 😫",
     [Toast_Words["uploading-project-message"]]: "保存项目中，请稍候 😄",
+    [Toast_Words["add-project-success-message"]]: "新建项目成功！🥳",
     [Toast_Words["save-project-success-message"]]: "保存项目成功！🥳",
     [Toast_Words["save-project-error-message"]]: "保存项目失败 😫",
     [Toast_Words["loading-project-message"]]: "加载项目中，请稍候 😄",
@@ -49,6 +51,7 @@ export const toastLangRecords: Record<Lang, Record<Toast_Words, string>> = {
     [Toast_Words["post-python-http-fields-plugin-error-message"]]:
       "Request Python service failed 😫",
     [Toast_Words["uploading-project-message"]]: "Saving 😄",
+    [Toast_Words["add-project-success-message"]]: "Add project successfully! 🥳",
     [Toast_Words["save-project-success-message"]]: "Save project successfully! 🥳",
     [Toast_Words["save-project-error-message"]]: "Save project failed 😫",
     [Toast_Words["loading-project-message"]]: "Loading 😄",
