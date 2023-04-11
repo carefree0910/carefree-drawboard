@@ -118,6 +118,7 @@ function Floating({
     isInvisible,
   },
   noExpand,
+  onFloatingButtonClick,
   children,
   ...props
 }: IFloating) {
@@ -180,6 +181,7 @@ function Floating({
             setTransform(`matrix(1,0,0,1,${x},${y})`);
           }
           setExpand(!expand);
+          onFloatingButtonClick?.();
         }}
         opacity={isInvisible ? 0 : 1}
         visibility={isInvisible ? "hidden" : "visible"}

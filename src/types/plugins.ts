@@ -36,6 +36,7 @@ export interface IFloating extends FlexProps {
   id: string;
   renderInfo: IRenderInfo;
   noExpand?: boolean;
+  onFloatingButtonClick?: () => Promise<void>;
 }
 export interface IRender extends Omit<IFloating, "id" | "renderInfo"> {
   id?: string;
