@@ -9,7 +9,7 @@ import type { IPlugin } from "@/types/plugins";
 import { toast } from "@/utils/toast";
 import { Toast_Words } from "@/lang/toast";
 import { Projects_Words } from "@/lang/projects";
-import { useCurrentProject } from "@/stores/projects";
+import { updateCurrentProject, useCurrentProject } from "@/stores/projects";
 import { fetchAllProjects, loadProject, saveProject } from "@/actions/manageProjects";
 import CFSelect from "@/components/CFSelect";
 import { CFText } from "@/components/CFText";
@@ -55,13 +55,14 @@ const ProjectPlugin = ({ pluginInfo, ...props }: IPlugin) => {
       updateUids();
     });
   }
-
   function onLoadProject() {
     if (!selectedUid) {
       toast(t, "warning", translate(Toast_Words["please-select-project-message"], lang));
       return;
     }
-    loadProject(t, lang, selectedUid, async () => {
+    loadProject(t, lang, selectedUid, async (res) => {
+      updateCurrentProject(res);
+      setUserInputName(res.name);
       toast(t, "success", translate(Toast_Words["load-project-success-message"], lang));
     });
   }

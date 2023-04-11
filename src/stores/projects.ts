@@ -53,3 +53,4 @@ export const useCurrentProject = (): IProjectsStore => {
     updateTime: projectsStore.updateTime!,
   };
 };
+export const updateCurrentProject = (data: IProjectsStore) => projectsStore.updateProperty(data);

@@ -54,22 +54,21 @@ export async function loadProject(
   t: ReturnType<typeof useToast>,
   lang: Lang,
   uid: string,
-  onSuccess: () => Promise<void>,
+  onSuccess: (res: ILoadedProject) => Promise<void>,
 ): Promise<void> {
   toast(t, "info", translate(Toast_Words["loading-project-message"], lang));
 
   return safeCall(
     async () =>
-      Requests.get<ILoadedProject>("_python", `/get_project/${uid}`).then(
-        ({ graphInfo, globalTransform }) =>
-          useSafeExecute("replaceGraph", null, false, {
-            success: async () => {
-              BoardStore.api.setGlobalTransform(new Matrix2D(globalTransform));
-              safeClearExecuterStack();
-              onSuccess();
-            },
-            failed: async () => void 0,
-          })({ json: JSON.stringify(graphInfo), apiInfos: {} }),
+      Requests.get<ILoadedProject>("_python", `/get_project/${uid}`).then((res) =>
+        useSafeExecute("replaceGraph", null, false, {
+          success: async () => {
+            BoardStore.api.setGlobalTransform(new Matrix2D(res.globalTransform));
+            safeClearExecuterStack();
+            onSuccess(res);
+          },
+          failed: async () => void 0,
+        })({ json: JSON.stringify(res.graphInfo), apiInfos: {} }),
       ),
     {
       success: async () => void 0,
