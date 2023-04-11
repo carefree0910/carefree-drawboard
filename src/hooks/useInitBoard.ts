@@ -23,10 +23,14 @@ import {
 } from "@noli/business";
 
 import { BOARD_CONTAINER_ID, ENV } from "@/utils/constants";
+import { initStore } from "@/stores/init";
 import { themeStore } from "@/stores/theme";
 
 export function useInitBoard(): void {
   async function _initialize(): Promise<void> {
+    if (initStore.working) return;
+    initStore.updateProperty("working", true);
+
     // pre settings
     const isProduction = ENV === "production";
     Logger.isDebug = !isProduction;
@@ -101,6 +105,9 @@ export function useInitBoard(): void {
         KeyZ: true,
       },
     });
+
+    // done
+    initStore.updateProperty("working", false);
   }
 
   useEffect(() => {
