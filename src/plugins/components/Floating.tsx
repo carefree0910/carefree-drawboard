@@ -1,6 +1,6 @@
 import { observer } from "mobx-react-lite";
-import { useState, useMemo, useLayoutEffect } from "react";
-import { Box, BoxProps, Flex, Image } from "@chakra-ui/react";
+import { useState, useMemo, useLayoutEffect, forwardRef } from "react";
+import { Box, BoxProps, Flex, Image, Portal } from "@chakra-ui/react";
 
 import { Coordinate, Dictionary } from "@noli/core";
 import {
@@ -97,31 +97,34 @@ export function getExpandPosition(
   return new Coordinate(x, y);
 }
 
-function Floating({
-  id,
-  w: _w, // will not take effect
-  h: _h, // will not take effect
-  renderInfo: {
-    w,
-    h,
-    iconW,
-    iconH,
-    pivot,
-    follow,
-    expandOffsetX,
-    expandOffsetY,
-    src,
-    bgOpacity,
-    renderFilter,
-    useModal,
-    modalOpacity,
-    isInvisible,
-  },
-  noExpand,
-  onFloatingButtonClick,
-  children,
-  ...props
-}: IFloating) {
+const Floating = forwardRef(function (
+  {
+    id,
+    w: _w, // will not take effect
+    h: _h, // will not take effect
+    renderInfo: {
+      w,
+      h,
+      iconW,
+      iconH,
+      pivot,
+      follow,
+      expandOffsetX,
+      expandOffsetY,
+      src,
+      bgOpacity,
+      renderFilter,
+      useModal,
+      modalOpacity,
+      isInvisible,
+    },
+    noExpand,
+    onFloatingButtonClick,
+    children,
+    ...props
+  }: IFloating,
+  ref,
+) {
   const needRender = useIsReady() && (!renderFilter || renderFilter(useSelecting("raw")));
   const { panelBg } = themeStore.styles;
   bgOpacity ??= DEFAULT_PLUGIN_SETTINGS.bgOpacity;
@@ -199,23 +202,25 @@ function Floating({
         <Image src={src} draggable={false} />
       </Box>
       {!noExpand && (
-        <Flex
-          id={expandId}
-          w={`${w}px`}
-          h={`${h}px`}
-          overflow="auto"
-          direction="column"
-          transform={transform}
-          opacity={expand ? 1 : 0}
-          visibility={expand ? "visible" : "hidden"}
-          transition={VISIBILITY_TRANSITION}
-          {...commonProps}
-          bg={expandBg}>
-          {children}
-        </Flex>
+        <Portal containerRef={ref as any}>
+          <Flex
+            id={expandId}
+            w={`${w}px`}
+            h={`${h}px`}
+            overflow="auto"
+            direction="column"
+            transform={transform}
+            opacity={expand ? 1 : 0}
+            visibility={expand ? "visible" : "hidden"}
+            transition={VISIBILITY_TRANSITION}
+            {...commonProps}
+            bg={expandBg}>
+            {children}
+          </Flex>
+        </Portal>
       )}
     </>
   );
-}
+});
 
 export default observer(Floating);

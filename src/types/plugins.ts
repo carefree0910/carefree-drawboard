@@ -1,3 +1,4 @@
+import type { RefObject } from "react";
 import type { FlexProps } from "@chakra-ui/react";
 
 import type { INode, NodeType, PivotType } from "@noli/core";
@@ -44,6 +45,7 @@ export interface IRender extends Omit<IFloating, "id" | "renderInfo"> {
   offsetY?: number;
   nodeConstraint: NodeConstraints;
   renderInfo: Partial<IRenderInfo> & { w: number; h: number };
+  containerRef?: RefObject<HTMLDivElement>;
 }
 export interface IPlugin extends IRender {
   pluginInfo: { node: INode | null; nodes: INode[] };
@@ -99,7 +101,8 @@ export interface IPluginProps {
 
 export interface IMakePlugin<T extends AvailablePluginsAndPythonPlugins> {
   type: T;
-  props: Omit<IPluginProps[T], "pluginInfo"> & {
+  props: Omit<IPluginProps[T], "containerRef" | "pluginInfo"> & {
     pluginInfo: Omit<IPluginProps[T]["pluginInfo"], "node" | "nodes">;
   };
+  containerRef?: RefObject<HTMLDivElement>;
 }

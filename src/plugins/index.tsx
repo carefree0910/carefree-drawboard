@@ -20,6 +20,7 @@ export * from "./_python/HttpFieldsPlugin";
 export function makePlugin<T extends AvailablePluginsAndPythonPlugins>({
   key,
   type,
+  containerRef,
   props: { renderInfo, pluginInfo, ...props },
 }: IMakePlugin<T> & { key: string }) {
   renderInfo = shallowCopy(renderInfo);
@@ -46,5 +47,13 @@ export function makePlugin<T extends AvailablePluginsAndPythonPlugins>({
   } else {
     renderInfo.isInvisible = isInvisible(type);
   }
-  return <Plugin key={key} renderInfo={renderInfo} pluginInfo={updatedPluginInfo} {...props} />;
+  return (
+    <Plugin
+      key={key}
+      renderInfo={renderInfo}
+      pluginInfo={updatedPluginInfo}
+      containerRef={containerRef}
+      {...props}
+    />
+  );
 }

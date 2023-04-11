@@ -28,6 +28,7 @@ const Render = ({
   offsetY,
   nodeConstraint,
   renderInfo,
+  containerRef,
   children,
   ...props
 }: IRender) => {
@@ -190,7 +191,7 @@ const Render = ({
   ]);
 
   return (
-    <Floating id={id} renderInfo={updatedRenderInfo} {...props}>
+    <Floating id={id} ref={containerRef} renderInfo={updatedRenderInfo} {...props}>
       {children}
     </Floating>
   );
