@@ -1,7 +1,7 @@
 import { useLayoutEffect } from "react";
 import { observer } from "mobx-react-lite";
 
-import { Coordinate, getRandomHash, PivotType } from "@noli/core";
+import { Coordinate, getRandomHash, INodes, PivotType } from "@noli/core";
 import {
   boardBBoxToDom,
   injectNodeTransformEventCallback,
@@ -111,15 +111,14 @@ const Render = ({
           y = top + 0.5 * (bh - _iconH) + _offsetY;
         }
       } else {
-        const info = useSelecting("basic")({ fixed: 0 });
-        if (
-          !info ||
-          !info.displayNode ||
-          (updatedRenderInfo.renderFilter && !updatedRenderInfo.renderFilter(info))
-        ) {
+        const info = useSelecting("raw");
+        if (!info || (updatedRenderInfo.renderFilter && !updatedRenderInfo.renderFilter(info))) {
           return;
         }
-        const domPivot = boardBBoxToDom(info.displayNode.bbox.bounding).pivot(_pivot);
+        const bounding = info.displayNode
+          ? info.displayNode.bbox.bounding
+          : new INodes(info.nodes).bbox;
+        const domPivot = boardBBoxToDom(bounding).pivot(_pivot);
         let offsetX, offsetY;
         // x
         if (["lt", "left", "lb"].includes(_pivot)) {
