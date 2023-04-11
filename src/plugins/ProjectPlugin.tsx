@@ -1,3 +1,4 @@
+import Upload from "rc-upload";
 import { observer } from "mobx-react-lite";
 import { useMemo, useState, useEffect, useCallback } from "react";
 import { Flex, useToast } from "@chakra-ui/react";
@@ -10,7 +11,13 @@ import { toast } from "@/utils/toast";
 import { Toast_Words } from "@/lang/toast";
 import { Projects_Words } from "@/lang/projects";
 import { setCurrentProjectName, updateCurrentProject, useCurrentProject } from "@/stores/projects";
-import { fetchAllProjects, loadProject, saveProject } from "@/actions/manageProjects";
+import {
+  ILoadedProject,
+  fetchAllProjects,
+  loadLocalProject,
+  loadProject,
+  saveProject,
+} from "@/actions/manageProjects";
 import CFSelect from "@/components/CFSelect";
 import { CFText } from "@/components/CFText";
 import { CFInput } from "@/components/CFInput";
@@ -74,6 +81,9 @@ const ProjectPlugin = ({ pluginInfo, ...props }: IPlugin) => {
     }
     loadProject(t, lang, selectedUid, onLoadProjectSuccess);
   }
+  function onLoadLocalProject(res: ILoadedProject) {
+    loadLocalProject(t, lang, res, onLoadProjectSuccess);
+  }
 
   return (
     <Render id={id} {...props}>
@@ -106,6 +116,17 @@ const ProjectPlugin = ({ pluginInfo, ...props }: IPlugin) => {
         <CFButton mt="12px" onClick={onLoadProject}>
           {translate(Projects_Words["load-project"], lang)}
         </CFButton>
+        <CFDivider />
+        <Upload
+          accept=".noli"
+          customRequest={({ file }) => {
+            const reader = new FileReader();
+            reader.onload = () =>
+              onLoadLocalProject(JSON.parse(reader.result as string) as ILoadedProject);
+            reader.readAsText(file as Blob);
+          }}>
+          <CFButton w="100%">{translate(Projects_Words["load-local-project"], lang)}</CFButton>
+        </Upload>
       </Flex>
     </Render>
   );

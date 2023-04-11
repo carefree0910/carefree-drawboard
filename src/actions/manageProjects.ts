@@ -82,6 +82,15 @@ export async function loadProject(
     },
   );
 }
+export function loadLocalProject(
+  t: ReturnType<typeof useToast>,
+  lang: Lang,
+  res: ILoadedProject,
+  onSuccess: (res: ILoadedProject) => Promise<void>,
+): void {
+  toast(t, "info", translate(Toast_Words["loading-project-message"], lang));
+  replaceProjectWith(res, onSuccess);
+}
 
 interface IProjectItem {
   uid: string;
