@@ -2,7 +2,7 @@ import { observer } from "mobx-react-lite";
 import { useMemo, useState, useEffect, useCallback } from "react";
 import { Flex, useToast } from "@chakra-ui/react";
 
-import type { Dictionary } from "@noli/core";
+import { Dictionary, getRandomHash } from "@noli/core";
 import { langStore, translate } from "@noli/business";
 
 import type { IPlugin } from "@/types/plugins";
@@ -22,6 +22,7 @@ import { floatingEvent } from "./components/Floating";
 
 const ProjectPlugin = ({ pluginInfo, ...props }: IPlugin) => {
   const t = useToast();
+  const id = `project_${getRandomHash()}`;
   const lang = langStore.tgt;
   const { uid } = useCurrentProject();
   const [selectedUid, setSelectedUid] = useState("");
@@ -43,10 +44,10 @@ const ProjectPlugin = ({ pluginInfo, ...props }: IPlugin) => {
   }, []);
 
   useEffect(() => {
-    floatingEvent.on(({ expand }) => {
-      if (expand) updateUids();
+    floatingEvent.on(({ id: incomingId, expand }) => {
+      if (id === incomingId && expand) updateUids();
     });
-  }, []);
+  }, [id]);
 
   function onSaveProject() {
     saveProject(t, lang, async () => {
@@ -62,7 +63,7 @@ const ProjectPlugin = ({ pluginInfo, ...props }: IPlugin) => {
   }
 
   return (
-    <Render {...props}>
+    <Render id={id} {...props}>
       <Flex w="100%" h="100%" direction="column">
         <CFHeading>{translate(Projects_Words["project-header"], lang)}</CFHeading>
         <CFDivider />
