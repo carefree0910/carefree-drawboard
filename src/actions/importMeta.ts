@@ -95,6 +95,7 @@ function consumePythonHttpFields({
       };
       const iMetaData = shallowCopy(metaData);
       iMetaData.value = metaData.value[i] as any;
+      iMetaData.timestamp = Date.now();
       addNewImage(newAlias, url, {
         info: bboxInfo,
         meta: { type, data: iMetaData } as any,

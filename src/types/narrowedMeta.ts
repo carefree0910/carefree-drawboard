@@ -42,6 +42,7 @@ export type IPythonHttpFieldsData = Dictionary<any> & { externalData: Dictionary
 type IPythonHttpFieldsMetaData = IPythonHttpFieldsResponse & {
   identifier: string;
   data: IPythonHttpFieldsData;
+  timestamp?: number;
 };
 
 export interface INarrowedMetaData {
