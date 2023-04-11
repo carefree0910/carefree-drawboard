@@ -12,7 +12,7 @@ import {
 import { toast } from "@/utils/toast";
 import { Toast_Words } from "@/lang/toast";
 import { Requests } from "@/requests/actions";
-import { IProjectsStore, useCurrentProject } from "@/stores/projects";
+import { IProjectsStore, updateCurrentProject, useCurrentProject } from "@/stores/projects";
 
 export async function saveProject(
   t: ReturnType<typeof useToast>,
@@ -58,6 +58,7 @@ function replaceProjectWith(
     success: async () => {
       BoardStore.api.setGlobalTransform(new Matrix2D(res.globalTransform));
       safeClearExecuterStack();
+      updateCurrentProject(res);
       onSuccess(res);
     },
     failed: async () => void 0,

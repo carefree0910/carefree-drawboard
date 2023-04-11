@@ -10,7 +10,7 @@ import type { IPlugin } from "@/types/plugins";
 import { toast } from "@/utils/toast";
 import { Toast_Words } from "@/lang/toast";
 import { Projects_Words } from "@/lang/projects";
-import { setCurrentProjectName, updateCurrentProject, useCurrentProject } from "@/stores/projects";
+import { setCurrentProjectName, useCurrentProject } from "@/stores/projects";
 import {
   ILoadedProject,
   fetchAllProjects,
@@ -69,7 +69,6 @@ const ProjectPlugin = ({ pluginInfo, ...props }: IPlugin) => {
     });
   }
   async function onLoadProjectSuccess(res: ILoadedProject) {
-    updateCurrentProject(res);
     setSelectedUid(res.uid);
     setUserInputName(res.name);
     toast(t, "success", translate(Toast_Words["load-project-success-message"], lang));
