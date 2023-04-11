@@ -26,7 +26,7 @@ import { CFDivider } from "@/components/CFDivider";
 import { CFHeading } from "@/components/CFHeading";
 import { drawboardPluginFactory } from "./utils/factory";
 import Render from "./components/Render";
-import { floatingEvent } from "./components/Floating";
+import { floatingRenderEvent } from "./components/Floating";
 
 const ProjectPlugin = ({ pluginInfo, ...props }: IPlugin) => {
   const t = useToast();
@@ -53,7 +53,7 @@ const ProjectPlugin = ({ pluginInfo, ...props }: IPlugin) => {
   }, []);
 
   useEffect(() => {
-    floatingEvent.on(({ id: incomingId, expand }) => {
+    floatingRenderEvent.on(({ id: incomingId, expand }) => {
       if (id === incomingId && expand) updateUids();
     });
   }, [id]);

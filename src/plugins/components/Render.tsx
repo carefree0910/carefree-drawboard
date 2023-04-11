@@ -16,10 +16,10 @@ import type { IRender } from "@/types/plugins";
 import { DEFAULT_PLUGIN_SETTINGS } from "@/utils/constants";
 import { getNodeFilter } from "../utils/renderFilters";
 import Floating, {
-  floatingEvent,
+  floatingRenderEvent,
   getExpandId,
   getExpandPosition,
-  IFloatingEvent,
+  IFloatingRenderEvent,
 } from "./Floating";
 
 const Render = ({
@@ -159,12 +159,12 @@ const Render = ({
       });
       domFloatingExpand.style.transform = `matrix(1,0,0,1,${ex},${ey})`;
     };
-    const onFloatingReRender = ({ id: renderedId, needRender }: IFloatingEvent) => {
+    const onFloatingReRender = ({ id: renderedId, needRender }: IFloatingRenderEvent) => {
       if (id === renderedId && needRender) {
         updateFloating();
       }
     };
-    floatingEvent.on(onFloatingReRender);
+    floatingRenderEvent.on(onFloatingReRender);
     injectNodeTransformEventCallback(_id, updateFloating);
     useSelectHooks().register({ key: _id, after: updateFloating });
     window.addEventListener("resize", updateFloating);

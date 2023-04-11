@@ -15,12 +15,12 @@ import { Event } from "@/utils/event";
 import { DEFAULT_PLUGIN_SETTINGS, VISIBILITY_TRANSITION } from "@/utils/constants";
 import { themeStore } from "@/stores/theme";
 
-export interface IFloatingEvent {
+export interface IFloatingRenderEvent {
   id: string;
   expand: boolean;
   needRender: boolean;
 }
-export const floatingEvent = new Event<IFloatingEvent>();
+export const floatingRenderEvent = new Event<IFloatingRenderEvent>();
 
 export function getExpandId(id: string): string {
   return `${id}_expand`;
@@ -139,7 +139,7 @@ function Floating({
     () => (useModal ? `${panelBg}${modalOpacityHex}` : commonProps.bg),
     [useModal],
   );
-  useLayoutEffect(() => floatingEvent.emit({ id, expand, needRender }), [expand, needRender]);
+  useLayoutEffect(() => floatingRenderEvent.emit({ id, expand, needRender }), [expand, needRender]);
 
   if (!needRender) return null;
 
