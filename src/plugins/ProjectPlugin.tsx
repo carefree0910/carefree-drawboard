@@ -9,10 +9,11 @@ import type { IPlugin } from "@/types/plugins";
 import { toast } from "@/utils/toast";
 import { Toast_Words } from "@/lang/toast";
 import { Projects_Words } from "@/lang/projects";
-import { updateCurrentProject, useCurrentProject } from "@/stores/projects";
+import { setCurrentProjectName, updateCurrentProject, useCurrentProject } from "@/stores/projects";
 import { fetchAllProjects, loadProject, saveProject } from "@/actions/manageProjects";
 import CFSelect from "@/components/CFSelect";
 import { CFText } from "@/components/CFText";
+import { CFInput } from "@/components/CFInput";
 import { CFButton } from "@/components/CFButton";
 import { CFDivider } from "@/components/CFDivider";
 import { CFHeading } from "@/components/CFHeading";
@@ -24,8 +25,9 @@ const ProjectPlugin = ({ pluginInfo, ...props }: IPlugin) => {
   const t = useToast();
   const id = `project_${getRandomHash()}`;
   const lang = langStore.tgt;
-  const { uid } = useCurrentProject();
+  const { uid, name } = useCurrentProject();
   const [selectedUid, setSelectedUid] = useState("");
+  const [userInputName, setUserInputName] = useState(name);
   const [allProjects, setAllProjects] = useState<Dictionary<string> | undefined>();
   const allProjectUids = useMemo(() => Object.keys(allProjects ?? {}), [allProjects]);
 
@@ -49,6 +51,10 @@ const ProjectPlugin = ({ pluginInfo, ...props }: IPlugin) => {
     });
   }, [id]);
 
+  function onRenameProject() {
+    setCurrentProjectName(userInputName);
+    onSaveProject();
+  }
   function onSaveProject() {
     saveProject(t, lang, async () => {
       toast(t, "success", translate(Toast_Words["save-project-success-message"], lang));
@@ -72,7 +78,13 @@ const ProjectPlugin = ({ pluginInfo, ...props }: IPlugin) => {
       <Flex w="100%" h="100%" direction="column">
         <CFHeading>{translate(Projects_Words["project-header"], lang)}</CFHeading>
         <CFDivider />
-        <CFButton onClick={onSaveProject}>
+        <CFText ml="6px">{translate(Projects_Words["current-project-name"], lang)}</CFText>
+        <CFInput
+          mt="12px"
+          value={userInputName}
+          onChange={(e) => setUserInputName(e.target.value)}
+        />
+        <CFButton mt="12px" onClick={onRenameProject}>
           {translate(Projects_Words["save-project"], lang)}
         </CFButton>
         <CFDivider />
