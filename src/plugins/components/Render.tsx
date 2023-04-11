@@ -163,13 +163,14 @@ const Render = ({
         updateFloating();
       }
     };
-    floatingRenderEvent.on(onFloatingReRender);
+    const { dispose } = floatingRenderEvent.on(onFloatingReRender);
     injectNodeTransformEventCallback(_id, updateFloating);
     useSelectHooks().register({ key: _id, after: updateFloating });
     window.addEventListener("resize", updateFloating);
     updateFloating();
 
     return () => {
+      dispose();
       removeNodeTransformEventCallback(_id);
       useSelectHooks().remove(_id);
       window.removeEventListener("resize", updateFloating);

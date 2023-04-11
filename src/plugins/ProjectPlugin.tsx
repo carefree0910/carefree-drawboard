@@ -53,15 +53,22 @@ const ProjectPlugin = ({ pluginInfo, ...props }: IPlugin) => {
   }, []);
 
   useEffect(() => {
-    floatingEvent.on(({ type }) => {
+    const { dispose: floatingDispose } = floatingEvent.on(({ type }) => {
       if (type === "newProject") {
         const { uid, name } = useCurrentProject();
         updateProjectStates(uid, name);
       }
     });
-    floatingRenderEvent.on(({ id: incomingId, expand }) => {
-      if (id === incomingId && expand) updateUids();
-    });
+    const { dispose: floatingRenderDispose } = floatingRenderEvent.on(
+      ({ id: incomingId, expand }) => {
+        if (id === incomingId && expand) updateUids();
+      },
+    );
+
+    return () => {
+      floatingDispose();
+      floatingRenderDispose();
+    };
   }, [id]);
 
   function onRenameProject() {
