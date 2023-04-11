@@ -40,7 +40,7 @@ class HttpEdgePlugin(IHttpPlugin):
             src="https://ailab-huawei-cdn.nolibox.com/upload/images/37a7936897494bd9ae96de5912210841.png",
             pivot=PivotType.RT,
             follow=True,
-            offsetY=96,
+            offsetY=104,
             pluginInfo=IHttpFieldsPluginInfo(customDefinitions={}),
         )
 
