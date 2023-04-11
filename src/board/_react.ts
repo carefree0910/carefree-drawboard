@@ -56,7 +56,7 @@ export const reactPluginSettings: IMakePlugin<AvailablePlugins>[] = [
       nodeConstraint: "none",
       renderInfo: {
         w: 300,
-        h: 400,
+        h: 225,
         src: "https://ailab-huawei-cdn.nolibox.com/upload/images/81a82eca03224bc2bb8de65c08f2f48a.png",
         pivot: "rt",
         follow: false,
