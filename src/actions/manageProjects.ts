@@ -46,9 +46,22 @@ export async function saveProject(
   );
 }
 
-interface ILoadedProject extends IProjectsStore {
+export interface ILoadedProject extends IProjectsStore {
   graphInfo: INodePack[];
   globalTransform: Matrix2DFields;
+}
+function replaceProjectWith(
+  res: ILoadedProject,
+  onSuccess: (res: ILoadedProject) => Promise<void>,
+): void {
+  useSafeExecute("replaceGraph", null, false, {
+    success: async () => {
+      BoardStore.api.setGlobalTransform(new Matrix2D(res.globalTransform));
+      safeClearExecuterStack();
+      onSuccess(res);
+    },
+    failed: async () => void 0,
+  })({ json: JSON.stringify(res.graphInfo), apiInfos: {}, noFit: true });
 }
 export async function loadProject(
   t: ReturnType<typeof useToast>,
@@ -61,14 +74,7 @@ export async function loadProject(
   return safeCall(
     async () =>
       Requests.get<ILoadedProject>("_python", `/get_project/${uid}`).then((res) =>
-        useSafeExecute("replaceGraph", null, false, {
-          success: async () => {
-            BoardStore.api.setGlobalTransform(new Matrix2D(res.globalTransform));
-            safeClearExecuterStack();
-            onSuccess(res);
-          },
-          failed: async () => void 0,
-        })({ json: JSON.stringify(res.graphInfo), apiInfos: {}, noFit: true }),
+        replaceProjectWith(res, onSuccess),
       ),
     {
       success: async () => void 0,
