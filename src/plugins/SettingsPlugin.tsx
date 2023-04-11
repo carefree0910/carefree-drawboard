@@ -72,7 +72,7 @@ const SettingsPlugin = ({ pluginInfo, ...props }: IPlugin) => {
           <CFDivider />
           <CFSelect
             flex={1}
-            value={langDescriptions[lang]}
+            value={lang}
             options={Object.keys(langDescriptions)}
             optionConverter={(lang: string) => langDescriptions[lang as Lang]}
             onOptionClick={(lang: string) => switchLangTo(lang as Lang)}
