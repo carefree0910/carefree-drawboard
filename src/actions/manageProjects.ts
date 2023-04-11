@@ -68,7 +68,7 @@ export async function loadProject(
             onSuccess(res);
           },
           failed: async () => void 0,
-        })({ json: JSON.stringify(res.graphInfo), apiInfos: {} }),
+        })({ json: JSON.stringify(res.graphInfo), apiInfos: {}, noFit: true }),
       ),
     {
       success: async () => void 0,
