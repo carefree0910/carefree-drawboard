@@ -151,6 +151,14 @@ function Floating({
     () => floatingRenderEvent.emit({ id, expand, needRender, noExpand }),
     [id, expand, needRender, noExpand],
   );
+  useLayoutEffect(() => {
+    const { dispose } = floatingRenderEvent.on(({ id: incomingId, expand: incomingExpand }) => {
+      if (id !== incomingId && incomingExpand && expand) {
+        setExpand(false);
+      }
+    });
+    return dispose;
+  }, [id, expand]);
 
   if (!needRender) return null;
 
