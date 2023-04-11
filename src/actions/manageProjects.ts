@@ -62,9 +62,9 @@ export async function loadProject(
     async () =>
       Requests.get<ILoadedProject>("_python", `/get_project/${uid}`).then(
         ({ graphInfo, globalTransform }) =>
-          useSafeExecute("replaceGraph", null, true, {
+          useSafeExecute("replaceGraph", null, false, {
             success: async () => {
-              BoardStore.board.setGlobalTransform(new Matrix2D(globalTransform), true);
+              BoardStore.api.setGlobalTransform(new Matrix2D(globalTransform));
               safeClearExecuterStack();
               onSuccess();
             },

@@ -1,7 +1,6 @@
 import { useEffect } from "react";
 
 import {
-  BoardStore,
   injectEventCallback,
   removeEventCallback,
   useBoardContainerWH,
@@ -13,7 +12,7 @@ import { Coordinate, GlobalEvent } from "@noli/core";
 import { guidelinesStore } from "@/stores/gridLines";
 
 const gridLinesCanvasId = "gridLinesLayer";
-const gridLineEvents = [GlobalEvent.MOVE, GlobalEvent.SCALE];
+const gridLineEvents = [GlobalEvent.MOVE, GlobalEvent.SCALE, GlobalEvent.TRANSFORM];
 function getMod(x: number, y: number): number {
   let mod = x % y;
   if (mod < 0) mod += y;
