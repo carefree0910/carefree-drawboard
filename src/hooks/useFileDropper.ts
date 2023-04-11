@@ -51,7 +51,7 @@ export function useFileDropper(lang: Lang): void {
   async function onSuccess(resList: FileDropperResponse[]): Promise<void> {
     setDropping(false);
     if (resList.length === 0) return;
-    toast(t, "success", translate(Toast_Words["uploading-image-message"], lang));
+    toast(t, "info", translate(Toast_Words["uploading-image-message"], lang));
     const uploadResList = await Promise.all(resList.map((res) => onSuccessOne(res)));
     if (uploadResList.some((res) => res.reason === "type")) {
       toast(t, "error", translate(Toast_Words["strange-image-error-message"], lang));
