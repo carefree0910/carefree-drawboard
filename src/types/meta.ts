@@ -70,6 +70,7 @@ export interface IMetaData extends IAPIMetaData {
   timestamp?: number;
   duration?: number;
   externalData: Dictionary<any>;
+  from?: IMeta;
 }
 
 // meta bundle
