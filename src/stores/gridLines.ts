@@ -31,7 +31,7 @@ class GridLinesStore extends ABCStore<IGridLinesStore> implements IGridLinesStor
   lineColor = "208,208,208";
   maxOpacity = 0.8;
   maxGridSize = 250;
-  span = 8;
+  span = 5;
   startSubGridsFraction = 0.45;
 
   constructor() {
