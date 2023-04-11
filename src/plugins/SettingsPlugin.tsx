@@ -31,12 +31,39 @@ const SettingsPlugin = ({ pluginInfo, ...props }: IPlugin) => {
 
   return (
     <Render {...props}>
-      <Flex w="100%" h="100%" mb="20px" direction="column">
+      <Flex w="100%" h="100%" direction="column">
+        {/* language settings */}
+        <Box mt="12px">
+          <CFHeading>语言 / Language</CFHeading>
+          <CFDivider />
+          <CFSelect
+            flex={1}
+            value={lang}
+            options={Object.keys(langDescriptions)}
+            optionConverter={(lang: string) => langDescriptions[lang as Lang]}
+            onOptionClick={(lang: string) => switchLangTo(lang as Lang)}
+          />
+        </Box>
+        {/* globalScale settings */}
+        {useIsReady() && (
+          <Box mt="24px">
+            <CFHeading>{translate(Settings_Words["global-scale-header"], lang)}</CFHeading>
+            <CFDivider />
+            <CFSlider
+              min={BoardStore.board.options.minScale}
+              max={BoardStore.board.options.maxScale}
+              step={0.001}
+              value={useGlobalTransform().globalScale}
+              scale="logarithmic"
+              onSliderChange={(value) => BoardStore.api.setGlobalScale(value)}
+            />
+          </Box>
+        )}
         {/* plugin settings */}
-        <Box>
+        <Box mt="12px" pb="12px">
           <CFHeading>{translate(Settings_Words["plugins-header"], lang)}</CFHeading>
           <CFDivider />
-          <Flex w="100%" gap="8px" wrap="wrap" align="center" justifyContent="space-around">
+          <Flex w="100%" gap="8px" direction="column" justifyContent="space-around">
             {allAvailablePlugins
               .filter((plugin) => !["settings", "undo", "redo"].includes(plugin))
               .map((plugin) => (
@@ -66,33 +93,6 @@ const SettingsPlugin = ({ pluginInfo, ...props }: IPlugin) => {
             })}
           </Flex>
         </Box>
-        {/* language settings */}
-        <Box mt="24px">
-          <CFHeading>语言 / Language</CFHeading>
-          <CFDivider />
-          <CFSelect
-            flex={1}
-            value={lang}
-            options={Object.keys(langDescriptions)}
-            optionConverter={(lang: string) => langDescriptions[lang as Lang]}
-            onOptionClick={(lang: string) => switchLangTo(lang as Lang)}
-          />
-        </Box>
-        {/* globalScale settings */}
-        {useIsReady() && (
-          <Box mt="24px">
-            <CFHeading>{translate(Settings_Words["global-scale-header"], lang)}</CFHeading>
-            <CFDivider />
-            <CFSlider
-              min={BoardStore.board.options.minScale}
-              max={BoardStore.board.options.maxScale}
-              step={0.001}
-              value={useGlobalTransform().globalScale}
-              scale="logarithmic"
-              onSliderChange={(value) => BoardStore.api.setGlobalScale(value)}
-            />
-          </Box>
-        )}
       </Flex>
     </Render>
   );
