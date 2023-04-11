@@ -36,7 +36,8 @@ export function makePlugin<T extends AvailablePluginsAndPythonPlugins>({
   const info = useSelecting("raw");
   if (!getNodeFilter(props.nodeConstraint)(info)) return null;
   const node = info.displayNode;
-  const updatedPluginInfo = { ...pluginInfo, node };
+  const nodes = info.nodes;
+  const updatedPluginInfo = { ...pluginInfo, node, nodes };
   if (!renderInfo.src)
     renderInfo.src =
       "https://ailab-huawei-cdn.nolibox.com/upload/images/7eb5a38f422049948dc8655123f2d96a.png";

@@ -45,7 +45,7 @@ export interface IRender extends Omit<IFloating, "id" | "renderInfo"> {
   pluginInfo?: {};
 }
 export interface IPlugin extends IRender {
-  pluginInfo: { node: INode | null };
+  pluginInfo: { node: INode | null; nodes: INode[] };
 }
 
 // specific
@@ -88,6 +88,6 @@ export interface IPluginProps {
 export interface IMakePlugin<T extends AvailablePluginsAndPythonPlugins> {
   type: T;
   props: Omit<IPluginProps[T], "pluginInfo"> & {
-    pluginInfo: Omit<IPluginProps[T]["pluginInfo"], "node">;
+    pluginInfo: Omit<IPluginProps[T]["pluginInfo"], "node" | "nodes">;
   };
 }
