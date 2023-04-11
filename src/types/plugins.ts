@@ -1,4 +1,4 @@
-import type { FlexProps, TextareaProps } from "@chakra-ui/react";
+import type { FlexProps } from "@chakra-ui/react";
 
 import type { INode, NodeType, PivotType } from "@noli/core";
 import type { IResponse } from "@noli/business";
