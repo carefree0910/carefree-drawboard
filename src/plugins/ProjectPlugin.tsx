@@ -76,7 +76,7 @@ const ProjectPlugin = ({ pluginInfo, ...props }: IPlugin) => {
   return (
     <Render id={id} {...props}>
       <Flex w="100%" h="100%" direction="column">
-        <CFHeading>{translate(Projects_Words["project-header"], lang)}</CFHeading>
+        <CFHeading>{translate(Projects_Words["project-plugin-header"], lang)}</CFHeading>
         <CFDivider />
         <CFText ml="6px">{translate(Projects_Words["current-project-name"], lang)}</CFText>
         <CFInput

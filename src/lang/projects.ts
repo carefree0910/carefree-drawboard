@@ -1,7 +1,7 @@
 import { Lang } from "@noli/core";
 
 export enum Projects_Words {
-  "project-header" = "project-header",
+  "project-plugin-header" = "project-plugin-header",
   "current-project-name" = "current-project-name",
   "save-project" = "save-project",
   "load-project" = "load-project",
@@ -12,7 +12,7 @@ export enum Projects_Words {
 
 export const projectsLangRecords: Record<Lang, Record<Projects_Words, string>> = {
   zh: {
-    [Projects_Words["project-header"]]: "项目管理",
+    [Projects_Words["project-plugin-header"]]: "项目管理",
     [Projects_Words["current-project-name"]]: "当前名称",
     [Projects_Words["save-project"]]: "保 存",
     [Projects_Words["load-project"]]: "加 载",
@@ -21,7 +21,7 @@ export const projectsLangRecords: Record<Lang, Record<Projects_Words, string>> =
     [Projects_Words["loading-available-project"]]: "拉取项目中...",
   },
   en: {
-    [Projects_Words["project-header"]]: "Project Management",
+    [Projects_Words["project-plugin-header"]]: "Project Management",
     [Projects_Words["current-project-name"]]: "Current Name",
     [Projects_Words["save-project"]]: "Save",
     [Projects_Words["load-project"]]: "Load",
