@@ -68,9 +68,12 @@ const ProjectPlugin = ({ pluginInfo, ...props }: IPlugin) => {
       updateUids();
     });
   }
+  function updateProjectStates(uid: string, name: string) {
+    setSelectedUid(uid);
+    setUserInputName(name);
+  }
   async function onLoadProjectSuccess(res: ILoadedProject) {
-    setSelectedUid(res.uid);
-    setUserInputName(res.name);
+    updateProjectStates(res.uid, res.name);
     toast(t, "success", translate(Toast_Words["load-project-success-message"], lang));
   }
   function onLoadProject() {
