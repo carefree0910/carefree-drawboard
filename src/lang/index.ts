@@ -6,6 +6,7 @@ import { toastLangRecords } from "./toast";
 import { pluginsLangRecords } from "./plugins";
 import { settingsLangRecords } from "./settings";
 import { projectsLangRecords } from "./projects";
+import { addLangRecords } from "./add";
 
 const initLangDirs = [
   uiLangRecords,
@@ -13,6 +14,7 @@ const initLangDirs = [
   pluginsLangRecords,
   settingsLangRecords,
   projectsLangRecords,
+  addLangRecords,
 ];
 
 export function initializeLang(): void {

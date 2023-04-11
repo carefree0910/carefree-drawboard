@@ -48,4 +48,20 @@ export const reactPluginSettings: IMakePlugin<AvailablePlugins>[] = [
       pluginInfo: {},
     },
   },
+  {
+    type: "add",
+    props: {
+      p: "14px",
+      offsetY: 120,
+      nodeConstraint: "none",
+      renderInfo: {
+        w: 300,
+        h: 400,
+        src: "https://ailab-huawei-cdn.nolibox.com/upload/images/81a82eca03224bc2bb8de65c08f2f48a.png",
+        pivot: "rt",
+        follow: false,
+      },
+      pluginInfo: {},
+    },
+  },
 ];
