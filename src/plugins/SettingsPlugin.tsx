@@ -31,7 +31,7 @@ const SettingsPlugin = ({ pluginInfo, ...props }: IPlugin) => {
 
   return (
     <Render {...props}>
-      <Flex w="100%" h="100%" direction="column">
+      <Flex w="100%" h="100%" mb="20px" direction="column">
         {/* plugin settings */}
         <Box>
           <CFHeading>{translate(Settings_Words["plugins-header"], lang)}</CFHeading>
