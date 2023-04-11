@@ -5,13 +5,13 @@ import {
   SliderThumb,
   Flex,
   Text,
-  Input,
   FlexProps,
 } from "@chakra-ui/react";
 import { useUnmount } from "ahooks";
 import React, { ReactElement, useCallback, useEffect, useState } from "react";
 
 import { themeStore } from "@/stores/theme";
+import { CFInput } from "./CFInput";
 
 export interface ICFSlider extends FlexProps {
   className?: string;
@@ -152,10 +152,9 @@ const CFSlider: React.FC<ICFSlider> = ({
           borderColor={sliderThumbBorderColor}
           _focusVisible={{ boxShadow: "none" }}></SliderThumb>
       </Slider>
-      <Input
+      <CFInput
         w="50px"
         bg={inputBgColor}
-        color={textColor}
         type="number"
         h="28px"
         size="unset"

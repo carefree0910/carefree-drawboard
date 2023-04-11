@@ -1,11 +1,12 @@
 import { useState } from "react";
 import { observer } from "mobx-react-lite";
-import { Input, Textarea } from "@chakra-ui/react";
+import { Textarea } from "@chakra-ui/react";
 
 import { langStore, translate } from "@noli/business";
 
 import type { IPythonHttpQAPlugin, IPythonHttpResponse } from "@/types/_python";
 import { UI_Words } from "@/lang/ui";
+import { CFInput } from "@/components/CFInput";
 import { drawboardPluginFactory } from "@/plugins/utils/factory";
 import PythonHttpPluginWithSubmit from "./HttpPluginWithSubmit";
 
@@ -29,13 +30,14 @@ const PythonHttpQAPlugin = ({ pluginInfo, ...props }: IPythonHttpQAPlugin) => {
       pluginInfo={pluginInfo}
       {...props}>
       <Textarea w="100%" h="40%" minH="0px" value={serverText} readOnly />
-      <Input
+      <CFInput
         w="100%"
         h="30%"
         mt="16px"
         value={userInput}
         onChange={(event) => setUserInput(event.target.value)}
-        placeholder={translate(UI_Words["qa-field-placeholder"], langStore.tgt)}></Input>
+        placeholder={translate(UI_Words["qa-field-placeholder"], langStore.tgt)}
+      />
     </PythonHttpPluginWithSubmit>
   );
 };
