@@ -3,7 +3,7 @@ import type { Dictionary } from "@noli/core";
 import type { APISources } from "./requests";
 
 // meta types
-export const allMetaTypes = ["upload", "txt2img.sd", "python.httpFields"] as const;
+export const allMetaTypes = ["upload", "txt2img.sd", "python.httpFields", "add.text"] as const;
 export type MetaType = typeof allMetaTypes[number];
 
 // (global) meta data

@@ -1,15 +1,16 @@
 import { getRandomHash, Logger, shallowCopy } from "@noli/core";
-import { BoardStore, translate } from "@noli/business";
+import { BoardStore, translate, useAddNode } from "@noli/business";
 
 import type { MetaType } from "@/types/meta";
 import type { IImportMeta, INarrowedMetaData } from "@/types/narrowedMeta";
+import { allTaskTypes, TaskTypes } from "@/types/tasks";
 import { toast } from "@/utils/toast";
 import { Toast_Words } from "@/lang/toast";
-import { addNewImage, NewImageInfo } from "./addImage";
+import { themeStore } from "@/stores/theme";
 import { pollTask, pushTask } from "./runTasks";
-import { getTaskData, revertTaskData } from "./handleTaskData";
+import { addNewImage, NewImageInfo } from "./addImage";
 import { getSingleUrl } from "./handleResponse";
-import { allTaskTypes, TaskTypes } from "@/types/tasks";
+import { getTaskData, revertTaskData } from "./handleTaskData";
 
 // consumers
 
@@ -26,6 +27,7 @@ function updateTimestamps(alias: string, createTime?: number): void {
 const consumers: Record<MetaType, (input: IImportMeta<any>) => void> = {
   upload: consumeUpload,
   "txt2img.sd": consumeTxt2ImgSD,
+  "add.text": consumeAddText,
   "python.httpFields": consumePythonHttpFields,
 };
 function consumeUpload({ t, lang, type, metaData }: IImportMeta<"upload">): void {
@@ -71,6 +73,26 @@ function consumeTxt2ImgSD({ t, lang, type, metaData }: IImportMeta<"txt2img.sd">
       });
     })
     .catch((err) => failed(err));
+}
+function consumeAddText({ t, lang, type, metaData }: IImportMeta<"add.text">): void {
+  const newAlias = `new.text.${getRandomHash()}`;
+  const { textColor } = themeStore.styles;
+
+  const success = async () => {
+    toast(t, "success", translate(Toast_Words["add-text-success-message"], lang));
+    updateTimestamps(newAlias);
+  };
+  const failed = async () => {
+    toast(t, "error", translate(Toast_Words["add-text-error-message"], lang));
+  };
+  const { addText } = useAddNode({ success, failed });
+  addText({ trace: true })({
+    alias: newAlias,
+    initColor: textColor,
+    lang,
+    autoFit: true,
+    meta: { type, data: metaData },
+  });
 }
 function consumePythonHttpFields({
   t,

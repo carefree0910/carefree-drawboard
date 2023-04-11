@@ -5,6 +5,7 @@ import { langStore, translate } from "@noli/business";
 
 import type { IPlugin } from "@/types/plugins";
 import { Add_Words } from "@/lang/add";
+import { importMeta } from "@/actions/importMeta";
 import { CFButton } from "@/components/CFButton";
 import { CFDivider } from "@/components/CFDivider";
 import { CFHeading } from "@/components/CFHeading";
@@ -24,6 +25,12 @@ const AddPlugin = ({ pluginInfo, ...props }: IPlugin) => {
         <CFImageUploader>
           <CFButton w="100%">{translate(Add_Words["upload-image-button"], lang)}</CFButton>
         </CFImageUploader>
+        <CFButton
+          w="100%"
+          mt="12px"
+          onClick={() => importMeta({ t, lang, type: "add.text", metaData: {} })}>
+          {translate(Add_Words["add-text-button"], lang)}
+        </CFButton>
       </Flex>
     </Render>
   );

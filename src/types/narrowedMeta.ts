@@ -37,6 +37,7 @@ interface ITxt2ImgSDMetaData extends Partial<IMetaData> {
   tome_info: Partial<ITomeInfo>;
   source: APISources;
 }
+interface IAddTextMetaData extends Partial<IMetaData> {}
 
 // python httpFields meta data
 
@@ -55,6 +56,7 @@ type IPythonHttpFieldsMetaData = IPythonHttpFieldsResponse & {
 export interface INarrowedMetaData {
   upload: IUploadMetaData;
   "txt2img.sd": ITxt2ImgSDMetaData;
+  "add.text": IAddTextMetaData;
   "python.httpFields": IPythonHttpFieldsMetaData;
 }
 
