@@ -2,7 +2,7 @@ import { observer } from "mobx-react-lite";
 import { useState, useMemo, useLayoutEffect } from "react";
 import { Box, BoxProps, Flex, Image } from "@chakra-ui/react";
 
-import { Coordinate } from "@noli/core";
+import { Coordinate, Dictionary } from "@noli/core";
 import {
   useBoardContainerLeftTop,
   useBoardContainerWH,
@@ -15,11 +15,16 @@ import { Event } from "@/utils/event";
 import { DEFAULT_PLUGIN_SETTINGS, VISIBILITY_TRANSITION } from "@/utils/constants";
 import { themeStore } from "@/stores/theme";
 
+export interface IFloatingEvent {
+  type: string;
+  data: Dictionary<any>;
+}
 export interface IFloatingRenderEvent {
   id: string;
   expand: boolean;
   needRender: boolean;
 }
+export const floatingEvent = new Event<IFloatingEvent>();
 export const floatingRenderEvent = new Event<IFloatingRenderEvent>();
 
 export function getExpandId(id: string): string {
