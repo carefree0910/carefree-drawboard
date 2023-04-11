@@ -7,11 +7,13 @@ import BoardPanel from "@/board/BoardPanel";
 import { useInitBoard } from "./hooks/useInitBoard";
 import { useFileDropper } from "./hooks/useFileDropper";
 import { useGridLines } from "./hooks/useGridLines";
+import { usePreventDefaults } from "./hooks/usePreventDefaults";
 
 function App() {
   useInitBoard();
   useFileDropper(langStore.tgt);
   useGridLines();
+  usePreventDefaults();
 
   return (
     <Flex h="100vh" className="p-editor" direction="column" userSelect="none">
