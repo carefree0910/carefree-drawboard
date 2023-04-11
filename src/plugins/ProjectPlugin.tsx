@@ -91,7 +91,7 @@ const ProjectPlugin = ({ pluginInfo, ...props }: IPlugin) => {
         {allProjects ? (
           allProjectUids.length > 0 ? (
             <CFSelect
-              value={allProjects[selectedUid]}
+              value={selectedUid}
               options={allProjectUids}
               onOptionClick={(uid) => setSelectedUid(uid)}
               optionConverter={(uid) => allProjects[uid]}

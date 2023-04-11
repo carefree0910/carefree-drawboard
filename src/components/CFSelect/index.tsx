@@ -53,6 +53,7 @@ function CFSelect<T extends string>({
   iconProps.pr ??= "8px";
 
   const { textColor, selectColors } = themeStore.styles;
+  const convertedValue = value && optionConverter ? optionConverter(value as T) : value;
   const checkedProps = (checked: boolean): MenuItemProps => {
     if (checked) {
       return {
@@ -86,7 +87,7 @@ function CFSelect<T extends string>({
         }}
         {...props}>
         <Flex>
-          {value ? value : null}
+          {value ? convertedValue : null}
           {value ? <Spacer /> : null}
           <Center color={selectColors.color} fontSize="8px" {...iconProps}>
             {icon ?? <Icon svg={ArrowDownIcon} className={block()} fillbyCurrentColor />}
@@ -109,7 +110,7 @@ function CFSelect<T extends string>({
                 _hover={{
                   bgColor: selectColors.hoverBgColor,
                 }}
-                {...checkedProps(value === (optionConverter ? optionConverter(option) : option))}
+                {...checkedProps(value === option)}
                 onClick={() => onOptionClick(option)}>
                 {optionConverter ? optionConverter(option) : option}
               </MenuItem>
