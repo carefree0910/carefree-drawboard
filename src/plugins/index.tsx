@@ -14,6 +14,7 @@ export * from "./SettingsPlugin";
 export * from "./ProjectPlugin";
 export * from "./AddPlugin";
 export * from "./ArrangePlugin";
+export * from "./UndoRedoPlugin";
 export * from "./_python/HttpTextAreaPlugin";
 export * from "./_python/HttpQAPlugin";
 export * from "./_python/HttpFieldsPlugin";

@@ -63,7 +63,15 @@ export interface ITaskPlugin extends IFieldsPlugin {
 
 // factory
 
-export const allAvailablePlugins = ["txt2img.sd", "settings", "project", "add", "arrange"] as const;
+export const allAvailablePlugins = [
+  "txt2img.sd",
+  "settings",
+  "project",
+  "add",
+  "arrange",
+  "undo",
+  "redo",
+] as const;
 export const allAvailablePythonPlugins = [
   "_python.httpTextArea",
   "_python.httpQA",
@@ -81,6 +89,8 @@ export interface IPluginProps {
   project: IPlugin;
   add: IPlugin;
   arrange: IPlugin;
+  undo: IPlugin;
+  redo: IPlugin;
   // python plugins
   "_python.httpTextArea": IPythonHttpTextAreaPlugin;
   "_python.httpQA": IPythonHttpQAPlugin;

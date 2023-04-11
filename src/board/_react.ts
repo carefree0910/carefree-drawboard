@@ -80,4 +80,36 @@ export const reactPluginSettings: IMakePlugin<AvailablePlugins>[] = [
       noExpand: true,
     },
   },
+  {
+    type: "undo",
+    props: {
+      p: "14px",
+      offsetX: -28,
+      nodeConstraint: "none",
+      renderInfo: {
+        w: 0,
+        h: 0,
+        src: "https://ailab-huawei-cdn.nolibox.com/upload/images/069122c037d34d97ba10157438af131b.png",
+        pivot: "top",
+      },
+      pluginInfo: {},
+      noExpand: true,
+    },
+  },
+  {
+    type: "redo",
+    props: {
+      p: "14px",
+      offsetX: 28,
+      nodeConstraint: "none",
+      renderInfo: {
+        w: 0,
+        h: 0,
+        src: "https://ailab-huawei-cdn.nolibox.com/upload/images/4c0b2343838344fdb574520006aa83c9.png",
+        pivot: "top",
+      },
+      pluginInfo: {},
+      noExpand: true,
+    },
+  },
 ];
