@@ -23,6 +23,7 @@ export interface IFloatingRenderEvent {
   id: string;
   expand: boolean;
   needRender: boolean;
+  noExpand?: boolean;
 }
 export const floatingEvent = new Event<IFloatingEvent>();
 export const floatingRenderEvent = new Event<IFloatingRenderEvent>();
@@ -116,6 +117,7 @@ function Floating({
     modalOpacity,
     isInvisible,
   },
+  noExpand,
   children,
   ...props
 }: IFloating) {
@@ -144,7 +146,10 @@ function Floating({
     () => (useModal ? `${panelBg}${modalOpacityHex}` : commonProps.bg),
     [useModal],
   );
-  useLayoutEffect(() => floatingRenderEvent.emit({ id, expand, needRender }), [expand, needRender]);
+  useLayoutEffect(
+    () => floatingRenderEvent.emit({ id, expand, needRender, noExpand }),
+    [id, expand, needRender, noExpand],
+  );
 
   if (!needRender) return null;
 
@@ -183,20 +188,22 @@ function Floating({
         {...props}>
         <Image src={src} draggable={false} />
       </Box>
-      <Flex
-        id={expandId}
-        w={`${w}px`}
-        h={`${h}px`}
-        overflow="auto"
-        direction="column"
-        transform={transform}
-        opacity={expand ? 1 : 0}
-        visibility={expand ? "visible" : "hidden"}
-        transition={VISIBILITY_TRANSITION}
-        {...commonProps}
-        bg={expandBg}>
-        {children}
-      </Flex>
+      {!noExpand && (
+        <Flex
+          id={expandId}
+          w={`${w}px`}
+          h={`${h}px`}
+          overflow="auto"
+          direction="column"
+          transform={transform}
+          opacity={expand ? 1 : 0}
+          visibility={expand ? "visible" : "hidden"}
+          transition={VISIBILITY_TRANSITION}
+          {...commonProps}
+          bg={expandBg}>
+          {children}
+        </Flex>
+      )}
     </>
   );
 }
