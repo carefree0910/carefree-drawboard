@@ -44,7 +44,6 @@ export interface IRender extends Omit<IFloating, "id" | "renderInfo"> {
   offsetY?: number;
   nodeConstraint: NodeConstraints;
   renderInfo: Partial<IRenderInfo> & { w: number; h: number };
-  pluginInfo?: {};
 }
 export interface IPlugin extends IRender {
   pluginInfo: { node: INode | null; nodes: INode[] };
