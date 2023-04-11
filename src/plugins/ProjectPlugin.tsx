@@ -61,16 +61,18 @@ const ProjectPlugin = ({ pluginInfo, ...props }: IPlugin) => {
       updateUids();
     });
   }
+  async function onLoadProjectSuccess(res: ILoadedProject) {
+    updateCurrentProject(res);
+    setSelectedUid(res.uid);
+    setUserInputName(res.name);
+    toast(t, "success", translate(Toast_Words["load-project-success-message"], lang));
+  }
   function onLoadProject() {
     if (!selectedUid) {
       toast(t, "warning", translate(Toast_Words["please-select-project-message"], lang));
       return;
     }
-    loadProject(t, lang, selectedUid, async (res) => {
-      updateCurrentProject(res);
-      setUserInputName(res.name);
-      toast(t, "success", translate(Toast_Words["load-project-success-message"], lang));
-    });
+    loadProject(t, lang, selectedUid, onLoadProjectSuccess);
   }
 
   return (
