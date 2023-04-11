@@ -75,9 +75,5 @@ export interface IMetaData extends IAPIMetaData {
 // meta bundle
 export interface IMeta {
   type: MetaType;
-  data: IMetaData;
-}
-export interface IPartialMeta {
-  type: IMeta["type"];
-  data: Partial<IMetaData>;
+  data: Partial<IMetaData | any>;
 }

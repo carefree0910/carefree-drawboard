@@ -7,7 +7,7 @@ import {
 } from "@noli/core";
 import { BoardStore, BusinessOpCallbacks, useSafeExecute } from "@noli/business";
 
-import type { IPartialMeta } from "@/types/meta";
+import type { IMeta } from "@/types/meta";
 
 export type VirtualInfo = IRectangleShapeNode | { w: number; h: number; type?: undefined };
 export type NewImageInfo = VirtualInfo | (BBox & { type?: undefined });
@@ -61,7 +61,7 @@ export function addNewImage(
   src: string,
   opt: {
     info: NewImageInfo;
-    meta: IPartialMeta;
+    meta: IMeta;
     callbacks?: BusinessOpCallbacks;
     noSelect?: boolean;
   },
