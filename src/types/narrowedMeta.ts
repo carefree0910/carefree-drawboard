@@ -12,6 +12,8 @@ import type {
 } from "./meta";
 import type { APISources } from "./requests";
 
+// internal meta data
+
 interface IUploadMetaData extends Partial<IMetaData> {
   w: number;
   h: number;
@@ -35,6 +37,9 @@ interface ITxt2ImgSDMetaData extends Partial<IMetaData> {
   tome_info: Partial<ITomeInfo>;
   source: APISources;
 }
+
+// python httpFields meta data
+
 export type IPythonHttpFieldsResponse =
   | { type: "text"; value: string }
   | { type: "image"; value: { w: number; h: number; url: string }[] };
@@ -44,6 +49,8 @@ type IPythonHttpFieldsMetaData = IPythonHttpFieldsResponse & {
   data: IPythonHttpFieldsData;
   timestamp?: number;
 };
+
+// general
 
 export interface INarrowedMetaData {
   upload: IUploadMetaData;
