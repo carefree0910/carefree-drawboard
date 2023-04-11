@@ -78,3 +78,13 @@ export interface IMeta {
   type: MetaType;
   data: Partial<IMetaData | any>;
 }
+
+// utils
+
+export function checkMeta(meta: any): meta is IMeta {
+  return allMetaTypes.includes(meta?.type);
+}
+export function getOriginMeta(meta: any): IMeta | undefined {
+  if (!checkMeta(meta)) return;
+  return getOriginMeta(meta.data.from);
+}

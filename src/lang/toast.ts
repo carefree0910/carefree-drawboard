@@ -18,6 +18,7 @@ export enum Toast_Words {
   "please-select-project-message" = "please-select-project-message",
   "add-text-success-message" = "add-text-success-message",
   "add-text-error-message" = "add-text-error-message",
+  "auto-arrange-no-need-message" = "auto-arrange-no-need-message",
 }
 
 export const toastLangRecords: Record<Lang, Record<Toast_Words, string>> = {
@@ -39,6 +40,7 @@ export const toastLangRecords: Record<Lang, Record<Toast_Words, string>> = {
     [Toast_Words["please-select-project-message"]]: "请先选择想要加载的项目 😫",
     [Toast_Words["add-text-success-message"]]: "添加文字成功！🥳",
     [Toast_Words["add-text-error-message"]]: "添加文字时出了些问题 😫",
+    [Toast_Words["auto-arrange-no-need-message"]]: "当前节点无需整理 😉",
   },
   en: {
     [Toast_Words["dropping-message"]]: "Detecting 🤔",
@@ -59,5 +61,6 @@ export const toastLangRecords: Record<Lang, Record<Toast_Words, string>> = {
     [Toast_Words["please-select-project-message"]]: "Please select a project first 😫",
     [Toast_Words["add-text-success-message"]]: "Add text successfully！🥳",
     [Toast_Words["add-text-error-message"]]: "Something is wrong when adding Text Node 😫",
+    [Toast_Words["auto-arrange-no-need-message"]]: "There is no need to arrange the Nodes 😉",
   },
 };
