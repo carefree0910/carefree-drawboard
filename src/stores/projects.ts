@@ -32,18 +32,22 @@ class ProjectsStore extends ABCStore<IPartialProjectsStore> implements IPartialP
 }
 
 const projectsStore = new ProjectsStore();
+export const getNewProject = (): IProjectsStore => {
+  const time = new Date().getTime();
+  return {
+    uid: uuidv4(),
+    name: `Project ${formatTime(time, "YYYY-MM-DD HH:mm").slice(2)}`,
+    createTime: time / 1000,
+    updateTime: time / 1000,
+  };
+};
 export const setCurrentProjectName = (name: string) => projectsStore.updateProperty("name", name);
 export const useCurrentProject = (): IProjectsStore => {
   const time = new Date().getTime();
   if (projectsStore.uid) {
     projectsStore.updateProperty("updateTime", time / 1000);
   } else {
-    runInAction(() => {
-      projectsStore.uid = uuidv4();
-      projectsStore.name = `Project ${formatTime(time, "YYYY-MM-DD HH:mm").slice(2)}`;
-      projectsStore.createTime = time / 1000;
-      projectsStore.updateTime = time / 1000;
-    });
+    projectsStore.updateProperty(getNewProject());
   }
   return {
     uid: projectsStore.uid!,
