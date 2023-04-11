@@ -1,7 +1,13 @@
 import { useToast } from "@chakra-ui/toast";
 
-import { INodePack, Lang, Matrix2DFields, safeCall } from "@noli/core";
-import { BoardStore, translate, useGlobalTransform } from "@noli/business";
+import { INodePack, Lang, Matrix2D, Matrix2DFields, safeCall } from "@noli/core";
+import {
+  BoardStore,
+  safeClearExecuterStack,
+  translate,
+  useGlobalTransform,
+  useSafeExecute,
+} from "@noli/business";
 
 import { toast } from "@/utils/toast";
 import { Toast_Words } from "@/lang/toast";
@@ -48,13 +54,23 @@ export async function loadProject(
   t: ReturnType<typeof useToast>,
   lang: Lang,
   uid: string,
-  onSuccess: (res: ILoadedProject) => Promise<void>,
+  onSuccess: () => Promise<void>,
 ): Promise<void> {
   toast(t, "info", translate(Toast_Words["loading-project-message"], lang));
 
   return safeCall(
     async () =>
-      Requests.get<ILoadedProject>("_python", `/get_project/${uid}`).then((res) => onSuccess(res)),
+      Requests.get<ILoadedProject>("_python", `/get_project/${uid}`).then(
+        ({ graphInfo, globalTransform }) =>
+          useSafeExecute("replaceGraph", null, true, {
+            success: async () => {
+              BoardStore.board.setGlobalTransform(new Matrix2D(globalTransform), true);
+              safeClearExecuterStack();
+              onSuccess();
+            },
+            failed: async () => void 0,
+          })({ json: JSON.stringify(graphInfo), apiInfos: {} }),
+      ),
     {
       success: async () => void 0,
       failed: async () => void 0,

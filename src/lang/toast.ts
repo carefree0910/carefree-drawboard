@@ -13,6 +13,8 @@ export enum Toast_Words {
   "save-project-success-message" = "save-project-success-message",
   "save-project-error-message" = "save-project-error-message",
   "loading-project-message" = "loading-project-message",
+  "load-project-success-message" = "load-project-success-message",
+  "please-select-project-message" = "please-select-project-message",
 }
 
 export const toastLangRecords: Record<Lang, Record<Toast_Words, string>> = {
@@ -29,6 +31,8 @@ export const toastLangRecords: Record<Lang, Record<Toast_Words, string>> = {
     [Toast_Words["save-project-success-message"]]: "保存项目成功！🥳",
     [Toast_Words["save-project-error-message"]]: "保存项目失败 😫",
     [Toast_Words["loading-project-message"]]: "加载项目中，请稍候 😄",
+    [Toast_Words["load-project-success-message"]]: "加载项目成功！🥳",
+    [Toast_Words["please-select-project-message"]]: "请先选择想要加载的项目 😫",
   },
   en: {
     [Toast_Words["dropping-message"]]: "Detecting 🤔",
@@ -44,5 +48,7 @@ export const toastLangRecords: Record<Lang, Record<Toast_Words, string>> = {
     [Toast_Words["save-project-success-message"]]: "Save project successfully! 🥳",
     [Toast_Words["save-project-error-message"]]: "Save project failed 😫",
     [Toast_Words["loading-project-message"]]: "Loading 😄",
+    [Toast_Words["load-project-success-message"]]: "Load project successfully! 🥳",
+    [Toast_Words["please-select-project-message"]]: "Please select a project first 😫",
   },
 };

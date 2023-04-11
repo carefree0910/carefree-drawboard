@@ -57,8 +57,12 @@ const ProjectPlugin = ({ pluginInfo, ...props }: IPlugin) => {
   }
 
   function onLoadProject() {
-    loadProject(t, lang, selectedUid, async (res) => {
-      console.log("> res", res);
+    if (!selectedUid) {
+      toast(t, "warning", translate(Toast_Words["please-select-project-message"], lang));
+      return;
+    }
+    loadProject(t, lang, selectedUid, async () => {
+      toast(t, "success", translate(Toast_Words["load-project-success-message"], lang));
     });
   }
 
