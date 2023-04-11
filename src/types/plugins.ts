@@ -37,6 +37,7 @@ export interface IFloating extends FlexProps {
   renderInfo: IRenderInfo;
 }
 export interface IRender extends Omit<IFloating, "id" | "renderInfo"> {
+  id?: string;
   offsetX?: number;
   offsetY?: number;
   nodeConstraint: NodeConstraints;

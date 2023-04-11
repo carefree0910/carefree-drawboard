@@ -1,4 +1,4 @@
-import { useMemo, useLayoutEffect } from "react";
+import { useLayoutEffect } from "react";
 import { observer } from "mobx-react-lite";
 
 import { Coordinate, getRandomHash, PivotType } from "@noli/core";
@@ -22,8 +22,16 @@ import Floating, {
   IFloatingEvent,
 } from "./Floating";
 
-const Render = ({ offsetX, offsetY, nodeConstraint, renderInfo, children, ...props }: IRender) => {
-  const id = useMemo(() => `plugin_${getRandomHash()}`, []);
+const Render = ({
+  id,
+  offsetX,
+  offsetY,
+  nodeConstraint,
+  renderInfo,
+  children,
+  ...props
+}: IRender) => {
+  id ??= `plugin_${getRandomHash()}`;
   let { w, h, iconW, iconH, pivot, follow, expandOffsetX, expandOffsetY } = renderInfo;
   iconW ??= DEFAULT_PLUGIN_SETTINGS.iconW;
   iconH ??= DEFAULT_PLUGIN_SETTINGS.iconH;
@@ -59,6 +67,7 @@ const Render = ({ offsetX, offsetY, nodeConstraint, renderInfo, children, ...pro
 
   // This effect handles callbacks that dynamically render the plugin's position
   useLayoutEffect(() => {
+    const _id = id!;
     const updateFloating = async () => {
       const _iconW = iconW!;
       const _iconH = iconH!;
@@ -134,7 +143,7 @@ const Render = ({ offsetX, offsetY, nodeConstraint, renderInfo, children, ...pro
       domFloating.dataset.y = y.toString();
       domFloating.style.transform = `matrix(1,0,0,1,${x},${y})`;
       // adjust expand of the floating
-      const domFloatingExpand = document.querySelector<HTMLDivElement>(`#${getExpandId(id)}`);
+      const domFloatingExpand = document.querySelector<HTMLDivElement>(`#${getExpandId(_id)}`);
       if (!domFloatingExpand) return;
       const { x: ex, y: ey } = getExpandPosition(updatedRenderInfo.useModal ?? false, {
         x,
@@ -156,14 +165,14 @@ const Render = ({ offsetX, offsetY, nodeConstraint, renderInfo, children, ...pro
       }
     };
     floatingEvent.on(onFloatingReRender);
-    injectNodeTransformEventCallback(id, updateFloating);
-    useSelectHooks().register({ key: id, after: updateFloating });
+    injectNodeTransformEventCallback(_id, updateFloating);
+    useSelectHooks().register({ key: _id, after: updateFloating });
     window.addEventListener("resize", updateFloating);
     updateFloating();
 
     return () => {
-      removeNodeTransformEventCallback(id);
-      useSelectHooks().remove(id);
+      removeNodeTransformEventCallback(_id);
+      useSelectHooks().remove(_id);
       window.removeEventListener("resize", updateFloating);
     };
   }, [
