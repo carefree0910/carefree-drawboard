@@ -80,12 +80,7 @@ const ProjectPlugin = ({ pluginInfo, ...props }: IPlugin) => {
       <Flex w="100%" h="100%" direction="column">
         <CFHeading>{translate(Projects_Words["project-plugin-header"], lang)}</CFHeading>
         <CFDivider />
-        <CFText ml="6px">{translate(Projects_Words["current-project-name"], lang)}</CFText>
-        <CFInput
-          mt="12px"
-          value={userInputName}
-          onChange={(e) => setUserInputName(e.target.value)}
-        />
+        <CFInput value={userInputName} onChange={(e) => setUserInputName(e.target.value)} />
         <CFButton mt="12px" onClick={onRenameProject}>
           {translate(Projects_Words["save-project"], lang)}
         </CFButton>
