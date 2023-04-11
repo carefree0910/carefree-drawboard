@@ -52,4 +52,4 @@ class GridLinesStore extends ABCStore<IGridLinesStore> implements IGridLinesStor
   }
 }
 
-export const guidelinesStore = new GridLinesStore();
+export const gridlinesStore = new GridLinesStore();

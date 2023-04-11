@@ -9,7 +9,7 @@ import {
 } from "@noli/business";
 import { Coordinate, GlobalEvent } from "@noli/core";
 
-import { guidelinesStore } from "@/stores/gridLines";
+import { gridlinesStore } from "@/stores/gridLines";
 
 const gridLinesCanvasId = "gridLinesLayer";
 const gridLineEvents = [GlobalEvent.MOVE, GlobalEvent.SCALE, GlobalEvent.TRANSFORM];
@@ -41,14 +41,14 @@ export function useGridLines(): void {
       const ctx = gridLinesCanvas.getContext("2d");
       if (!ctx) return;
 
-      if (!guidelinesStore.enable) {
+      if (!gridlinesStore.enable) {
         ctx.clearRect(0, 0, gridLinesCanvas.width, gridLinesCanvas.height);
         return;
       }
 
       const { globalScale, globalTransform } = useGlobalTransform();
       const { lineWidth, lineColor, maxOpacity, maxGridSize, span, startSubGridsFraction } =
-        guidelinesStore;
+        gridlinesStore;
 
       const log2Scale = Math.log2(globalScale);
       const modBase = Math.log2(span);
