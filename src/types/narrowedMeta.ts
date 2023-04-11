@@ -17,7 +17,6 @@ interface IUploadMetaData extends Partial<IMetaData> {
   h: number;
   url: string;
   isDrag: boolean;
-  timestamp?: number;
 }
 interface ITxt2ImgSDMetaData extends Partial<IMetaData> {
   w: number;
@@ -35,7 +34,6 @@ interface ITxt2ImgSDMetaData extends Partial<IMetaData> {
   variations: VariationModel[];
   tome_info: Partial<ITomeInfo>;
   source: APISources;
-  timestamp?: number;
 }
 export type IPythonHttpFieldsResponse =
   | { type: "text"; value: string }
