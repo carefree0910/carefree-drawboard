@@ -1,11 +1,10 @@
 import { observer } from "mobx-react-lite";
 
 import { isUndefined } from "@noli/core";
-import { langStore, translate } from "@noli/business";
+import { langStore } from "@noli/business";
 
 import type { IField } from "@/types/plugins";
 import type { INumberField } from "@/types/metaFields";
-import { UI_Words } from "@/lang/ui";
 import { getMetaField, setMetaField } from "@/stores/meta";
 import CFSlider from "@/components/CFSlider";
 import TextField from "./TextField";
