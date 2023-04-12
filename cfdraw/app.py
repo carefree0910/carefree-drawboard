@@ -127,7 +127,7 @@ class App:
         )
         async def fetch_image(file: str) -> Response:
             try:
-                image = Image.open(constants.UPLOAD_IMAGE_FOLDER / file)
+                image = Image.open(self.config.upload_image_folder / file)
                 content = np_to_bytes(np.array(image))
                 return Response(content=content, media_type="image/png")
             except Exception as err:
@@ -154,9 +154,7 @@ class App:
         def save_project(data: ProjectModel) -> SaveProjectResponse:
             try:
                 uid = data.uid
-                if not constants.UPLOAD_PROJECT_FOLDER.exists():
-                    constants.UPLOAD_PROJECT_FOLDER.mkdir(parents=True)
-                with open(constants.UPLOAD_PROJECT_FOLDER / f"{uid}.noli", "w") as f:
+                with open(self.config.upload_project_folder / f"{uid}.noli", "w") as f:
                     json.dump(data.dict(), f)
             except Exception as err:
                 err_msg = get_err_msg(err)
@@ -169,7 +167,7 @@ class App:
         )
         async def fetch_project(uid: str) -> ProjectModel:
             try:
-                with open(constants.UPLOAD_PROJECT_FOLDER / f"{uid}.noli", "r") as f:
+                with open(self.config.upload_project_folder / f"{uid}.noli", "r") as f:
                     d = json.load(f)
                 # replace url if needed
                 graph = noli.parse_graph(d["graphInfo"])
@@ -192,12 +190,12 @@ class App:
 
         @self.api.get(f"/all_projects")
         async def fetch_all_projects() -> List[ProjectItem]:
-            if not constants.UPLOAD_PROJECT_FOLDER.exists():
+            if not self.config.upload_project_folder.exists():
                 return []
             try:
                 results: List[ProjectItem] = []
-                for file in constants.UPLOAD_PROJECT_FOLDER.iterdir():
-                    path = constants.UPLOAD_PROJECT_FOLDER / file
+                for file in self.config.upload_project_folder.iterdir():
+                    path = self.config.upload_project_folder / file
                     with open(path, "r") as f:
                         d = json.load(f)
                     results.append(ProjectItem(uid=d["uid"], name=d["name"]))
@@ -252,5 +250,6 @@ class App:
                     useStrictMode=self.config.use_react_strict_mode,
                 )
             )
-            print_info(f"🔔 Your files will be saved to '{constants.UPLOAD_ROOT}'")
+            upload_root_path = self.config.upload_root_path
+            print_info(f"🔔 Your files will be saved to '{upload_root_path}'")
             print_info("🎉 Server is Ready!")

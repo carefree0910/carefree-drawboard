@@ -50,8 +50,4 @@ TS_PYTHON_CONSTANTS_PATH = SRC_FOLDER / "utils" / "_pythonConstants.ts"
 # upload
 UPLOAD_ROOT = Path("~").expanduser() / ".cache" / "carefree-draw"
 UPLOAD_IMAGE_FOLDER_NAME = ".images"
-UPLOAD_IMAGE_FOLDER = UPLOAD_ROOT / UPLOAD_IMAGE_FOLDER_NAME
-UPLOAD_IMAGE_FOLDER.mkdir(exist_ok=True)
 UPLOAD_PROJECT_FOLDER_NAME = ".projects"
-UPLOAD_PROJECT_FOLDER = UPLOAD_ROOT / UPLOAD_PROJECT_FOLDER_NAME
-UPLOAD_PROJECT_FOLDER.mkdir(exist_ok=True)
