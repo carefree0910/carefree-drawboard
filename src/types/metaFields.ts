@@ -45,6 +45,7 @@ export interface ISelectField<T> {
 }
 export interface ITextField {
   type: "text";
+  placeholder?: string;
 }
 export interface IBooleanField {
   type: "boolean";
