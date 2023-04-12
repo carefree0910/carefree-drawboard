@@ -234,6 +234,7 @@ class App:
             settings.set_constants(
                 dict(
                     backendPort=int(self.config.backend_port),
+                    useStrictMode=self.config.use_react_strict_mode,
                 )
             )
             print_info("🎉 Server is Ready!")

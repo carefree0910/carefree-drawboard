@@ -6,13 +6,15 @@ import "./index.scss";
 import App from "./App";
 import { initializeLang } from "@/lang";
 import { setupInceptors } from "@/requests/interceptors";
+import getPythonRelatedSettings from "./utils/_pythonConstants";
 
 initializeLang();
 setupInceptors();
+const Wrapper = getPythonRelatedSettings().useStrictMode ? React.StrictMode : React.Fragment;
 ReactDOM.createRoot(document.getElementById("root") as HTMLElement).render(
-  <React.StrictMode>
+  <Wrapper>
     <ChakraProvider>
       <App />
     </ChakraProvider>
-  </React.StrictMode>,
+  </Wrapper>,
 );

@@ -18,6 +18,7 @@ class Config(IConfig):
     backend_port: str = constants.BACKEND_PORT
     # misc
     debug: bool = True
+    use_react_strict_mode: bool = False
 
     @property
     def api_url(self) -> str:
