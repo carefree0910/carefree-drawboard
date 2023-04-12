@@ -11,18 +11,6 @@ API_VAR = "api"
 # frontend
 FRONTEND_PORT = "5123"
 
-# socket
-CORS_ALLOWED_ORIGINS = "*"
-POLLING_MAX_HTTP_BUFFER_SIZE = 1000 * 1000
-PING_INTERVAL = 25
-PING_TIMEOUT = 5
-
-
-class SocketEvent(str, Enum):
-    PING = "ping"
-    EVENT = "event"
-
-
 # api
 ERR_CODE = 406
 BACKEND_PORT = "8123"

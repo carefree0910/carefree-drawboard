@@ -13,14 +13,6 @@ class Config(IConfig):
     app_name: str = "cfdraw"
     # frontend
     frontend_port: str = constants.FRONTEND_PORT
-    # socket
-    cors_credentials: bool = True
-    cors_allowed_origins: List[str] = field(
-        default_factory=lambda: [constants.CORS_ALLOWED_ORIGINS]
-    )
-    polling_max_http_buffer_size: int = constants.POLLING_MAX_HTTP_BUFFER_SIZE
-    ping_interval: int = constants.PING_INTERVAL
-    ping_timeout: int = constants.PING_TIMEOUT
     # api
     api_host: str = constants.API_HOST
     backend_port: str = constants.BACKEND_PORT
