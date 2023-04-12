@@ -31,6 +31,7 @@ export interface IRenderInfo extends IPositionInfo {
   renderFilter?: (info?: IResponse) => boolean;
   useModal?: boolean;
   modalOpacity?: number;
+  expandProps?: FlexProps;
   isInvisible?: boolean;
 }
 export interface IFloating extends FlexProps {

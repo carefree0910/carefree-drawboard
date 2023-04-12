@@ -95,6 +95,10 @@ Pivot of the plugin.
     bgOpacity: Optional[float] = Field(None, description="Opacity of the plugin button")
     useModal: bool = Field(False, description="Whether popup a modal for the plugin")
     modalOpacity: Optional[float] = Field(None, description="Opacity of the modal")
+    expandProps: Optional[IChakra] = Field(
+        None,
+        description="Extra (chakra) props of the plugin's expanded panel",
+    )
     # React fields
     pluginInfo: IPluginInfo = Field(IPluginInfo(), description="Plugin info")
 

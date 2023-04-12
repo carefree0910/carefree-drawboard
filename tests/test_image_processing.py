@@ -20,6 +20,7 @@ class HttpGrayScalePlugin(IHttpPlugin):
             follow=True,
             pluginInfo=IHttpFieldsPluginInfo(header="To Gray", customDefinitions={}),
             p="6px",
+            expandProps=IChakra(bg="green.50"),
         )
 
     def process(self, data: IHttpPluginRequest) -> Image.Image:

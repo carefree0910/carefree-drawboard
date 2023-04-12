@@ -1,8 +1,8 @@
 import { observer } from "mobx-react-lite";
 import { useState, useMemo, useLayoutEffect, forwardRef } from "react";
-import { Box, BoxProps, Flex, Image, Portal } from "@chakra-ui/react";
+import { Box, BoxProps, Flex, FlexProps, Image, Portal } from "@chakra-ui/react";
 
-import { Coordinate, Dictionary } from "@noli/core";
+import { Coordinate, Dictionary, isUndefined } from "@noli/core";
 import {
   useBoardContainerLeftTop,
   useBoardContainerWH,
@@ -116,6 +116,7 @@ const Floating = forwardRef(function (
       renderFilter,
       useModal,
       modalOpacity,
+      expandProps,
       isInvisible,
     },
     noExpand,
@@ -139,6 +140,12 @@ const Floating = forwardRef(function (
   Object.keys(props).forEach((key) => {
     const commonV = commonProps[key as keyof BoxProps];
     (props as any)[key] ??= commonV;
+  });
+  const parsedExpandProps: FlexProps = {};
+  Object.entries(expandProps ?? {}).forEach(([key, value]) => {
+    if (!isUndefined(value) && value !== null) {
+      parsedExpandProps[key as keyof FlexProps] = value;
+    }
   });
   const [expand, setExpand] = useState(false);
   const [transform, setTransform] = useState<string | undefined>(undefined);
@@ -214,7 +221,8 @@ const Floating = forwardRef(function (
             visibility={expand ? "visible" : "hidden"}
             transition={VISIBILITY_TRANSITION}
             {...commonProps}
-            bg={expandBg}>
+            bg={expandBg}
+            {...parsedExpandProps}>
             {children}
           </Flex>
         </Portal>
