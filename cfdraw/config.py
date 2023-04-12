@@ -9,8 +9,6 @@ from cfdraw.schema import IConfig
 
 @dataclass
 class Config(IConfig):
-    # global
-    app_name: str = "cfdraw"
     # frontend
     frontend_port: str = constants.FRONTEND_PORT
     # api
@@ -26,7 +24,7 @@ class Config(IConfig):
 
     @property
     def default_module(self) -> str:
-        return f"{self.app_name}.{self.app_name}"
+        return "app"
 
 
 def get_config() -> Config:
