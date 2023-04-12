@@ -65,7 +65,7 @@ const PythonHttpFieldsPlugin = ({ pluginInfo, ...props }: IPythonHttpFieldsPlugi
     });
   }
 
-  const header = pluginInfo.header ?? pureIdentifier;
+  const header = pluginInfo.header ?? pureIdentifier[0].toUpperCase() + pureIdentifier.slice(1);
   return (
     <PythonHttpPluginWithSubmit
       buttonText={translate(UI_Words["submit-task"], lang)}
