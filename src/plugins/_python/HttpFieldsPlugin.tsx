@@ -74,7 +74,7 @@ const PythonHttpFieldsPlugin = ({ pluginInfo, ...props }: IPythonHttpFieldsPlugi
       pluginInfo={pluginInfo}
       {...props}>
       <CFHeading>{header}</CFHeading>
-      {useFieldsWith(definitions)}
+      {useFieldsWith(definitions, pluginInfo.numColumns)}
     </PythonHttpPluginWithSubmit>
   );
 };

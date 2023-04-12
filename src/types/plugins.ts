@@ -58,6 +58,7 @@ export interface IFieldsPlugin extends IPlugin {
   pluginInfo: IPlugin["pluginInfo"] & {
     fields: ISubscribableFields[];
     customDefinitions?: ICustomDefinitions;
+    numColumns?: number;
   };
 }
 export interface ITaskPlugin extends IFieldsPlugin {

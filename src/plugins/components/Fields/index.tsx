@@ -14,7 +14,9 @@ export function useDefinitions(fields: IFields, customDefinitions: ICustomDefini
   return useMemo(() => subscribe(fields, customDefinitions), [fields, customDefinitions]);
 }
 
-export function useFieldsWith(definitions: Dictionary<IFieldDefinition>) {
+export function useFieldsWith(definitions: Dictionary<IFieldDefinition>, numColumns?: number) {
+  const nc = numColumns ?? 1;
+
   return (
     <>
       {Object.entries(definitions).map(([field, definition], i) => {
@@ -26,14 +28,21 @@ export function useFieldsWith(definitions: Dictionary<IFieldDefinition>) {
         }
         if (!Field) return null;
         const props = definition.props ?? {};
-        if (isUndefined(props.mt) && i !== 0) props.mt = "8px";
+        if (isUndefined(props.h)) props.h = "42px";
+        if (isUndefined(props.w)) {
+          props.w = numColumns === 1 ? "100%" : `${(100 - 5 * (nc - 1)) / nc}%`;
+        }
         definition.props = props;
-        return <Field key={field} field={field} definition={definition} flexShrink={0} />;
+        return <Field key={field} field={field} definition={definition} />;
       })}
     </>
   );
 }
 
-export function useFields(fields: IFields, customDefinitions: ICustomDefinitions) {
-  return useFieldsWith(useDefinitions(fields, customDefinitions));
+export function useFields(
+  fields: IFields,
+  customDefinitions: ICustomDefinitions,
+  numColumns?: number,
+) {
+  return useFieldsWith(useDefinitions(fields, customDefinitions), numColumns);
 }

@@ -6,7 +6,6 @@ import { langStore, translate } from "@noli/business";
 
 import type { ITaskPlugin } from "@/types/plugins";
 import { UI_Words } from "@/lang/ui";
-import { themeStore } from "@/stores/theme";
 import { importMeta } from "@/actions/importMeta";
 import { CFButton } from "@/components/CFButton";
 import { CFDivider } from "@/components/CFDivider";
@@ -18,12 +17,13 @@ const TaskPlugin = (props: ITaskPlugin) => {
 
   const t = useToast();
   const lang = langStore.tgt;
-  const { textColor } = themeStore.styles;
 
   return (
     <FieldsPlugin {...props}>
       <CFDivider />
-      <CFButton onClick={onSubmit}>{translate(UI_Words["submit-task"], lang)}</CFButton>
+      <CFButton w="100%" onClick={onSubmit}>
+        {translate(UI_Words["submit-task"], lang)}
+      </CFButton>
     </FieldsPlugin>
   );
 };

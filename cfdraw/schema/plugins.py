@@ -278,6 +278,7 @@ class IHttpFieldsPluginInfo(IPluginInfo):
         ...,
         description="Field definitions",
     )
+    numColumns: Optional[int] = Field(None, description="Number of columns")
 
 
 __all__ = [
