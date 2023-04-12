@@ -1,6 +1,6 @@
 import { useMemo } from "react";
 import { observer } from "mobx-react-lite";
-import { useToast } from "@chakra-ui/react";
+import { Flex, useToast } from "@chakra-ui/react";
 
 import { langStore, translate } from "@noli/business";
 
@@ -74,7 +74,9 @@ const PythonHttpFieldsPlugin = ({ pluginInfo, ...props }: IPythonHttpFieldsPlugi
       pluginInfo={pluginInfo}
       {...props}>
       <CFHeading>{header}</CFHeading>
-      {useFieldsWith(definitions, pluginInfo.numColumns)}
+      <Flex p="12px" gap="12px" flexWrap="wrap" alignItems="center" justifyContent="space-around">
+        {useFieldsWith(definitions, pluginInfo.numColumns)}
+      </Flex>
     </PythonHttpPluginWithSubmit>
   );
 };
