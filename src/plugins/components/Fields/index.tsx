@@ -5,6 +5,7 @@ import type { IFieldsPlugin } from "@/types/plugins";
 import { subscribe } from "@/plugins/utils/subscribe";
 import TextField from "./TextField";
 import NumberField from "./NumberField";
+import SelectField from "./SelectField";
 import { IFieldDefinition } from "@/types/metaFields";
 
 type IFields = IFieldsPlugin["pluginInfo"]["fields"];
@@ -25,6 +26,8 @@ export function useFieldsWith(definitions: Dictionary<IFieldDefinition>, numColu
           Field = TextField;
         } else if (definition.type === "number") {
           Field = NumberField;
+        } else if (definition.type === "select") {
+          Field = SelectField;
         }
         if (!Field) return null;
         const props = definition.props ?? {};
