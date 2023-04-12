@@ -5,7 +5,13 @@ import type { INode, NodeType, PivotType } from "@noli/core";
 import type { IResponse } from "@noli/business";
 
 import type { TaskTypes } from "./tasks";
-import type { ICustomDefinitions, ISubscribableFields } from "./metaFields";
+import type {
+  ICustomDefinitions,
+  IFieldDefinition,
+  IGeneralFields,
+  ISubscribableFields,
+  _IFieldDefinition,
+} from "./metaFields";
 import type {
   IPythonHttpFieldsPlugin,
   IPythonHttpQAPlugin,
@@ -54,6 +60,10 @@ export interface IPlugin extends IRender {
 
 // specific
 
+export interface IField<T extends _IFieldDefinition> {
+  field: IGeneralFields;
+  definition: IFieldDefinition<T>;
+}
 export interface IFieldsPlugin extends IPlugin {
   pluginInfo: IPlugin["pluginInfo"] & {
     fields: ISubscribableFields[];
