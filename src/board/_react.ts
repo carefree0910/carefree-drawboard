@@ -15,7 +15,16 @@ export const reactPluginSettings: IMakePlugin<AvailablePlugins>[] = [
         modalOpacity: 0.9,
       },
       pluginInfo: {
-        fields: ["w", "h", "prompt"],
+        fields: [
+          "w",
+          "h",
+          "prompt",
+          "negative_prompt",
+          "version",
+          "sampler",
+          "num_steps",
+          "guidance_scale",
+        ],
       },
     },
   },

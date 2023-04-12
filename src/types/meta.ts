@@ -8,7 +8,6 @@ export type MetaType = typeof allMetaTypes[number];
 
 // (global) meta data
 export const allSDVersions = [
-  "",
   "v1.5",
   "anime",
   "anime_anything",
