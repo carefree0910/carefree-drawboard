@@ -14,6 +14,7 @@ from pydantic import Field
 from pydantic import BaseModel
 
 from cfdraw.schema.fields import IFieldDefinition
+from cfdraw.schema.fields import ISubscribableFields
 from cfdraw.parsers.noli import parse_node
 from cfdraw.parsers.noli import INode
 from cfdraw.parsers.noli import Matrix2D
@@ -274,6 +275,10 @@ class IHttpQAPluginInfo(IPluginInfo):
 
 class IHttpFieldsPluginInfo(IPluginInfo):
     header: Optional[str] = Field(None, description="Header of the plugin")
+    fields: Optional[List[ISubscribableFields]] = Field(
+        None,
+        description="Internal meta fields with some pre-defined definitions",
+    )
     customDefinitions: Dict[str, IFieldDefinition] = Field(
         ...,
         description="Field definitions",

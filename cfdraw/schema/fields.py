@@ -91,6 +91,24 @@ IFieldDefinition = Union[
 ]
 
 
+class ISubscribableFields(str, Enum):
+    W = "w"
+    H = "h"
+    URL = "url"
+    PROMPT = "prompt"
+    NEGATIVE_PROMPT = "negative_prompt"
+    VERSION = "version"
+    SAMPLER = "sampler"
+    NUM_STEPS = "num_steps"
+    GUIDANCE_SCALE = "guidance_scale"
+    SEED = "seed"
+    USE_CIRCULAR = "use_circular"
+    MAX_WH = "max_wh"
+    CLIP_SKIP = "clip_skip"
+    VARIATIONS = "variations"
+    TOME_INFO = "tome_info"
+
+
 __all__ = [
     "FieldType",
     "ITextField",
@@ -100,4 +118,5 @@ __all__ = [
     "IBooleanField",
     "IListField",
     "IObjectField",
+    "ISubscribableFields",
 ]
