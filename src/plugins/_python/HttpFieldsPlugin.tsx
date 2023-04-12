@@ -8,7 +8,7 @@ import type { IPythonHttpFieldsData, IPythonHttpFieldsResponse } from "@/types/n
 import type { IPythonHttpFieldsPlugin, IPythonHttpResponse } from "@/types/_python";
 import { allSubscribableFields } from "@/types/metaFields";
 import { UI_Words } from "@/lang/ui";
-import { stripHashFromIdentifier } from "@/utils/misc";
+import { stripHashFromIdentifier, titleCaseWord } from "@/utils/misc";
 import { importMeta } from "@/actions/importMeta";
 import { getMetaField } from "@/stores/meta";
 import { drawboardPluginFactory } from "@/plugins/utils/factory";
@@ -65,7 +65,7 @@ const PythonHttpFieldsPlugin = ({ pluginInfo, ...props }: IPythonHttpFieldsPlugi
     });
   }
 
-  const header = pluginInfo.header ?? pureIdentifier[0].toUpperCase() + pureIdentifier.slice(1);
+  const header = pluginInfo.header ?? titleCaseWord(pureIdentifier);
   return (
     <PythonHttpPluginWithSubmit
       buttonText={translate(UI_Words["submit-task"], lang)}

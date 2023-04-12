@@ -22,3 +22,7 @@ export function formatTime(time: Date | number, pattern = "YYYY-MM-DD HH:mm:ss")
     .replace("mm", min)
     .replace("ss", sec);
 }
+
+export function titleCaseWord(word: string) {
+  return word.charAt(0).toUpperCase() + word.slice(1);
+}
