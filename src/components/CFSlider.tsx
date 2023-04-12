@@ -127,7 +127,7 @@ const CFSlider: React.FC<ICFSlider> = ({
   return (
     <Flex className={className} align="center" color={textColor} {...props}>
       {label && (
-        <Text w="20%" align="center" fontSize="14px">
+        <Text minW="20%" align="center" fontSize="14px" flexShrink={0}>
           {label}
         </Text>
       )}
