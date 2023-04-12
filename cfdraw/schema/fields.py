@@ -24,13 +24,12 @@ class FieldType(str, Enum):
 
 class IBaseField(BaseModel):
     # this should not be changed manually!
-    type: FieldType = Field(..., description="Type of the field", allow_mutation=False)
+    type: FieldType = Field(..., description="Type")
     props: Optional[Dict[str, Any]] = Field(None, description="Props for the component")
 
     class Config:
         extra = Extra.forbid
         smart_union = True
-        validate_assignment = True
 
 
 class ITextField(IBaseField):
@@ -39,7 +38,7 @@ class ITextField(IBaseField):
 
 
 class IImageField(IBaseField):
-    type: FieldType = Field(FieldType.IMAGE, description="Type of the field")
+    type: FieldType = Field(FieldType.IMAGE, description="Type", const=True)
 
 
 class NumberScale(str, Enum):
@@ -48,7 +47,7 @@ class NumberScale(str, Enum):
 
 
 class INumberField(IBaseField):
-    type: FieldType = Field(FieldType.NUMBER, description="Type of the field")
+    type: FieldType = Field(FieldType.NUMBER, description="Type", const=True)
     default: float = Field(..., description="The default value of the field")
     min: Optional[float] = Field(None, description="The minimum value of the field")
     max: Optional[float] = Field(None, description="The maximum value of the field")
@@ -60,23 +59,23 @@ class INumberField(IBaseField):
 
 
 class ISelectField(IBaseField):
-    type: FieldType = Field(FieldType.SELECT, description="Type of the field")
+    type: FieldType = Field(FieldType.SELECT, description="Type", const=True)
     values: List[str] = Field(..., description="The values of the field")
     default: str = Field(..., description="The default value of the field")
 
 
 class IBooleanField(IBaseField):
-    type: FieldType = Field(FieldType.BOOLEAN, description="Type of the field")
+    type: FieldType = Field(FieldType.BOOLEAN, description="Type", const=True)
     default: bool = Field(..., description="The default value of the field")
 
 
 class IListField(IBaseField):
-    type: FieldType = Field(FieldType.LIST, description="Type of the field")
+    type: FieldType = Field(FieldType.LIST, description="Type", const=True)
     item: "IFieldDefinition" = Field(..., description="The item of the field")
 
 
 class IObjectField(IBaseField):
-    type: FieldType = Field(FieldType.OBJECT, description="Type of the field")
+    type: FieldType = Field(FieldType.OBJECT, description="Type", const=True)
     fields: Dict[str, "IFieldDefinition"] = Field(..., description="Sub fields")
 
 
