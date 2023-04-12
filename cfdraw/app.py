@@ -171,6 +171,21 @@ class App:
             try:
                 with open(constants.UPLOAD_PROJECT_FOLDER / f"{uid}.noli", "r") as f:
                     d = json.load(f)
+                # replace url if needed
+                graph = noli.parse_graph(d["graphInfo"])
+                for node in graph.all_single_nodes:
+                    if node.type == noli.SingleNodeType.IMAGE:
+                        src = node.renderParams.src
+                        if (
+                            src
+                            and isinstance(src, str)
+                            and src.startswith(self.config.api_host)
+                        ):
+                            pivot = constants.UPLOAD_IMAGE_FOLDER_NAME
+                            _, path = src.split(pivot)
+                            api_url = self.config.api_url
+                            node.renderParams.src = api_url + "/" + pivot + path
+                d["graphInfo"] = graph.dict()["root_nodes"]
                 return ProjectModel(**d)
             except Exception as err:
                 raise_err(err)
