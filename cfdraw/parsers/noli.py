@@ -112,13 +112,21 @@ class GroupType(str, Enum):
     GROUP = "group"
 
 
+class LayerParams(BaseModel):
+    z: float
+
+
+class RenderParams(BaseModel):
+    src: str
+
+
 class SingleNode(BaseModel):
     type: SingleNodeType
     alias: str
-    transform: Matrix2D
-    z: float
+    bboxFields: Matrix2D
+    layerParams: LayerParams
     params: Dict[str, Any]
-    render_params: Optional[Dict[str, Any]]
+    renderParams: Optional[RenderParams]
 
 
 class Group(BaseModel):
@@ -131,11 +139,14 @@ class Group(BaseModel):
 class INode(BaseModel):
     type: Union[SingleNodeType, GroupType]
     alias: str
-    transform: Matrix2D
-    z: Optional[float]  # only for single node
+    bboxFields: Matrix2D
+    layerParams: Optional[LayerParams]  # only for single node
     params: Optional[Dict[str, Any]]  # only for single node
-    render_params: Optional[Dict[str, Any]]  # only for single node
+    renderParams: Optional[RenderParams]  # only for single node
     nodes: Optional[List["INode"]]  # only for group
+
+    def dict(self, **kwargs: Any) -> Dict[str, Any]:
+        return dict(className=type2class_name[self.type], info=super().dict(**kwargs))
 
 
 class Graph(BaseModel):
@@ -160,9 +171,9 @@ class Graph(BaseModel):
     def all_single_nodes(self) -> Generator[SingleNode, None, None]:
         def _generate(nodes: List[INode]) -> List[SingleNode]:
             for node in nodes:
-                if isinstance(node, SingleNode):
+                if node.type in SingleNodeType:
                     yield node
-                elif isinstance(node, Group):
+                elif node.type in GroupType:
                     yield from _generate(node.nodes)
 
         yield from _generate(self.root_nodes)
@@ -186,18 +197,12 @@ class_name2type = {
     "NoliFrameNode": SingleNodeType.NOLI_FRAME,
     "NoliTextFrameNode": SingleNodeType.NOLI_TEXT_FRAME,
 }
+type2class_name = {v: k for k, v in class_name2type.items()}
 
 
 def _parse_single_node(info: Dict[str, Any]) -> SingleNode:
     core_info = info["info"]
-    return SingleNode(
-        type=class_name2type[info["className"]],
-        alias=core_info["alias"],
-        transform=Matrix2D(**core_info["bboxFields"]),
-        z=core_info["layerParams"]["z"],
-        params=core_info["params"],
-        render_params=core_info.get("renderParams"),
-    )
+    return SingleNode(type=class_name2type[info["className"]], **core_info)
 
 
 def _parse_group(info: Dict[str, Any]) -> Group:
