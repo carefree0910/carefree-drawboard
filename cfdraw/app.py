@@ -252,4 +252,5 @@ class App:
                     useStrictMode=self.config.use_react_strict_mode,
                 )
             )
+            print_info(f"🔔 Your files will be saved to '{constants.UPLOAD_ROOT}'")
             print_info("🎉 Server is Ready!")
