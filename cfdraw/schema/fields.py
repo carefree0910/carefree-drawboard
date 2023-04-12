@@ -72,14 +72,12 @@ class IBooleanField(IBaseField):
 
 class IListField(IBaseField):
     type: FieldType = Field(FieldType.LIST, description="Type of the field")
-    # it should actually be `IFieldDefinition`
-    item: Any = Field(..., description="The item of the field")
+    item: "IFieldDefinition" = Field(..., description="The item of the field")
 
 
 class IObjectField(IBaseField):
     type: FieldType = Field(FieldType.OBJECT, description="Type of the field")
-    # it should actually be `Dict[str, IFieldDefinition]`
-    item: Any = Field(..., description="The item of the field")
+    fields: Dict[str, "IFieldDefinition"] = Field(..., description="Sub fields")
 
 
 IFieldDefinition = Union[
@@ -91,6 +89,8 @@ IFieldDefinition = Union[
     IListField,
     IObjectField,
 ]
+IListField.update_forward_refs()
+IObjectField.update_forward_refs()
 
 
 class ISubscribableFields(str, Enum):
