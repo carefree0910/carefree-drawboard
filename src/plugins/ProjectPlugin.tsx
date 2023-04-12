@@ -18,12 +18,12 @@ import {
   loadProject,
   saveProject,
 } from "@/actions/manageProjects";
-import CFSelect from "@/components/CFSelect";
 import { CFText } from "@/components/CFText";
 import { CFInput } from "@/components/CFInput";
 import { CFButton } from "@/components/CFButton";
 import { CFDivider } from "@/components/CFDivider";
 import { CFHeading } from "@/components/CFHeading";
+import { CFSrollableSelect } from "@/components/CFSelect";
 import { drawboardPluginFactory } from "./utils/factory";
 import Render from "./components/Render";
 import { floatingEvent, floatingRenderEvent } from "./components/Floating";
@@ -112,15 +112,11 @@ const ProjectPlugin = ({ pluginInfo, ...props }: IPlugin) => {
         <CFDivider />
         {allProjects ? (
           allProjectUids.length > 0 ? (
-            <CFSelect
+            <CFSrollableSelect
               value={selectedUid}
               options={allProjectUids}
               onOptionClick={(uid) => setSelectedUid(uid)}
               optionConverter={(uid) => allProjects[uid]}
-              menuListProps={{
-                maxH: "116px",
-                overflowY: "scroll",
-              }}
             />
           ) : (
             <CFText>{translate(Projects_Words["no-projects-available"], lang)}</CFText>

@@ -122,4 +122,7 @@ function CFSelect<T extends string>({
   );
 }
 
+export function CFSrollableSelect<T extends string>(props: ISelect<T>) {
+  return <CFSelect {...props} menuListProps={{ maxH: "116px", overflowY: "scroll" }} />;
+}
 export default observer(CFSelect);
