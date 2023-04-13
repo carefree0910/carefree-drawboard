@@ -43,13 +43,14 @@ export interface IPythonPlugin extends IPlugin {
     updateInterval?: number;
   };
 }
+interface IPythonHttpPluginWithSubmitPluginInfo {
+  closeOnSubmit?: boolean;
+}
 export interface IPythonHttpPluginWithSubmit<R>
   extends IPythonPlugin,
     IPythonHttpPluginCallbacks<R> {
   buttonText: string;
-  pluginInfo: IPythonPlugin["pluginInfo"] & {
-    closeOnSubmit?: boolean;
-  };
+  pluginInfo: IPythonPlugin["pluginInfo"] & IPythonHttpPluginWithSubmitPluginInfo;
 }
 export interface IPythonHttpTextAreaPlugin extends IPythonPlugin {
   pluginInfo: IPythonPlugin["pluginInfo"] & {
@@ -63,13 +64,13 @@ export interface IPythonHttpQAPlugin extends IPythonPlugin {
   };
 }
 export interface IPythonHttpFieldsPlugin extends IPythonPlugin {
-  pluginInfo: IPythonPlugin["pluginInfo"] & {
-    header?: string;
-    fields?: ISubscribableFields[];
-    customDefinitions: ICustomDefinitions;
-    numColumns?: number;
-    closeOnSubmit?: boolean;
-  };
+  pluginInfo: IPythonPlugin["pluginInfo"] &
+    IPythonHttpPluginWithSubmitPluginInfo & {
+      header?: string;
+      fields?: ISubscribableFields[];
+      customDefinitions: ICustomDefinitions;
+      numColumns?: number;
+    };
 }
 
 // http
