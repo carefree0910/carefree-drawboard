@@ -121,4 +121,19 @@ export const reactPluginSettings: IMakePlugin<AvailablePlugins>[] = [
       noExpand: true,
     },
   },
+  {
+    type: "textEditor",
+    props: {
+      p: "13px",
+      nodeConstraint: "text",
+      renderInfo: {
+        w: 300,
+        h: 400,
+        src: "https://ailab-huawei-cdn.nolibox.com/upload/images/06dc5af9d77944c8ae06d1ae1124b6a2.png",
+        pivot: "right",
+        follow: true,
+      },
+      pluginInfo: {},
+    },
+  },
 ];
