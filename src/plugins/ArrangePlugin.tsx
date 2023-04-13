@@ -15,7 +15,8 @@ const ArrangePlugin = ({ pluginInfo: { nodes }, ...props }: IPlugin) => {
   return (
     <Render
       onFloatingButtonClick={async () => onArrange(t, lang, { type: "multiple", nodes })}
-      {...props}></Render>
+      {...props}
+    />
   );
 };
 drawboardPluginFactory.register("arrange")(observer(ArrangePlugin));

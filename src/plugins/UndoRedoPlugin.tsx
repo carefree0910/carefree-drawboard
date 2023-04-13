@@ -7,10 +7,10 @@ import { drawboardPluginFactory } from "./utils/factory";
 import Render from "./components/Render";
 
 const UndoPlugin = ({ pluginInfo, ...props }: IPlugin) => {
-  return <Render onFloatingButtonClick={async () => safeUndo()} {...props}></Render>;
+  return <Render onFloatingButtonClick={async () => safeUndo()} {...props} />;
 };
 const RedoPlugin = ({ pluginInfo, ...props }: IPlugin) => {
-  return <Render onFloatingButtonClick={async () => safeRedo()} {...props}></Render>;
+  return <Render onFloatingButtonClick={async () => safeRedo()} {...props} />;
 };
 drawboardPluginFactory.register("undo")(observer(UndoPlugin));
 drawboardPluginFactory.register("redo")(observer(RedoPlugin));
