@@ -117,7 +117,7 @@ class LayerParams(BaseModel):
 
 
 class RenderParams(BaseModel):
-    src: str
+    src: Optional[str]
 
 
 class SingleNode(BaseModel):
