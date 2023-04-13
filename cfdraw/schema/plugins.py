@@ -190,12 +190,6 @@ class IPlugin(ABC):
     def __call__(self, data: Any) -> Any:
         pass
 
-    # optional
-
-    @property
-    def middlewares(self) -> List["IMiddleWare"]:
-        return []
-
     # api
 
     def to_plugin_settings(self, identifier: str) -> Dict[str, Any]:
@@ -233,6 +227,8 @@ class IPlugin(ABC):
 
 
 class IMiddleWare(ABC):
+    # abstract
+
     @property
     @abstractmethod
     def subscriptions(self) -> List[PluginType]:
@@ -241,6 +237,13 @@ class IMiddleWare(ABC):
     @abstractmethod
     def process(self, response: Any) -> Any:
         pass
+
+    # optional callbacks
+
+    def before(self, request: Any) -> None:
+        pass
+
+    # api
 
     def __call__(self, plugin: IPlugin, response: Any) -> Any:
         if plugin.type not in self.subscriptions:
