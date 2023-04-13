@@ -16,7 +16,7 @@ import { CFDivider } from "@/components/CFDivider";
 import { CFHeading } from "@/components/CFHeading";
 import CFImageUploader from "@/components/CFImageUploader";
 import { drawboardPluginFactory } from "./utils/factory";
-import { floatingEvent } from "./components/Floating";
+import { floatingControlEvent, floatingEvent } from "./components/Floating";
 import Render from "./components/Render";
 
 const AddPlugin = ({ pluginInfo, ...props }: IPlugin) => {
@@ -24,6 +24,7 @@ const AddPlugin = ({ pluginInfo, ...props }: IPlugin) => {
   const lang = langStore.tgt;
   const id = `add_plugin_${getRandomHash()}`;
 
+  const closePanel = () => floatingControlEvent.emit({ id, expand: false });
   const onNewProject = () => {
     saveProject(t, lang, async () => {
       loadLocalProject(
@@ -33,6 +34,7 @@ const AddPlugin = ({ pluginInfo, ...props }: IPlugin) => {
         async () => {
           floatingEvent.emit({ type: "newProject", data: {} });
           toast(t, "success", translate(Toast_Words["add-project-success-message"], lang));
+          closePanel();
         },
       );
     });
@@ -46,7 +48,7 @@ const AddPlugin = ({ pluginInfo, ...props }: IPlugin) => {
         <CFButton w="100%" onClick={onNewProject}>
           {translate(Add_Words["new-project-button"], lang)}
         </CFButton>
-        <CFImageUploader>
+        <CFImageUploader onUpload={closePanel}>
           <CFButton w="100%" mt="12px">
             {translate(Add_Words["upload-image-button"], lang)}
           </CFButton>
@@ -54,7 +56,10 @@ const AddPlugin = ({ pluginInfo, ...props }: IPlugin) => {
         <CFButton
           w="100%"
           mt="12px"
-          onClick={() => importMeta({ t, lang, type: "add.text", metaData: {} })}>
+          onClick={() => {
+            importMeta({ t, lang, type: "add.text", metaData: {} });
+            closePanel();
+          }}>
           {translate(Add_Words["add-text-button"], lang)}
         </CFButton>
       </Flex>
