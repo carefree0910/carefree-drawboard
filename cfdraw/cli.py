@@ -2,6 +2,7 @@ import os
 import sys
 import typer
 
+from pathlib import Path
 from cftool.misc import print_info
 
 from cfdraw import constants
@@ -9,6 +10,8 @@ from cfdraw.utils import exec
 from cfdraw.utils import console
 from cfdraw.utils import processes
 from cfdraw.config import get_config
+from cfdraw.compilers.template import set_init_codes
+from cfdraw.compilers.template import TemplateType
 
 cli = typer.Typer()
 
@@ -58,5 +61,11 @@ def run(
 
 
 @cli.command()
-def hello(name: str = typer.Option(..., help="Your name.")) -> None:
-    print(f"Hello, {name}!")
+def init(
+    template: TemplateType = typer.Option(
+        TemplateType.IMAGE,
+        help="The template type.",
+    ),
+) -> None:
+    folder = os.getcwd()
+    set_init_codes(Path(folder), template)
