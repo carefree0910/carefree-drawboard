@@ -25,8 +25,13 @@ export interface IFloatingRenderEvent {
   needRender: boolean;
   noExpand?: boolean;
 }
+export interface IFloatingControlEvent {
+  id: string;
+  expand?: boolean;
+}
 export const floatingEvent = new Event<IFloatingEvent>();
 export const floatingRenderEvent = new Event<IFloatingRenderEvent>();
+export const floatingControlEvent = new Event<IFloatingControlEvent>();
 
 export function getExpandId(id: string): string {
   return `${id}_expand`;
@@ -165,10 +170,18 @@ const Floating = forwardRef(function (
         }
       },
     );
+    const { dispose: disposeControl } = floatingControlEvent.on(
+      ({ id: incomingId, expand: incomingExpand }) => {
+        if (id === incomingId && !isUndefined(incomingExpand)) {
+          setExpand(incomingExpand);
+        }
+      },
+    );
     floatingRenderEvent.emit({ id, expand, needRender, noExpand });
 
     return () => {
       disposeRender();
+      disposeControl();
     };
   }, [id, expand, needRender, noExpand]);
 
