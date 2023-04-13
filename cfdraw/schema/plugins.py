@@ -284,6 +284,10 @@ class IHttpFieldsPluginInfo(IPluginInfo):
         description="Field definitions",
     )
     numColumns: Optional[int] = Field(None, description="Number of columns")
+    closeOnSubmit: Optional[bool] = Field(
+        None,
+        description="Whether close the expanded panel when the submit button is clicked",
+    )
 
 
 __all__ = [

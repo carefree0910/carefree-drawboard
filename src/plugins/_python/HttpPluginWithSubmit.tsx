@@ -1,14 +1,18 @@
-import { useState } from "react";
+import { useState, useMemo } from "react";
 import { observer } from "mobx-react-lite";
+
+import { getRandomHash } from "@noli/core";
 
 import type { IPythonHttpPluginWithSubmit } from "@/types/_python";
 import { useHttpPython } from "@/hooks/usePython";
 import { CFButton } from "@/components/CFButton";
 import { CFDivider } from "@/components/CFDivider";
 import Render from "../components/Render";
+import { floatingControlEvent } from "../components/Floating";
 
 const PythonHttpPluginWithSubmit = ({
-  pluginInfo: { node, endpoint, identifier, updateInterval },
+  id,
+  pluginInfo: { node, endpoint, identifier, updateInterval, closeOnSubmit = true },
   buttonText,
   onUseHttpPythonError,
   onUseHttpPythonSuccess,
@@ -18,6 +22,7 @@ const PythonHttpPluginWithSubmit = ({
   ...props
 }: IPythonHttpPluginWithSubmit<any>) => {
   const [send, setSend] = useState(false);
+  const _id = useMemo(() => id ?? `pythonHttpPluginWithSubmit_${getRandomHash()}`, [id]);
 
   useHttpPython<{ text: string }>({
     node,
@@ -36,10 +41,18 @@ const PythonHttpPluginWithSubmit = ({
   });
 
   return (
-    <Render {...props}>
+    <Render id={_id} {...props}>
       {children}
       <CFDivider />
-      <CFButton onClick={() => setSend(true)}>{buttonText}</CFButton>
+      <CFButton
+        onClick={() => {
+          setSend(true);
+          if (closeOnSubmit) {
+            floatingControlEvent.emit({ id: _id, expand: false });
+          }
+        }}>
+        {buttonText}
+      </CFButton>
     </Render>
   );
 };

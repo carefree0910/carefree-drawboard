@@ -79,7 +79,8 @@ class HttpGaussianBlurPlugin(IHttpPlugin):
                         isInt=True,
                         label="Size",
                     )
-                )
+                ),
+                closeOnSubmit=False,
             ),
         )
 

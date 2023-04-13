@@ -47,6 +47,9 @@ export interface IPythonHttpPluginWithSubmit<R>
   extends IPythonPlugin,
     IPythonHttpPluginCallbacks<R> {
   buttonText: string;
+  pluginInfo: IPythonPlugin["pluginInfo"] & {
+    closeOnSubmit?: boolean;
+  };
 }
 export interface IPythonHttpTextAreaPlugin extends IPythonPlugin {
   pluginInfo: IPythonPlugin["pluginInfo"] & {
@@ -65,6 +68,7 @@ export interface IPythonHttpFieldsPlugin extends IPythonPlugin {
     fields?: ISubscribableFields[];
     customDefinitions: ICustomDefinitions;
     numColumns?: number;
+    closeOnSubmit?: boolean;
   };
 }
 
