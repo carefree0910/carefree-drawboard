@@ -35,7 +35,7 @@ cfdraw run --module {name}
 
 ```python
 pluginInfo=IHttpFieldsPluginInfo(
-    customDefinitions=dict(
+    definitions=dict(
         size=INumberField(
             default=3,
             min=1,
@@ -48,7 +48,7 @@ pluginInfo=IHttpFieldsPluginInfo(
 )
 ```
 
-* `customDefinitions` is a dictionary, where the key is the name of the parameter, and the value is an `IFieldDefinition` object. Since we want to create a slider for the `size` parameter, we use `INumberField` with `min` & `max` specified here.
+* `definitions` is a dictionary, where the key is the name of the parameter, and the value is an `IFieldDefinition` object. Since we want to create a slider for the `size` parameter, we use `INumberField` with `min` & `max` specified here.
 
 > See [Supported `IFieldDefinition`]() for more details.
 

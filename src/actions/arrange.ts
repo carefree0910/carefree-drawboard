@@ -215,7 +215,7 @@ export async function autoArrange(
       origin = undefined;
     } else {
       origin = getOriginMeta(meta);
-      key = !origin ? defaultPrefix : origin.data.timestamp;
+      key = !origin ? defaultPrefix : origin.data.timestamp?.toString() ?? "";
     }
     const packs = setDefault(packsGroupByKey, key, []);
     packs.push({

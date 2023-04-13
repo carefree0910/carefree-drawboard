@@ -1,81 +1,51 @@
-import type { Dictionary } from "@noli/core";
+import type { useToast } from "@chakra-ui/react";
 
-import type { APISources } from "./requests";
+import type { Dictionary, Lang } from "@noli/core";
 
-// meta types
-export const allMetaTypes = ["upload", "txt2img.sd", "python.httpFields", "add.text"] as const;
+// general
+
+export const allMetaTypes = ["upload", "python.httpFields", "add.text"] as const;
 export type MetaType = typeof allMetaTypes[number];
-
-// (global) meta data
-export const allSDVersions = [
-  "v1.5",
-  "anime",
-  "anime_anything",
-  "anime_hybrid",
-  "anime_guofeng",
-  "anime_orange",
-  "dreamlike_v1",
-] as const;
-export const allSDSamplers = [
-  "ddim",
-  "plms",
-  "klms",
-  "solver",
-  "k_euler",
-  "k_euler_a",
-  "k_heun",
-] as const;
-export type SDVersions = typeof allSDVersions[number];
-export type SDSamplers = typeof allSDSamplers[number];
-export interface VariationModel {
-  seed: number;
-  strength: number;
+export interface ICommonMetaData {
+  timestamp?: number;
+  duration?: number;
+  from?: IMeta;
 }
-export interface ITomeInfo {
-  enable: boolean;
-  ratio: number;
-  max_downsample: number;
-  sx: number;
-  sy: number;
-  seed: number;
-  use_rand: boolean;
-  merge_attn: boolean;
-  merge_crossattn: boolean;
-  merge_mlp: boolean;
+export interface IMeta {
+  type: MetaType;
+  data: ICommonMetaData & Dictionary<any>;
 }
 
-export interface IAPIMetaData {
-  // common api data
+// specific
+
+interface IUploadMetaData extends ICommonMetaData {
   w: number;
   h: number;
   url: string;
-  prompt: string;
-  negative_prompt: string;
-  version: SDVersions;
-  sampler: SDSamplers;
-  num_steps: number;
-  guidance_scale: number;
-  seed: number;
-  use_circular: boolean;
-  max_wh: number;
-  clip_skip: number;
-  variations: VariationModel[];
-  tome_info: Partial<ITomeInfo>;
-  source: APISources;
-}
-export interface IMetaData extends IAPIMetaData {
-  // specific data
   isDrag: boolean;
-  timestamp?: number;
-  duration?: number;
-  externalData: Dictionary<any>;
-  from?: IMeta;
+}
+interface IAddTextMetaData extends ICommonMetaData {}
+export type IPythonHttpFieldsResponse = { _duration?: number } & (
+  | { type: "text"; value: string }
+  | { type: "image"; value: { w: number; h: number; url: string }[] }
+);
+type IPythonHttpFieldsMetaData = ICommonMetaData &
+  IPythonHttpFieldsResponse & {
+    identifier: string;
+    data: Dictionary<any>;
+  };
+
+export interface IMetaData {
+  upload: IUploadMetaData;
+  "add.text": IAddTextMetaData;
+  "python.httpFields": IPythonHttpFieldsMetaData;
 }
 
-// meta bundle
-export interface IMeta {
-  type: MetaType;
-  data: Partial<IMetaData | any>;
+export interface IImportMeta<T extends MetaType> {
+  t: ReturnType<typeof useToast>;
+  lang: Lang;
+  type: T;
+  metaData: IMetaData[T];
 }
 
 // utils

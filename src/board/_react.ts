@@ -2,33 +2,6 @@ import type { AvailablePlugins, IMakePlugin } from "@/types/plugins";
 
 export const reactPluginSettings: IMakePlugin<AvailablePlugins>[] = [
   {
-    type: "txt2img.sd",
-    props: {
-      nodeConstraint: "none",
-      renderInfo: {
-        w: 600,
-        h: 400,
-        src: "https://ailab-huawei-cdn.nolibox.com/upload/images/ec388e38bdac4f72978b895c2f686cdf.png",
-        pivot: "left",
-        follow: false,
-        useModal: true,
-        modalOpacity: 0.9,
-      },
-      pluginInfo: {
-        fields: [
-          "w",
-          "h",
-          "prompt",
-          "negative_prompt",
-          "version",
-          "sampler",
-          "num_steps",
-          "guidance_scale",
-        ],
-      },
-    },
-  },
-  {
     type: "settings",
     props: {
       nodeConstraint: "none",

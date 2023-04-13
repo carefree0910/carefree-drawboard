@@ -4,14 +4,7 @@ import type { FlexProps } from "@chakra-ui/react";
 import type { INode, NodeType, PivotType } from "@noli/core";
 import type { IResponse } from "@noli/business";
 
-import type { TaskTypes } from "./tasks";
-import type {
-  ICustomDefinitions,
-  IFieldDefinition,
-  IGeneralFields,
-  ISubscribableFields,
-  _IFieldDefinition,
-} from "./metaFields";
+import type { IDefinitions, IFieldDefinition, _IFieldDefinition } from "./metaFields";
 import type {
   IPythonHttpFieldsPlugin,
   IPythonHttpQAPlugin,
@@ -61,18 +54,14 @@ export interface IPlugin extends IRender {
 // specific
 
 export interface IField<T extends _IFieldDefinition> {
-  field: IGeneralFields;
+  field: string;
   definition: IFieldDefinition<T>;
 }
 export interface IFieldsPlugin extends IPlugin {
   pluginInfo: IPlugin["pluginInfo"] & {
-    fields: ISubscribableFields[];
-    customDefinitions?: ICustomDefinitions;
+    definitions?: IDefinitions;
     numColumns?: number;
   };
-}
-export interface ITaskPlugin extends IFieldsPlugin {
-  pluginInfo: IFieldsPlugin["pluginInfo"] & { task: TaskTypes };
 }
 
 // factory

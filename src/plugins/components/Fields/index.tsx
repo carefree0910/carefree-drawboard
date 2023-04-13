@@ -1,21 +1,11 @@
-import { useMemo } from "react";
+import { isUndefined } from "@noli/core";
 
-import { Dictionary, isUndefined } from "@noli/core";
-import type { IFieldsPlugin } from "@/types/plugins";
-import { subscribe } from "@/plugins/utils/subscribe";
+import type { IDefinitions } from "@/types/metaFields";
 import TextField from "./TextField";
 import NumberField from "./NumberField";
 import SelectField from "./SelectField";
-import { IFieldDefinition } from "@/types/metaFields";
 
-type IFields = IFieldsPlugin["pluginInfo"]["fields"];
-type ICustomDefinitions = IFieldsPlugin["pluginInfo"]["customDefinitions"];
-
-export function useDefinitions(fields: IFields, customDefinitions: ICustomDefinitions) {
-  return useMemo(() => subscribe(fields, customDefinitions), [fields, customDefinitions]);
-}
-
-export function useFieldsWith(definitions: Dictionary<IFieldDefinition>, numColumns?: number) {
+export function useDefinitions(definitions: IDefinitions, numColumns?: number) {
   const nc = numColumns ?? 1;
 
   return (
@@ -40,12 +30,4 @@ export function useFieldsWith(definitions: Dictionary<IFieldDefinition>, numColu
       })}
     </>
   );
-}
-
-export function useFields(
-  fields: IFields,
-  customDefinitions: ICustomDefinitions,
-  numColumns?: number,
-) {
-  return useFieldsWith(useDefinitions(fields, customDefinitions), numColumns);
 }

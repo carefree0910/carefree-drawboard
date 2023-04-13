@@ -3,7 +3,7 @@ import type { TextareaProps } from "@chakra-ui/react";
 import type { Dictionary, Matrix2DFields } from "@noli/core";
 
 import type { IPlugin } from "./plugins";
-import type { ICustomDefinitions, ISubscribableFields } from "./metaFields";
+import type { IDefinitions } from "./metaFields";
 
 // general
 
@@ -69,8 +69,7 @@ export interface IPythonHttpFieldsPlugin extends IPythonPlugin {
   pluginInfo: IPythonPlugin["pluginInfo"] &
     IPythonHttpPluginWithSubmitPluginInfo & {
       header?: string;
-      fields?: ISubscribableFields[];
-      customDefinitions: ICustomDefinitions;
+      definitions: IDefinitions;
       numColumns?: number;
     };
 }

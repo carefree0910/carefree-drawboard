@@ -7,7 +7,6 @@ import { drawboardPluginFactory } from "./utils/factory";
 import { getNodeFilter } from "./utils/renderFilters";
 
 // these lines are needed to make sure the plugins are registered
-export * from "./Txt2ImgSDPlugin";
 export * from "./SettingsPlugin";
 export * from "./ProjectPlugin";
 export * from "./AddPlugin";
