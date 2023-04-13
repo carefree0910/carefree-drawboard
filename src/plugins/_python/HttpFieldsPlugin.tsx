@@ -1,7 +1,9 @@
-import { useMemo } from "react";
+import { useMemo, useCallback } from "react";
 import { observer } from "mobx-react-lite";
-import { Flex, useToast } from "@chakra-ui/react";
+import { CloseIcon } from "@chakra-ui/icons";
+import { Flex, Spacer, useToast } from "@chakra-ui/react";
 
+import { getRandomHash } from "@noli/core";
 import { langStore, translate } from "@noli/business";
 
 import type { IPythonHttpFieldsData, IPythonHttpFieldsResponse } from "@/types/narrowedMeta";
@@ -14,6 +16,7 @@ import { getMetaField } from "@/stores/meta";
 import { drawboardPluginFactory } from "@/plugins/utils/factory";
 import { CFHeading } from "@/components/CFHeading";
 import PythonHttpPluginWithSubmit from "./HttpPluginWithSubmit";
+import { floatingControlEvent } from "../components/Floating";
 import { useDefinitions, useFieldsWith } from "../components/Fields";
 
 const PythonHttpFieldsPlugin = ({ pluginInfo, ...props }: IPythonHttpFieldsPlugin) => {
@@ -43,6 +46,11 @@ const PythonHttpFieldsPlugin = ({ pluginInfo, ...props }: IPythonHttpFieldsPlugi
     }
     return currentMeta;
   }, [pluginInfo.node]);
+  const id = useMemo(
+    () => `${pureIdentifier.replaceAll(".", "_")}_${getRandomHash()}`,
+    [pureIdentifier],
+  );
+  const emitClose = useCallback(() => floatingControlEvent.emit({ id, expand: false }), [id]);
 
   function getExtraRequestData() {
     const { externalData, ...others } = data;
@@ -68,14 +76,16 @@ const PythonHttpFieldsPlugin = ({ pluginInfo, ...props }: IPythonHttpFieldsPlugi
   const header = pluginInfo.header ?? titleCaseWord(pureIdentifier);
   return (
     <PythonHttpPluginWithSubmit
+      id={id}
       buttonText={translate(UI_Words["submit-task"], lang)}
       getExtraRequestData={getExtraRequestData}
       onUseHttpPythonSuccess={onUseHttpPythonSuccess}
       pluginInfo={pluginInfo}
       {...props}>
-      <CFHeading>{header}</CFHeading>
-      <Flex p="12px" gap="12px" flexWrap="wrap" alignItems="center" justifyContent="space-around">
-        {useFieldsWith(definitions, pluginInfo.numColumns)}
+      <Flex>
+        <CFHeading>{header}</CFHeading>
+        <Spacer />
+        <CloseIcon w="12px" cursor="pointer" onClick={emitClose} />
       </Flex>
       {Object.keys(definitions).length > 0 && (
         <Flex p="12px" gap="12px" flexWrap="wrap" alignItems="center" justifyContent="space-around">
