@@ -36,12 +36,24 @@ class PluginType(str, Enum):
 
 
 class IPluginInfo(BaseModel):
-    """The actual data used in `usePython` hook & each React component."""
+    """The common data used in `usePython` hook & each React component."""
 
     updateInterval: int = Field(
         0,
         ge=0,
         description="If > 0, the plugin will be called every `updateInterval` ms",
+    )
+    closeOnSubmit: Optional[bool] = Field(
+        None,
+        description="Whether close the expanded panel when the submit button is clicked",
+    )
+    toastOnSubmit: Optional[bool] = Field(
+        None,
+        description="Whether trigger a toast message when the submit button is clicked",
+    )
+    submitToastMessage: Optional[str] = Field(
+        None,
+        description="The message of the toast, only take effect when `toastOnSubmit` is `True`",
     )
 
 
@@ -282,18 +294,6 @@ class IHttpFieldsPluginInfo(IPluginInfo):
         description="Field definitions",
     )
     numColumns: Optional[int] = Field(None, description="Number of columns")
-    closeOnSubmit: Optional[bool] = Field(
-        None,
-        description="Whether close the expanded panel when the submit button is clicked",
-    )
-    toastOnSubmit: Optional[bool] = Field(
-        None,
-        description="Whether trigger a toast message when the submit button is clicked",
-    )
-    submitToastMessage: Optional[str] = Field(
-        None,
-        description="The message of the toast, only take effect when `toastOnSubmit` is `True`",
-    )
 
 
 __all__ = [
