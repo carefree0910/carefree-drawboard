@@ -68,6 +68,8 @@ export const allAvailablePlugins = [
   "undo",
   "redo",
   "textEditor",
+  "groupEditor",
+  "multiEditor",
 ] as const;
 export const allAvailablePythonPlugins = [
   "_python.httpTextArea",
@@ -88,6 +90,8 @@ export interface IPluginProps {
   undo: IPlugin;
   redo: IPlugin;
   textEditor: IPlugin;
+  groupEditor: IPlugin;
+  multiEditor: IPlugin;
   // python plugins
   "_python.httpTextArea": IPythonHttpTextAreaPlugin;
   "_python.httpQA": IPythonHttpQAPlugin;

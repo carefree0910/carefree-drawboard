@@ -109,4 +109,36 @@ export const reactPluginSettings: IMakePlugin<AvailablePlugins>[] = [
       pluginInfo: {},
     },
   },
+  {
+    type: "groupEditor",
+    props: {
+      // p: "13px",
+      nodeConstraint: "group",
+      renderInfo: {
+        w: 0,
+        h: 0,
+        src: "https://ailab-huawei-cdn.nolibox.com/upload/images/b767f4a99956498a922470174a2051df.png",
+        pivot: "rt",
+        follow: true,
+      },
+      pluginInfo: {},
+      noExpand: true,
+    },
+  },
+  {
+    type: "multiEditor",
+    props: {
+      // p: "13px",
+      nodeConstraint: "multiNode",
+      renderInfo: {
+        w: 0,
+        h: 0,
+        src: "https://ailab-huawei-cdn.nolibox.com/upload/images/669c405bee944a9a91fc4aa68f858cc3.png",
+        pivot: "rt",
+        follow: true,
+      },
+      pluginInfo: {},
+      noExpand: true,
+    },
+  },
 ];
