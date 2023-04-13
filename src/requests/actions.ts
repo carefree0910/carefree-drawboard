@@ -1,4 +1,4 @@
-import type { APISources } from "@/types/requests";
+import type { APISources } from "@/schema/requests";
 import { apis } from "./apis";
 
 export class Requests {

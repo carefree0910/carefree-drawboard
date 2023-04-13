@@ -4,7 +4,7 @@ import { Flex, useToast } from "@chakra-ui/react";
 import { getRandomHash, identityMatrix2DFields } from "@noli/core";
 import { langStore, translate } from "@noli/business";
 
-import type { IPlugin } from "@/types/plugins";
+import type { IPlugin } from "@/schema/plugins";
 import { toast } from "@/utils/toast";
 import { Add_Words } from "@/lang/add";
 import { Toast_Words } from "@/lang/toast";

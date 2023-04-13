@@ -3,8 +3,8 @@ import { observer } from "mobx-react-lite";
 import { isUndefined } from "@noli/core";
 import { langStore } from "@noli/business";
 
-import type { IField } from "@/types/plugins";
-import type { INumberField } from "@/types/metaFields";
+import type { IField } from "@/schema/plugins";
+import type { INumberField } from "@/schema/metaFields";
 import { getMetaField, setMetaField } from "@/stores/meta";
 import CFSlider from "@/components/CFSlider";
 import TextField from "./TextField";

@@ -1,7 +1,7 @@
 import { Logger, shallowCopy } from "@noli/core";
 import { useSelecting } from "@noli/business";
 
-import type { AvailablePluginsAndPythonPlugins, IMakePlugin } from "@/types/plugins";
+import type { AvailablePluginsAndPythonPlugins, IMakePlugin } from "@/schema/plugins";
 import { isInvisible, pythonIsInvisible } from "@/stores/plugins";
 import { drawboardPluginFactory } from "./utils/factory";
 import { getNodeFilter } from "./utils/renderFilters";

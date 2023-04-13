@@ -1,3 +1,3 @@
-import type { Interceptors } from "@/types/requests";
+import type { Interceptors } from "@/schema/requests";
 
 export const noliboxInceptors: Interceptors = {};

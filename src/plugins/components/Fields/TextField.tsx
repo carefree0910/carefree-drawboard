@@ -2,8 +2,8 @@ import { observer } from "mobx-react-lite";
 
 import { langStore } from "@noli/business";
 
-import type { IField } from "@/types/plugins";
-import type { ITextField } from "@/types/metaFields";
+import type { IField } from "@/schema/plugins";
+import type { ITextField } from "@/schema/metaFields";
 import { getMetaField, setMetaField } from "@/stores/meta";
 import { CFInput } from "@/components/CFInput";
 import { getPlaceholder } from "./utils";

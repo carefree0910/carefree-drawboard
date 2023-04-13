@@ -12,7 +12,7 @@ import {
   useIsReady,
 } from "@noli/business";
 
-import { allAvailablePlugins, IPlugin } from "@/types/plugins";
+import { allAvailablePlugins, IPlugin } from "@/schema/plugins";
 import { Plugins_Words } from "@/lang/plugins";
 import { Settings_Words } from "@/lang/settings";
 import { stripHashFromIdentifier } from "@/utils/misc";

@@ -1,6 +1,6 @@
 import { Logger } from "@noli/core";
 
-import type { Interceptors } from "@/types/requests";
+import type { Interceptors } from "@/schema/requests";
 
 export const _pythonInceptors: Interceptors = {
   beforeRequest: (config) => {

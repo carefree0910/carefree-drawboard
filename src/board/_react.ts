@@ -1,4 +1,4 @@
-import type { AvailablePlugins, IMakePlugin } from "@/types/plugins";
+import type { AvailablePlugins, IMakePlugin } from "@/schema/plugins";
 
 export const reactPluginSettings: IMakePlugin<AvailablePlugins>[] = [
   {

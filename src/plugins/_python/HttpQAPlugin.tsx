@@ -4,7 +4,7 @@ import { Textarea } from "@chakra-ui/react";
 
 import { langStore, translate } from "@noli/business";
 
-import type { IPythonHttpQAPlugin, IPythonHttpResponse } from "@/types/_python";
+import type { IPythonHttpQAPlugin, IPythonHttpResponse } from "@/schema/_python";
 import { UI_Words } from "@/lang/ui";
 import { CFInput } from "@/components/CFInput";
 import { drawboardPluginFactory } from "@/plugins/utils/factory";

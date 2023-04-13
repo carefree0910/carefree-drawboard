@@ -7,7 +7,7 @@ import type {
   IPythonHttpResponse,
   IUseHttpPython,
   IUsePythonInfo,
-} from "@/types/_python";
+} from "@/schema/_python";
 import { Requests } from "@/requests/actions";
 
 export function useDeps({

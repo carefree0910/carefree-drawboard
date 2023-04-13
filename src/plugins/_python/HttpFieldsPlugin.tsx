@@ -6,8 +6,8 @@ import { Flex, Spacer, useToast } from "@chakra-ui/react";
 import { Dictionary, getRandomHash } from "@noli/core";
 import { langStore, translate } from "@noli/business";
 
-import type { IMeta, IPythonHttpFieldsResponse } from "@/types/meta";
-import type { IPythonHttpFieldsPlugin, IPythonHttpResponse } from "@/types/_python";
+import type { IMeta, IPythonHttpFieldsResponse } from "@/schema/meta";
+import type { IPythonHttpFieldsPlugin, IPythonHttpResponse } from "@/schema/_python";
 import { UI_Words } from "@/lang/ui";
 import { stripHashFromIdentifier, titleCaseWord } from "@/utils/misc";
 import { importMeta } from "@/actions/importMeta";

@@ -3,7 +3,7 @@ import { makeObservable, observable } from "mobx";
 import type { Dictionary } from "@noli/core";
 import { ABCStore } from "@noli/business";
 
-import type { AvailablePlugins } from "@/types/plugins";
+import type { AvailablePlugins } from "@/schema/plugins";
 
 export type IPluginsInvisible = Partial<Record<AvailablePlugins, boolean>>;
 class PluginsInvisibleStore extends ABCStore<IPluginsInvisible> {

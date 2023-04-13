@@ -4,7 +4,7 @@ import {
   allAvailablePlugins,
   allAvailablePythonPlugins,
   AvailablePluginsAndPythonPlugins,
-} from "@/types/plugins";
+} from "@/schema/plugins";
 
 const _pluginsLangRecords: Record<Lang, Record<AvailablePluginsAndPythonPlugins, string>> = {
   zh: {

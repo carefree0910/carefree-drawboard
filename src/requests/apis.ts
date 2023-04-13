@@ -1,6 +1,6 @@
 import axios, { AxiosInstance } from "axios";
 
-import type { APISources } from "@/types/requests";
+import type { APISources } from "@/schema/requests";
 import getPythonRelatedSettings from "@/utils/_pythonConstants";
 
 export const apis: Record<APISources, AxiosInstance> = {

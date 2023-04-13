@@ -5,7 +5,7 @@ import { Flex, Textarea } from "@chakra-ui/react";
 import { isUndefined } from "@noli/core";
 import { langStore, translate, useEditText } from "@noli/business";
 
-import type { IPlugin } from "@/types/plugins";
+import type { IPlugin } from "@/schema/plugins";
 import Render from "./components/Render";
 import { drawboardPluginFactory } from "./utils/factory";
 import CFSlider from "@/components/CFSlider";

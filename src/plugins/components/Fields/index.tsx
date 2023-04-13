@@ -1,6 +1,6 @@
 import { isUndefined } from "@noli/core";
 
-import type { IDefinitions } from "@/types/metaFields";
+import type { IDefinitions } from "@/schema/metaFields";
 import TextField from "./TextField";
 import NumberField from "./NumberField";
 import SelectField from "./SelectField";

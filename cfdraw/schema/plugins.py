@@ -121,7 +121,7 @@ Pivot of the plugin.
 
 
 class INodeData(BaseModel):
-    """This should align with `INodeData` at `src/types/_python.ts`"""
+    """This should align with `INodeData` at `src/schema/_python.ts`"""
 
     x: Optional[float] = Field(None, description="X of the node")
     y: Optional[float] = Field(None, description="Y of the node")

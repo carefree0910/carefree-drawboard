@@ -1,4 +1,4 @@
-import type { APISources, Interceptors } from "@/types/requests";
+import type { APISources, Interceptors } from "@/schema/requests";
 import { apis } from "../apis";
 import { noliboxInceptors } from "./nolibox";
 import { _pythonInceptors } from "./_python";

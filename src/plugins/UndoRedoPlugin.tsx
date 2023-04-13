@@ -2,7 +2,7 @@ import { observer } from "mobx-react-lite";
 
 import { safeRedo, safeUndo } from "@noli/business";
 
-import type { IPlugin } from "@/types/plugins";
+import type { IPlugin } from "@/schema/plugins";
 import { drawboardPluginFactory } from "./utils/factory";
 import Render from "./components/Render";
 

@@ -19,7 +19,7 @@ import {
 } from "@noli/core";
 import { BoardStore, translate } from "@noli/business";
 
-import { checkMeta, getOriginMeta, IMeta } from "@/types/meta";
+import { checkMeta, getOriginMeta, IMeta } from "@/schema/meta";
 import { toast } from "@/utils/toast";
 import { Toast_Words } from "@/lang/toast";
 

@@ -2,7 +2,7 @@ import { makeObservable, observable } from "mobx";
 
 import { ABCStore } from "@noli/business";
 
-import type { ICommonMetaData, IMeta } from "@/types/meta";
+import type { ICommonMetaData, IMeta } from "@/schema/meta";
 
 class MetaStore extends ABCStore<IMeta["data"]> {
   data: IMeta["data"] = {};

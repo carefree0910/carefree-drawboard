@@ -3,7 +3,7 @@ import { useToast } from "@chakra-ui/react";
 
 import { langStore } from "@noli/business";
 
-import type { IPlugin } from "@/types/plugins";
+import type { IPlugin } from "@/schema/plugins";
 import { drawboardPluginFactory } from "./utils/factory";
 import Render from "./components/Render";
 import { onArrange } from "@/actions/arrange";

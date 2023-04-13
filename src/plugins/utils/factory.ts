@@ -6,7 +6,7 @@ import type {
   AvailablePlugins,
   AvailablePluginsAndPythonPlugins,
   AvailablePythonPlugins,
-} from "@/types/plugins";
+} from "@/schema/plugins";
 
 function registerPlugin<T extends string>(
   d: Partial<Record<T, React.FC>>,

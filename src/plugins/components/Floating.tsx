@@ -10,7 +10,7 @@ import {
   useSelecting,
 } from "@noli/business";
 
-import type { IFloating, IPositionInfo } from "@/types/plugins";
+import type { IFloating, IPositionInfo } from "@/schema/plugins";
 import { Event } from "@/utils/event";
 import { DEFAULT_PLUGIN_SETTINGS, VISIBILITY_TRANSITION } from "@/utils/constants";
 import { themeStore } from "@/stores/theme";

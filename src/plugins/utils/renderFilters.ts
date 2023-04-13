@@ -1,6 +1,6 @@
 import { IResponse } from "@noli/business";
 
-import type { NodeConstraints } from "@/types/plugins";
+import type { NodeConstraints } from "@/schema/plugins";
 
 export function getNodeFilter(constraint: NodeConstraints): (info?: IResponse) => boolean {
   return (info) => {

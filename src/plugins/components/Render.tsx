@@ -12,7 +12,7 @@ import {
   useSelecting,
 } from "@noli/business";
 
-import type { IRender } from "@/types/plugins";
+import type { IRender } from "@/schema/plugins";
 import { DEFAULT_PLUGIN_SETTINGS } from "@/utils/constants";
 import { getNodeFilter } from "../utils/renderFilters";
 import Floating, {

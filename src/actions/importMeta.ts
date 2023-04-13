@@ -1,8 +1,8 @@
 import { getRandomHash, shallowCopy } from "@noli/core";
 import { BoardStore, translate, useAddNode } from "@noli/business";
 
-import type { IMetaData, MetaType } from "@/types/meta";
-import type { IImportMeta } from "@/types/meta";
+import type { IMetaData, MetaType } from "@/schema/meta";
+import type { IImportMeta } from "@/schema/meta";
 import { toast } from "@/utils/toast";
 import { Toast_Words } from "@/lang/toast";
 import { themeStore } from "@/stores/theme";

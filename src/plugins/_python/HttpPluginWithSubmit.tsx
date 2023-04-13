@@ -4,7 +4,7 @@ import { observer } from "mobx-react-lite";
 import { getRandomHash } from "@noli/core";
 import { langStore, translate } from "@noli/business";
 
-import type { IPythonHttpPluginWithSubmit } from "@/types/_python";
+import type { IPythonHttpPluginWithSubmit } from "@/schema/_python";
 import { Toast_Words } from "@/lang/toast";
 import { useHttpPython } from "@/hooks/usePython";
 import { CFButton } from "@/components/CFButton";
