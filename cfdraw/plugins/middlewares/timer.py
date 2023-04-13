@@ -1,7 +1,6 @@
 import time
 
 from typing import List
-from typing import Union
 from typing import Optional
 
 from cfdraw.schema.plugins import PluginType
