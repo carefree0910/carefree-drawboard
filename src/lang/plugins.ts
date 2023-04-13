@@ -8,7 +8,6 @@ import {
 
 const _pluginsLangRecords: Record<Lang, Record<AvailablePluginsAndPythonPlugins, string>> = {
   zh: {
-    "txt2img.sd": "文本转图片",
     settings: "设置",
     project: "项目",
     add: "添加",
@@ -21,7 +20,6 @@ const _pluginsLangRecords: Record<Lang, Record<AvailablePluginsAndPythonPlugins,
     "_python.httpFields": "插件",
   },
   en: {
-    "txt2img.sd": "Txt2Img",
     settings: "Settings",
     project: "Project",
     add: "Add",

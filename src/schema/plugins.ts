@@ -57,17 +57,10 @@ export interface IField<T extends _IFieldDefinition> {
   field: string;
   definition: IFieldDefinition<T>;
 }
-export interface IFieldsPlugin extends IPlugin {
-  pluginInfo: IPlugin["pluginInfo"] & {
-    definitions?: IDefinitions;
-    numColumns?: number;
-  };
-}
 
 // factory
 
 export const allAvailablePlugins = [
-  "txt2img.sd",
   "settings",
   "project",
   "add",
@@ -88,7 +81,6 @@ export type AvailablePluginsAndPythonPlugins = AvailablePlugins | AvailablePytho
 export interface IPluginProps {
   // react plugins
   meta: IPlugin;
-  "txt2img.sd": IFieldsPlugin;
   settings: IPlugin;
   project: IPlugin;
   add: IPlugin;
