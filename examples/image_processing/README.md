@@ -23,7 +23,7 @@ cfdraw run --module {name}
 
 1. We used `follow=True` and `nodeConstraint=NodeConstraints.IMAGE` for all plugins, so they will and only will be displayed when the selected Node is an image.
 
-> See [Plugin Positioning]() for more details.
+> See [Plugin Positioning](https://github.com/carefree0910/carefree-drawboard/wiki/Plugin-Positioning) for more details.
 
 2. We utilized `register_all_available_plugins` to register all internal plugins.
 
@@ -50,7 +50,7 @@ pluginInfo=IHttpFieldsPluginInfo(
 
 * `definitions` is a dictionary, where the key is the name of the parameter, and the value is an `IFieldDefinition` object. Since we want to create a slider for the `size` parameter, we use `INumberField` with `min` & `max` specified here.
 
-> See [Supported `IFieldDefinition`]() for more details.
+> See [`IFieldDefinition`](https://github.com/carefree0910/carefree-drawboard/wiki/PythonHttpFieldsPlugin#ifielddefinition) for more details.
 
 * The name of the parameter is `size`, so we can use `size` in the `process` function to get the value of the slider.
 
