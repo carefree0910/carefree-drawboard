@@ -41,9 +41,10 @@ interface IAddTextMetaData extends Partial<IMetaData> {}
 
 // python httpFields meta data
 
-export type IPythonHttpFieldsResponse =
+export type IPythonHttpFieldsResponse = { _duration?: number } & (
   | { type: "text"; value: string }
-  | { type: "image"; value: { w: number; h: number; url: string }[] };
+  | { type: "image"; value: { w: number; h: number; url: string }[] }
+);
 export type IPythonHttpFieldsData = Dictionary<any> & { externalData: Dictionary<any> };
 type IPythonHttpFieldsMetaData = IPythonHttpFieldsResponse & {
   identifier: string;

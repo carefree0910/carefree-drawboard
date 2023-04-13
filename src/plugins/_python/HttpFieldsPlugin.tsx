@@ -57,7 +57,7 @@ const PythonHttpFieldsPlugin = ({ pluginInfo, ...props }: IPythonHttpFieldsPlugi
     return { ...others, ...externalData };
   }
   async function onUseHttpPythonSuccess({
-    data: { type, value },
+    data: { type, value, _duration },
   }: IPythonHttpResponse<IPythonHttpFieldsResponse>) {
     importMeta({
       t,
@@ -65,9 +65,10 @@ const PythonHttpFieldsPlugin = ({ pluginInfo, ...props }: IPythonHttpFieldsPlugi
       type: "python.httpFields",
       metaData: {
         type,
-        value,
         identifier: pureIdentifier,
+        value,
         data,
+        duration: _duration,
         from: currentMeta,
       } as any,
     });
