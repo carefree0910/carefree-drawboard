@@ -8,7 +8,7 @@ from cfdraw import constants
 @dataclass
 class Config:
     # app
-    entry: str = "app"
+    entry: str = constants.DEFAULT_ENTRY
     # frontend
     frontend_port: str = constants.FRONTEND_PORT
     # api
