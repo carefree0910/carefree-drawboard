@@ -5,6 +5,7 @@ from pathlib import Path
 
 # global
 DEFAULT_CONFIG_MODULE = "cfconfig"
+DEFAULT_CONFIG_ENTRY = "config"
 DEFAULT_MODULE = "app"
 DEFAULT_ENTRY = "app"
 API_VAR = "api"
