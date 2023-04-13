@@ -14,7 +14,10 @@ class HttpHelloQAPlugin(IHttpPlugin):
             nodeConstraint=NodeConstraints.NONE,
             src="https://ailab-huawei-cdn.nolibox.com/upload/images/de36770b26144a2c9c25f229e98167c8.png",
             pivot=PivotType.CENTER,
-            pluginInfo=IHttpQAPluginInfo(initialText="Hello, world!"),
+            pluginInfo=IHttpQAPluginInfo(
+                initialText="Hello, world!",
+                closeOnSubmit=False,
+            ),
         )
 
     def process(self, data: IHttpPluginRequest) -> str:
