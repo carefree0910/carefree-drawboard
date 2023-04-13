@@ -4,7 +4,7 @@ from enum import Enum
 from pathlib import Path
 
 # global
-CONFIG_MODULE = "cfconfig"
+DEFAULT_CONFIG_MODULE = "cfconfig"
 DEFAULT_MODULE = "app"
 API_VAR = "api"
 

@@ -43,6 +43,6 @@ class Config:
 
 def get_config() -> Config:
     try:
-        return import_module(constants.CONFIG_MODULE).config
+        return import_module(constants.DEFAULT_CONFIG_MODULE).config
     except ImportError:
         return Config()
