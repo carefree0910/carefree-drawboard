@@ -3,11 +3,10 @@ from importlib import import_module
 from dataclasses import dataclass
 
 from cfdraw import constants
-from cfdraw.schema import IConfig
 
 
 @dataclass
-class Config(IConfig):
+class Config:
     # app
     entry: str = "app"
     # frontend
