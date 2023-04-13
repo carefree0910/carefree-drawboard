@@ -12,7 +12,7 @@ export interface TextFieldProps extends IField<ITextField> {}
 function TextField({ field, definition }: TextFieldProps) {
   return (
     <CFInput
-      value={getMetaField(field) as string}
+      value={getMetaField(field) ?? ""}
       onChange={(event) => {
         setMetaField(field, event.target.value);
         definition.props?.onChange?.(event);
