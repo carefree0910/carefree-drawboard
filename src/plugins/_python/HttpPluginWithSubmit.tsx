@@ -40,19 +40,18 @@ const PythonHttpPluginWithSubmit = ({
     getExtraRequestData,
   });
 
+  function onClick() {
+    setSend(true);
+    if (closeOnSubmit) {
+      floatingControlEvent.emit({ id: _id, expand: false });
+    }
+  }
+
   return (
     <Render id={_id} {...props}>
       {children}
       <CFDivider />
-      <CFButton
-        onClick={() => {
-          setSend(true);
-          if (closeOnSubmit) {
-            floatingControlEvent.emit({ id: _id, expand: false });
-          }
-        }}>
-        {buttonText}
-      </CFButton>
+      <CFButton onClick={onClick}>{buttonText}</CFButton>
     </Render>
   );
 };
