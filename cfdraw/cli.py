@@ -30,7 +30,7 @@ def run(
     backend_port = config.backend_port
     # fetch module
     if module is None:
-        module = config.default_module
+        module = constants.DEFAULT_MODULE
     if module.endswith(".py"):
         module = module[:-3]
     path_prefix = f".{os.path.sep}"

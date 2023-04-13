@@ -40,10 +40,6 @@ class Config:
         folder.mkdir(parents=True, exist_ok=True)
         return folder
 
-    @property
-    def default_module(self) -> str:
-        return "app"
-
 
 def get_config() -> Config:
     try:
