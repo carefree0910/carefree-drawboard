@@ -52,7 +52,7 @@ export const toastLangRecords: Record<Lang, Record<Toast_Words, string>> = {
     [Toast_Words["upload-image-success-message"]]: "Image uploaded successfully! 🥳",
     [Toast_Words["upload-image-error-message"]]: "Upload image failed 😫",
     [Toast_Words["strange-image-error-message"]]: "Only jpg/png images are supported 😫",
-    [Toast_Words["generate-image-success-message"]]: "Image generate successfully! 🥳",
+    [Toast_Words["generate-image-success-message"]]: "Image generated successfully! 🥳",
     [Toast_Words["generate-image-error-message"]]: "Generate image failed 😫",
     [Toast_Words["post-python-http-fields-plugin-error-message"]]:
       "Request Python service failed 😫",
