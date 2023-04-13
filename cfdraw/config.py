@@ -8,6 +8,8 @@ from cfdraw.schema import IConfig
 
 @dataclass
 class Config(IConfig):
+    # app
+    entry: str = "app"
     # frontend
     frontend_port: str = constants.FRONTEND_PORT
     # api

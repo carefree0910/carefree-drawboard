@@ -1,18 +1,8 @@
-import os
-import sys
 import shutil
 import subprocess
 
-from types import ModuleType
-from importlib import import_module
-
 from cfdraw import constants
 from cfdraw.utils import console
-
-
-def get_app_module(module: str) -> ModuleType:
-    sys.path.insert(0, os.getcwd())
-    return import_module(module)
 
 
 def get_yarn() -> str:

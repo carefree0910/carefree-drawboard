@@ -7,6 +7,7 @@ from cftool.misc import print_info
 from cfdraw import constants
 from cfdraw.utils import console
 from cfdraw.utils import prerequisites
+from cfdraw.config import get_config
 
 
 def run_frontend(port: int) -> None:
@@ -24,13 +25,13 @@ def run_frontend(port: int) -> None:
 
 
 def run_backend(
-    app_name: str,
+    module: str,
     port: int,
     log_level: constants.LogLevel = constants.LogLevel.DEBUG,
 ) -> None:
     console.rule("[bold green]Launching Backend")
     uvicorn.run(
-        f"{app_name}:{constants.APP_VAR}.{constants.API_VAR}",
+        f"{module}:{get_config().entry}.{constants.API_VAR}",
         host=constants.DEV_BACKEND_HOST,
         port=port,
         log_level=log_level,
