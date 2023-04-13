@@ -4,11 +4,7 @@ from cftool.constants import TIME_FORMAT
 from cfdraw import *
 
 
-class HttpTimerPlugin(IHttpPlugin):
-    @property
-    def type(self) -> PluginType:
-        return PluginType.HTTP_TEXT_AREA
-
+class HttpTimerPlugin(IHttpTextAreaPlugin):
     @property
     def settings(self) -> IPluginSettings:
         return IPluginSettings(

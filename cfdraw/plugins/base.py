@@ -36,7 +36,31 @@ class ISocketPlugin(Generic[TSocketResponse], IPlugin, metaclass=ABCMeta):
         pass
 
 
+# bindings
+
+
+class IHttpTextAreaPlugin(IHttpPlugin):
+    @property
+    def type(self) -> PluginType:
+        return PluginType.HTTP_TEXT_AREA
+
+
+class IHttpQAPlugin(IHttpPlugin):
+    @property
+    def type(self) -> PluginType:
+        return PluginType.HTTP_QA
+
+
+class IHttpFieldsPlugin(IHttpPlugin):
+    @property
+    def type(self) -> PluginType:
+        return PluginType.HTTP_FIELDS
+
+
 __all__ = [
     "IHttpPlugin",
     "ISocketPlugin",
+    "IHttpTextAreaPlugin",
+    "IHttpQAPlugin",
+    "IHttpFieldsPlugin",
 ]

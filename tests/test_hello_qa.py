@@ -1,11 +1,7 @@
 from cfdraw import *
 
 
-class HttpHelloQAPlugin(IHttpPlugin):
-    @property
-    def type(self) -> PluginType:
-        return PluginType.HTTP_QA
-
+class HttpHelloQAPlugin(IHttpQAPlugin):
     @property
     def settings(self) -> IPluginSettings:
         return IPluginSettings(

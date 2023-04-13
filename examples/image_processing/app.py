@@ -4,11 +4,7 @@ from PIL import ImageFilter
 from cfdraw import *
 
 
-class HttpGrayScalePlugin(IHttpPlugin):
-    @property
-    def type(self) -> PluginType:
-        return PluginType.HTTP_FIELDS
-
+class HttpGrayScalePlugin(IHttpFieldsPlugin):
     @property
     def settings(self) -> IPluginSettings:
         return IPluginSettings(
@@ -27,11 +23,7 @@ class HttpGrayScalePlugin(IHttpPlugin):
         return self.load_image(data.nodeData.src).convert("L")
 
 
-class HttpEdgePlugin(IHttpPlugin):
-    @property
-    def type(self) -> PluginType:
-        return PluginType.HTTP_FIELDS
-
+class HttpEdgePlugin(IHttpFieldsPlugin):
     @property
     def settings(self) -> IPluginSettings:
         return IPluginSettings(
@@ -53,11 +45,7 @@ class HttpEdgePlugin(IHttpPlugin):
         )
 
 
-class HttpGaussianBlurPlugin(IHttpPlugin):
-    @property
-    def type(self) -> PluginType:
-        return PluginType.HTTP_FIELDS
-
+class HttpGaussianBlurPlugin(IHttpFieldsPlugin):
     @property
     def settings(self) -> IPluginSettings:
         return IPluginSettings(

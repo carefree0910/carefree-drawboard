@@ -1,11 +1,7 @@
 from cfdraw import *
 
 
-class HttpShowUrlPlugin(IHttpPlugin):
-    @property
-    def type(self) -> PluginType:
-        return PluginType.HTTP_TEXT_AREA
-
+class HttpShowUrlPlugin(IHttpTextAreaPlugin):
     @property
     def settings(self) -> IPluginSettings:
         return IPluginSettings(
