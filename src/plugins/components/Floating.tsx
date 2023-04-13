@@ -157,18 +157,20 @@ const Floating = forwardRef(function (
     () => (useModal ? `${panelBg}${modalOpacityHex}` : commonProps.bg),
     [useModal],
   );
-  useLayoutEffect(
-    () => floatingRenderEvent.emit({ id, expand, needRender, noExpand }),
-    [id, expand, needRender, noExpand],
-  );
   useLayoutEffect(() => {
-    const { dispose } = floatingRenderEvent.on(({ id: incomingId, expand: incomingExpand }) => {
-      if (id !== incomingId && incomingExpand && expand) {
-        setExpand(false);
-      }
-    });
-    return dispose;
-  }, [id, expand]);
+    const { dispose: disposeRender } = floatingRenderEvent.on(
+      ({ id: incomingId, expand: incomingExpand }) => {
+        if (id !== incomingId && incomingExpand && expand) {
+          setExpand(false);
+        }
+      },
+    );
+    floatingRenderEvent.emit({ id, expand, needRender, noExpand });
+
+    return () => {
+      disposeRender();
+    };
+  }, [id, expand, needRender, noExpand]);
 
   if (!needRender) return null;
 
