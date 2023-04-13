@@ -77,6 +77,11 @@ const PythonHttpFieldsPlugin = ({ pluginInfo, ...props }: IPythonHttpFieldsPlugi
       <Flex p="12px" gap="12px" flexWrap="wrap" alignItems="center" justifyContent="space-around">
         {useFieldsWith(definitions, pluginInfo.numColumns)}
       </Flex>
+      {Object.keys(definitions).length > 0 && (
+        <Flex p="12px" gap="12px" flexWrap="wrap" alignItems="center" justifyContent="space-around">
+          {useFieldsWith(definitions, pluginInfo.numColumns)}
+        </Flex>
+      )}
     </PythonHttpPluginWithSubmit>
   );
 };
