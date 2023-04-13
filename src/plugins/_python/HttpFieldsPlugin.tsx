@@ -6,7 +6,7 @@ import { Flex, Spacer, useToast } from "@chakra-ui/react";
 import { Dictionary, getRandomHash } from "@noli/core";
 import { langStore, translate } from "@noli/business";
 
-import type { IPythonHttpFieldsResponse } from "@/types/meta";
+import type { IMeta, IPythonHttpFieldsResponse } from "@/types/meta";
 import type { IPythonHttpFieldsPlugin, IPythonHttpResponse } from "@/types/_python";
 import { UI_Words } from "@/lang/ui";
 import { stripHashFromIdentifier, titleCaseWord } from "@/utils/misc";
@@ -38,9 +38,9 @@ const PythonHttpFieldsPlugin = ({ pluginInfo, ...props }: IPythonHttpFieldsPlugi
   );
   const currentMeta = useMemo(() => {
     const node = pluginInfo.node;
-    let currentMeta;
+    let currentMeta: IMeta | undefined;
     if (node && node.type !== "group") {
-      currentMeta = node.params.meta;
+      currentMeta = node.params.meta as IMeta;
     }
     return currentMeta;
   }, [pluginInfo.node]);
@@ -51,20 +51,19 @@ const PythonHttpFieldsPlugin = ({ pluginInfo, ...props }: IPythonHttpFieldsPlugi
   const emitClose = useCallback(() => floatingControlEvent.emit({ id, expand: false }), [id]);
 
   async function onUseHttpPythonSuccess({
-    data: { type, value, _duration },
+    data: { _duration, ...response },
   }: IPythonHttpResponse<IPythonHttpFieldsResponse>) {
     importMeta({
       t,
       lang,
       type: "python.httpFields",
       metaData: {
-        type,
         identifier: pureIdentifier,
-        value,
-        data: getExtraRequestData(),
+        parameters: getExtraRequestData(),
+        response,
         duration: _duration,
         from: currentMeta,
-      } as any,
+      },
     });
   }
 

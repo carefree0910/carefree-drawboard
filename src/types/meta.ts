@@ -29,11 +29,11 @@ export type IPythonHttpFieldsResponse = { _duration?: number } & (
   | { type: "text"; value: string }
   | { type: "image"; value: { w: number; h: number; url: string }[] }
 );
-type IPythonHttpFieldsMetaData = ICommonMetaData &
-  IPythonHttpFieldsResponse & {
-    identifier: string;
-    data: Dictionary<any>;
-  };
+export type IPythonHttpFieldsMetaData = ICommonMetaData & {
+  identifier: string;
+  parameters: Dictionary<any>;
+  response: IPythonHttpFieldsResponse;
+};
 
 export interface IMetaData {
   upload: IUploadMetaData;

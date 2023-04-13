@@ -77,16 +77,16 @@ function consumePythonHttpFields({
       `${translate(Toast_Words["post-python-http-fields-plugin-error-message"], lang)} (${err})`,
     );
   };
-  if (metaData.type === "image") {
-    metaData.value.forEach(({ w, h, url }, i) => {
-      const newAlias = `python.httpFields.${metaData.data.identifier}.${getRandomHash()}`;
+  if (metaData.response.type === "image") {
+    metaData.response.value.forEach(({ w, h, url }, i) => {
+      const newAlias = `python.httpFields.${metaData.identifier}.${getRandomHash()}`;
       const bboxInfo: NewImageInfo = { w, h };
       const success = async () => {
         toast(t, "success", translate(Toast_Words["generate-image-success-message"], lang));
         updateTimestamps(newAlias);
       };
       const iMetaData = shallowCopy(metaData);
-      iMetaData.value = metaData.value[i] as any;
+      iMetaData.response.value = metaData.response.value[i] as any;
       iMetaData.timestamp = Date.now();
       addNewImage(newAlias, url, {
         info: bboxInfo,
