@@ -1,6 +1,8 @@
 # Image Processing
 
-This example implements three common image processing plugins with `cfdraw`:
+![Image Processing](../assets/image-processing.png)
+
+This example implements three common image processing plugins with `carefree-drawboard` 🎨:
 1. Any (colourful) image -> Gray scale image.
 2. Extract edges of an image.
 3. Apply gaussian blur to an image.
