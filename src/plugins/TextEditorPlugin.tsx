@@ -13,7 +13,7 @@ import { CFHeading } from "@/components/CFHeading";
 import { CFDivider } from "@/components/CFDivider";
 import { NodeEditor_Words } from "@/lang/nodeEditor";
 
-const EditTextPlugin = ({ pluginInfo: { node }, ...props }: IPlugin) => {
+const TextEditorPlugin = ({ pluginInfo: { node }, ...props }: IPlugin) => {
   const lang = langStore.tgt;
   const { nodeContent, nodeFontSize } = useMemo<{
     nodeContent?: string;
@@ -63,4 +63,4 @@ const EditTextPlugin = ({ pluginInfo: { node }, ...props }: IPlugin) => {
     </Render>
   );
 };
-drawboardPluginFactory.register("textEditor")(observer(EditTextPlugin));
+drawboardPluginFactory.register("textEditor")(observer(TextEditorPlugin));
