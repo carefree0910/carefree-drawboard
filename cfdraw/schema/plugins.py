@@ -288,6 +288,14 @@ class IHttpFieldsPluginInfo(IPluginInfo):
         None,
         description="Whether close the expanded panel when the submit button is clicked",
     )
+    toastOnSubmit: Optional[bool] = Field(
+        None,
+        description="Whether trigger a toast message when the submit button is clicked",
+    )
+    submitToastMessage: Optional[str] = Field(
+        None,
+        description="The message of the toast, only take effect when `toastOnSubmit` is `True`",
+    )
 
 
 __all__ = [

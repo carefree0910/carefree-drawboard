@@ -45,6 +45,8 @@ export interface IPythonPlugin extends IPlugin {
 }
 interface IPythonHttpPluginWithSubmitPluginInfo {
   closeOnSubmit?: boolean;
+  toastOnSubmit?: boolean;
+  submitToastMessage?: string;
 }
 export interface IPythonHttpPluginWithSubmit<R>
   extends IPythonPlugin,
