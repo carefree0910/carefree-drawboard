@@ -26,18 +26,24 @@ const AddPlugin = ({ pluginInfo, ...props }: IPlugin) => {
 
   const closePanel = () => floatingControlEvent.emit({ id, expand: false });
   const onNewProject = () => {
-    saveProject(t, lang, async () => {
-      loadLocalProject(
-        t,
-        lang,
-        { graphInfo: [], globalTransform: identityMatrix2DFields, ...getNewProject() },
-        async () => {
-          floatingEvent.emit({ type: "newProject", data: {} });
-          toast(t, "success", translate(Toast_Words["add-project-success-message"], lang));
-          closePanel();
-        },
-      );
-    });
+    toast(t, "info", translate(Toast_Words["adding-project-message"], lang));
+    saveProject(
+      t,
+      lang,
+      async () =>
+        loadLocalProject(
+          t,
+          lang,
+          { graphInfo: [], globalTransform: identityMatrix2DFields, ...getNewProject() },
+          async () => {
+            floatingEvent.emit({ type: "newProject", data: {} });
+            toast(t, "success", translate(Toast_Words["add-project-success-message"], lang));
+            closePanel();
+          },
+          true,
+        ),
+      true,
+    );
   };
 
   return (

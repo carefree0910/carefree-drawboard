@@ -18,11 +18,14 @@ export async function saveProject(
   t: ReturnType<typeof useToast>,
   lang: Lang,
   onSuccess: () => Promise<void>,
+  noToast?: boolean,
 ): Promise<void> {
   const data = useCurrentProject();
   const graphInfo = BoardStore.graph.toJsonInfo();
   const globalTransform = useGlobalTransform().globalTransform.fields;
-  toast(t, "info", translate(Toast_Words["uploading-project-message"], lang));
+  if (!noToast) {
+    toast(t, "info", translate(Toast_Words["uploading-project-message"], lang));
+  }
 
   return safeCall(
     async () => {
@@ -88,8 +91,11 @@ export function loadLocalProject(
   lang: Lang,
   res: ILoadedProject,
   onSuccess: (res: ILoadedProject) => Promise<void>,
+  noToast?: boolean,
 ): void {
-  toast(t, "info", translate(Toast_Words["loading-project-message"], lang));
+  if (!noToast) {
+    toast(t, "info", translate(Toast_Words["loading-project-message"], lang));
+  }
   replaceProjectWith(res, onSuccess);
 }
 
