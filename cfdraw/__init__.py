@@ -2,6 +2,7 @@ from cfdraw.app import App
 from cfdraw.schema import *
 from cfdraw.parsers import *
 from cfdraw.plugins import *
+from cfdraw.utils.cache import cache_resource
 
 register_plugin = PluginFactory.register
 available_plugins = PluginFactory.available
