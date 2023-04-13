@@ -62,7 +62,7 @@ class HttpGaussianBlurPlugin(IHttpPlugin):
     def settings(self) -> IPluginSettings:
         return IPluginSettings(
             w=300,
-            h=140,
+            h=180,
             nodeConstraint=NodeConstraints.IMAGE,
             src="https://ailab-huawei-cdn.nolibox.com/upload/images/c60613dcaf514975a211a75535a5b81b.png",
             pivot=PivotType.RT,
