@@ -6,6 +6,7 @@ import type { IImportMeta } from "@/schema/meta";
 import { toast } from "@/utils/toast";
 import { Toast_Words } from "@/lang/toast";
 import { themeStore } from "@/stores/theme";
+import { updateMeta } from "./update";
 import { addNewImage, NewImageInfo } from "./addImage";
 
 // consumers
@@ -18,6 +19,7 @@ function updateTimestamps(alias: string, createTime?: number): void {
   if (createTime) {
     node.params.meta.data.duration = now - createTime;
   }
+  updateMeta(alias, node.params.meta);
 }
 
 const consumers: Record<MetaType, (input: IImportMeta<any>) => void> = {
