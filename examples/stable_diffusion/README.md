@@ -39,18 +39,18 @@ cfdraw run --module {name}
 
 > See [Plugin Positioning](https://github.com/carefree0910/carefree-drawboard/wiki/Plugin-Positioning) for more details.
 
-2. We utilized `register_all_available_plugins` to register all internal plugins.
+3. We utilized `register_all_available_plugins` to register all internal plugins.
 
 > Currently there is only one internal plugin: `MetaPlugin`, which can show you the `meta` information of a Node.
 
-3. If you run image processing consecutively (e.g. first `txt2img` then `img2img`), you will find a `from` field in the `meta` data. This can be used to track the process history of every Node.
+4. If you run image processing consecutively (e.g. first `txt2img` then `img2img`), you will find a `from` field in the `meta` data. This can be used to track the process history of every Node.
 
-4. We specified `useModal=True` for these plugins, so they will always popup as a modal.
+5. We specified `useModal=True` for these plugins, so they will always popup as a modal.
 
-5. We specified lots of `definitions`, in order to align with the parameters exposed by the `diffusers` library.
+6. We specified lots of `definitions`, in order to align with the parameters exposed by the `diffusers` library.
 
 > See [`IFieldDefinition`](https://github.com/carefree0910/carefree-drawboard/wiki/PythonHttpFieldsPlugin#ifielddefinition) for more details.
 
-6. We specified `upload_root` to `./`, so the images/projects will be saved to the cwd (current working directory).
+7. We specified `upload_root` to `./`, so the images/projects will be saved to the cwd (current working directory).
 
 > Default `upload_root` is `~/.cache/carefree-draw`.
