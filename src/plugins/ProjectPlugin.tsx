@@ -143,7 +143,7 @@ const ProjectPlugin = ({ pluginInfo, ...props }: IPlugin) => {
           {translate(Projects_Words["download-project"], lang)}
         </CFButton>
         <Upload
-          accept=".noli"
+          accept=".cfdraw"
           customRequest={({ file }) => {
             const reader = new FileReader();
             reader.onload = () =>

@@ -13,7 +13,7 @@ export function downloadCurrentFullProject(t: IToast, lang: Lang): void {
   const fullProject = useCurrentFullProject();
   toast(t, "info", translate(Toast_Words["downloading-project-message"], lang));
   const blob = toJsonBlob(fullProject);
-  download(blob, `${fullProject.name}.noli`);
+  download(blob, `${fullProject.name}.cfdraw`);
 }
 
 export async function downloadNodes(

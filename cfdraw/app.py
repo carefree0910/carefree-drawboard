@@ -160,8 +160,8 @@ class App:
         @self.api.post("/save_project", responses=get_responses(SaveProjectResponse))
         def save_project(data: ProjectModel) -> SaveProjectResponse:
             try:
-                uid = data.uid
-                with open(self.config.upload_project_folder / f"{uid}.noli", "w") as f:
+                file = f"{data.uid}.cfdraw"
+                with open(self.config.upload_project_folder / file, "w") as f:
                     json.dump(data.dict(), f)
             except Exception as err:
                 err_msg = get_err_msg(err)
@@ -174,7 +174,8 @@ class App:
         )
         async def fetch_project(uid: str) -> ProjectModel:
             try:
-                with open(self.config.upload_project_folder / f"{uid}.noli", "r") as f:
+                file = f"{uid}.cfdraw"
+                with open(self.config.upload_project_folder / file, "r") as f:
                     d = json.load(f)
                 # replace url if needed
                 graph = noli.parse_graph(d["graphInfo"])
@@ -202,6 +203,8 @@ class App:
             try:
                 results: List[ProjectItem] = []
                 for file in self.config.upload_project_folder.iterdir():
+                    if file.suffix != ".cfdraw":
+                        continue
                     path = self.config.upload_project_folder / file
                     with open(path, "r") as f:
                         d = json.load(f)
