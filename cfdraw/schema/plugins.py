@@ -140,6 +140,10 @@ class INodeData(BaseModel):
         description="Image url of the node, will be `None` if the node is not an image node",
     )
     meta: Optional[Dict[str, Any]] = Field(None, description="Meta of the node")
+    children: Optional[List["INodeData"]] = Field(
+        None,
+        "Will be as list of `INodeData` if and only if the node is a `Group` (i.e. `type` == 'group')",
+    )
 
 
 class IHttpPluginRequest(BaseModel):

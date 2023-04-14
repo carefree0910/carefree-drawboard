@@ -31,6 +31,8 @@ export interface INodeData {
   src?: string;
   // meta
   meta?: IMeta;
+  // children, in case this is a `Group`
+  children?: INodeData[];
 }
 
 // plugin

@@ -6,7 +6,7 @@ import type { IMeta } from "@/schema/meta";
 import type { INodeData, IPythonHttpResponse, IUseHttpPython } from "@/schema/_python";
 import { Requests } from "@/requests/actions";
 
-export function getNodeData(node: INode | null): INodeData {
+function getNodeData(node: INode | null): INodeData {
   if (!node) return {};
   const { x, y } = node.position;
   const { w, h } = node.wh;
@@ -14,7 +14,8 @@ export function getNodeData(node: INode | null): INodeData {
   const text = node.type === "text" ? node.params.content : undefined;
   const src = node.type === "image" ? node.renderParams.src : undefined;
   const meta = (node.type === "group" ? undefined : node.params.meta) as IMeta | undefined;
-  return { type: node.type, x, y, w, h, transform, text, src, meta };
+  const children = node.type === "group" ? node.nodes.map(getNodeData) : undefined;
+  return { type: node.type, x, y, w, h, transform, text, src, meta, children };
 }
 
 export function useHttpPython<R>({
