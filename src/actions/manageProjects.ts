@@ -11,7 +11,12 @@ import type { IToast } from "@/schema/misc";
 import { toast } from "@/utils/toast";
 import { Toast_Words } from "@/lang/toast";
 import { Requests } from "@/requests/actions";
-import { IProjectsStore, updateCurrentProject, useCurrentProject } from "@/stores/projects";
+import {
+  IProjectsStore,
+  updateCurrentProject,
+  updateCurrentProjectUpdateTime,
+  useCurrentProject,
+} from "@/stores/projects";
 
 interface IFullProject extends IProjectsStore {
   graphInfo: INodePack[];
@@ -31,6 +36,7 @@ export async function saveProject(
   onSuccess: () => Promise<void>,
   noToast?: boolean,
 ): Promise<void> {
+  updateCurrentProjectUpdateTime();
   const fullProject = useCurrentFullProject();
   if (!noToast) {
     toast(t, "info", translate(Toast_Words["uploading-project-message"], lang));
