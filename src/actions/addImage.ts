@@ -11,11 +11,9 @@ import type { IMeta } from "@/schema/meta";
 
 export type VirtualInfo = IRectangleShapeNode | { w: number; h: number; type?: undefined };
 export type NewImageInfo = VirtualInfo | (BBox & { type?: undefined });
+export type INewRectangle = BBox | { autoFit: boolean; wh: { w: number; h: number } };
 
-export function getNewRectangle(
-  alias: string,
-  info: BBox | { autoFit: boolean; wh: { w: number; h: number } },
-): RectangleShapeNode {
+export function getNewRectangle(alias: string, info: INewRectangle): RectangleShapeNode {
   const { w, h } = info.wh;
   const node = new RectangleShapeNode(
     alias,
