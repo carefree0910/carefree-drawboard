@@ -10,7 +10,7 @@ import { DownloadFormat, allDownloadFormat } from "@/schema/misc";
 import { Download_Words } from "@/lang/download";
 import { themeStore } from "@/stores/theme";
 import { downloadNodes } from "@/actions/download";
-import CFSelect from "@/components/CFSelect";
+import CFSelect, { CFSrollableSelect } from "@/components/CFSelect";
 import { CFText } from "@/components/CFText";
 import { CFButton } from "@/components/CFButton";
 import { CFDivider } from "@/components/CFDivider";
@@ -61,7 +61,7 @@ const DownloadPlugin = ({ pluginInfo, ...props }: IPlugin) => {
           </CFText>
         </Flex>
         <CFDivider />
-        <CFSelect
+        <CFSrollableSelect
           value={format}
           options={allDownloadFormat as any}
           onOptionClick={(option) => setFormat(option as DownloadFormat)}
