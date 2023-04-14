@@ -23,7 +23,21 @@ const initLangDirs = [
 
 export function initializeLang(): void {
   langStore.updateProperty("tgt", "en");
+  const collected = new Set();
+  let anyDuplicate = false;
   for (const lang of Object.keys(langDescriptions) as Lang[]) {
-    initLangDirs.forEach((d) => updateDictionary(lang, d[lang]));
+    initLangDirs.forEach((d) => {
+      updateDictionary(lang, d[lang]);
+      Object.keys(d[lang]).forEach((k) => {
+        if (collected.has(k)) {
+          console.warn(`Key ${k} is duplicated!`);
+          anyDuplicate = true;
+        }
+        collected.add(`${lang}-${k}`);
+      });
+    });
+  }
+  if (!anyDuplicate) {
+    console.log("No duplicate lang keys found, great job!");
   }
 }
