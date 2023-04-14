@@ -18,6 +18,7 @@ const PythonHttpPluginWithSubmit = ({
   id,
   pluginInfo: {
     node,
+    nodes,
     endpoint,
     identifier,
     updateInterval,
@@ -40,6 +41,7 @@ const PythonHttpPluginWithSubmit = ({
 
   useHttpPython<{ text: string }>({
     node,
+    nodes,
     endpoint,
     identifier,
     isInvisible: props.renderInfo.isInvisible ?? false,
