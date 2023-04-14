@@ -23,15 +23,15 @@ cfdraw run --module {name}
 
 ## Details
 
-1. We used `follow=True` and `nodeConstraint=NodeConstraints.IMAGE` for all plugins, so they will and only will be displayed when the selected Node is an image.
+1. We used `follow=True` and `nodeConstraint=NodeConstraints.IMAGE` for all plugins, so they will and only will be displayed when the selected `Node` is an image.
 
 > See [Plugin Positioning](https://github.com/carefree0910/carefree-drawboard/wiki/Plugin-Positioning) for more details.
 
 2. We utilized `register_all_available_plugins` to register all internal plugins.
 
-> Currently there is only one internal plugin: `MetaPlugin`, which can show you the `meta` information of a Node.
+> Currently there is only one internal plugin: `MetaPlugin`, which can show you the `meta` information of a `Node`.
 
-3. If you run image processing consecutively, you will find a `from` field in the `meta` data. This can be used to track the process history of every Node.
+3. If you run image processing consecutively, you will find a `from` field in the `meta` data. This can be used to track the process history of every `Node`.
 4. We changed the `GrayScale` plugin's background color to `light green`, to show how we can specify the style of the plugin's expanded panel.
 5. The `GaussianBlur` plugin has a `size` parameter, which is an `int` type. We can use `cfdraw`'s `INumberField` to create a slider for it. This is a good example of how to declare custom interactive fields, here's a quick explanation of the codes:
 

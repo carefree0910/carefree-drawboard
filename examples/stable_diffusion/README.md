@@ -35,15 +35,15 @@ cfdraw run --module {name}
    * At production stage, we can call the initialization function at the very beginning to pre-load the models.
 2. We used:
    * `follow=False` and `nodeConstraint=NodeConstraints.NONE` for `txt2img` plugin, so it will always be displayed (on the right of the screen).
-   * `follow=True` and `nodeConstraint=NodeConstraints.IMAGE` for `img2img` plugin, so it will and only will be displayed when the selected Node is an image.
+   * `follow=True` and `nodeConstraint=NodeConstraints.IMAGE` for `img2img` plugin, so it will and only will be displayed when the selected `Node` is an image.
 
 > See [Plugin Positioning](https://github.com/carefree0910/carefree-drawboard/wiki/Plugin-Positioning) for more details.
 
 3. We utilized `register_all_available_plugins` to register all internal plugins.
 
-> Currently there is only one internal plugin: `MetaPlugin`, which can show you the `meta` information of a Node.
+> Currently there is only one internal plugin: `MetaPlugin`, which can show you the `meta` information of a `Node`.
 
-4. If you run image processing consecutively (e.g. first `txt2img` then `img2img`), you will find a `from` field in the `meta` data. This can be used to track the process history of every Node.
+4. If you run image processing consecutively (e.g. first `txt2img` then `img2img`), you will find a `from` field in the `meta` data. This can be used to track the process history of every `Node`.
 
 5. We specified `useModal=True` for these plugins, so they will always popup as a modal.
 
