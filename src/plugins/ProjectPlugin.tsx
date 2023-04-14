@@ -26,7 +26,7 @@ import { CFHeading } from "@/components/CFHeading";
 import { CFSrollableSelect } from "@/components/CFSelect";
 import { drawboardPluginFactory } from "./utils/factory";
 import Render from "./components/Render";
-import { floatingEvent, floatingRenderEvent } from "./components/Floating";
+import { floatingControlEvent, floatingEvent, floatingRenderEvent } from "./components/Floating";
 import { downloadCurrentFullProject } from "@/actions/download";
 
 const ProjectPlugin = ({ pluginInfo, ...props }: IPlugin) => {
@@ -72,23 +72,28 @@ const ProjectPlugin = ({ pluginInfo, ...props }: IPlugin) => {
     };
   }, [id]);
 
+  const closePanel = () => floatingControlEvent.emit({ id, expand: false });
+  function updateProjectStates(uid: string, name: string) {
+    setSelectedUid(uid);
+    setUserInputName(name);
+  }
+
   function onRenameProject() {
     setCurrentProjectName(userInputName);
     onSaveProject();
+    closePanel();
   }
   function onSaveProject() {
     saveProject(t, lang, async () => {
       toast(t, "success", translate(Toast_Words["save-project-success-message"], lang));
       updateUids();
+      closePanel();
     });
-  }
-  function updateProjectStates(uid: string, name: string) {
-    setSelectedUid(uid);
-    setUserInputName(name);
   }
   async function onLoadProjectSuccess(res: ILoadedProject) {
     updateProjectStates(res.uid, res.name);
     toast(t, "success", translate(Toast_Words["load-project-success-message"], lang));
+    closePanel();
   }
   function onLoadProject() {
     if (!selectedUid) {
@@ -99,9 +104,11 @@ const ProjectPlugin = ({ pluginInfo, ...props }: IPlugin) => {
   }
   function onDownloadProject(): void {
     downloadCurrentFullProject(t, lang);
+    closePanel();
   }
   function onLoadLocalProject(res: ILoadedProject) {
     loadLocalProject(t, lang, res, onLoadProjectSuccess);
+    closePanel();
   }
 
   return (
