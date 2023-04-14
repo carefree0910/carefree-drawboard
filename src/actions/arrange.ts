@@ -155,15 +155,13 @@ async function animateArrangement(
     await matchBBox(trace && i == numFrame - 1, fields);
   }
 }
-export async function autoArrange(
-  t: IToast,
-  lang: Lang,
+export function getArrangements(
   nodes: INode[],
   opt?: Partial<AutoArrangeOptions>,
-): Promise<void> {
+): { original: INode[]; targets: INode[] } {
   const defaultPrefix = "__";
 
-  const { padding, numFrame, trace, schedule, fitContainer } = getDefaultArrangeOptions(opt);
+  const { padding, fitContainer } = getDefaultArrangeOptions(opt);
   const original = nodes.map((node) => node.snapshot());
   const targets = original.map((node) => node.snapshot());
   // group & sort
@@ -264,6 +262,17 @@ export async function autoArrange(
     new INodes(targets),
     { forceGroup: true },
   );
+
+  return { original, targets };
+}
+export async function autoArrange(
+  t: IToast,
+  lang: Lang,
+  nodes: INode[],
+  opt?: Partial<AutoArrangeOptions>,
+): Promise<void> {
+  const { original, targets } = getArrangements(nodes, opt);
+  const { numFrame, trace, schedule } = getDefaultArrangeOptions(opt);
   animateArrangement(t, lang, original, targets, numFrame, trace, schedule);
 }
 export function onArrange(
