@@ -1,8 +1,10 @@
 import { ReactNode } from "react";
-import { useToast, UseToastOptions } from "@chakra-ui/toast";
+import { UseToastOptions } from "@chakra-ui/toast";
+
+import type { IToast } from "@/schema/misc";
 
 export function toast(
-  toastFn: ReturnType<typeof useToast>,
+  toastFn: IToast,
   status: UseToastOptions["status"],
   message: ReactNode,
   duration?: number | null,

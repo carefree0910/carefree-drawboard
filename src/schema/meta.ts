@@ -1,6 +1,6 @@
-import type { useToast } from "@chakra-ui/react";
-
 import type { Dictionary, Lang } from "@noli/core";
+
+import type { IToast } from "./misc";
 
 // general
 
@@ -42,7 +42,7 @@ export interface IMetaData {
 }
 
 export interface IImportMeta<T extends MetaType> {
-  t: ReturnType<typeof useToast>;
+  t: IToast;
   lang: Lang;
   type: T;
   metaData: IMetaData[T];

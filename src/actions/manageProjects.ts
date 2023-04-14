@@ -1,5 +1,3 @@
-import { useToast } from "@chakra-ui/toast";
-
 import { INodePack, Lang, Matrix2D, Matrix2DFields, safeCall } from "@noli/core";
 import {
   BoardStore,
@@ -9,6 +7,7 @@ import {
   useSafeExecute,
 } from "@noli/business";
 
+import type { IToast } from "@/schema/misc";
 import { toast } from "@/utils/toast";
 import { Toast_Words } from "@/lang/toast";
 import { Requests } from "@/requests/actions";
@@ -27,7 +26,7 @@ export function useCurrentFullProject(): IFullProject {
 }
 
 export async function saveProject(
-  t: ReturnType<typeof useToast>,
+  t: IToast,
   lang: Lang,
   onSuccess: () => Promise<void>,
   noToast?: boolean,
@@ -78,7 +77,7 @@ function replaceProjectWith(
   })({ json: JSON.stringify(res.graphInfo), apiInfos: {}, noFit: true });
 }
 export async function loadProject(
-  t: ReturnType<typeof useToast>,
+  t: IToast,
   lang: Lang,
   uid: string,
   onSuccess: (res: ILoadedProject) => Promise<void>,
@@ -97,7 +96,7 @@ export async function loadProject(
   );
 }
 export function loadLocalProject(
-  t: ReturnType<typeof useToast>,
+  t: IToast,
   lang: Lang,
   res: ILoadedProject,
   onSuccess: (res: ILoadedProject) => Promise<void>,

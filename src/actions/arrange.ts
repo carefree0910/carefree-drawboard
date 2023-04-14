@@ -1,5 +1,3 @@
-import { useToast } from "@chakra-ui/react";
-
 import {
   AABB,
   argMin,
@@ -19,6 +17,7 @@ import {
 } from "@noli/core";
 import { BoardStore, translate } from "@noli/business";
 
+import type { IToast } from "@/schema/misc";
 import { checkMeta, getOriginMeta, IMeta } from "@/schema/meta";
 import { toast } from "@/utils/toast";
 import { Toast_Words } from "@/lang/toast";
@@ -115,7 +114,7 @@ function arrangeWith(packs: ArrangePack[], commonW: number, padding: number): vo
   });
 }
 async function animateArrangement(
-  t: ReturnType<typeof useToast>,
+  t: IToast,
   lang: Lang,
   original: INode[],
   targets: INode[],
@@ -157,7 +156,7 @@ async function animateArrangement(
   }
 }
 export async function autoArrange(
-  t: ReturnType<typeof useToast>,
+  t: IToast,
   lang: Lang,
   nodes: INode[],
   opt?: Partial<AutoArrangeOptions>,
@@ -268,7 +267,7 @@ export async function autoArrange(
   animateArrangement(t, lang, original, targets, numFrame, trace, schedule);
 }
 export function onArrange(
-  t: ReturnType<typeof useToast>,
+  t: IToast,
   lang: Lang,
   { type, nodes }: { type: "none" | "multiple"; nodes: INodeType[] },
 ): void {

@@ -1,8 +1,7 @@
-import { useToast } from "@chakra-ui/toast";
-
 import { Lang, safeCall } from "@noli/core";
 import { translate } from "@noli/business";
 
+import type { IToast } from "@/schema/misc";
 import { toast } from "@/utils/toast";
 import { Toast_Words } from "@/lang/toast";
 import { Requests } from "@/requests/actions";
@@ -18,7 +17,7 @@ interface IUploadImageResponseData {
 }
 
 export async function uploadImage(
-  t: ReturnType<typeof useToast>,
+  t: IToast,
   lang: Lang,
   blob: Blob,
   { failed }: UploadImageOptions,
