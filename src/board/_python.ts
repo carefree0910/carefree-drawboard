@@ -1,4 +1,4 @@
-import type { AvailablePythonPlugins, IMakePlugin } from "@/types/plugins";
+import type { AvailablePythonPlugins, IMakePlugin } from "@/schema/plugins";
 
 export default function getPythonPluginSettings(): IMakePlugin<AvailablePythonPlugins>[] {
   return [
