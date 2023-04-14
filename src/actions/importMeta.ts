@@ -1,4 +1,4 @@
-import { getRandomHash, shallowCopy } from "@noli/core";
+import { Dictionary, RectangleShapeNode, getRandomHash, shallowCopy } from "@noli/core";
 import { BoardStore, translate, useAddNode } from "@noli/business";
 
 import type { IMetaData, MetaType } from "@/schema/meta";
@@ -7,7 +7,8 @@ import { toast } from "@/utils/toast";
 import { Toast_Words } from "@/lang/toast";
 import { themeStore } from "@/stores/theme";
 import { updateMeta } from "./update";
-import { addNewImage, NewImageInfo } from "./addImage";
+import { addNewImage, getNewRectangle, NewImageInfo } from "./addImage";
+import { getArrangements } from "./arrange";
 
 // consumers
 
@@ -72,6 +73,9 @@ function consumePythonHttpFields({
   type,
   metaData,
 }: IImportMeta<"python.httpFields">): void {
+  const success = async () => {
+    toast(t, "success", translate(Toast_Words["generate-image-success-message"], lang));
+  };
   const failed = async (err: any) => {
     toast(
       t,
@@ -80,21 +84,28 @@ function consumePythonHttpFields({
     );
   };
   if (metaData.response.type === "image") {
+    const packs: {
+      url: string;
+      alias: string;
+      rectangle: RectangleShapeNode;
+      metaData: Dictionary<any>;
+    }[] = [];
     metaData.response.value.forEach(({ w, h, url }, i) => {
       const newAlias = `python.httpFields.${metaData.identifier}.${getRandomHash()}`;
-      const bboxInfo: NewImageInfo = { w, h };
-      const success = async () => {
-        toast(t, "success", translate(Toast_Words["generate-image-success-message"], lang));
-        updateTimestamps(newAlias);
-      };
+      const rectangle = getNewRectangle(`${i}.${getRandomHash()}`, { autoFit: true, wh: { w, h } });
       const iMetaData = shallowCopy(metaData);
       iMetaData.response.value = metaData.response.value[i] as any;
       iMetaData.timestamp = Date.now();
-      addNewImage(newAlias, url, {
-        info: bboxInfo,
-        meta: { type, data: iMetaData } as any,
-        callbacks: { success, failed },
-        noSelect: i !== 0,
+      packs.push({ url, alias: newAlias, rectangle, metaData: iMetaData });
+    });
+    const targets = getArrangements(packs.map(({ rectangle }) => rectangle)).targets;
+    packs.forEach(({ url, alias, metaData }, i) => {
+      const isLast = i === packs.length - 1;
+      addNewImage(alias, url, {
+        info: targets[i].bbox,
+        meta: { type, data: metaData },
+        callbacks: { success: isLast ? success : async () => void 0, failed },
+        noSelect: !isLast,
       });
     });
   }
