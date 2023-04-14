@@ -17,6 +17,7 @@ export enum Toast_Words {
   "loading-project-message" = "loading-project-message",
   "load-project-success-message" = "load-project-success-message",
   "please-select-project-message" = "please-select-project-message",
+  "downloading-project-message" = "downloading-project-message",
   "add-text-success-message" = "add-text-success-message",
   "add-text-error-message" = "add-text-error-message",
   "auto-arrange-no-need-message" = "auto-arrange-no-need-message",
@@ -45,6 +46,7 @@ export const toastLangRecords: Record<Lang, Record<Toast_Words, string>> = {
     [Toast_Words["add-text-error-message"]]: "添加文字时出了些问题 😫",
     [Toast_Words["auto-arrange-no-need-message"]]: "当前节点无需整理 😉",
     [Toast_Words["submit-task-success-message"]]: "任务提交成功！😄",
+    [Toast_Words["downloading-project-message"]]: "下载项目中",
   },
   en: {
     [Toast_Words["dropping-message"]]: "Detecting 🤔",
@@ -68,5 +70,6 @@ export const toastLangRecords: Record<Lang, Record<Toast_Words, string>> = {
     [Toast_Words["add-text-error-message"]]: "Something is wrong when adding Text Node 😫",
     [Toast_Words["auto-arrange-no-need-message"]]: "There is no need to arrange the Nodes 😉",
     [Toast_Words["submit-task-success-message"]]: "Task submitted successfully! 😄",
+    [Toast_Words["downloading-project-message"]]: "Downloading",
   },
 };

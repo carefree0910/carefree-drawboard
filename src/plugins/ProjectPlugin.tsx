@@ -3,7 +3,7 @@ import { observer } from "mobx-react-lite";
 import { useMemo, useState, useEffect, useCallback } from "react";
 import { Flex, useToast } from "@chakra-ui/react";
 
-import { Dictionary, getRandomHash } from "@noli/core";
+import { Dictionary, download, getRandomHash, toJsonBlob } from "@noli/core";
 import { langStore, translate } from "@noli/business";
 
 import type { IPlugin } from "@/schema/plugins";
@@ -96,6 +96,12 @@ const ProjectPlugin = ({ pluginInfo, ...props }: IPlugin) => {
     }
     loadProject(t, lang, selectedUid, onLoadProjectSuccess);
   }
+  function onDownloadProject(): void {
+    const fullProject = useCurrentProject();
+    toast(t, "info", translate(Toast_Words["downloading-project-message"], lang));
+    const blob = toJsonBlob(fullProject);
+    download(blob, `${fullProject.name}.noli`);
+  }
   function onLoadLocalProject(res: ILoadedProject) {
     loadLocalProject(t, lang, res, onLoadProjectSuccess);
   }
@@ -128,6 +134,9 @@ const ProjectPlugin = ({ pluginInfo, ...props }: IPlugin) => {
           {translate(Projects_Words["load-project"], lang)}
         </CFButton>
         <CFDivider />
+        <CFButton onClick={onDownloadProject}>
+          {translate(Projects_Words["download-project"], lang)}
+        </CFButton>
         <Upload
           accept=".noli"
           customRequest={({ file }) => {
@@ -136,7 +145,9 @@ const ProjectPlugin = ({ pluginInfo, ...props }: IPlugin) => {
               onLoadLocalProject(JSON.parse(reader.result as string) as ILoadedProject);
             reader.readAsText(file as Blob);
           }}>
-          <CFButton w="100%">{translate(Projects_Words["load-local-project"], lang)}</CFButton>
+          <CFButton w="100%" mt="12px">
+            {translate(Projects_Words["load-local-project"], lang)}
+          </CFButton>
         </Upload>
       </Flex>
     </Render>
