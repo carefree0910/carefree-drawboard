@@ -14,15 +14,25 @@ import { Toast_Words } from "@/lang/toast";
 import { Requests } from "@/requests/actions";
 import { IProjectsStore, updateCurrentProject, useCurrentProject } from "@/stores/projects";
 
+interface IFullProject extends IProjectsStore {
+  graphInfo: INodePack[];
+  globalTransform: Matrix2DFields;
+}
+
+export function useCurrentFullProject(): IFullProject {
+  const data = useCurrentProject();
+  const graphInfo = BoardStore.graph.toJsonInfo();
+  const globalTransform = useGlobalTransform().globalTransform.fields;
+  return { ...data, graphInfo, globalTransform };
+}
+
 export async function saveProject(
   t: ReturnType<typeof useToast>,
   lang: Lang,
   onSuccess: () => Promise<void>,
   noToast?: boolean,
 ): Promise<void> {
-  const data = useCurrentProject();
-  const graphInfo = BoardStore.graph.toJsonInfo();
-  const globalTransform = useGlobalTransform().globalTransform.fields;
+  const fullProject = useCurrentFullProject();
   if (!noToast) {
     toast(t, "info", translate(Toast_Words["uploading-project-message"], lang));
   }
@@ -32,7 +42,7 @@ export async function saveProject(
       const res = await Requests.postJson<{
         success: boolean;
         message: string;
-      }>("_python", "/save_project", { graphInfo, globalTransform, ...data });
+      }>("_python", "/save_project", fullProject);
       if (!res.success) {
         toast(
           t,
