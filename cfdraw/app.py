@@ -14,6 +14,7 @@ from fastapi import Response
 from fastapi import WebSocket
 from fastapi import UploadFile
 from pydantic import BaseModel
+from cftool.cv import to_rgb
 from cftool.cv import np_to_bytes
 from cftool.misc import print_info
 from cftool.misc import random_hash
@@ -122,13 +123,19 @@ class App:
             )
 
         @self.api.get(
-            f"/{constants.UPLOAD_IMAGE_FOLDER_NAME}/{{file}}",
+            f"/{constants.UPLOAD_IMAGE_FOLDER_NAME}/{{file}}/",
             **get_image_response_kwargs(),
         )
-        async def fetch_image(file: str) -> Response:
+        async def fetch_image(file: str, jpeg: bool = False) -> Response:
             try:
                 image = Image.open(self.config.upload_image_folder / file)
-                content = np_to_bytes(np.array(image))
+                if not jpeg:
+                    content = np_to_bytes(np.array(image))
+                else:
+                    with BytesIO() as f:
+                        to_rgb(image).save(f, format="JPEG", quality=95)
+                        f.seek(0)
+                        content = f.read()
                 return Response(content=content, media_type="image/png")
             except Exception as err:
                 raise_err(err)
