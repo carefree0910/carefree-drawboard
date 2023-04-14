@@ -77,11 +77,7 @@ class HttpTextToImagePlugin(IHttpFieldsPlugin):
         return get_models()[0](**data.extraData).images
 
 
-class HttpImageToImagePlugin(IHttpPlugin):
-    @property
-    def type(self) -> PluginType:
-        return PluginType.HTTP_FIELDS
-
+class HttpImageToImagePlugin(IHttpFieldsPlugin):
     @property
     def settings(self) -> IPluginSettings:
         return IPluginSettings(
