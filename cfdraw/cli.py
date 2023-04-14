@@ -41,9 +41,9 @@ def run(
         module = module[len(path_prefix) :]
     console.rule(f"[bold green]Running {module}")
     # execute
-    if processes.is_process_on_port(frontend_port):
+    if not no_frontend and processes.is_process_on_port(frontend_port):
         frontend_port = processes.change_or_terminate_port(frontend_port, "frontend")
-    if processes.is_process_on_port(backend_port):
+    if not no_backend and processes.is_process_on_port(backend_port):
         backend_port = processes.change_or_terminate_port(backend_port, "backend")
     frontend_fn, backend_fn = exec.run_frontend, exec.run_backend
     try:
