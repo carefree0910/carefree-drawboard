@@ -141,26 +141,11 @@ class INodeData(BaseModel):
     )
 
 
-class IRawHttpPluginRequest(BaseModel):
+class IHttpPluginRequest(BaseModel):
     identifier: str = Field(..., description="The identifier of the plugin")
     nodeData: INodeData = Field(..., description="Data extracted from `node`")
     nodeMeta: Dict[str, Any] = Field(..., description="Meta data of the `node`")
     extraData: Dict[str, Any] = Field(..., description="Extra data of each plugin")
-    node: Optional[Dict[str, Any]] = Field(
-        None,
-        description="JSON data of the selected node",
-    )
-
-    def parse(self) -> "IHttpPluginRequest":
-        if self.node is None:
-            return self
-        d = self.dict()
-        d["node"] = parse_node(self.node)
-        return IHttpPluginRequest(**d)
-
-
-class IHttpPluginRequest(IRawHttpPluginRequest):
-    node: Optional[INode] = Field(None, description="The parsed selected node")
 
 
 class IHttpPluginResponse(BaseModel):
@@ -306,7 +291,6 @@ __all__ = [
     "TextAlign",
     # plugins
     "IPluginSettings",
-    "IRawHttpPluginRequest",
     "IHttpPluginRequest",
     "IHttpPluginResponse",
     "ISocketPluginMessage",

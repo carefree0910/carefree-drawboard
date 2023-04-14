@@ -62,7 +62,6 @@ export function useHttpPython<R>({
           nodeData: getNodeData(node),
           nodeMeta: !node || node.type === "group" ? {} : node.params.meta ?? {},
           extraData: getExtraRequestData ? getExtraRequestData() : {},
-          node: node?.toJsonPack(),
         }).then((res) => {
           if (res.success) onUseHttpPythonSuccess(res);
           else throw Error(res.message);

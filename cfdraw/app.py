@@ -31,8 +31,8 @@ from cfdraw.utils.server import get_err_msg
 from cfdraw.utils.server import get_responses
 from cfdraw.utils.server import get_image_response_kwargs
 from cfdraw.schema.plugins import IPlugin
+from cfdraw.schema.plugins import IHttpPluginRequest
 from cfdraw.schema.plugins import IHttpPluginResponse
-from cfdraw.schema.plugins import IRawHttpPluginRequest
 from cfdraw.plugins.base import IHttpPlugin
 from cfdraw.plugins.base import ISocketPlugin
 from cfdraw.plugins.factory import PluginFactory
@@ -227,7 +227,7 @@ class App:
                     name=endpoint[1:].replace("/", "_"),
                     responses=get_responses(IHttpPluginResponse),
                 )
-                def fn(data: IRawHttpPluginRequest) -> Any:
+                def fn(data: IHttpPluginRequest) -> Any:
                     if self.hash_identifier(_id) != data.identifier:
                         return IHttpPluginResponse(
                             success=False,

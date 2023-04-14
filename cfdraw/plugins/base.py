@@ -20,11 +20,11 @@ class IHttpPlugin(IPlugin, metaclass=ABCMeta):
     def middlewares(self) -> List[IMiddleWare]:
         return [TextAreaMiddleWare(), FieldsMiddleWare(), TimerMiddleWare()]
 
-    def __call__(self, data: IRawHttpPluginRequest) -> IHttpPluginResponse:
+    def __call__(self, data: IHttpPluginRequest) -> IHttpPluginResponse:
         middlewares = self.middlewares
         for middleware in middlewares:
             middleware.before(data)
-        response = self.process(data.parse())
+        response = self.process(data)
         for middleware in middlewares:
             response = middleware(self, response)
         return response
