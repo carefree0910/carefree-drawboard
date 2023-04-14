@@ -148,7 +148,20 @@ class INodeData(BaseModel):
 
 class IHttpPluginRequest(BaseModel):
     identifier: str = Field(..., description="The identifier of the plugin")
-    nodeData: INodeData = Field(..., description="Data extracted from `node`")
+    nodeData: INodeData = Field(
+        ...,
+        description="""
+Data extracted from `node`.
+> If multiple nodes are selected, this field will be empty and please use `nodeDataList` instead.
+""",
+    )
+    nodeDataList: List[INodeData] = Field(
+        ...,
+        description="""
+List of data extracted from `nodes`.
+> If only one node is selected, this field will be empty and please use `nodeData` instead.
+""",
+    )
     extraData: Dict[str, Any] = Field(..., description="Extra data of each plugin")
 
 

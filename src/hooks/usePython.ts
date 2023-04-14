@@ -40,6 +40,7 @@ export function useHttpPython<R>({
         Requests.postJson<IPythonHttpResponse<R>>("_python", endpoint, {
           identifier,
           nodeData: getNodeData(node),
+          nodeDataList: nodes.length <= 1 ? [] : nodes.map(getNodeData),
           extraData: getExtraRequestData ? getExtraRequestData() : {},
         }).then((res) => {
           if (res.success) onUseHttpPythonSuccess(res);
