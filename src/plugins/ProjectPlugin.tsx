@@ -3,8 +3,8 @@ import { observer } from "mobx-react-lite";
 import { useMemo, useState, useEffect, useCallback } from "react";
 import { Flex, useToast } from "@chakra-ui/react";
 
-import { Dictionary, getRandomHash } from "@noli/core";
-import { langStore, translate } from "@noli/business";
+import { Dictionary, Graph, INodePack, getRandomHash } from "@noli/core";
+import { langStore, translate, useSafeExecute } from "@noli/business";
 
 import type { IPlugin } from "@/schema/plugins";
 import { toast } from "@/utils/toast";
@@ -29,6 +29,7 @@ import Render from "./components/Render";
 import { floatingControlEvent, floatingEvent, floatingRenderEvent } from "./components/Floating";
 import { downloadCurrentFullProject } from "@/actions/download";
 
+type IImportLocal = ILoadedProject | INodePack[];
 const ProjectPlugin = ({ pluginInfo, ...props }: IPlugin) => {
   const t = useToast();
   const id = `project_${getRandomHash()}`;
@@ -106,9 +107,22 @@ const ProjectPlugin = ({ pluginInfo, ...props }: IPlugin) => {
     downloadCurrentFullProject(t, lang);
     closePanel();
   }
-  function onLoadLocalProject(res: ILoadedProject) {
-    loadLocalProject(t, lang, res, onLoadProjectSuccess);
-    closePanel();
+  function onImportLocalProject(res: IImportLocal) {
+    toast(t, "info", translate(Toast_Words["importing-local-project-message"], lang));
+    if ((res as ILoadedProject).uid) {
+      res = (res as ILoadedProject).graphInfo;
+    }
+    const json = Graph.fromJsonInfo(res as INodePack[])
+      .clone()
+      .toJson();
+    useSafeExecute("addGraph", null, true, {
+      success: async () => {
+        toast(t, "success", translate(Toast_Words["import-local-project-success-message"], lang));
+        closePanel();
+      },
+      failed: async () =>
+        toast(t, "error", translate(Toast_Words["import-local-project-error-message"], lang)),
+    })({ json });
   }
 
   return (
@@ -143,15 +157,15 @@ const ProjectPlugin = ({ pluginInfo, ...props }: IPlugin) => {
           {translate(Projects_Words["download-project"], lang)}
         </CFButton>
         <Upload
-          accept=".cfdraw"
+          accept=".noli,.cfdraw"
           customRequest={({ file }) => {
             const reader = new FileReader();
             reader.onload = () =>
-              onLoadLocalProject(JSON.parse(reader.result as string) as ILoadedProject);
+              onImportLocalProject(JSON.parse(reader.result as string) as IImportLocal);
             reader.readAsText(file as Blob);
           }}>
           <CFButton w="100%" mt="12px">
-            {translate(Projects_Words["load-local-project"], lang)}
+            {translate(Projects_Words["import-local-project"], lang)}
           </CFButton>
         </Upload>
       </Flex>
