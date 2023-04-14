@@ -213,7 +213,9 @@ const Floating = forwardRef(function (
             }));
             setTransform(`matrix(1,0,0,1,${x},${y})`);
           }
-          setExpand(!expand);
+          if (!noExpand) {
+            setExpand(!expand);
+          }
           onFloatingButtonClick?.();
         }}
         opacity={isInvisible ? 0 : 1}
