@@ -136,8 +136,11 @@ class Group(BaseModel):
     nodes: List["INode"]
 
 
+INodeType = Union[SingleNodeType, GroupType]
+
+
 class INode(BaseModel):
-    type: Union[SingleNodeType, GroupType]
+    type: INodeType
     alias: str
     bboxFields: Matrix2D
     layerParams: Optional[LayerParams]  # only for single node

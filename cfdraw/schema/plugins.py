@@ -14,9 +14,8 @@ from pydantic import Field
 from pydantic import BaseModel
 
 from cfdraw.schema.fields import IFieldDefinition
-from cfdraw.parsers.noli import parse_node
-from cfdraw.parsers.noli import INode
 from cfdraw.parsers.noli import Matrix2D
+from cfdraw.parsers.noli import INodeType
 from cfdraw.parsers.noli import PivotType
 from cfdraw.parsers.noli import NodeConstraints
 from cfdraw.parsers.chakra import IChakra
@@ -123,6 +122,7 @@ Pivot of the plugin.
 class INodeData(BaseModel):
     """This should align with `INodeData` at `src/schema/_python.ts`"""
 
+    type: Optional[INodeType] = Field(None, description="Type of the node")
     x: Optional[float] = Field(None, description="X of the node")
     y: Optional[float] = Field(None, description="Y of the node")
     w: Optional[float] = Field(None, description="Width of the node")

@@ -36,7 +36,7 @@ export function getNodeData(node: INode | null): INodeData {
   const text = node.type === "text" ? node.params.content : undefined;
   const src = node.type === "image" ? node.renderParams.src : undefined;
   const meta = (node.type === "group" ? undefined : node.params.meta) as IMeta | undefined;
-  return { x, y, w, h, transform, text, src, meta };
+  return { type: node.type, x, y, w, h, transform, text, src, meta };
 }
 
 export function useHttpPython<R>({
