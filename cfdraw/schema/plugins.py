@@ -142,7 +142,10 @@ class INodeData(BaseModel):
     meta: Optional[Dict[str, Any]] = Field(None, description="Meta of the node")
     children: Optional[List["INodeData"]] = Field(
         None,
-        "Will be as list of `INodeData` if and only if the node is a `Group` (i.e. `type` == 'group')",
+        description=(
+            "Will be a list of `INodeData` if and only if "
+            "the node is a `Group` (i.e. `type` == 'group')"
+        ),
     )
 
 
