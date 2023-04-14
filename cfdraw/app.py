@@ -122,7 +122,7 @@ class App:
             )
 
         @self.api.get(
-            f"/{constants.UPLOAD_IMAGE_FOLDER_NAME}/{{file:path}}",
+            f"/{constants.UPLOAD_IMAGE_FOLDER_NAME}/{{file}}",
             **get_image_response_kwargs(),
         )
         async def fetch_image(file: str) -> Response:
