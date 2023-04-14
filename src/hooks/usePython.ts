@@ -2,6 +2,7 @@ import { useCallback, useEffect, useMemo } from "react";
 
 import { INode, Logger } from "@noli/core";
 
+import type { IMeta } from "@/schema/meta";
 import type {
   INodeData,
   IPythonHttpResponse,
@@ -34,7 +35,8 @@ export function getNodeData(node: INode | null): INodeData {
   const transform = node.transform.fields;
   const text = node.type === "text" ? node.params.content : undefined;
   const src = node.type === "image" ? node.renderParams.src : undefined;
-  return { x, y, w, h, transform, text, src };
+  const meta = (node.type === "group" ? undefined : node.params.meta) as IMeta | undefined;
+  return { x, y, w, h, transform, text, src, meta };
 }
 
 export function useHttpPython<R>({
@@ -60,7 +62,6 @@ export function useHttpPython<R>({
         Requests.postJson<IPythonHttpResponse<R>>("_python", endpoint, {
           identifier,
           nodeData: getNodeData(node),
-          nodeMeta: !node || node.type === "group" ? {} : node.params.meta ?? {},
           extraData: getExtraRequestData ? getExtraRequestData() : {},
         }).then((res) => {
           if (res.success) onUseHttpPythonSuccess(res);

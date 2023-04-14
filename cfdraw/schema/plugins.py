@@ -139,12 +139,12 @@ class INodeData(BaseModel):
         None,
         description="Image url of the node, will be `None` if the node is not an image node",
     )
+    meta: Optional[Dict[str, Any]] = Field(None, description="Meta of the node")
 
 
 class IHttpPluginRequest(BaseModel):
     identifier: str = Field(..., description="The identifier of the plugin")
     nodeData: INodeData = Field(..., description="Data extracted from `node`")
-    nodeMeta: Dict[str, Any] = Field(..., description="Meta data of the `node`")
     extraData: Dict[str, Any] = Field(..., description="Extra data of each plugin")
 
 

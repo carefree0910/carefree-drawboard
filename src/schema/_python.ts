@@ -2,6 +2,7 @@ import type { TextareaProps } from "@chakra-ui/react";
 
 import type { Dictionary, Matrix2DFields } from "@noli/core";
 
+import type { IMeta } from "./meta";
 import type { IPlugin } from "./plugins";
 import type { IDefinitions } from "./metaFields";
 
@@ -32,6 +33,8 @@ export interface INodeData {
   text?: string;
   // image info
   src?: string;
+  // meta
+  meta?: IMeta;
 }
 
 // plugin

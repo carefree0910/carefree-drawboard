@@ -20,7 +20,7 @@ class HttpMetaPlugin(IHttpTextAreaPlugin):
         )
 
     def process(self, data: IHttpPluginRequest) -> str:
-        return json.dumps(data.nodeMeta, indent=4)
+        return json.dumps(data.nodeData.meta, indent=4)
 
 
 __all__ = [
