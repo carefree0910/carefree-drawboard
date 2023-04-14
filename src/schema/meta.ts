@@ -26,7 +26,7 @@ interface IUploadMetaData extends ICommonMetaData {
 }
 interface IAddTextMetaData extends ICommonMetaData {}
 export type IPythonHttpFieldsResponse = { _duration?: number } & (
-  | { type: "text"; value: string }
+  | { type: "text"; value: string[] }
   | { type: "image"; value: { w: number; h: number; url: string }[] }
 );
 export type IPythonHttpFieldsMetaData = ICommonMetaData & {
