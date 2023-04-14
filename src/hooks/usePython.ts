@@ -60,6 +60,7 @@ export function useHttpPython<R>({
         Requests.postJson<IPythonHttpResponse<R>>("_python", endpoint, {
           identifier,
           nodeData: getNodeData(node),
+          nodeMeta: !node || node.type === "group" ? {} : node.params.meta ?? {},
           extraData: getExtraRequestData ? getExtraRequestData() : {},
           node: node?.toJsonPack(),
         }).then((res) => {

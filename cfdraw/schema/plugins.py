@@ -144,6 +144,7 @@ class INodeData(BaseModel):
 class IRawHttpPluginRequest(BaseModel):
     identifier: str = Field(..., description="The identifier of the plugin")
     nodeData: INodeData = Field(..., description="Data extracted from `node`")
+    nodeMeta: Dict[str, Any] = Field(..., description="Meta data of the `node`")
     extraData: Dict[str, Any] = Field(..., description="Extra data of each plugin")
     node: Optional[Dict[str, Any]] = Field(
         None,
