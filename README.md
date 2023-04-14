@@ -47,6 +47,7 @@ And you should see your app running at http://localhost:5123. Now you can play w
 * [Getting Started](https://github.com/carefree0910/carefree-drawboard/wiki/Getting-Started), which is a more detailed tutorial to guide you step by step.
 * [Image Processing](https://github.com/carefree0910/carefree-drawboard/tree/dev/examples/image_processing), which implements three common image processing plugins with `carefree-drawboard` 🎨.
 * [Stable Diffusion](https://github.com/carefree0910/carefree-drawboard/tree/dev/examples/stable_diffusion), which utilizes the famous `diffusers` library and implements two common Stable Diffusion plugins with `carefree-drawboard` 🎨.
+* [Caption & Diffusion](https://github.com/carefree0910/carefree-drawboard/tree/dev/examples/caption_and_diffusion), which shows how can we combine two different kinds of models (`Image Captioning` & `Stable Diffusion`) and make them work together.
 
 ## Documentation
 
@@ -92,6 +93,22 @@ Cool!
 Unfortunately I'm Chinese and I can hardly access to Discord. 🤣 Even if there are someone kindly enough to build one up for me, I can hardly connect to it so it will be impossible for me to stay tuned.
 
 If you are kind enough please use the **GitHub Discussions**, or maybe there are other Discord replacements? I don't know, help!!!
+
+### Why do you build this project?
+
+In short, I believe that:
+* Infinite Drawboard can unleash Infinite possibilities.
+* If we can use `Python` to interact with it and even craft new plugins for it, it will be even better.
+
+So here comes the `carefree-drawboard` 🎨, which is a `Python` interactible/customizable Infinite Drawboard. 🎉
+
+My another motivation is that I love HuggingFace 🤗 models, and would love to use most if not all of them in one, single, integrated space. This actually inspires me the following idea: to build an 'AI Operation System' which can drive all the 'Softwares' (the AI models) and make them work together seamlessly.
+
+> See [Brainstorm 🧠](https://github.com/carefree0910/carefree-drawboard/wiki/Brainstorm-%F0%9F%A7%A0) for more details!
+
+My final goal is to make `carefree-drawboard` 🎨 a platform which can be used to build all kinds of AI applications. I know it will be a long journey but it is definitely worth trying.
+
+> And the middle-term goal is to make 🤗 & 🎨 appear together more often. We may think 🤗🎨 as HuggingFace models using a powerful palette to create the world (with AI)!
 
 ## Credits
 
