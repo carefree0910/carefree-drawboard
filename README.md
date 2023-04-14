@@ -44,6 +44,7 @@ And you should see your app running at http://localhost:5123. Now you can play w
 
 ## Examples
 
+* [Getting Started](https://github.com/carefree0910/carefree-drawboard/wiki/Getting-Started), which is a more detailed tutorial to guide you step by step.
 * [Image Processing](https://github.com/carefree0910/carefree-drawboard/tree/dev/examples/image_processing), which implements three common image processing plugins with `carefree-drawboard` 🎨.
 * [Stable Diffusion](https://github.com/carefree0910/carefree-drawboard/tree/dev/examples/stable_diffusion), which utilizes the famous `diffusers` library and implements two common Stable Diffusion plugins with `carefree-drawboard` 🎨.
 
@@ -67,6 +68,8 @@ Contributions are truly welcomed! Here are some good (common) ways to get starte
 Apart from these:
 * If you are truly an enthusiast, you may check out our [Roadmap](https://github.com/carefree0910/carefree-drawboard/wiki/Roadmap), pick up what you are interested, and create the corresponding PR!
 * If you are familiar with `React`, you may check out the [Customizations](https://github.com/carefree0910/carefree-drawboard/wiki/Customizations) documentation and try to customize your own plugins and have fun!
+
+> It is also recommended to start from the [Development Guide](https://github.com/carefree0910/carefree-drawboard/wiki/Development-Guide)!
 
 ## Q&A
 
