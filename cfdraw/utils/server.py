@@ -1,4 +1,5 @@
 import sys
+import socket
 import logging
 
 from PIL import Image
@@ -22,6 +23,10 @@ class RuntimeError(BaseModel):
         schema_extra = {
             "example": {"detail": "RuntimeError occurred."},
         }
+
+
+def get_ip() -> str:
+    return socket.gethostbyname(socket.gethostname())
 
 
 def get_responses(
