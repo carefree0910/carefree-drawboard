@@ -1,33 +1,10 @@
-import { useCallback, useEffect, useMemo } from "react";
+import { useCallback, useEffect } from "react";
 
 import { INode, Logger } from "@noli/core";
 
 import type { IMeta } from "@/schema/meta";
-import type {
-  INodeData,
-  IPythonHttpResponse,
-  IUseHttpPython,
-  IUsePythonInfo,
-} from "@/schema/_python";
+import type { INodeData, IPythonHttpResponse, IUseHttpPython } from "@/schema/_python";
 import { Requests } from "@/requests/actions";
-
-export function useDeps({
-  node,
-  nodes,
-  endpoint,
-  identifier,
-  updateInterval,
-  isInvisible,
-  getDeps,
-}: IUsePythonInfo) {
-  return useMemo(
-    () =>
-      getDeps
-        ? getDeps({ node, nodes, endpoint, identifier, updateInterval, isInvisible })
-        : [node, nodes, endpoint, identifier, updateInterval, isInvisible],
-    [node, nodes, endpoint, identifier, updateInterval, isInvisible],
-  );
-}
 
 export function getNodeData(node: INode | null): INodeData {
   if (!node) return {};
@@ -47,15 +24,13 @@ export function useHttpPython<R>({
   identifier,
   isInvisible,
   updateInterval,
-  getDeps,
   forceNotSend,
   onUseHttpPythonSuccess,
   onUseHttpPythonError,
   beforeRequest,
   getExtraRequestData,
 }: IUseHttpPython<R>) {
-  let deps = useDeps({ node, nodes, endpoint, identifier, updateInterval, isInvisible, getDeps });
-  deps = deps.concat([forceNotSend]);
+  const deps = [node, nodes, endpoint, identifier, updateInterval, isInvisible, forceNotSend];
   const requestFn = useCallback(() => {
     if (isInvisible || forceNotSend) return Promise.resolve();
     const preprocess = beforeRequest ? beforeRequest() : Promise.resolve();

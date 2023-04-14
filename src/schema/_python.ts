@@ -10,7 +10,6 @@ import type { IDefinitions } from "./metaFields";
 
 export interface IUsePythonInfo extends IPythonPluginInfo {
   isInvisible: boolean;
-  getDeps?: (deps: IUsePythonInfo) => any[];
 }
 export interface IPythonHttpPluginCallbacks<R> {
   onUseHttpPythonSuccess: (res: IPythonHttpResponse<R>) => Promise<void>;
