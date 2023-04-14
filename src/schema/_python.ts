@@ -3,17 +3,13 @@ import type { TextareaProps } from "@chakra-ui/react";
 import type { Dictionary, INode, Matrix2DFields } from "@noli/core";
 
 import type { IMeta } from "./meta";
-import type { IPlugin } from "./plugins";
+import type { IPlugin, IPluginInfo } from "./plugins";
 import type { IDefinitions } from "./metaFields";
 
 // general
 
-export interface IUsePythonInfo {
-  node: IPythonPlugin["pluginInfo"]["node"];
-  endpoint: IPythonPlugin["pluginInfo"]["endpoint"];
-  identifier: IPythonPlugin["pluginInfo"]["identifier"];
+export interface IUsePythonInfo extends IPythonPluginInfo {
   isInvisible: boolean;
-  updateInterval?: IPythonPlugin["pluginInfo"]["updateInterval"];
   getDeps?: (deps: IUsePythonInfo) => any[];
 }
 export interface IPythonHttpPluginCallbacks<R> {
@@ -40,12 +36,13 @@ export interface INodeData {
 
 // plugin
 
+interface IPythonPluginInfo extends IPluginInfo {
+  endpoint: string;
+  identifier: string;
+  updateInterval?: number;
+}
 export interface IPythonPlugin extends IPlugin {
-  pluginInfo: IPlugin["pluginInfo"] & {
-    endpoint: string;
-    identifier: string;
-    updateInterval?: number;
-  };
+  pluginInfo: IPythonPluginInfo;
 }
 interface IPythonHttpPluginWithSubmitPluginInfo {
   closeOnSubmit?: boolean;
@@ -56,21 +53,21 @@ export interface IPythonHttpPluginWithSubmit<R>
   extends IPythonPlugin,
     IPythonHttpPluginCallbacks<R> {
   buttonText: string;
-  pluginInfo: IPythonPlugin["pluginInfo"] & IPythonHttpPluginWithSubmitPluginInfo;
+  pluginInfo: IPythonPluginInfo & IPythonHttpPluginWithSubmitPluginInfo;
 }
 export interface IPythonHttpTextAreaPlugin extends IPythonPlugin {
-  pluginInfo: IPythonPlugin["pluginInfo"] & {
+  pluginInfo: IPythonPluginInfo & {
     noLoading?: boolean;
     textAlign?: TextareaProps["textAlign"];
   };
 }
 export interface IPythonHttpQAPlugin extends IPythonPlugin {
-  pluginInfo: IPythonPlugin["pluginInfo"] & {
+  pluginInfo: IPythonPluginInfo & {
     initialText: string;
   };
 }
 export interface IPythonHttpFieldsPlugin extends IPythonPlugin {
-  pluginInfo: IPythonPlugin["pluginInfo"] &
+  pluginInfo: IPythonPluginInfo &
     IPythonHttpPluginWithSubmitPluginInfo & {
       header?: string;
       definitions: IDefinitions;

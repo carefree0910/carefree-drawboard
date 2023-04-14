@@ -47,8 +47,12 @@ export interface IRender extends Omit<IFloating, "id" | "renderInfo"> {
   renderInfo: Partial<IRenderInfo> & { w: number; h: number };
   containerRef?: RefObject<HTMLDivElement>;
 }
+export interface IPluginInfo {
+  node: INode | null;
+  nodes: INode[];
+}
 export interface IPlugin extends IRender {
-  pluginInfo: { node: INode | null; nodes: INode[] };
+  pluginInfo: IPluginInfo;
 }
 
 // specific

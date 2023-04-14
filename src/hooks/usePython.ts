@@ -13,6 +13,7 @@ import { Requests } from "@/requests/actions";
 
 export function useDeps({
   node,
+  nodes,
   endpoint,
   identifier,
   updateInterval,
@@ -22,9 +23,9 @@ export function useDeps({
   return useMemo(
     () =>
       getDeps
-        ? getDeps({ node, endpoint, identifier, updateInterval, isInvisible })
-        : [node, endpoint, identifier, updateInterval, isInvisible],
-    [node, endpoint, identifier, updateInterval, isInvisible],
+        ? getDeps({ node, nodes, endpoint, identifier, updateInterval, isInvisible })
+        : [node, nodes, endpoint, identifier, updateInterval, isInvisible],
+    [node, nodes, endpoint, identifier, updateInterval, isInvisible],
   );
 }
 
@@ -41,6 +42,7 @@ export function getNodeData(node: INode | null): INodeData {
 
 export function useHttpPython<R>({
   node,
+  nodes,
   endpoint,
   identifier,
   isInvisible,
@@ -52,7 +54,7 @@ export function useHttpPython<R>({
   beforeRequest,
   getExtraRequestData,
 }: IUseHttpPython<R>) {
-  let deps = useDeps({ node, endpoint, identifier, updateInterval, isInvisible, getDeps });
+  let deps = useDeps({ node, nodes, endpoint, identifier, updateInterval, isInvisible, getDeps });
   deps = deps.concat([forceNotSend]);
   const requestFn = useCallback(() => {
     if (isInvisible || forceNotSend) return Promise.resolve();

@@ -8,13 +8,14 @@ import { drawboardPluginFactory } from "@/plugins/utils/factory";
 import Render from "@/plugins/components/Render";
 
 const PythonHttpTextAreaPlugin = ({
-  pluginInfo: { node, endpoint, identifier, updateInterval, noLoading, textAlign },
+  pluginInfo: { node, nodes, endpoint, identifier, updateInterval, noLoading, textAlign },
   ...props
 }: IPythonHttpTextAreaPlugin) => {
   const [value, setValue] = useState("");
 
   useHttpPython<{ text: string }>({
     node,
+    nodes,
     endpoint,
     identifier,
     isInvisible: props.renderInfo.isInvisible ?? false,
