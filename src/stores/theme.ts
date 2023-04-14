@@ -10,6 +10,8 @@ type ThemeStyles = {
   panelBg: string;
   // color of the text
   textColor: string;
+  // color of the caption
+  captionColor: string;
   // color of the divider
   dividerColor: string;
   // colors of the `CFSelect` component
@@ -34,6 +36,7 @@ export const allThemes: Record<ThemeType, ThemeStyles> = {
     boardBg: "#f7f7f7",
     panelBg: "#f9f9f9",
     textColor: "#333333",
+    captionColor: "#888888",
     dividerColor: "#cccccc",
     selectColors: {
       color: "#333333",
@@ -54,6 +57,7 @@ export const allThemes: Record<ThemeType, ThemeStyles> = {
     boardBg: "#242424",
     panelBg: "#f9f9f9",
     textColor: "#333333",
+    captionColor: "#888888",
     dividerColor: "#cccccc",
     selectColors: {
       color: "#333333",

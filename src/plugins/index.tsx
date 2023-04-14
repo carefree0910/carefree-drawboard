@@ -12,6 +12,7 @@ export * from "./ProjectPlugin";
 export * from "./AddPlugin";
 export * from "./ArrangePlugin";
 export * from "./UndoRedoPlugin";
+export * from "./DownloadPlugin";
 export * from "./TextEditorPlugin";
 export * from "./GroupPlugin";
 export * from "./_python/HttpTextAreaPlugin";

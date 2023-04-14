@@ -4,7 +4,7 @@ import type { FlexProps } from "@chakra-ui/react";
 import type { INode, NodeType, PivotType } from "@noli/core";
 import type { IResponse } from "@noli/business";
 
-import type { IDefinitions, IFieldDefinition, _IFieldDefinition } from "./metaFields";
+import type { IFieldDefinition, _IFieldDefinition } from "./metaFields";
 import type {
   IPythonHttpFieldsPlugin,
   IPythonHttpQAPlugin,
@@ -67,6 +67,7 @@ export const allAvailablePlugins = [
   "arrange",
   "undo",
   "redo",
+  "download",
   "textEditor",
   "groupEditor",
   "multiEditor",
@@ -89,6 +90,7 @@ export interface IPluginProps {
   arrange: IPlugin;
   undo: IPlugin;
   redo: IPlugin;
+  download: IPlugin;
   textEditor: IPlugin;
   groupEditor: IPlugin;
   multiEditor: IPlugin;
