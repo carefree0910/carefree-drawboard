@@ -7,7 +7,8 @@ import { toast } from "@/utils/toast";
 import { Toast_Words } from "@/lang/toast";
 import { themeStore } from "@/stores/theme";
 import { updateMeta } from "./update";
-import { addNewImage, getNewRectangle, NewImageInfo } from "./addImage";
+import { addNewText } from "./addText";
+import { addNewImage, getNewRectangle, INewRectangle, NewImageInfo } from "./addImage";
 import { getArrangements } from "./arrange";
 
 // consumers
@@ -83,28 +84,72 @@ function consumePythonHttpFields({
       `${translate(Toast_Words["post-python-http-fields-plugin-error-message"], lang)} (${err})`,
     );
   };
-  if (metaData.response.type === "image") {
+  const getNewAlias = () => `python.httpFields.${metaData.identifier}.${getRandomHash()}`;
+  function gatherPacks<T, R>(
+    responses: T[],
+    getRectangleInfo: (res: T) => INewRectangle,
+    getData: (res: T) => R,
+  ): {
+    data: R;
+    alias: string;
+    rectangle: RectangleShapeNode;
+    metaData: Dictionary<any>;
+  }[] {
     const packs: {
-      url: string;
+      data: R;
       alias: string;
       rectangle: RectangleShapeNode;
       metaData: Dictionary<any>;
     }[] = [];
-    metaData.response.value.forEach(({ w, h, url }, i) => {
-      const newAlias = `python.httpFields.${metaData.identifier}.${getRandomHash()}`;
-      const rectangle = getNewRectangle(`${i}.${getRandomHash()}`, { autoFit: true, wh: { w, h } });
+    responses.forEach((res, i) => {
+      const newAlias = getNewAlias();
+      const rectangle = getNewRectangle(`${i}.${getRandomHash()}`, getRectangleInfo(res));
       const iMetaData = shallowCopy(metaData);
       iMetaData.response.value = metaData.response.value[i] as any;
       iMetaData.timestamp = Date.now();
-      packs.push({ url, alias: newAlias, rectangle, metaData: iMetaData });
+      packs.push({ data: getData(res), alias: newAlias, rectangle, metaData: iMetaData });
     });
+    return packs;
+  }
+  function getCallbacks(isLast: boolean) {
+    return { success: isLast ? success : async () => void 0, failed };
+  }
+  if (metaData.response.type === "image") {
+    const packs = gatherPacks(
+      metaData.response.value,
+      ({ w, h }) => ({ autoFit: true, wh: { w, h } }),
+      ({ url }) => ({ url }),
+    );
     const targets = getArrangements(packs.map(({ rectangle }) => rectangle)).targets;
-    packs.forEach(({ url, alias, metaData }, i) => {
+    packs.forEach(({ data: { url }, alias, metaData }, i) => {
       const isLast = i === packs.length - 1;
       addNewImage(alias, url, {
         info: targets[i].bbox,
         meta: { type, data: metaData },
-        callbacks: { success: isLast ? success : async () => void 0, failed },
+        callbacks: getCallbacks(isLast),
+        noSelect: !isLast,
+      });
+    });
+  } else if (metaData.response.type === "text") {
+    const fontSize = 48;
+    const packs = gatherPacks(
+      metaData.response.value,
+      (content) => {
+        const numChars = content.length;
+        const ratio = Math.sqrt(0.5 * numChars);
+        const h = Math.ceil(fontSize * ratio);
+        const w = h * 2;
+        return { autoFit: true, wh: { w, h } };
+      },
+      (content) => ({ content }),
+    );
+    const targets = getArrangements(packs.map(({ rectangle }) => rectangle)).targets;
+    packs.forEach(({ data: { content }, alias, metaData }, i) => {
+      const isLast = i === packs.length - 1;
+      addNewText(alias, content, fontSize, {
+        bbox: targets[i].bbox,
+        meta: { type, data: metaData },
+        callbacks: getCallbacks(isLast),
         noSelect: !isLast,
       });
     });
