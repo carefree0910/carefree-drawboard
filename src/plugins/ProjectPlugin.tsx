@@ -17,6 +17,7 @@ import {
   loadLocalProject,
   loadProject,
   saveProject,
+  useCurrentFullProject,
 } from "@/actions/manageProjects";
 import { CFText } from "@/components/CFText";
 import { CFInput } from "@/components/CFInput";
@@ -97,7 +98,7 @@ const ProjectPlugin = ({ pluginInfo, ...props }: IPlugin) => {
     loadProject(t, lang, selectedUid, onLoadProjectSuccess);
   }
   function onDownloadProject(): void {
-    const fullProject = useCurrentProject();
+    const fullProject = useCurrentFullProject();
     toast(t, "info", translate(Toast_Words["downloading-project-message"], lang));
     const blob = toJsonBlob(fullProject);
     download(blob, `${fullProject.name}.noli`);
