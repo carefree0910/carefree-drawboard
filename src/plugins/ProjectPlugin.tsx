@@ -3,7 +3,7 @@ import { observer } from "mobx-react-lite";
 import { useMemo, useState, useEffect, useCallback } from "react";
 import { Flex, useToast } from "@chakra-ui/react";
 
-import { Dictionary, download, getRandomHash, toJsonBlob } from "@noli/core";
+import { Dictionary, getRandomHash } from "@noli/core";
 import { langStore, translate } from "@noli/business";
 
 import type { IPlugin } from "@/schema/plugins";
@@ -17,7 +17,6 @@ import {
   loadLocalProject,
   loadProject,
   saveProject,
-  useCurrentFullProject,
 } from "@/actions/manageProjects";
 import { CFText } from "@/components/CFText";
 import { CFInput } from "@/components/CFInput";
@@ -28,6 +27,7 @@ import { CFSrollableSelect } from "@/components/CFSelect";
 import { drawboardPluginFactory } from "./utils/factory";
 import Render from "./components/Render";
 import { floatingEvent, floatingRenderEvent } from "./components/Floating";
+import { downloadCurrentFullProject } from "@/actions/download";
 
 const ProjectPlugin = ({ pluginInfo, ...props }: IPlugin) => {
   const t = useToast();
@@ -98,10 +98,7 @@ const ProjectPlugin = ({ pluginInfo, ...props }: IPlugin) => {
     loadProject(t, lang, selectedUid, onLoadProjectSuccess);
   }
   function onDownloadProject(): void {
-    const fullProject = useCurrentFullProject();
-    toast(t, "info", translate(Toast_Words["downloading-project-message"], lang));
-    const blob = toJsonBlob(fullProject);
-    download(blob, `${fullProject.name}.noli`);
+    downloadCurrentFullProject(t, lang);
   }
   function onLoadLocalProject(res: ILoadedProject) {
     loadLocalProject(t, lang, res, onLoadProjectSuccess);
