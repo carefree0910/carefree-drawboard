@@ -12,7 +12,7 @@ export interface IUsePythonInfo extends IPythonPluginInfo {
   isInvisible: boolean;
 }
 export interface IPythonHttpPluginCallbacks<R> {
-  onUseHttpPythonSuccess: (res: IPythonHttpResponse<R>) => Promise<void>;
+  onUseHttpPythonSuccess: (res: IPythonResponse<R>) => Promise<void>;
   onUseHttpPythonError?: (err: any) => Promise<void>;
   beforeRequest?: () => Promise<void>;
   getExtraRequestData?: () => Dictionary<any>;
@@ -84,14 +84,14 @@ export interface IPythonRequest {
   nodeDataList: INodeData[];
   extraData: Dictionary<any>;
 }
+export interface IPythonResponse<T> {
+  success: boolean;
+  message: string;
+  data: T;
+}
 
 // http
 
 export interface IUseHttpPython<R> extends IUsePythonInfo, IPythonHttpPluginCallbacks<R> {
   forceNotSend?: boolean;
-}
-export interface IPythonHttpResponse<T> {
-  success: boolean;
-  message: string;
-  data: T;
 }

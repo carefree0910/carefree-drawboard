@@ -7,7 +7,7 @@ import { Dictionary, getRandomHash } from "@noli/core";
 import { langStore, translate } from "@noli/business";
 
 import type { IMeta, IPythonHttpFieldsResponse } from "@/schema/meta";
-import type { IPythonHttpFieldsPlugin, IPythonHttpResponse } from "@/schema/_python";
+import type { IPythonHttpFieldsPlugin, IPythonResponse } from "@/schema/_python";
 import { UI_Words } from "@/lang/ui";
 import { stripHashFromIdentifier, titleCaseWord } from "@/utils/misc";
 import { importMeta } from "@/actions/importMeta";
@@ -52,7 +52,7 @@ const PythonHttpFieldsPlugin = ({ pluginInfo, ...props }: IPythonHttpFieldsPlugi
 
   async function onUseHttpPythonSuccess({
     data: { _duration, ...response },
-  }: IPythonHttpResponse<IPythonHttpFieldsResponse>) {
+  }: IPythonResponse<IPythonHttpFieldsResponse>) {
     importMeta({
       t,
       lang,

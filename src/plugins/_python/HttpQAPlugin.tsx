@@ -4,7 +4,7 @@ import { Textarea } from "@chakra-ui/react";
 
 import { langStore, translate } from "@noli/business";
 
-import type { IPythonHttpQAPlugin, IPythonHttpResponse } from "@/schema/_python";
+import type { IPythonHttpQAPlugin, IPythonResponse } from "@/schema/_python";
 import { UI_Words } from "@/lang/ui";
 import { CFInput } from "@/components/CFInput";
 import { drawboardPluginFactory } from "@/plugins/utils/factory";
@@ -18,7 +18,7 @@ const PythonHttpQAPlugin = ({ pluginInfo, ...props }: IPythonHttpQAPlugin) => {
   function getExtraRequestData() {
     return { text: userInput };
   }
-  async function onUseHttpPythonSuccess(res: IPythonHttpResponse<{ text: string }>) {
+  async function onUseHttpPythonSuccess(res: IPythonResponse<{ text: string }>) {
     setServerText(res.data.text);
   }
 
