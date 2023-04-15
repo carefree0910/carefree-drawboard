@@ -3,7 +3,12 @@ import { useCallback, useEffect } from "react";
 import { INode, Logger } from "@noli/core";
 
 import type { IMeta } from "@/schema/meta";
-import type { INodeData, IPythonHttpResponse, IUseHttpPython } from "@/schema/_python";
+import type {
+  INodeData,
+  IPythonHttpResponse,
+  IPythonRequest,
+  IUseHttpPython,
+} from "@/schema/_python";
 import { Requests } from "@/requests/actions";
 
 function getNodeData(node: INode | null): INodeData {
@@ -37,7 +42,7 @@ export function useHttpPython<R>({
     const preprocess = beforeRequest ? beforeRequest() : Promise.resolve();
     return preprocess
       .then(() => {
-        Requests.postJson<IPythonHttpResponse<R>>("_python", endpoint, {
+        Requests.postJson<IPythonHttpResponse<R>, IPythonRequest>("_python", endpoint, {
           identifier,
           nodeData: getNodeData(node),
           nodeDataList: nodes.length <= 1 ? [] : nodes.map(getNodeData),

@@ -76,6 +76,15 @@ export interface IPythonHttpFieldsPlugin extends IPythonPlugin {
     };
 }
 
+// web
+
+export interface IPythonRequest {
+  identifier: string;
+  nodeData: INodeData;
+  nodeDataList: INodeData[];
+  extraData: Dictionary<any>;
+}
+
 // http
 
 export interface IUseHttpPython<R> extends IUsePythonInfo, IPythonHttpPluginCallbacks<R> {
