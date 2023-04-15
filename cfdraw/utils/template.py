@@ -62,14 +62,27 @@ class TemplateType(str, Enum):
 app_templates = {TemplateType.IMAGE: IMAGE_APP_TEMPLATE}
 
 
+def ask_overwrite(path: Path) -> bool:
+    if path.is_file():
+        console.print(f"Current file already exists: [bold]{path}[/bold].")
+        action = console.ask("Overwrite it?", choices=["y", "n"], default="n")
+        if action != "y":
+            return False
+    return True
+
+
 def set_init_codes(folder: Path, template: TemplateType) -> None:
     codes = app_templates.get(template)
     if codes is None:
         raise ValueError(f"cannot find template for '{template}'")
     app_path = (folder / constants.DEFAULT_MODULE).with_suffix(".py")
     config_path = (folder / constants.DEFAULT_CONFIG_MODULE).with_suffix(".py")
+    if not ask_overwrite(app_path):
+        return
     with open(app_path, "w") as f:
         f.write(codes)
+    if not ask_overwrite(config_path):
+        return
     with open(config_path, "w") as f:
         f.write(CONFIG_TEMPLATE)
     print_info(f"App can be modified at {app_path}")
