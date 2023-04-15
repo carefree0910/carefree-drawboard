@@ -274,7 +274,11 @@ class App:
                             ),
                             data={},
                         )
-                    return await _p(data)
+                    try:
+                        return await _p(data)
+                    except Exception as err:
+                        err_msg = get_err_msg(err)
+                        return IPluginResponse(success=False, message=err_msg, data={})
 
             _register(identifier, plugin)
 
