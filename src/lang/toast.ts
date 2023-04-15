@@ -25,6 +25,7 @@ export enum Toast_Words {
   "add-text-error-message" = "add-text-error-message",
   "auto-arrange-no-need-message" = "auto-arrange-no-need-message",
   "submit-task-success-message" = "submit-task-success-message",
+  "submit-task-error-message" = "submit-task-error-message",
   "downloading-nodes-message" = "downloading-nodes-message",
   "export-blob-error-message" = "export-blob-error-message",
 }
@@ -55,6 +56,7 @@ export const toastLangRecords: Record<Lang, Record<Toast_Words, string>> = {
     [Toast_Words["add-text-error-message"]]: "添加文字时出了些问题",
     [Toast_Words["auto-arrange-no-need-message"]]: "当前节点无需整理",
     [Toast_Words["submit-task-success-message"]]: "任务提交成功",
+    [Toast_Words["submit-task-error-message"]]: "执行任务时出了些问题",
     [Toast_Words["downloading-nodes-message"]]: "下载中",
     [Toast_Words["export-blob-error-message"]]: "导出节点时出了些问题",
   },
@@ -83,6 +85,7 @@ export const toastLangRecords: Record<Lang, Record<Toast_Words, string>> = {
     [Toast_Words["add-text-error-message"]]: "Something is wrong when adding Text Node",
     [Toast_Words["auto-arrange-no-need-message"]]: "There is no need to arrange the Nodes",
     [Toast_Words["submit-task-success-message"]]: "Task submitted successfully!",
+    [Toast_Words["submit-task-error-message"]]: "Something is wrong when executing the task",
     [Toast_Words["downloading-nodes-message"]]: "Downloading",
     [Toast_Words["export-blob-error-message"]]: "Something is wrong when exporting Node",
   },

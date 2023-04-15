@@ -9,6 +9,8 @@ import { langStore, translate } from "@noli/business";
 import type { IMeta, IPythonHttpFieldsResponse } from "@/schema/meta";
 import type { IPythonHttpFieldsPlugin, IPythonResponse } from "@/schema/_python";
 import { UI_Words } from "@/lang/ui";
+import { Toast_Words } from "@/lang/toast";
+import { toast } from "@/utils/toast";
 import { stripHashFromIdentifier, titleCaseWord } from "@/utils/misc";
 import { importMeta } from "@/actions/importMeta";
 import { getMetaField } from "@/stores/meta";
@@ -66,6 +68,9 @@ const PythonHttpFieldsPlugin = ({ pluginInfo, ...props }: IPythonHttpFieldsPlugi
       },
     });
   }
+  async function onUseHttpPythonError(err: any) {
+    toast(t, "error", `${translate(Toast_Words["submit-task-error-message"], lang)} - ${err}`);
+  }
 
   const header = pluginInfo.header ?? titleCaseWord(pureIdentifier);
   return (
@@ -74,6 +79,7 @@ const PythonHttpFieldsPlugin = ({ pluginInfo, ...props }: IPythonHttpFieldsPlugi
       buttonText={translate(UI_Words["submit-task"], lang)}
       getExtraRequestData={getExtraRequestData}
       onUseHttpPythonSuccess={onUseHttpPythonSuccess}
+      onUseHttpPythonError={onUseHttpPythonError}
       pluginInfo={pluginInfo}
       {...props}>
       <Flex>
