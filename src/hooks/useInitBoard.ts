@@ -111,7 +111,8 @@ export function useInitBoard(): void {
   }
 
   useEffect(() => {
-    if (useIsReady()) return;
-    _initialize();
+    if (!useIsReady()) {
+      _initialize();
+    }
   }, []);
 }

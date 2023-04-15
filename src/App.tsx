@@ -9,8 +9,10 @@ import { useFileDropper } from "./hooks/useFileDropper";
 import { useGridLines } from "./hooks/useGridLines";
 import { usePreventDefaults } from "./hooks/usePreventDefaults";
 import { useUndoRedo } from "./hooks/useUndoRedo";
+import { useSyncPython } from "./hooks/usePython";
 
 function App() {
+  useSyncPython();
   useInitBoard();
   useFileDropper(langStore.tgt);
   useGridLines();

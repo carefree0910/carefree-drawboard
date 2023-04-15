@@ -10,8 +10,8 @@ from cfdraw.utils import exec
 from cfdraw.utils import console
 from cfdraw.utils import processes
 from cfdraw.config import get_config
-from cfdraw.compilers.template import set_init_codes
-from cfdraw.compilers.template import TemplateType
+from cfdraw.utils.template import set_init_codes
+from cfdraw.utils.template import TemplateType
 
 cli = typer.Typer()
 
@@ -45,12 +45,14 @@ def run(
         frontend_port = processes.change_or_terminate_port(frontend_port, "frontend")
     if not no_backend and processes.is_process_on_port(backend_port):
         backend_port = processes.change_or_terminate_port(backend_port, "backend")
+    config.frontend_port = frontend_port
+    config.backend_port = backend_port
     frontend_fn, backend_fn = exec.run_frontend, exec.run_backend
     try:
         if not no_frontend:
-            frontend_fn(int(frontend_port))
+            frontend_fn()
         if not no_backend:
-            backend_fn(module, port=int(backend_port), log_level=log_level)
+            backend_fn(module, log_level=log_level)
     finally:
         console.rule("[bold]Shutting down")
         print_info("Killing frontend")

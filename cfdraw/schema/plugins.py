@@ -27,6 +27,8 @@ class PluginType(str, Enum):
     HTTP_TEXT_AREA = "httpTextArea"
     HTTP_QA = "httpQA"
     HTTP_FIELDS = "httpFields"
+    # this type of plugins will not be rendered on the drawboard 🎨
+    _INTERNAL = "_internal"
 
 
 # general
@@ -146,6 +148,8 @@ class INodeData(BaseModel):
 
 
 class IPluginRequest(BaseModel):
+    """This should align with `IPythonRequest` at `src/schema/_python.ts`"""
+
     identifier: str = Field(..., description="The identifier of the plugin")
     nodeData: INodeData = Field(
         ...,
@@ -162,18 +166,43 @@ List of data extracted from `nodes`.
 """,
     )
     extraData: Dict[str, Any] = Field(..., description="Extra data of each plugin")
+    isInternal: bool = Field(False, description="Whether the request is internal")
 
 
 class IPluginResponse(BaseModel):
+    """This should align with `IPythonResponse` at `src/schema/_python.ts`"""
+
     success: bool = Field(..., description="Whether returned successfully")
     message: str = Field(..., description="The message of the response")
     data: Dict[str, Any] = Field(..., description="The data of the response")
+
+
+class SocketStatus(str, Enum):
+    """This should align with `PythonSocketStatus` at `src/schema/_python.ts`"""
+
+    PENDING = "pending"
+    WORKING = "working"
+    FINISHED = "finished"
+    EXCEPTION = "exception"
+
+
+class ISocketData(BaseModel):
+    """This should align with `IPythonSocketData` at `src/schema/_python.ts`"""
+
+    status: SocketStatus = Field(..., description="Status of the current task")
+    pending: int = Field(..., description="Number of pending tasks")
+    data: Optional[Dict[str, Any]] = Field(None, description="Response data, if any")
+
+
+class ISocketMessage(IPluginResponse):
+    data: ISocketData = Field(..., description="Socket data of the current task")
 
 
 # plugin interface
 
 
 class IPlugin(ABC):
+    hash: str
     identifier: str
     http_session: ClientSession
 
@@ -192,7 +221,7 @@ class IPlugin(ABC):
         pass
 
     @abstractmethod
-    def to_plugin_settings(self, identifier: str) -> Dict[str, Any]:
+    def to_plugin_settings(self) -> Dict[str, Any]:
         pass
 
     @abstractmethod
@@ -268,6 +297,9 @@ __all__ = [
     "INodeData",
     "IPluginRequest",
     "IPluginResponse",
+    "SocketStatus",
+    "ISocketData",
+    "ISocketMessage",
     # plugin interface
     "IPlugin",
     "IMiddleWare",

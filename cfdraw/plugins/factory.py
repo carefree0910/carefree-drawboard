@@ -28,18 +28,27 @@ class PluginFactory:
 
     plugins: Dict[str, IPlugin] = {}
     recorded: Dict[str, IPlugin] = {}
+    internal_plugins: Dict[str, IPlugin] = {}
+
+    @classmethod
+    def _register(cls, d: Dict[str, IPlugin], identifier: str) -> None:
+        if identifier in d:
+            raise ValueError(f"plugin {identifier} already exists")
+
+        def _fn(plugin: TPlugin) -> TPlugin:
+            plugin.identifier = identifier
+            d[identifier] = plugin()
+            return plugin
+
+        return _fn
 
     @classmethod
     def register(cls, identifier: str) -> Callable[[TPlugin], TPlugin]:
-        if identifier in cls.plugins:
-            raise ValueError(f"plugin {identifier} already exists")
+        return cls._register(cls.plugins, identifier)
 
-        def _register(plugin: TPlugin) -> TPlugin:
-            plugin.identifier = identifier
-            cls.plugins[identifier] = plugin()
-            return plugin
-
-        return _register
+    @classmethod
+    def register_internal(cls, identifier: str) -> Callable[[TPlugin], TPlugin]:
+        return cls._register(cls.internal_plugins, identifier)
 
     @classmethod
     def record(cls, name: str) -> Callable[[TPlugin], TPlugin]:

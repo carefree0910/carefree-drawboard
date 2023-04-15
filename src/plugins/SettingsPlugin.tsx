@@ -16,6 +16,7 @@ import { allAvailablePlugins, IPlugin } from "@/schema/plugins";
 import { Plugins_Words } from "@/lang/plugins";
 import { Settings_Words } from "@/lang/settings";
 import { stripHashFromIdentifier } from "@/utils/misc";
+import { usePythonPluginSettings } from "@/stores/_python";
 import { isInvisible, pythonIsInvisible, setPythonVisible, setVisible } from "@/stores/plugins";
 import CFSelect from "@/components/CFSelect";
 import CFSlider from "@/components/CFSlider";
@@ -23,7 +24,6 @@ import { CFDivider } from "@/components/CFDivider";
 import { CFHeading } from "@/components/CFHeading";
 import { drawboardPluginFactory } from "./utils/factory";
 import Render from "./components/Render";
-import getPythonPluginSettings from "@/board/_python";
 
 const SettingsPlugin = ({ pluginInfo, ...props }: IPlugin) => {
   const lang = langStore.tgt;
@@ -76,7 +76,7 @@ const SettingsPlugin = ({ pluginInfo, ...props }: IPlugin) => {
                   {translate(Plugins_Words[plugin], lang)}
                 </Checkbox>
               ))}
-            {getPythonPluginSettings().map((settings, i) => {
+            {usePythonPluginSettings().map((settings, i) => {
               const identifierWithHash = settings.props.pluginInfo.identifier;
               const identifier = stripHashFromIdentifier(identifierWithHash);
               const pIsInvisible = pythonIsInvisible(identifierWithHash);

@@ -7,7 +7,7 @@ import { Toast_Words } from "@/lang/toast";
 import { Requests } from "@/requests/actions";
 
 type UploadImageOptions = {
-  failed: () => Promise<void>;
+  failed: (e: any) => Promise<void>;
 };
 
 interface IUploadImageResponseData {

@@ -83,6 +83,7 @@ export interface IPythonRequest {
   nodeData: INodeData;
   nodeDataList: INodeData[];
   extraData: Dictionary<any>;
+  isInternal?: boolean;
 }
 export interface IPythonResponse<T> {
   success: boolean;
@@ -94,4 +95,22 @@ export interface IPythonResponse<T> {
 
 export interface IUseHttpPython<R> extends IUsePythonInfo, IPythonHttpPluginCallbacks<R> {
   forceNotSend?: boolean;
+}
+
+// socket
+
+export type PythonSocketStatus = "pending" | "working" | "finished" | "exception";
+export interface IPythonSocketData<R> {
+  status: PythonSocketStatus;
+  pending: number;
+  data: R;
+}
+export interface IPythonSocketMessage<R> extends IPythonResponse<IPythonSocketData<R>> {}
+export interface IUseSocketPython<R> extends IUsePythonInfo {
+  onMessage: (message: IPythonSocketMessage<R>) => Promise<void>;
+  beforeConnect?: () => Promise<void>;
+  onSocketError?: (err: any) => void;
+}
+export interface IUseOneTimeSocketPython<R> extends IUseSocketPython<R> {
+  getInitialMessage: () => string;
 }

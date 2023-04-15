@@ -5,6 +5,8 @@ from PIL import Image
 from typing import Any
 from typing import Dict
 from typing import List
+from typing import Callable
+from typing import Coroutine
 
 from cfdraw import constants
 from cfdraw.utils import server
@@ -32,12 +34,15 @@ class IBasePlugin(IPlugin, metaclass=ABCMeta):
             response = await middleware(self, response)
         return response
 
-    def to_plugin_settings(self, identifier: str) -> Dict[str, Any]:
+    def hash_identifier(self, identifier: str) -> str:
+        return f"{identifier}.{self.hash}"
+
+    def to_plugin_settings(self) -> Dict[str, Any]:
         d = self.settings.dict()
         plugin_info = d.pop("pluginInfo")
         # `identifier` has hashed into `{identifier}.{hash}`
-        plugin_info["endpoint"] = f"/{'.'.join(identifier.split('.')[:-1])}"
-        plugin_info["identifier"] = identifier
+        plugin_info["endpoint"] = f"/{self.identifier}"
+        plugin_info["identifier"] = self.hash_identifier(self.identifier)
         plugin_type = f"_python.{self.type}"
         offset_x = d.pop("offsetX")
         offset_y = d.pop("offsetY")
@@ -79,7 +84,21 @@ class IHttpPlugin(IBasePlugin, metaclass=ABCMeta):
 
 
 class ISocketPlugin(IBasePlugin, metaclass=ABCMeta):
-    pass
+    send_text: Callable[[ISocketMessage], Coroutine[Any, Any, None]]
+
+    @abstractmethod
+    async def process(self, data: IPluginRequest) -> ISocketMessage:
+        pass
+
+
+class IInternalSocketPlugin(ISocketPlugin, metaclass=ABCMeta):
+    @property
+    def type(self) -> PluginType:
+        PluginType._INTERNAL
+
+    @property
+    def settings(self) -> IPluginSettings:
+        return IPluginSettings(w=1, h=1, nodeConstraint=NodeConstraints.NONE)
 
 
 # bindings
@@ -106,6 +125,7 @@ class IHttpFieldsPlugin(IHttpPlugin):
 __all__ = [
     "IHttpPlugin",
     "ISocketPlugin",
+    "IInternalSocketPlugin",
     "IHttpTextAreaPlugin",
     "IHttpQAPlugin",
     "IHttpFieldsPlugin",

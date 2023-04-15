@@ -3,6 +3,7 @@ from importlib import import_module
 from dataclasses import dataclass
 
 from cfdraw import constants
+from cfdraw.utils.cache import cache_resource
 
 
 @dataclass
@@ -41,6 +42,7 @@ class Config:
         return folder
 
 
+@cache_resource
 def get_config() -> Config:
     try:
         return getattr(

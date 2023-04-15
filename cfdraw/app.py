@@ -1,4 +1,5 @@
 import json
+import logging
 
 from io import BytesIO
 from PIL import Image
@@ -12,6 +13,7 @@ from fastapi import File
 from fastapi import Response
 from fastapi import WebSocket
 from fastapi import UploadFile
+from fastapi import WebSocketDisconnect
 from pydantic import BaseModel
 from cftool.misc import print_info
 from cftool.misc import random_hash
@@ -28,11 +30,10 @@ from cfdraw.utils.server import get_image_response_kwargs
 from cfdraw.schema.plugins import IPlugin
 from cfdraw.schema.plugins import IPluginRequest
 from cfdraw.schema.plugins import IPluginResponse
+from cfdraw.schema.plugins import ISocketMessage
 from cfdraw.plugins.base import IHttpPlugin
 from cfdraw.plugins.base import ISocketPlugin
 from cfdraw.plugins.factory import PluginFactory
-from cfdraw.compilers.plugin import set_plugin_settings
-from cfdraw.compilers.settings import set_constants
 
 
 async def ping() -> str:
@@ -69,8 +70,9 @@ class App:
     def plugins(self) -> Dict[str, IPlugin]:
         return PluginFactory.plugins
 
-    def hash_identifier(self, identifier: str) -> str:
-        return f"{identifier}.{self.hash}"
+    @property
+    def internal_plugins(self) -> Dict[str, IPlugin]:
+        return PluginFactory.internal_plugins
 
     # fastapi
 
@@ -89,10 +91,56 @@ class App:
     def add_websocket(self) -> None:
         @self.api.websocket(str(constants.Endpoint.WEBSOCKET))
         async def websocket(websocket: WebSocket) -> None:
+            async def on_failed(e: Exception) -> None:
+                logging.exception(e)
+                response = IPluginResponse(
+                    success=False,
+                    message=f"Invalid data: {get_err_msg(e)}",
+                    data={},
+                )
+                await websocket.send_text(json.dumps(response.dict()))
+
+            async def sent_text(data: ISocketMessage) -> None:
+                await websocket.send_text(json.dumps(data.dict()))
+
             await websocket.accept()
             while True:
-                data = await websocket.receive_text()
-                await websocket.send_text(f"Message text was: {data}")
+                try:
+                    raw_data = await websocket.receive_text()
+                    data = IPluginRequest(**json.loads(raw_data))
+                    if data.isInternal:
+                        identifier = data.identifier
+                        target_plugin = self.internal_plugins.get(identifier)
+                    else:
+                        identifier = data.identifier.split(".", 1)[-1]  # remove hash
+                        target_plugin = self.plugins.get(identifier)
+                    if target_plugin is None:
+                        plugin_str = "internal plugin" if data.isInternal else "plugin"
+                        response = IPluginResponse(
+                            success=False,
+                            message=(
+                                f"incoming message subscribed {plugin_str} '{identifier}', "
+                                "but it is not found"
+                            ),
+                            data={},
+                        )
+                    elif not isinstance(target_plugin, ISocketPlugin):
+                        response = IPluginResponse(
+                            success=False,
+                            message=(
+                                f"incoming message subscribed plugin '{identifier}', "
+                                "but it is not a socket plugin"
+                            ),
+                            data={},
+                        )
+                    else:
+                        target_plugin.send_text = sent_text
+                        response = await target_plugin(data)
+                    await sent_text(response)
+                except WebSocketDisconnect:
+                    break
+                except Exception as e:
+                    await on_failed(e)
 
     def add_upload_image(self) -> None:
         class ImageDataModel(BaseModel):
@@ -204,7 +252,6 @@ class App:
 
     def add_plugins(self) -> None:
         for identifier, plugin in self.plugins.items():
-            # TODO : handle socket plugins
             if isinstance(plugin, ISocketPlugin):
                 continue
             endpoint = f"/{identifier}"
@@ -217,15 +264,15 @@ class App:
                     responses=get_responses(IPluginResponse),
                 )
                 async def fn(data: IPluginRequest) -> IPluginResponse:
-                    if self.hash_identifier(_id) != data.identifier:
+                    if _p.hash_identifier(_id) != data.identifier:
                         return IPluginResponse(
                             success=False,
                             message=(
                                 f"internal error occurred: identifier mismatch, "
-                                f"current hash is {self.hash_identifier(_id)} "
+                                f"current hash is {_p.hash_identifier(_id)} "
                                 f"but incoming identifier is {data.identifier}"
                             ),
-                            data=BaseModel(),
+                            data={},
                         )
                     return await _p(data)
 
@@ -238,19 +285,8 @@ class App:
             print_info(f"🚀 Starting Server at {self.config.api_url} ...")
             print_info("🔨 Compiling Plugins...")
             for plugin in self.plugins.values():
+                plugin.hash = self.hash
                 plugin.http_session = self.http_session
-            set_plugin_settings(
-                {
-                    self.hash_identifier(identifier): plugin
-                    for identifier, plugin in self.plugins.items()
-                }
-            )
-            set_constants(
-                dict(
-                    backendPort=int(self.config.backend_port),
-                    useStrictMode=self.config.use_react_strict_mode,
-                )
-            )
             upload_root_path = self.config.upload_root_path
             print_info(f"🔔 Your files will be saved to '{upload_root_path}'")
             print_info("🎉 Server is Ready!")

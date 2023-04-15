@@ -39,17 +39,11 @@ class LogLevel(str, Enum):
     CRITICAL = "critical"
 
 
-# compiler
+# directories
+## common
 ROOT = Path(os.path.dirname(__file__))
 PARENT = ROOT.parent.absolute()
-SRC_FOLDER = PARENT / "src"
-PANELS_FOLDER = SRC_FOLDER / "board"
-PYTHON_PLUGINS_SETTINGS_PATH = PANELS_FOLDER / "_python.ts"
-TS_CONSTANTS_PATH = SRC_FOLDER / "utils" / "constants.ts"
-TS_PYTHON_CONSTANTS_PATH = SRC_FOLDER / "utils" / "_pythonConstants.ts"
-
-
-# upload
+## upload
 UPLOAD_ROOT = Path("~").expanduser() / ".cache" / "carefree-draw"
 UPLOAD_IMAGE_FOLDER_NAME = ".images"
 UPLOAD_PROJECT_FOLDER_NAME = ".projects"

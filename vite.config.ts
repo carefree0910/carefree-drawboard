@@ -21,6 +21,6 @@ export default defineConfig({
     },
   },
   server: {
-    port: parseInt(process.env.PORT || "5173"),
+    port: parseInt(process.env.CFDRAW_FE_PORT || "5173"),
   },
 });

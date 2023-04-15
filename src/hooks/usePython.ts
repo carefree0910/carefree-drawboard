@@ -4,7 +4,9 @@ import { INode, Logger } from "@noli/core";
 
 import type { IMeta } from "@/schema/meta";
 import type { INodeData, IPythonResponse, IPythonRequest, IUseHttpPython } from "@/schema/_python";
+import { IPythonStore, updatePythonStore } from "@/stores/_python";
 import { Requests } from "@/requests/actions";
+import { useWebSocket } from "@/requests/hooks";
 
 function getNodeData(node: INode | null): INodeData {
   if (!node) return {};
@@ -68,4 +70,32 @@ export function useHttpPython<R>({
       clearTimeout(timer);
     };
   }, deps);
+}
+
+export function useSyncPython() {
+  const getMessage = () => ({
+    identifier: "sync",
+    nodeData: {},
+    nodeDataList: [],
+    extraData: {},
+    isInternal: true,
+  });
+
+  useWebSocket<IPythonStore>({
+    getMessage,
+    onMessage: async ({ success, message, data: { status, data } }) => {
+      if (!success) {
+        Logger.warn(`sync python settings failed: ${message}`);
+        return { newMessage: getMessage };
+      }
+      if (status !== "finished") {
+        Logger.warn(`sync in progress: ${JSON.stringify(data)}`);
+      } else {
+        if (updatePythonStore(data)) {
+          Logger.log(`sync successfully: ${JSON.stringify(data)}, rerendering`);
+        }
+        return { newMessage: getMessage };
+      }
+    },
+  });
 }

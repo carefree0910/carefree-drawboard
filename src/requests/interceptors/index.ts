@@ -1,14 +1,11 @@
-import type { APISources, Interceptors } from "@/schema/requests";
-import { apis } from "../apis";
-import { noliboxInceptors } from "./nolibox";
+import type { APISources, APIs, Interceptors } from "@/schema/requests";
 import { _pythonInceptors } from "./_python";
 
 const interceptors: Record<APISources, Interceptors> = {
-  nolibox: noliboxInceptors,
   _python: _pythonInceptors,
 };
 
-export function setupInceptors(): void {
+export function useInceptors(apis: APIs): void {
   Object.entries(apis).forEach(([source, api]) => {
     const { beforeRequest, requestError, beforeResponse, responseError } =
       interceptors[source as APISources];

@@ -31,13 +31,9 @@ const ImageUploader: React.FC<ImageUploaderProps> = ({
       className={className}
       accept=".png, .jpeg, .jpg, .webp"
       customRequest={async ({ file }) => {
-        async function success(): Promise<void> {
-          toast(t, "success", translate(Toast_Words["upload-image-success-message"], lang));
+        async function failed(e: any): Promise<void> {
+          toast(t, "error", `${translate(Toast_Words["upload-image-error-message"], lang)} - ${e}`);
         }
-        async function failed(): Promise<void> {
-          toast(t, "error", translate(Toast_Words["upload-image-error-message"], lang));
-        }
-
         toast(t, "info", translate(Toast_Words["uploading-image-message"], lang));
         const blob = file as Blob;
         const uploadRes = await uploadImage(t, lang, blob, { failed });

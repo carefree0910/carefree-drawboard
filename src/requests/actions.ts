@@ -1,20 +1,24 @@
 import type { APISources } from "@/schema/requests";
-import { apis } from "./apis";
+import { useAPI } from "./hooks";
 
 export class Requests {
   static get<R = unknown, T extends APISources = APISources>(
     source: T,
     endpoint: string,
   ): Promise<R> {
-    return apis[source].get(endpoint).then((res) => res.data);
+    return useAPI(source)
+      .get(endpoint)
+      .then((res) => res.data);
   }
 
-  static postJson<R = unknown, T extends APISources = APISources>(
+  static postJson<R = unknown, D = any, T extends APISources = APISources>(
     source: T,
     endpoint: string,
-    data: any,
+    data: D,
   ): Promise<R> {
-    return apis[source].post(endpoint, data).then((res) => res.data);
+    return useAPI(source)
+      .post(endpoint, data)
+      .then((res) => res.data);
   }
 
   static postBlob<R = unknown, T extends APISources = APISources>(
@@ -24,6 +28,8 @@ export class Requests {
   ): Promise<R> {
     const formData = new FormData();
     formData.append(key, blob);
-    return apis[source].postForm(endpoint, formData).then((res) => res.data);
+    return useAPI(source)
+      .postForm(endpoint, formData)
+      .then((res) => res.data);
   }
 }
