@@ -2,6 +2,9 @@ import sys
 import socket
 import logging
 
+import numpy as np
+
+from io import BytesIO
 from PIL import Image
 from typing import Any
 from typing import Dict
@@ -10,6 +13,8 @@ from typing import Optional
 from fastapi import Response
 from fastapi import HTTPException
 from pydantic import BaseModel
+from cftool.cv import to_rgb
+from cftool.cv import np_to_bytes
 from cftool.misc import random_hash
 
 from cfdraw import constants
@@ -79,3 +84,19 @@ def upload_image(image: Image.Image) -> Dict[str, Any]:
     image.save(path)
     url = f"{config.api_url}/{path.relative_to(config.upload_root_path).as_posix()}"
     return dict(w=w, h=h, url=url)
+
+
+def get_image_response(file: str, jpeg: bool = False) -> Response:
+    config = get_config()
+    try:
+        image = Image.open(config.upload_image_folder / file)
+        if not jpeg:
+            content = np_to_bytes(np.array(image))
+        else:
+            with BytesIO() as f:
+                to_rgb(image).save(f, format="JPEG", quality=95)
+                f.seek(0)
+                content = f.read()
+        return Response(content=content, media_type="image/png")
+    except Exception as err:
+        raise_err(err)
