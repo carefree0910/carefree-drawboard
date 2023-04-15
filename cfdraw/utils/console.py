@@ -24,8 +24,16 @@ def rule(title: str) -> None:
     _console.rule(title)
 
 
-def ask(question: str, choices: Optional[List[str]] = None) -> str:
-    return Prompt.ask(question, choices=choices)
+def ask(
+    question: str,
+    choices: Optional[List[str]] = None,
+    *,
+    default: Optional[str] = None,
+) -> str:
+    kw = dict(choices=choices)
+    if default is not None:
+        kw["default"] = default
+    return Prompt.ask(question, **kw)
 
 
 def status(msg: str) -> Status:
