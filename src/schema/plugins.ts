@@ -72,6 +72,7 @@ export const allAvailablePlugins = [
   "undo",
   "redo",
   "download",
+  "delete",
   "textEditor",
   "groupEditor",
   "multiEditor",
@@ -95,6 +96,7 @@ export interface IPluginProps {
   undo: IPlugin;
   redo: IPlugin;
   download: IPlugin;
+  delete: IPlugin;
   textEditor: IPlugin;
   groupEditor: IPlugin;
   multiEditor: IPlugin;

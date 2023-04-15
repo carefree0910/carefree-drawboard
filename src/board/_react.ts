@@ -110,6 +110,22 @@ export const reactPluginSettings: IMakePlugin<AvailablePlugins>[] = [
     },
   },
   {
+    type: "delete",
+    props: {
+      offsetY: -48,
+      nodeConstraint: "anyNode",
+      renderInfo: {
+        w: 0,
+        h: 0,
+        src: "https://ailab-huawei-cdn.nolibox.com/upload/images/384b2261faa748e6b57e14e697e19520.png",
+        pivot: "lb",
+        follow: true,
+      },
+      pluginInfo: {},
+      noExpand: true,
+    },
+  },
+  {
     type: "textEditor",
     props: {
       p: "13px",
