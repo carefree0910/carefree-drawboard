@@ -6,6 +6,7 @@ from typing import Any
 from typing import Dict
 from typing import List
 from typing import Optional
+from aiohttp import ClientSession
 from fastapi import FastAPI
 from fastapi import File
 from fastapi import Response
@@ -20,8 +21,6 @@ from cfdraw import constants
 from cfdraw.utils import server
 from cfdraw.config import get_config
 from cfdraw.parsers import noli
-from cfdraw.compilers import plugin
-from cfdraw.compilers import settings
 from cfdraw.utils.server import raise_err
 from cfdraw.utils.server import get_err_msg
 from cfdraw.utils.server import get_responses
@@ -32,6 +31,8 @@ from cfdraw.schema.plugins import IPluginResponse
 from cfdraw.plugins.base import IHttpPlugin
 from cfdraw.plugins.base import ISocketPlugin
 from cfdraw.plugins.factory import PluginFactory
+from cfdraw.compilers.plugin import set_plugin_settings
+from cfdraw.compilers.settings import set_constants
 
 
 async def ping() -> str:
@@ -43,6 +44,9 @@ class App:
         # config
         self.config = get_config()
 
+        # clients
+        self.http_session = ClientSession()
+
         # fastapi
         self.api = FastAPI()
         self.add_cors()
@@ -51,7 +55,7 @@ class App:
         self.add_upload_image()
         self.add_project_managements()
         self.add_plugins()
-        self.add_on_startup()
+        self.add_events()
         self.hash = random_hash()
 
     def __str__(self) -> str:
@@ -227,19 +231,21 @@ class App:
 
             _register(identifier, plugin)
 
-    def add_on_startup(self) -> None:
+    def add_events(self) -> None:
         @self.api.on_event("startup")
-        def startup() -> None:
+        async def startup() -> None:
             self.hash = random_hash()
             print_info(f"🚀 Starting Server at {self.config.api_url} ...")
             print_info("🔨 Compiling Plugins...")
-            plugin.set_plugin_settings(
+            for plugin in self.plugins.values():
+                plugin.http_session = self.http_session
+            set_plugin_settings(
                 {
                     self.hash_identifier(identifier): plugin
                     for identifier, plugin in self.plugins.items()
                 }
             )
-            settings.set_constants(
+            set_constants(
                 dict(
                     backendPort=int(self.config.backend_port),
                     useStrictMode=self.config.use_react_strict_mode,
@@ -248,3 +254,10 @@ class App:
             upload_root_path = self.config.upload_root_path
             print_info(f"🔔 Your files will be saved to '{upload_root_path}'")
             print_info("🎉 Server is Ready!")
+
+        @self.api.on_event("shutdown")
+        async def shutdown() -> None:
+            await self.http_session.close()
+            for plugin in self.plugins.values():
+                plugin.http_session = None
+            self.http_session = None

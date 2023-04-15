@@ -10,6 +10,7 @@ from typing import Dict
 from typing import List
 from typing import TypeVar
 from typing import Optional
+from aiohttp import ClientSession
 from pydantic import Field
 from pydantic import BaseModel
 
@@ -179,6 +180,7 @@ class IPluginResponse(BaseModel):
 
 class IPlugin(ABC):
     identifier: str
+    http_session: ClientSession
 
     # abstract
 
