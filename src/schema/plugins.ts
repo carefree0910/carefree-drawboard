@@ -73,6 +73,9 @@ export const allAvailablePlugins = [
   "redo",
   "download",
   "delete",
+  "wiki",
+  "github",
+  "email",
   "textEditor",
   "groupEditor",
   "multiEditor",
@@ -97,6 +100,9 @@ export interface IPluginProps {
   redo: IPlugin;
   download: IPlugin;
   delete: IPlugin;
+  wiki: IPlugin;
+  github: IPlugin;
+  email: IPlugin;
   textEditor: IPlugin;
   groupEditor: IPlugin;
   multiEditor: IPlugin;

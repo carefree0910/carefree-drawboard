@@ -172,4 +172,48 @@ export const reactPluginSettings: IMakePlugin<AvailablePlugins>[] = [
       noExpand: true,
     },
   },
+  {
+    type: "wiki",
+    props: {
+      nodeConstraint: "none",
+      renderInfo: {
+        w: 0,
+        h: 0,
+        src: "https://ailab-huawei-cdn.nolibox.com/upload/images/7ca6f41cad574f35ab117d6cfbe53be4.png",
+        pivot: "rb",
+      },
+      pluginInfo: {},
+      noExpand: true,
+    },
+  },
+  {
+    type: "email",
+    props: {
+      offsetX: -120,
+      nodeConstraint: "none",
+      renderInfo: {
+        w: 0,
+        h: 0,
+        src: "https://ailab-huawei-cdn.nolibox.com/upload/images/7ff42ebb21664a9abb55331463951126.png",
+        pivot: "rb",
+      },
+      pluginInfo: {},
+      noExpand: true,
+    },
+  },
+  {
+    type: "github",
+    props: {
+      offsetX: -64,
+      nodeConstraint: "none",
+      renderInfo: {
+        w: 0,
+        h: 0,
+        src: "https://ailab-huawei-cdn.nolibox.com/upload/images/4fb8d24d515744f6ac6836b3ba12a649.png",
+        pivot: "rb",
+      },
+      pluginInfo: {},
+      noExpand: true,
+    },
+  },
 ];

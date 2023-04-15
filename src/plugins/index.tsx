@@ -16,6 +16,7 @@ export * from "./DownloadPlugin";
 export * from "./DeletePlugin";
 export * from "./TextEditorPlugin";
 export * from "./GroupPlugin";
+export * from "./LinksPlugin";
 export * from "./_python/HttpTextAreaPlugin";
 export * from "./_python/HttpQAPlugin";
 export * from "./_python/HttpFieldsPlugin";
