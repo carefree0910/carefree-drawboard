@@ -42,6 +42,8 @@ And you should see your app running at http://localhost:5123. Now you can play w
 
 > Notice that the generated template implements a Gaussian Blur plugin, which requires an image to pop up. You can upload an image either by dropping on directly to the drawboard 🎨, or by clicking the `Plus` button at the top right corner and select `Upload Image`.
 
+[Demo Video](https://user-images.githubusercontent.com/15677328/232184463-627c2cd7-728a-49ce-93c6-7c878edc27b9.mp4)
+
 ## Examples
 
 * [Getting Started](https://github.com/carefree0910/carefree-drawboard/wiki/Getting-Started), which is a more detailed tutorial to guide you step by step.
