@@ -239,17 +239,17 @@ class IMiddleWare(ABC):
         pass
 
     @abstractmethod
-    def process(self, response: Any) -> Any:
+    def process(self, response: Any) -> IPluginResponse:
         pass
 
     # optional callbacks
 
-    def before(self, request: Any) -> None:
+    def before(self, request: IPluginRequest) -> None:
         pass
 
     # api
 
-    def __call__(self, plugin: IPlugin, response: Any) -> Any:
+    def __call__(self, plugin: IPlugin, response: IPluginResponse) -> IPluginResponse:
         if plugin.type not in self.subscriptions:
             return response
         return self.process(response)

@@ -227,7 +227,7 @@ class App:
                     name=endpoint[1:].replace("/", "_"),
                     responses=get_responses(IPluginResponse),
                 )
-                def fn(data: IPluginRequest) -> Any:
+                def fn(data: IPluginRequest) -> IPluginResponse:
                     if self.hash_identifier(_id) != data.identifier:
                         return IPluginResponse(
                             success=False,
