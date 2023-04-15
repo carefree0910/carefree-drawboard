@@ -94,7 +94,11 @@ Unfortunately I'm Chinese and I can hardly access to Discord. 🤣 Even if there
 
 If you are kind enough please use the **GitHub Discussions**, or maybe there are other Discord replacements? I don't know, help!!!
 
+如果有热心观众对这个项目感兴趣并愿意帮忙建立一个中文社区，欢迎联系我，我会非常感激的！！
+
 ### Why do you build this project?
+
+> Also check [Design Philosophy](https://github.com/carefree0910/carefree-drawboard/wiki/Design-Philosophy).
 
 In short, I believe that:
 * Infinite Drawboard can unleash Infinite possibilities.
