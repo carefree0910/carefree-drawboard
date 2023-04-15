@@ -8,6 +8,8 @@ from pydantic import BaseModel
 
 from cfdraw.schema.plugins import *
 from cfdraw.plugins.base import *
+from cfdraw.parsers.noli import PivotType
+from cfdraw.parsers.noli import NodeConstraints
 from cfdraw.plugins.factory import PluginFactory
 
 
