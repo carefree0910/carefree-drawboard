@@ -1,8 +1,46 @@
 import json
 
+from typing import Any
+from typing import Dict
+from typing import List
+from typing import Optional
+from pydantic import BaseModel
+
 from cfdraw.schema.plugins import *
 from cfdraw.plugins.base import *
 from cfdraw.plugins.factory import PluginFactory
+
+
+class IMeta(BaseModel):
+    type: str
+    data: Dict[str, Any]
+
+    @property
+    def src(self) -> Optional["IMeta"]:
+        src = self.data.get("from")
+        if src is None:
+            return None
+        return IMeta(**src)
+
+    @property
+    def trace(self) -> List["IMeta"]:
+        src = self.src
+        if src is None:
+            return [self]
+        return [self] + src.trace
+
+    @property
+    def origin(self) -> "IMeta":
+        src = self.src
+        if src is None:
+            return self
+        return src.origin
+
+    @property
+    def represenation(self) -> str:
+        if self.type == "python.httpFields":
+            return self.data.get("identifier", "unknown")
+        return self.type
 
 
 @PluginFactory.record("meta")
@@ -20,7 +58,14 @@ class HttpMetaPlugin(IHttpTextAreaPlugin):
         )
 
     def process(self, data: IHttpPluginRequest) -> str:
-        return json.dumps(data.nodeData.meta, indent=4)
+        raw_meta = data.nodeData.meta
+        if raw_meta is None:
+            return "No meta found"
+        meta = IMeta(**raw_meta)
+        return f"""{" -> ".join([m.represenation for m in meta.trace[::-1]])}
+
+{json.dumps(raw_meta, indent=4)}        
+"""
 
 
 __all__ = [
