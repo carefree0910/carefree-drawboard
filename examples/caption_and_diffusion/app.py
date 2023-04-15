@@ -76,12 +76,12 @@ class HttpImageCaptioningPlugin(IHttpFieldsPlugin):
         )
 
     async def process(self, data: IPluginRequest) -> List[str]:
-        responses = get_models()[1](data.nodeData.src)
+        responses = get_models()[1](await self.load_image(data.nodeData.src))
         return [res["generated_text"] for res in responses]
 
 
 # uncomment this line to pre-load the models
-get_models()
+# get_models()
 register_plugin("txt2img")(HttpTextToImagePlugin)
 register_plugin("captioning")(HttpImageCaptioningPlugin)
 register_all_available_plugins()

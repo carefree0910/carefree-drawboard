@@ -20,7 +20,8 @@ class HttpGrayScalePlugin(IHttpFieldsPlugin):
         )
 
     async def process(self, data: IPluginRequest) -> Image.Image:
-        return self.load_image(data.nodeData.src).convert("L")
+        image = await self.load_image(data.nodeData.src)
+        return image.convert("L")
 
 
 class HttpEdgePlugin(IHttpFieldsPlugin):
@@ -38,11 +39,8 @@ class HttpEdgePlugin(IHttpFieldsPlugin):
         )
 
     async def process(self, data: IPluginRequest) -> Image.Image:
-        return (
-            self.load_image(data.nodeData.src)
-            .convert("L")
-            .filter(ImageFilter.FIND_EDGES)
-        )
+        image = await self.load_image(data.nodeData.src)
+        return image.convert("L").filter(ImageFilter.FIND_EDGES)
 
 
 class HttpGaussianBlurPlugin(IHttpFieldsPlugin):
@@ -73,7 +71,7 @@ class HttpGaussianBlurPlugin(IHttpFieldsPlugin):
         )
 
     async def process(self, data: IPluginRequest) -> Image.Image:
-        image = self.load_image(data.nodeData.src)
+        image = await self.load_image(data.nodeData.src)
         return image.filter(ImageFilter.GaussianBlur(data.extraData["size"]))
 
 

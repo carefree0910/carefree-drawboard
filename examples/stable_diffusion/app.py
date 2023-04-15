@@ -96,7 +96,7 @@ class HttpImageToImagePlugin(IHttpFieldsPlugin):
         )
 
     async def process(self, data: IPluginRequest) -> List[Image.Image]:
-        image = self.load_image(data.nodeData.src)
+        image = await self.load_image(data.nodeData.src)
         return get_models()[1](image=image, **data.extraData).images
 
 

@@ -1,5 +1,3 @@
-import requests
-
 from io import BytesIO
 from abc import abstractmethod
 from abc import ABC
@@ -230,13 +228,14 @@ class IPlugin(ABC):
             props["offsetY"] = offset_y
         return dict(type=plugin_type, props=props)
 
-    def load_image(self, src: str) -> Image.Image:
+    async def load_image(self, src: str) -> Image.Image:
         # check whether the incoming url refers to a local image
         # if so, load it from the local file system directly
         if src.startswith("http://") and constants.UPLOAD_IMAGE_FOLDER_NAME in src:
             file = src.split(constants.UPLOAD_IMAGE_FOLDER_NAME)[1][1:]  # remove '/'
             return server.get_image(file)
-        return Image.open(BytesIO(requests.get(src).content))
+        async with self.http_session.get(src) as res:
+            return Image.open(BytesIO(await res.read()))
 
 
 class IMiddleWare(ABC):

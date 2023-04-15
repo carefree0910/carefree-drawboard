@@ -59,7 +59,7 @@ pluginInfo=IHttpFieldsPluginInfo(
 ```python
 async def process(self, data: IPluginRequest) -> Image.Image:
     # `load_image` is an internal helper function to load an image (Image.Image) from `src`.
-    image = self.load_image(data.nodeData.src)
+    image = await self.load_image(data.nodeData.src)
     # here we can access the value of the slider by `data.extraData["size"]`
     kernel_size = data.extraData["size"]
     return image.filter(ImageFilter.GaussianBlur(kernel_size))
