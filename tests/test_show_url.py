@@ -14,7 +14,7 @@ class HttpShowUrlPlugin(IHttpTextAreaPlugin):
             offsetY=48,
         )
 
-    def process(self, data: IPluginRequest) -> str:
+    async def process(self, data: IPluginRequest) -> str:
         return data.nodeData.src or "Not Found"
 
 

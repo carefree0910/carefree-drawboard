@@ -57,7 +57,7 @@ class HttpMetaPlugin(IHttpTextAreaPlugin):
             offsetY=48,
         )
 
-    def process(self, data: IPluginRequest) -> str:
+    async def process(self, data: IPluginRequest) -> str:
         raw_meta = data.nodeData.meta
         if raw_meta is None:
             return "No meta found"

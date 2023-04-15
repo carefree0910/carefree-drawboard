@@ -13,7 +13,7 @@ class FieldsMiddleWare(IMiddleWare):
     def subscriptions(self) -> List[PluginType]:
         return [PluginType.HTTP_FIELDS]
 
-    def process(
+    async def process(
         self,
         response: Union[str, List[str], Image, List[Image], IPluginResponse],
     ) -> IPluginResponse:

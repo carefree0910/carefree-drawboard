@@ -35,7 +35,7 @@ class Plugin(IHttpFieldsPlugin):
             ),
         )
 
-    def process(self, data: IPluginRequest) -> Image.Image:
+    async def process(self, data: IPluginRequest) -> Image.Image:
         image = self.load_image(data.nodeData.src)
         return image.filter(ImageFilter.GaussianBlur(data.extraData["size"]))
 

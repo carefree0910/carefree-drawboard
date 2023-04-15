@@ -20,7 +20,7 @@ class HttpTimerPlugin(IHttpTextAreaPlugin):
             ),
         )
 
-    def process(self, data: IPluginRequest) -> str:
+    async def process(self, data: IPluginRequest) -> str:
         return datetime.now().strftime(TIME_FORMAT)
 
 

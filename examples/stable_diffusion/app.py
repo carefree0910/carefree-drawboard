@@ -73,7 +73,7 @@ class HttpTextToImagePlugin(IHttpFieldsPlugin):
             ),
         )
 
-    def process(self, data: IPluginRequest) -> List[Image.Image]:
+    async def process(self, data: IPluginRequest) -> List[Image.Image]:
         return get_models()[0](**data.extraData).images
 
 
@@ -95,7 +95,7 @@ class HttpImageToImagePlugin(IHttpFieldsPlugin):
             ),
         )
 
-    def process(self, data: IPluginRequest) -> List[Image.Image]:
+    async def process(self, data: IPluginRequest) -> List[Image.Image]:
         image = self.load_image(data.nodeData.src)
         return get_models()[1](image=image, **data.extraData).images
 

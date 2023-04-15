@@ -191,7 +191,7 @@ class IPlugin(ABC):
         pass
 
     @abstractmethod
-    def __call__(self, data: Any) -> Any:
+    async def __call__(self, data: IPluginRequest) -> IPluginResponse:
         pass
 
     # api
@@ -239,20 +239,24 @@ class IMiddleWare(ABC):
         pass
 
     @abstractmethod
-    def process(self, response: Any) -> IPluginResponse:
+    async def process(self, response: Any) -> IPluginResponse:
         pass
 
     # optional callbacks
 
-    def before(self, request: IPluginRequest) -> None:
+    async def before(self, request: IPluginRequest) -> None:
         pass
 
     # api
 
-    def __call__(self, plugin: IPlugin, response: IPluginResponse) -> IPluginResponse:
+    async def __call__(
+        self,
+        plugin: IPlugin,
+        response: IPluginResponse,
+    ) -> IPluginResponse:
         if plugin.type not in self.subscriptions:
             return response
-        return self.process(response)
+        return await self.process(response)
 
 
 # (react) bindings

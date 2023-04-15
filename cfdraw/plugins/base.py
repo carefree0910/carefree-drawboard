@@ -8,18 +8,18 @@ from cfdraw.plugins.middlewares import *
 
 class IBasePlugin(IPlugin, metaclass=ABCMeta):
     @abstractmethod
-    def process(self, data: IPluginRequest) -> IPluginResponse:
+    async def process(self, data: IPluginRequest) -> IPluginResponse:
         pass
 
     @property
     def middlewares(self) -> List[IMiddleWare]:
         return []
 
-    def __call__(self, data: IPluginRequest) -> IPluginResponse:
+    async def __call__(self, data: IPluginRequest) -> IPluginResponse:
         middlewares = self.middlewares
         for middleware in middlewares:
             middleware.before(data)
-        response = self.process(data)
+        response = await self.process(data)
         for middleware in middlewares:
             response = middleware(self, response)
         return response

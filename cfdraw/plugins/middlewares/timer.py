@@ -16,10 +16,10 @@ class TimerMiddleWare(IMiddleWare):
     def subscriptions(self) -> List[PluginType]:
         return [PluginType.HTTP_FIELDS]
 
-    def before(self, request: IPluginRequest) -> None:
+    async def before(self, request: IPluginRequest) -> None:
         self.t = time.time()
 
-    def process(self, response: IPluginResponse) -> IPluginResponse:
+    async def process(self, response: IPluginResponse) -> IPluginResponse:
         if self.t is None:
             return response
         response.data["_duration"] = time.time() - self.t

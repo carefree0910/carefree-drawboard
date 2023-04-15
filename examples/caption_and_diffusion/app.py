@@ -56,7 +56,7 @@ class HttpTextToImagePlugin(IHttpFieldsPlugin):
             ),
         )
 
-    def process(self, data: IPluginRequest) -> List[Image.Image]:
+    async def process(self, data: IPluginRequest) -> List[Image.Image]:
         prompt = data.nodeData.text
         return get_models()[0](prompt=prompt, **data.extraData).images
 
@@ -75,7 +75,7 @@ class HttpImageCaptioningPlugin(IHttpFieldsPlugin):
             pluginInfo=IHttpFieldsPluginInfo(header="Image Captioning", definitions={}),
         )
 
-    def process(self, data: IPluginRequest) -> List[str]:
+    async def process(self, data: IPluginRequest) -> List[str]:
         responses = get_models()[1](data.nodeData.src)
         return [res["generated_text"] for res in responses]
 
