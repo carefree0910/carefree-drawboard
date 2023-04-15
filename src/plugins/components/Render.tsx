@@ -1,3 +1,4 @@
+import type { ChakraComponent } from "@chakra-ui/react";
 import { useLayoutEffect } from "react";
 import { observer } from "mobx-react-lite";
 
@@ -22,7 +23,7 @@ import Floating, {
   IFloatingRenderEvent,
 } from "./Floating";
 
-const Render = ({
+const Render = (({
   id,
   offsetX,
   offsetY,
@@ -195,6 +196,6 @@ const Render = ({
       {children}
     </Floating>
   );
-};
+}) as ChakraComponent<"div", {}>;
 
 export default observer(Render);
