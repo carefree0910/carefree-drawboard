@@ -1,4 +1,3 @@
-from io import BytesIO
 from abc import abstractmethod
 from abc import ABC
 from PIL import Image
@@ -12,8 +11,6 @@ from aiohttp import ClientSession
 from pydantic import Field
 from pydantic import BaseModel
 
-from cfdraw import constants
-from cfdraw.utils import server
 from cfdraw.schema.fields import IFieldDefinition
 from cfdraw.parsers.noli import Matrix2D
 from cfdraw.parsers.noli import INodeType
@@ -180,8 +177,6 @@ class IPlugin(ABC):
     identifier: str
     http_session: ClientSession
 
-    # abstract
-
     @property
     @abstractmethod
     def type(self) -> PluginType:
@@ -196,46 +191,13 @@ class IPlugin(ABC):
     async def __call__(self, data: IPluginRequest) -> IPluginResponse:
         pass
 
-    # api
-
+    @abstractmethod
     def to_plugin_settings(self, identifier: str) -> Dict[str, Any]:
-        d = self.settings.dict()
-        plugin_info = d.pop("pluginInfo")
-        # `identifier` has hashed into `{identifier}.{hash}`
-        plugin_info["endpoint"] = f"/{'.'.join(identifier.split('.')[:-1])}"
-        plugin_info["identifier"] = identifier
-        plugin_type = f"_python.{self.type}"
-        offset_x = d.pop("offsetX")
-        offset_y = d.pop("offsetY")
-        node_constraint = d.pop("nodeConstraint")
-        chakra_props = {}
-        for field in IChakra.__fields__:
-            chakra_value = d.pop(field)
-            if chakra_value is not None:
-                chakra_props[field] = chakra_value
-        for k, v in list(d.items()):
-            if v is None:
-                d.pop(k)
-        props = dict(
-            nodeConstraint=node_constraint,
-            pluginInfo=plugin_info,
-            renderInfo=d,
-            **chakra_props,
-        )
-        if offset_x is not None:
-            props["offsetX"] = offset_x
-        if offset_y is not None:
-            props["offsetY"] = offset_y
-        return dict(type=plugin_type, props=props)
+        pass
 
+    @abstractmethod
     async def load_image(self, src: str) -> Image.Image:
-        # check whether the incoming url refers to a local image
-        # if so, load it from the local file system directly
-        if src.startswith("http://") and constants.UPLOAD_IMAGE_FOLDER_NAME in src:
-            file = src.split(constants.UPLOAD_IMAGE_FOLDER_NAME)[1][1:]  # remove '/'
-            return server.get_image(file)
-        async with self.http_session.get(src) as res:
-            return Image.open(BytesIO(await res.read()))
+        pass
 
 
 class IMiddleWare(ABC):
