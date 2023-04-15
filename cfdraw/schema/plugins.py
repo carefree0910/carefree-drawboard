@@ -13,6 +13,8 @@ from typing import Optional
 from pydantic import Field
 from pydantic import BaseModel
 
+from cfdraw import constants
+from cfdraw.utils import server
 from cfdraw.schema.fields import IFieldDefinition
 from cfdraw.parsers.noli import Matrix2D
 from cfdraw.parsers.noli import INodeType
@@ -227,6 +229,11 @@ class IPlugin(ABC):
         return dict(type=plugin_type, props=props)
 
     def load_image(self, src: str) -> Image.Image:
+        # check whether the incoming url refers to a local image
+        # if so, load it from the local file system directly
+        if src.startswith("http://") and constants.UPLOAD_IMAGE_FOLDER_NAME in src:
+            file = src.split(constants.UPLOAD_IMAGE_FOLDER_NAME)[1][1:]  # remove '/'
+            return server.get_image(file)
         return Image.open(BytesIO(requests.get(src).content))
 
 

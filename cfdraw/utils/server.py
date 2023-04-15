@@ -86,6 +86,22 @@ def upload_image(image: Image.Image) -> Dict[str, Any]:
     return dict(w=w, h=h, url=url)
 
 
+def get_image(file: str, jpeg: bool = False) -> Image.Image:
+    config = get_config()
+    try:
+        image = Image.open(config.upload_image_folder / file)
+        if not jpeg:
+            return image
+        with BytesIO() as f:
+            to_rgb(image).save(f, format="JPEG", quality=95)
+            f.seek(0)
+            image = Image.open(f)
+            image.load()
+            return image
+    except Exception as err:
+        raise_err(err)
+
+
 def get_image_response(file: str, jpeg: bool = False) -> Response:
     config = get_config()
     try:
