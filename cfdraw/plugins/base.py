@@ -1,5 +1,6 @@
 from abc import abstractmethod
 from abc import ABCMeta
+from typing import Any
 from typing import List
 
 from cfdraw.schema.plugins import *
@@ -8,7 +9,7 @@ from cfdraw.plugins.middlewares import *
 
 class IBasePlugin(IPlugin, metaclass=ABCMeta):
     @abstractmethod
-    async def process(self, data: IPluginRequest) -> IPluginResponse:
+    async def process(self, data: IPluginRequest) -> Any:
         pass
 
     @property
@@ -18,10 +19,10 @@ class IBasePlugin(IPlugin, metaclass=ABCMeta):
     async def __call__(self, data: IPluginRequest) -> IPluginResponse:
         middlewares = self.middlewares
         for middleware in middlewares:
-            middleware.before(data)
+            await middleware.before(data)
         response = await self.process(data)
         for middleware in middlewares:
-            response = middleware(self, response)
+            response = await middleware(self, response)
         return response
 
 

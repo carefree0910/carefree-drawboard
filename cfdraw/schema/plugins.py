@@ -249,11 +249,7 @@ class IMiddleWare(ABC):
 
     # api
 
-    async def __call__(
-        self,
-        plugin: IPlugin,
-        response: IPluginResponse,
-    ) -> IPluginResponse:
+    async def __call__(self, plugin: IPlugin, response: Any) -> IPluginResponse:
         if plugin.type not in self.subscriptions:
             return response
         return await self.process(response)
