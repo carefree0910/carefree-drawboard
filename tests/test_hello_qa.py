@@ -16,7 +16,7 @@ class HttpHelloQAPlugin(IHttpQAPlugin):
             ),
         )
 
-    def process(self, data: IHttpPluginRequest) -> str:
+    def process(self, data: IPluginRequest) -> str:
         return f"Hello, {data.extraData['text']}!"
 
 

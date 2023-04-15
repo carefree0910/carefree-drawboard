@@ -1,26 +1,21 @@
 from abc import abstractmethod
 from abc import ABCMeta
 from typing import List
-from typing import Generic
-from typing import TypeVar
 
 from cfdraw.schema.plugins import *
 from cfdraw.plugins.middlewares import *
 
 
-TSocketResponse = TypeVar("TSocketResponse", bound="ISocketResponse", covariant=True)
-
-
-class IHttpPlugin(IPlugin, metaclass=ABCMeta):
+class IBasePlugin(IPlugin, metaclass=ABCMeta):
     @abstractmethod
-    def process(self, data: IHttpPluginRequest) -> IHttpPluginResponse:
+    def process(self, data: IPluginRequest) -> IPluginResponse:
         pass
 
     @property
     def middlewares(self) -> List[IMiddleWare]:
-        return [TextAreaMiddleWare(), FieldsMiddleWare(), TimerMiddleWare()]
+        return []
 
-    def __call__(self, data: IHttpPluginRequest) -> IHttpPluginResponse:
+    def __call__(self, data: IPluginRequest) -> IPluginResponse:
         middlewares = self.middlewares
         for middleware in middlewares:
             middleware.before(data)
@@ -30,10 +25,14 @@ class IHttpPlugin(IPlugin, metaclass=ABCMeta):
         return response
 
 
-class ISocketPlugin(Generic[TSocketResponse], IPlugin, metaclass=ABCMeta):
-    @abstractmethod
-    def __call__(self, data: ISocketPluginMessage) -> TSocketResponse:
-        pass
+class IHttpPlugin(IBasePlugin, metaclass=ABCMeta):
+    @property
+    def middlewares(self) -> List[IMiddleWare]:
+        return [TextAreaMiddleWare(), FieldsMiddleWare(), TimerMiddleWare()]
+
+
+class ISocketPlugin(IBasePlugin, metaclass=ABCMeta):
+    pass
 
 
 # bindings

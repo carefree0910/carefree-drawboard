@@ -116,8 +116,6 @@ Pivot of the plugin.
 
 # web
 
-## http
-
 
 class INodeData(BaseModel):
     """This should align with `INodeData` at `src/schema/_python.ts`"""
@@ -149,7 +147,7 @@ class INodeData(BaseModel):
     )
 
 
-class IHttpPluginRequest(BaseModel):
+class IPluginRequest(BaseModel):
     identifier: str = Field(..., description="The identifier of the plugin")
     nodeData: INodeData = Field(
         ...,
@@ -168,21 +166,10 @@ List of data extracted from `nodes`.
     extraData: Dict[str, Any] = Field(..., description="Extra data of each plugin")
 
 
-class IHttpPluginResponse(BaseModel):
+class IPluginResponse(BaseModel):
     success: bool = Field(..., description="Whether returned successfully")
     message: str = Field(..., description="The message of the response")
     data: Dict[str, Any] = Field(..., description="The data of the response")
-
-
-## socket
-
-
-class ISocketPluginMessage(IHttpPluginRequest):
-    data: Dict[str, Any] = Field(..., description="The extra data of the message")
-
-
-class ISocketResponse(BaseModel):
-    data: BaseModel = Field(..., description="The data of the response")
 
 
 # plugin interface
@@ -311,10 +298,8 @@ __all__ = [
     "TextAlign",
     # plugins
     "IPluginSettings",
-    "IHttpPluginRequest",
-    "IHttpPluginResponse",
-    "ISocketPluginMessage",
-    "ISocketResponse",
+    "IPluginRequest",
+    "IPluginResponse",
     "IPlugin",
     "IMiddleWare",
     # bindings

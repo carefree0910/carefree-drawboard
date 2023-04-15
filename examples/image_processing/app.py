@@ -19,7 +19,7 @@ class HttpGrayScalePlugin(IHttpFieldsPlugin):
             expandProps=IChakra(bg="green.50"),
         )
 
-    def process(self, data: IHttpPluginRequest) -> Image.Image:
+    def process(self, data: IPluginRequest) -> Image.Image:
         return self.load_image(data.nodeData.src).convert("L")
 
 
@@ -37,7 +37,7 @@ class HttpEdgePlugin(IHttpFieldsPlugin):
             pluginInfo=IHttpFieldsPluginInfo(definitions={}),
         )
 
-    def process(self, data: IHttpPluginRequest) -> Image.Image:
+    def process(self, data: IPluginRequest) -> Image.Image:
         return (
             self.load_image(data.nodeData.src)
             .convert("L")
@@ -72,7 +72,7 @@ class HttpGaussianBlurPlugin(IHttpFieldsPlugin):
             ),
         )
 
-    def process(self, data: IHttpPluginRequest) -> Image.Image:
+    def process(self, data: IPluginRequest) -> Image.Image:
         image = self.load_image(data.nodeData.src)
         return image.filter(ImageFilter.GaussianBlur(data.extraData["size"]))
 
