@@ -38,20 +38,21 @@ export function useHttpPython<R>({
     if (isInvisible || forceNotSend) return Promise.resolve();
     const preprocess = beforeRequest ? beforeRequest() : Promise.resolve();
     return preprocess
-      .then(() => {
+      .then(() =>
         Requests.postJson<IPythonResponse<R>, IPythonRequest>("_python", endpoint, {
           identifier,
           nodeData: getNodeData(node),
           nodeDataList: nodes.length <= 1 ? [] : nodes.map(getNodeData),
           extraData: getExtraRequestData ? getExtraRequestData() : {},
-        }).then((res) => {
-          if (res.success) onUseHttpPythonSuccess(res);
-          else throw Error(res.message);
-        });
+        }),
+      )
+      .then((res) => {
+        if (res.success) return onUseHttpPythonSuccess(res);
+        throw Error(res.message);
       })
       .catch((err) => {
-        if (onUseHttpPythonError) onUseHttpPythonError(err);
-        else Logger.error(err);
+        if (onUseHttpPythonError) return onUseHttpPythonError(err);
+        Logger.error(err);
       });
   }, deps);
 
