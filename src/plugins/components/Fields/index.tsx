@@ -10,7 +10,7 @@ export function useDefinitions(definitions: IDefinitions, numColumns?: number) {
 
   return (
     <>
-      {Object.entries(definitions).map(([field, definition], i) => {
+      {Object.entries(definitions).map(([field, definition]) => {
         let Field: any | null = null;
         if (definition.type === "text") {
           Field = TextField;

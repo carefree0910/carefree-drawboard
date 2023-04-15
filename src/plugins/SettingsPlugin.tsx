@@ -66,9 +66,9 @@ const SettingsPlugin = ({ pluginInfo, ...props }: IPlugin) => {
           <Flex w="100%" gap="8px" direction="column" justifyContent="space-around">
             {allAvailablePlugins
               .filter((plugin) => !["settings", "undo", "redo"].includes(plugin))
-              .map((plugin) => (
+              .map((plugin, i) => (
                 <Checkbox
-                  key={plugin}
+                  key={`plugin-${i}`}
                   value={plugin}
                   isChecked={!isInvisible(plugin)}
                   onChange={() => setVisible(plugin, isInvisible(plugin))}
@@ -76,13 +76,13 @@ const SettingsPlugin = ({ pluginInfo, ...props }: IPlugin) => {
                   {translate(Plugins_Words[plugin], lang)}
                 </Checkbox>
               ))}
-            {getPythonPluginSettings().map((settings) => {
+            {getPythonPluginSettings().map((settings, i) => {
               const identifierWithHash = settings.props.pluginInfo.identifier;
               const identifier = stripHashFromIdentifier(identifierWithHash);
               const pIsInvisible = pythonIsInvisible(identifierWithHash);
               return (
                 <Checkbox
-                  key={identifierWithHash}
+                  key={`${identifierWithHash}-${i}`}
                   value={identifier}
                   isChecked={!pIsInvisible}
                   onChange={() => setPythonVisible(identifierWithHash, pIsInvisible)}
