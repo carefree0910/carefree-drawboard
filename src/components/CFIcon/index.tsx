@@ -23,7 +23,7 @@ export interface IconProps {
 
 const block = genBlock("c-icon");
 
-const Icon: React.FC<IconProps> = ({
+const CFIcon: React.FC<IconProps> = ({
   svg: Svg,
   squared,
   className,
@@ -59,4 +59,4 @@ const Icon: React.FC<IconProps> = ({
   );
 };
 
-export default chakra(Icon);
+export default chakra(CFIcon);

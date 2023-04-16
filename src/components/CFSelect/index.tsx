@@ -18,7 +18,7 @@ import "./index.scss";
 import { ReactComponent as ArrowDownIcon } from "@/assets/icons/arrow-down.svg";
 import { genBlock } from "@/utils/bem";
 import { themeStore } from "@/stores/theme";
-import Icon from "@/components/CFIcon";
+import CFIcon from "../CFIcon";
 
 export interface ISelect<T extends string> extends MenuButtonProps {
   icon?: ReactElement;
@@ -90,7 +90,7 @@ function CFSelect<T extends string>({
           {value ? convertedValue : null}
           {value ? <Spacer /> : null}
           <Center color={selectColors.color} fontSize="8px" {...iconProps}>
-            {icon ?? <Icon svg={ArrowDownIcon} className={block()} fillbyCurrentColor />}
+            {icon ?? <CFIcon svg={ArrowDownIcon} className={block()} fillbyCurrentColor />}
           </Center>
         </Flex>
       </MenuButton>
