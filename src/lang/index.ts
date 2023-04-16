@@ -3,6 +3,7 @@ import { langDescriptions, langStore, updateDictionary } from "@noli/business";
 
 import { uiLangRecords } from "./ui";
 import { addLangRecords } from "./add";
+import { brushLangRecords } from "./brush";
 import { toastLangRecords } from "./toast";
 import { pluginsLangRecords } from "./plugins";
 import { downloadLangRecords } from "./download";
@@ -19,6 +20,7 @@ const initLangDirs = [
   addLangRecords,
   downloadLangRecords,
   nodeEditorLangRecords,
+  brushLangRecords,
 ];
 
 export function initializeLang(): void {

@@ -79,6 +79,7 @@ export const allAvailablePlugins = [
   "textEditor",
   "groupEditor",
   "multiEditor",
+  "brush",
 ] as const;
 export const allAvailablePythonPlugins = [
   "_python.httpTextArea",
@@ -106,6 +107,7 @@ export interface IPluginProps {
   textEditor: IPlugin;
   groupEditor: IPlugin;
   multiEditor: IPlugin;
+  brush: IPlugin;
   // python plugins
   "_python.httpTextArea": IPythonHttpTextAreaPlugin;
   "_python.httpQA": IPythonHttpQAPlugin;

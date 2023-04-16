@@ -173,6 +173,24 @@ export const reactPluginSettings: IMakePlugin<AvailablePlugins>[] = [
     },
   },
   {
+    type: "brush",
+    props: {
+      p: "0px",
+      pl: "10px",
+      pr: "7px",
+      offsetY: 176,
+      nodeConstraint: "none",
+      renderInfo: {
+        w: 300,
+        h: 220,
+        src: "https://ailab-huawei-cdn.nolibox.com/upload/static/brush.svg",
+        pivot: "rt",
+        follow: false,
+      },
+      pluginInfo: {},
+    },
+  },
+  {
     type: "wiki",
     props: {
       nodeConstraint: "none",

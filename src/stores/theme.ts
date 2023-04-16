@@ -1,5 +1,6 @@
 import { computed, makeObservable, observable } from "mobx";
 
+import type { IPathOptions } from "@noli/core";
 import { ABCStore } from "@noli/business";
 
 type ThemeType = "light" | "dark";
@@ -34,6 +35,8 @@ type ThemeStyles = {
     checkedBgColor: string;
     uncheckedBgColor: string;
   };
+  // styles for the `brush`
+  defaultBrushStyles: Partial<IPathOptions>;
 };
 
 export const allThemes: Record<ThemeType, ThemeStyles> = {
@@ -60,6 +63,11 @@ export const allThemes: Record<ThemeType, ThemeStyles> = {
       checkedBgColor: "#3fc9a8",
       uncheckedBgColor: "#dddddd",
     },
+    defaultBrushStyles: {
+      stroke: "rgba(96, 120, 244, 0.6)",
+      fill: "rgba(96, 120, 244, 0.4)",
+      width: 3,
+    },
   },
   // currently dark mode is just a placeholder
   dark: {
@@ -84,6 +92,11 @@ export const allThemes: Record<ThemeType, ThemeStyles> = {
     switchColors: {
       checkedBgColor: "#3fc9a8",
       uncheckedBgColor: "#dddddd",
+    },
+    defaultBrushStyles: {
+      stroke: "rgba(96, 120, 244, 0.7)",
+      fill: "rgba(96, 120, 244, 0.7)",
+      width: 3,
     },
   },
 };

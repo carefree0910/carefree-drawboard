@@ -4,7 +4,7 @@ import type { IToast } from "./misc";
 
 // general
 
-export const allMetaTypes = ["upload", "python.httpFields", "add.text"] as const;
+export const allMetaTypes = ["upload", "python.httpFields", "add.text", "add.sketch.path"] as const;
 export type MetaType = typeof allMetaTypes[number];
 export interface ICommonMetaData<T extends _IMetaData = _IMetaData> {
   timestamp?: number;
@@ -38,6 +38,7 @@ export type IPythonHttpFieldsMetaData = ICommonMetaData & {
 export interface IMetaData {
   upload: IUploadMetaData;
   "add.text": ICommonMetaData;
+  "add.sketch.path": ICommonMetaData;
   "python.httpFields": IPythonHttpFieldsMetaData;
 }
 

@@ -27,6 +27,7 @@ function updateTimestamps(alias: string, createTime?: number): void {
 const consumers: Record<MetaType, (input: IImportMeta<any>) => void> = {
   upload: consumeUpload,
   "add.text": consumeAddText,
+  "add.sketch.path": consumeAddSketchPath,
   "python.httpFields": consumePythonHttpFields,
 };
 function consumeUpload({ t, lang, type, metaData }: IImportMeta<"upload">): void {
@@ -67,6 +68,9 @@ function consumeAddText({ t, lang, type, metaData }: IImportMeta<"add.text">): v
     autoFit: true,
     meta: { type, data: metaData },
   });
+}
+function consumeAddSketchPath(): void {
+  throw Error("Add sketch path by `importMeta` is not supported yet.");
 }
 function consumePythonHttpFields({
   t,
