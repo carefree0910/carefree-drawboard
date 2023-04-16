@@ -29,6 +29,11 @@ type ThemeStyles = {
     sliderThumbBorderColor: string;
     inputBgColor: string;
   };
+  // styles for the `CFSwitch` component
+  switchColors: {
+    checkedBgColor: string;
+    uncheckedBgColor: string;
+  };
 };
 
 export const allThemes: Record<ThemeType, ThemeStyles> = {
@@ -51,6 +56,10 @@ export const allThemes: Record<ThemeType, ThemeStyles> = {
       sliderThumbBorderColor: "#3fc9a8",
       inputBgColor: "#eeeeee",
     },
+    switchColors: {
+      checkedBgColor: "#3fc9a8",
+      uncheckedBgColor: "#dddddd",
+    },
   },
   // currently dark mode is just a placeholder
   dark: {
@@ -71,6 +80,10 @@ export const allThemes: Record<ThemeType, ThemeStyles> = {
       sliderTrackColor: "#3ad822",
       sliderThumbBorderColor: "#3fc9a8",
       inputBgColor: "#eeeeee",
+    },
+    switchColors: {
+      checkedBgColor: "#3fc9a8",
+      uncheckedBgColor: "#dddddd",
     },
   },
 };
