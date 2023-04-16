@@ -47,3 +47,4 @@ PARENT = ROOT.parent.absolute()
 UPLOAD_ROOT = Path("~").expanduser() / ".cache" / "carefree-draw"
 UPLOAD_IMAGE_FOLDER_NAME = ".images"
 UPLOAD_PROJECT_FOLDER_NAME = ".projects"
+PROJECT_META_FILE = "_meta.json"
