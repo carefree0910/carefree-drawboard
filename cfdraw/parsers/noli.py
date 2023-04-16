@@ -233,5 +233,7 @@ def parse_graph(render_info_list: List[Dict[str, Any]]) -> Graph:
 
 __all__ = [
     "PivotType",
+    "SingleNodeType",
+    "GroupType",
     "NodeConstraints",
 ]
