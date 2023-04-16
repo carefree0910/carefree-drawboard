@@ -12,6 +12,7 @@ from cfdraw import constants
 from cfdraw.utils import server
 from cfdraw.schema.plugins import *
 from cfdraw.plugins.middlewares import *
+from cfdraw.parsers.noli import SingleNodeType
 from cfdraw.parsers.noli import NodeConstraints
 from cfdraw.parsers.chakra import IChakra
 
@@ -66,6 +67,9 @@ class IBasePlugin(IPlugin, metaclass=ABCMeta):
         if offset_y is not None:
             props["offsetY"] = offset_y
         return dict(type=plugin_type, props=props)
+
+    def filter(self, nodes: List[INodeData], target: SingleNodeType) -> List[INodeData]:
+        return list(filter(lambda node: node.type == target, nodes))
 
     async def load_image(self, src: str) -> Image.Image:
         # check whether the incoming url refers to a local image
