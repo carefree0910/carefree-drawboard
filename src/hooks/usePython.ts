@@ -83,7 +83,7 @@ export function useHttpPython<R>({
 }: IUseHttpPython<R>) {
   const deps = [
     node?.alias,
-    ...nodes.map((n) => n.alias),
+    nodes.map((n) => n.alias).join("_"),
     endpoint,
     identifier,
     updateInterval,
