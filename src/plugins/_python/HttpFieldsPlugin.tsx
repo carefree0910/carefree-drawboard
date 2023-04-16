@@ -18,10 +18,12 @@ import { drawboardPluginFactory } from "@/plugins/utils/factory";
 import { CFHeading } from "@/components/CFHeading";
 import { useDefinitions } from "../components/Fields";
 import { floatingControlEvent } from "../components/Floating";
-import { usePureIdentifier } from "./hooks";
+import { useIdentifierId } from "./hooks";
 import PythonHttpPluginWithSubmit from "./HttpPluginWithSubmit";
 
 const PythonHttpFieldsPlugin = ({ pluginInfo, ...props }: IPythonHttpFieldsPlugin) => {
+  const identifierId = useIdentifierId(pluginInfo.identifier);
+  const id = useMemo(() => `${identifierId}_${getRandomHash()}`, [identifierId]);
   const t = useToast();
   const lang = langStore.tgt;
   const definitions = pluginInfo.definitions;
@@ -35,7 +37,6 @@ const PythonHttpFieldsPlugin = ({ pluginInfo, ...props }: IPythonHttpFieldsPlugi
     },
     [definitions],
   );
-  const pureIdentifier = usePureIdentifier(pluginInfo.identifier);
   const currentMeta = useMemo(() => {
     const node = pluginInfo.node;
     let currentMeta: IMeta | undefined;
@@ -44,10 +45,6 @@ const PythonHttpFieldsPlugin = ({ pluginInfo, ...props }: IPythonHttpFieldsPlugi
     }
     return currentMeta;
   }, [pluginInfo.node]);
-  const id = useMemo(
-    () => `${pureIdentifier.replaceAll(".", "_")}_${getRandomHash()}`,
-    [pureIdentifier],
-  );
   const emitClose = useCallback(() => floatingControlEvent.emit({ id, expand: false }), [id]);
 
   async function onUseHttpPythonSuccess({
@@ -58,7 +55,7 @@ const PythonHttpFieldsPlugin = ({ pluginInfo, ...props }: IPythonHttpFieldsPlugi
       lang,
       type: "python.httpFields",
       metaData: {
-        identifier: pureIdentifier,
+        identifier: identifierId,
         parameters: getExtraRequestData(),
         response,
         duration: _duration,
@@ -70,7 +67,7 @@ const PythonHttpFieldsPlugin = ({ pluginInfo, ...props }: IPythonHttpFieldsPlugi
     toast(t, "error", `${translate(Toast_Words["submit-task-error-message"], lang)} - ${err}`);
   }
 
-  const header = pluginInfo.header ?? titleCaseWord(pureIdentifier);
+  const header = pluginInfo.header ?? titleCaseWord(identifierId);
   return (
     <PythonHttpPluginWithSubmit
       id={id}

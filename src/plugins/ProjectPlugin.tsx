@@ -14,7 +14,6 @@ import { setCurrentProjectName, useCurrentProject } from "@/stores/projects";
 import {
   ILoadedProject,
   fetchAllProjects,
-  loadLocalProject,
   loadProject,
   saveProject,
 } from "@/actions/manageProjects";
@@ -31,7 +30,7 @@ import { downloadCurrentFullProject } from "@/actions/download";
 
 type IImportLocal = ILoadedProject | INodePack[];
 const ProjectPlugin = ({ pluginInfo, ...props }: IPlugin) => {
-  const id = `project_${getRandomHash()}`;
+  const id = useMemo(() => `project_${getRandomHash()}`, []);
   const t = useToast();
   const lang = langStore.tgt;
   const { uid, name } = useCurrentProject();

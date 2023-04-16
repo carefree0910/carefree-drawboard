@@ -1,4 +1,4 @@
-import { useState } from "react";
+import { useMemo, useState } from "react";
 import { observer } from "mobx-react-lite";
 import { Textarea } from "@chakra-ui/react";
 
@@ -9,11 +9,12 @@ import type { IPythonHttpQAPlugin, IPythonResponse } from "@/schema/_python";
 import { UI_Words } from "@/lang/ui";
 import { CFInput } from "@/components/CFInput";
 import { drawboardPluginFactory } from "@/plugins/utils/factory";
-import { usePureIdentifier } from "./hooks";
+import { useIdentifierId } from "./hooks";
 import PythonHttpPluginWithSubmit from "./HttpPluginWithSubmit";
 
 const PythonHttpQAPlugin = ({ pluginInfo, ...props }: IPythonHttpQAPlugin) => {
-  const id = `${usePureIdentifier(pluginInfo.identifier)}_QA_${getRandomHash()}`;
+  const identifierId = useIdentifierId(pluginInfo.identifier);
+  const id = useMemo(() => `${identifierId}_QA_${getRandomHash()}`, []);
   const [userInput, setUserInput] = useState("");
   const [serverText, setServerText] = useState(pluginInfo.initialText);
   const lang = langStore.tgt;

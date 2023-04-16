@@ -1,3 +1,4 @@
+import { useMemo } from "react";
 import { observer } from "mobx-react-lite";
 import { useToast } from "@chakra-ui/react";
 
@@ -10,7 +11,7 @@ import Render from "./components/Render";
 import { onArrange } from "@/actions/arrange";
 
 const ArrangePlugin = ({ pluginInfo: { nodes }, ...props }: IPlugin) => {
-  const id = `arrange_${getRandomHash()}`;
+  const id = useMemo(() => `arrange_${getRandomHash()}`, []);
   const t = useToast();
   const lang = langStore.tgt;
 

@@ -14,7 +14,7 @@ import { CFDivider } from "@/components/CFDivider";
 import { NodeEditor_Words } from "@/lang/nodeEditor";
 
 const TextEditorPlugin = ({ pluginInfo: { node }, ...props }: IPlugin) => {
-  const id = `textEditor_${getRandomHash()}`;
+  const id = useMemo(() => `textEditor_${getRandomHash()}`, []);
   const lang = langStore.tgt;
   const { nodeContent, nodeFontSize } = useMemo<{
     nodeContent?: string;

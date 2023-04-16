@@ -1,3 +1,4 @@
+import { useMemo } from "react";
 import { observer } from "mobx-react-lite";
 import { Flex, useToast } from "@chakra-ui/react";
 
@@ -20,7 +21,7 @@ import { floatingControlEvent, floatingEvent } from "./components/Floating";
 import Render from "./components/Render";
 
 const AddPlugin = ({ pluginInfo, ...props }: IPlugin) => {
-  const id = `add_${getRandomHash()}`;
+  const id = useMemo(() => `add_${getRandomHash()}`, []);
   const t = useToast();
   const lang = langStore.tgt;
 

@@ -1,3 +1,4 @@
+import { useMemo } from "react";
 import { observer } from "mobx-react-lite";
 
 import { getRandomHash } from "@noli/core";
@@ -8,12 +9,12 @@ import Render from "./components/Render";
 import { drawboardPluginFactory } from "./utils/factory";
 
 const GroupEditorPlugin = ({ pluginInfo, ...props }: IPlugin) => {
-  const id = `groupEditor_${getRandomHash()}`;
+  const id = useMemo(() => `groupEditor_${getRandomHash()}`, []);
   const { unGroup } = useSelecting("group") ?? {};
   return <Render id={id} onFloatingButtonClick={async () => unGroup?.()} {...props} />;
 };
 const MultiEditorPlugin = ({ pluginInfo, ...props }: IPlugin) => {
-  const id = `multiEditor_${getRandomHash()}`;
+  const id = useMemo(() => `multiEditor_${getRandomHash()}`, []);
   const { setGroup } = useSelecting("multiple") ?? {};
   return <Render id={id} onFloatingButtonClick={async () => setGroup?.()} {...props} />;
 };

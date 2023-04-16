@@ -1,3 +1,4 @@
+import { useMemo } from "react";
 import { observer } from "mobx-react-lite";
 
 import { getRandomHash } from "@noli/core";
@@ -8,7 +9,7 @@ import { drawboardPluginFactory } from "./utils/factory";
 import Render from "./components/Render";
 
 const DeletePlugin = ({ pluginInfo, ...props }: IPlugin) => {
-  const id = `delete_${getRandomHash()}`;
+  const id = useMemo(() => `delete_${getRandomHash()}`, []);
   const { type, nodes } = useSelecting("raw");
   if (type === "none") return null;
   function onDelete(): void {

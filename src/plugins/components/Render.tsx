@@ -1,5 +1,5 @@
 import type { ChakraComponent } from "@chakra-ui/react";
-import { useLayoutEffect } from "react";
+import { useLayoutEffect, useMemo } from "react";
 import { observer } from "mobx-react-lite";
 
 import { Coordinate, getRandomHash, INodes, PivotType } from "@noli/core";
@@ -36,7 +36,7 @@ const Render = (({
   children,
   ...props
 }: IRender) => {
-  id ??= `plugin_${getRandomHash()}`;
+  const _id = useMemo(() => id ?? `plugin_${getRandomHash()}`, [id]);
   let { w, h, iconW, iconH, pivot, follow, expandOffsetX, expandOffsetY } = renderInfo;
   iconW ??= DEFAULT_PLUGIN_SETTINGS.iconW;
   iconH ??= DEFAULT_PLUGIN_SETTINGS.iconH;
@@ -72,7 +72,6 @@ const Render = (({
 
   // This effect handles callbacks that dynamically render the plugin's position
   useLayoutEffect(() => {
-    const _id = id!;
     const updateFloating = async (e: any) => {
       const _iconW = iconW!;
       const _iconH = iconH!;
@@ -93,7 +92,7 @@ const Render = (({
           ? -DEFAULT_PLUGIN_SETTINGS.offsetY
           : DEFAULT_PLUGIN_SETTINGS.offsetY);
       // adjust floating
-      const domFloating = document.querySelector<HTMLDivElement>(`#${id}`);
+      const domFloating = document.querySelector<HTMLDivElement>(`#${_id}`);
       if (!domFloating) return;
       let x, y;
       if (!_follow) {
@@ -168,7 +167,7 @@ const Render = (({
       domFloatingExpand.style.transform = `matrix(1,0,0,1,${ex},${ey})`;
     };
     const onFloatingReRender = ({ id: renderedId, needRender }: IFloatingRenderEvent) => {
-      if (id === renderedId && needRender) {
+      if (_id === renderedId && needRender) {
         updateFloating({ event: "rerender", needRender });
       }
     };
@@ -190,7 +189,7 @@ const Render = (({
       window.removeEventListener("resize", updateFloating);
     };
   }, [
-    id,
+    _id,
     iconW,
     iconH,
     nodeConstraint,
@@ -205,7 +204,7 @@ const Render = (({
   ]);
 
   return (
-    <Floating id={id} ref={containerRef} renderInfo={updatedRenderInfo} {...props}>
+    <Floating id={_id} ref={containerRef} renderInfo={updatedRenderInfo} {...props}>
       {children}
     </Floating>
   );
