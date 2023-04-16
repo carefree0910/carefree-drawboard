@@ -4,11 +4,11 @@ import { Box, Flex } from "@chakra-ui/react";
 
 import { useIsReady } from "@noli/business";
 
+import { reactPluginSettings } from "@/_settings";
 import { themeStore } from "@/stores/theme";
 import { pythonStore, usePythonPluginSettings } from "@/stores/_python";
 import { BOARD_CONTAINER_ID } from "@/utils/constants";
 import { makePlugin } from "@/plugins";
-import { reactPluginSettings } from "./_react";
 
 function BoardPanel() {
   const ref = useRef(null);
