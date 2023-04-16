@@ -18,7 +18,12 @@ import { Settings_Words } from "@/lang/settings";
 import { stripHashFromIdentifier } from "@/utils/misc";
 import { uiStore } from "@/stores/ui";
 import { usePythonPluginSettings } from "@/stores/_python";
-import { isInvisible, pythonIsInvisible, setPythonVisible, setVisible } from "@/stores/plugins";
+import {
+  pluginIsInvisible,
+  pythonPluginIsInvisible,
+  setPythonPluginVisible,
+  setPluginVisible,
+} from "@/stores/plugins";
 import { hideAllPlugins, showAllPlugins } from "@/actions/managePlugins";
 import CFSelect from "@/components/CFSelect";
 import CFSlider from "@/components/CFSlider";
@@ -74,8 +79,8 @@ const SettingsPlugin = ({ pluginInfo, ...props }: IPlugin) => {
                 <Checkbox
                   key={`plugin-${i}`}
                   value={plugin}
-                  isChecked={!isInvisible(plugin)}
-                  onChange={() => setVisible(plugin, isInvisible(plugin))}
+                  isChecked={!pluginIsInvisible(plugin)}
+                  onChange={() => setPluginVisible(plugin, pluginIsInvisible(plugin))}
                   {...commonProps}
                   disabled={disablePluginSettings}>
                   {translate(Plugins_Words[plugin], lang)}
@@ -84,13 +89,13 @@ const SettingsPlugin = ({ pluginInfo, ...props }: IPlugin) => {
             {usePythonPluginSettings().map((settings, i) => {
               const identifierWithHash = settings.props.pluginInfo.identifier;
               const identifier = stripHashFromIdentifier(identifierWithHash);
-              const pIsInvisible = pythonIsInvisible(identifierWithHash);
+              const pIsInvisible = pythonPluginIsInvisible(identifierWithHash);
               return (
                 <Checkbox
                   key={`${identifierWithHash}-${i}`}
                   value={identifier}
                   isChecked={!pIsInvisible}
-                  onChange={() => setPythonVisible(identifierWithHash, pIsInvisible)}
+                  onChange={() => setPythonPluginVisible(identifierWithHash, pIsInvisible)}
                   {...commonProps}
                   disabled={disablePluginSettings}>
                   {`${translate(Plugins_Words[settings.type], lang)} (${identifier})`}

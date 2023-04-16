@@ -1,15 +1,15 @@
 import { reactPluginSettings } from "@/_settings";
 import { usePythonPluginSettings } from "@/stores/_python";
-import { setVisible, setPythonVisible } from "@/stores/plugins";
+import { setPluginVisible, setPythonPluginVisible } from "@/stores/plugins";
 
 function setAllPlugins(visible: boolean) {
   reactPluginSettings.forEach(({ type }) => {
     if (type !== "settings") {
-      setVisible(type, visible);
+      setPluginVisible(type, visible);
     }
   });
   usePythonPluginSettings().forEach(({ props }) => {
-    setPythonVisible(props.pluginInfo.identifier, visible);
+    setPythonPluginVisible(props.pluginInfo.identifier, visible);
   });
 }
 

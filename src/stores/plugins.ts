@@ -22,9 +22,9 @@ class PluginsInvisibleStore extends ABCStore<IPluginsInvisible> {
 }
 
 export const pluginsInvisibleStore = new PluginsInvisibleStore();
-export const isInvisible = (plugin: AvailablePlugins) =>
+export const pluginIsInvisible = (plugin: AvailablePlugins) =>
   pluginsInvisibleStore.info[plugin] ?? false;
-export const setVisible = (plugin: AvailablePlugins, visible: boolean) =>
+export const setPluginVisible = (plugin: AvailablePlugins, visible: boolean) =>
   pluginsInvisibleStore.updateProperty(plugin, !visible);
 
 export type IPythonPluginsInvisible = Dictionary<boolean>;
@@ -44,7 +44,7 @@ class PythonPluginsInvisibleStore extends ABCStore<IPythonPluginsInvisible> {
 }
 
 export const pythonPluginsInvisibleStore = new PythonPluginsInvisibleStore();
-export const pythonIsInvisible = (identifier: string) =>
+export const pythonPluginIsInvisible = (identifier: string) =>
   pythonPluginsInvisibleStore.info[identifier] ?? false;
-export const setPythonVisible = (identifier: string, visible: boolean) =>
+export const setPythonPluginVisible = (identifier: string, visible: boolean) =>
   pythonPluginsInvisibleStore.updateProperty(identifier, !visible);
