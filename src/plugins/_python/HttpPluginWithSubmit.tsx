@@ -2,7 +2,7 @@ import { useState } from "react";
 import { observer } from "mobx-react-lite";
 import { useToast } from "@chakra-ui/react";
 
-import { langStore, translate } from "@noli/business";
+import { langStore, translate } from "@carefree0910/business";
 
 import type { IPythonHttpPluginWithSubmit } from "@/schema/_python";
 import { toast } from "@/utils/toast";

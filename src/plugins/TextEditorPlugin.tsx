@@ -2,8 +2,8 @@ import { useMemo, useState } from "react";
 import { observer } from "mobx-react-lite";
 import { Flex, Textarea } from "@chakra-ui/react";
 
-import { getRandomHash, isUndefined } from "@noli/core";
-import { langStore, translate, useEditText } from "@noli/business";
+import { getRandomHash, isUndefined } from "@carefree0910/core";
+import { langStore, translate, useEditText } from "@carefree0910/business";
 
 import type { IPlugin } from "@/schema/plugins";
 import Render from "./components/Render";

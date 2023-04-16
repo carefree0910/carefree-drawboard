@@ -1,5 +1,5 @@
-import type { Lang } from "@noli/core";
-import { translate } from "@noli/business";
+import type { Lang } from "@carefree0910/core";
+import { translate } from "@carefree0910/business";
 
 import { UI_Words } from "@/lang/ui";
 import { titleCaseWord } from "@/utils/misc";

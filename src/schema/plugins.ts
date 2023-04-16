@@ -1,8 +1,8 @@
 import type { RefObject } from "react";
 import type { FlexProps } from "@chakra-ui/react";
 
-import type { INode, NodeType, PivotType } from "@noli/core";
-import type { IResponse } from "@noli/business";
+import type { INode, NodeType, PivotType } from "@carefree0910/core";
+import type { IResponse } from "@carefree0910/business";
 
 import type { IFieldDefinition, _IFieldDefinition } from "./metaFields";
 import type {

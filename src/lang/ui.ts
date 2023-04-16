@@ -1,4 +1,4 @@
-import type { Lang } from "@noli/core";
+import type { Lang } from "@carefree0910/core";
 
 export enum UI_Words {
   "submit-task" = "submit-task",

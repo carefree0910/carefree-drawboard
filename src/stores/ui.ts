@@ -1,7 +1,7 @@
 import { makeObservable, observable, runInAction } from "mobx";
 
-import type { Dictionary } from "@noli/core";
-import { ABCStore } from "@noli/business";
+import type { Dictionary } from "@carefree0910/core";
+import { ABCStore } from "@carefree0910/business";
 
 import type { AvailablePlugins } from "@/schema/plugins";
 import { reactPluginSettings } from "@/_settings";

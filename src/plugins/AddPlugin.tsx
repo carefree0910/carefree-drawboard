@@ -2,8 +2,8 @@ import { useMemo } from "react";
 import { observer } from "mobx-react-lite";
 import { Flex, useToast } from "@chakra-ui/react";
 
-import { getRandomHash, identityMatrix2DFields } from "@noli/core";
-import { langStore, translate } from "@noli/business";
+import { getRandomHash, identityMatrix2DFields } from "@carefree0910/core";
+import { langStore, translate } from "@carefree0910/business";
 
 import type { IPlugin } from "@/schema/plugins";
 import { toast } from "@/utils/toast";

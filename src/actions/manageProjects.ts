@@ -1,11 +1,11 @@
-import { INodePack, Lang, Matrix2D, Matrix2DFields, safeCall } from "@noli/core";
+import { INodePack, Lang, Matrix2D, Matrix2DFields, safeCall } from "@carefree0910/core";
 import {
   BoardStore,
   safeClearExecuterStack,
   translate,
   useGlobalTransform,
   useSafeExecute,
-} from "@noli/business";
+} from "@carefree0910/business";
 
 import type { IToast } from "@/schema/misc";
 import { toast } from "@/utils/toast";

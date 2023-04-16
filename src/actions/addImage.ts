@@ -4,8 +4,8 @@ import {
   ImageNode,
   IRectangleShapeNode,
   RectangleShapeNode,
-} from "@noli/core";
-import { BoardStore, BusinessOpCallbacks, useSafeExecute } from "@noli/business";
+} from "@carefree0910/core";
+import { BoardStore, BusinessOpCallbacks, useSafeExecute } from "@carefree0910/business";
 
 import type { IMeta } from "@/schema/meta";
 

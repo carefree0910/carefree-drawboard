@@ -1,7 +1,7 @@
 import { Flex } from "@chakra-ui/react";
 import { observer } from "mobx-react-lite";
 
-import { langStore } from "@noli/business";
+import { langStore } from "@carefree0910/business";
 
 import BoardPanel from "@/board/BoardPanel";
 import { useInitBoard } from "./hooks/useInitBoard";

@@ -1,7 +1,7 @@
 import axios from "axios";
 import { useEffect } from "react";
 
-import { Logger } from "@noli/core";
+import { Logger } from "@carefree0910/core";
 
 import type { APISources, APIs } from "@/schema/requests";
 import type { ISocketCallbacks, IPythonSocketMessage } from "@/schema/_python";

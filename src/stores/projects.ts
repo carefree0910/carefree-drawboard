@@ -1,7 +1,7 @@
 import { v4 as uuidv4 } from "uuid";
 import { makeObservable, observable, runInAction } from "mobx";
 
-import { ABCStore } from "@noli/business";
+import { ABCStore } from "@carefree0910/business";
 
 import { formatTime } from "@/utils/misc";
 

@@ -1,4 +1,4 @@
-import { Lang } from "@noli/core";
+import { Lang } from "@carefree0910/core";
 
 export enum Download_Words {
   "download-plugin-header" = "download-plugin-header",

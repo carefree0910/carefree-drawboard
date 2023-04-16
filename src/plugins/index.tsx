@@ -1,5 +1,5 @@
-import { Logger, shallowCopy } from "@noli/core";
-import { useSelecting } from "@noli/business";
+import { Logger, shallowCopy } from "@carefree0910/core";
+import { useSelecting } from "@carefree0910/business";
 
 import type { AvailablePluginsAndPythonPlugins, IMakePlugin } from "@/schema/plugins";
 import { pluginIsVisible, pythonPluginIsVisible } from "@/stores/plugins";

@@ -1,7 +1,7 @@
 import { observer } from "mobx-react-lite";
 
-import { isUndefined } from "@noli/core";
-import { langStore } from "@noli/business";
+import { isUndefined } from "@carefree0910/core";
+import { langStore } from "@carefree0910/business";
 
 import type { IField } from "@/schema/plugins";
 import type { INumberField } from "@/schema/metaFields";

@@ -1,6 +1,6 @@
 import { useEffect } from "react";
 
-import { useUndoRedoSteps } from "@noli/business";
+import { useUndoRedoSteps } from "@carefree0910/business";
 
 import { setPluginVisible } from "@/stores/plugins";
 

@@ -1,4 +1,4 @@
-import { isUndefined } from "@noli/core";
+import { isUndefined } from "@carefree0910/core";
 
 import type { IDefinitions } from "@/schema/metaFields";
 import TextField from "./TextField";

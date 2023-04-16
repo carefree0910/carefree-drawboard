@@ -2,7 +2,7 @@ import { useMemo } from "react";
 import { observer } from "mobx-react-lite";
 import { Box, Checkbox, Flex } from "@chakra-ui/react";
 
-import { getRandomHash, Lang } from "@noli/core";
+import { getRandomHash, Lang } from "@carefree0910/core";
 import {
   BoardStore,
   langDescriptions,
@@ -11,7 +11,7 @@ import {
   translate,
   useGlobalTransform,
   useIsReady,
-} from "@noli/business";
+} from "@carefree0910/business";
 
 import { allAvailablePlugins, IPlugin } from "@/schema/plugins";
 import { Plugins_Words } from "@/lang/plugins";

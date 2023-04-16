@@ -2,13 +2,13 @@ import { observer } from "mobx-react-lite";
 import { useState, useMemo, useLayoutEffect, forwardRef } from "react";
 import { Box, BoxProps, Flex, FlexProps, Image, Portal } from "@chakra-ui/react";
 
-import { Coordinate, Dictionary, isUndefined } from "@noli/core";
+import { Coordinate, Dictionary, isUndefined } from "@carefree0910/core";
 import {
   useBoardContainerLeftTop,
   useBoardContainerWH,
   useIsReady,
   useSelecting,
-} from "@noli/business";
+} from "@carefree0910/business";
 
 import type { IFloating, IPositionInfo } from "@/schema/plugins";
 import { Event } from "@/utils/event";

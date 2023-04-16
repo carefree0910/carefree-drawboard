@@ -2,7 +2,7 @@ import React, { useRef } from "react";
 import { observer } from "mobx-react-lite";
 import { Box, Flex } from "@chakra-ui/react";
 
-import { useIsReady } from "@noli/business";
+import { useIsReady } from "@carefree0910/business";
 
 import { reactPluginSettings } from "@/_settings";
 import { themeStore } from "@/stores/theme";

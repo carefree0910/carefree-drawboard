@@ -1,9 +1,9 @@
 import { makeObservable, observable, runInAction } from "mobx";
 
-import { ABCStore } from "@noli/business";
+import { ABCStore } from "@carefree0910/business";
 
 import type { AvailablePythonPlugins, IMakePlugin } from "@/schema/plugins";
-import { getHash } from "@noli/core";
+import { getHash } from "@carefree0910/core";
 
 interface IGlobalSettings {
   timeout?: number;

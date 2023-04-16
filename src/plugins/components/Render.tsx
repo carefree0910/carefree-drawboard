@@ -2,7 +2,7 @@ import type { ChakraComponent } from "@chakra-ui/react";
 import { useLayoutEffect, useMemo } from "react";
 import { observer } from "mobx-react-lite";
 
-import { Coordinate, getRandomHash, INodes, PivotType, shallowCopy } from "@noli/core";
+import { Coordinate, getRandomHash, INodes, PivotType, shallowCopy } from "@carefree0910/core";
 import {
   boardBBoxToDom,
   injectNodeTransformEventCallback,
@@ -12,7 +12,7 @@ import {
   useIsReady,
   useSelectHooks,
   useSelecting,
-} from "@noli/business";
+} from "@carefree0910/business";
 
 import type { IRender } from "@/schema/plugins";
 import { DEFAULT_PLUGIN_SETTINGS } from "@/utils/constants";

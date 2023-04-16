@@ -3,7 +3,7 @@ import React, { ReactNode } from "react";
 import { observer } from "mobx-react-lite";
 import { useToast } from "@chakra-ui/react";
 
-import { langStore, translate } from "@noli/business";
+import { langStore, translate } from "@carefree0910/business";
 
 import { toast } from "@/utils/toast";
 import { Toast_Words } from "@/lang/toast";

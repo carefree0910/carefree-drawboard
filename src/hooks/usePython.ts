@@ -1,6 +1,6 @@
 import { useCallback, useEffect } from "react";
 
-import { BBox, INode, INodes, Logger } from "@noli/core";
+import { BBox, INode, INodes, Logger } from "@carefree0910/core";
 
 import type { IMeta } from "@/schema/meta";
 import type {

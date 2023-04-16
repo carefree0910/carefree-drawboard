@@ -1,7 +1,7 @@
 import { useMemo } from "react";
 import { observer } from "mobx-react-lite";
 
-import { getRandomHash } from "@noli/core";
+import { getRandomHash } from "@carefree0910/core";
 
 import type { IPlugin } from "@/schema/plugins";
 import { drawboardPluginFactory } from "./utils/factory";

@@ -1,7 +1,7 @@
 import JSZip from "jszip";
 
-import { Graph, INode, Lang, download, toJsonBlob } from "@noli/core";
-import { translate } from "@noli/business";
+import { Graph, INode, Lang, download, toJsonBlob } from "@carefree0910/core";
+import { translate } from "@carefree0910/business";
 
 import type { DownloadFormat, IToast } from "@/schema/misc";
 import { toast } from "@/utils/toast";

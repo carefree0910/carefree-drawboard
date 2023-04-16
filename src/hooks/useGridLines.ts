@@ -6,8 +6,8 @@ import {
   useBoardContainerWH,
   useGlobalTransform,
   useIsReady,
-} from "@noli/business";
-import { Coordinate, GlobalEvent } from "@noli/core";
+} from "@carefree0910/business";
+import { Coordinate, GlobalEvent } from "@carefree0910/core";
 
 import { gridlinesStore } from "@/stores/gridLines";
 

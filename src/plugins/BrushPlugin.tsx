@@ -3,8 +3,14 @@ import { observer } from "mobx-react-lite";
 import { useToast } from "@chakra-ui/react";
 import { runInAction } from "mobx";
 
-import { IPathOptions, Lang, getRandomHash } from "@noli/core";
-import { BoardStore, langStore, toolbarStore, translate, updateBrushOptions } from "@noli/business";
+import { IPathOptions, Lang, getRandomHash } from "@carefree0910/core";
+import {
+  BoardStore,
+  langStore,
+  toolbarStore,
+  translate,
+  updateBrushOptions,
+} from "@carefree0910/business";
 
 import type { IToast } from "@/schema/misc";
 import type { ICommonMetaData, IMeta } from "@/schema/meta";

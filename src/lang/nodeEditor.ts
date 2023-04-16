@@ -1,4 +1,4 @@
-import { Lang } from "@noli/core";
+import { Lang } from "@carefree0910/core";
 
 export enum NodeEditor_Words {
   "text-editor-plugin-header" = "text-editor-plugin-header",

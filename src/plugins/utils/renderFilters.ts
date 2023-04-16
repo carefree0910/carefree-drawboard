@@ -1,4 +1,4 @@
-import { IResponse } from "@noli/business";
+import { IResponse } from "@carefree0910/business";
 
 import type { NodeConstraints } from "@/schema/plugins";
 

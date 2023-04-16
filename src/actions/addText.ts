@@ -1,5 +1,5 @@
-import { BBox, TextNode } from "@noli/core";
-import { BoardStore, BusinessOpCallbacks, useSafeExecute } from "@noli/business";
+import { BBox, TextNode } from "@carefree0910/core";
+import { BoardStore, BusinessOpCallbacks, useSafeExecute } from "@carefree0910/business";
 
 import type { IMeta } from "@/schema/meta";
 import { themeStore } from "@/stores/theme";

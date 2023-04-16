@@ -3,8 +3,8 @@ import { observer } from "mobx-react-lite";
 import { CloseIcon } from "@chakra-ui/icons";
 import { Flex, Spacer, useToast } from "@chakra-ui/react";
 
-import { Dictionary, getRandomHash } from "@noli/core";
-import { langStore, translate } from "@noli/business";
+import { Dictionary, getRandomHash } from "@carefree0910/core";
+import { langStore, translate } from "@carefree0910/business";
 
 import type { IMeta, IPythonHttpFieldsResponse } from "@/schema/meta";
 import type { IPythonHttpFieldsPlugin, IPythonResponse } from "@/schema/_python";

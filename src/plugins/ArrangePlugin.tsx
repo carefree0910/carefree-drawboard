@@ -2,8 +2,8 @@ import { useMemo } from "react";
 import { observer } from "mobx-react-lite";
 import { useToast } from "@chakra-ui/react";
 
-import { getRandomHash } from "@noli/core";
-import { langStore } from "@noli/business";
+import { getRandomHash } from "@carefree0910/core";
+import { langStore } from "@carefree0910/business";
 
 import type { IPlugin } from "@/schema/plugins";
 import { drawboardPluginFactory } from "./utils/factory";

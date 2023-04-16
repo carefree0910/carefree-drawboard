@@ -1,6 +1,6 @@
 import type { ReactElement } from "react";
 
-import type { Dictionary } from "@noli/core";
+import type { Dictionary } from "@carefree0910/core";
 
 export interface INumberField {
   type: "number";

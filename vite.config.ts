@@ -15,7 +15,7 @@ export default defineConfig({
     }),
   ],
   optimizeDeps: {
-    include: ["@noli/core", "@noli/business"],
+    include: ["@carefree0910/core", "@carefree0910/business"],
     esbuildOptions: {
       keepNames: true,
     },

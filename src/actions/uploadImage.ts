@@ -1,5 +1,5 @@
-import { Lang, safeCall } from "@noli/core";
-import { translate } from "@noli/business";
+import { Lang, safeCall } from "@carefree0910/core";
+import { translate } from "@carefree0910/business";
 
 import type { IToast } from "@/schema/misc";
 import { toast } from "@/utils/toast";

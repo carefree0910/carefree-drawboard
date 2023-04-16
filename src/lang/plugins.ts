@@ -1,4 +1,4 @@
-import { Dictionary, Lang } from "@noli/core";
+import { Dictionary, Lang } from "@carefree0910/core";
 
 import {
   allAvailablePlugins,

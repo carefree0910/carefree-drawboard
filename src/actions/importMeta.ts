@@ -1,5 +1,5 @@
-import { Dictionary, RectangleShapeNode, getRandomHash, shallowCopy } from "@noli/core";
-import { BoardStore, translate, useAddNode } from "@noli/business";
+import { Dictionary, RectangleShapeNode, getRandomHash, shallowCopy } from "@carefree0910/core";
+import { BoardStore, translate, useAddNode } from "@carefree0910/business";
 
 import type { IMetaData, MetaType } from "@/schema/meta";
 import type { IImportMeta } from "@/schema/meta";

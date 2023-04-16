@@ -1,4 +1,4 @@
-import { Logger } from "@noli/core";
+import { Logger } from "@carefree0910/core";
 
 import type { Interceptors } from "@/schema/requests";
 

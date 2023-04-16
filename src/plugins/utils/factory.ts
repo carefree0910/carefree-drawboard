@@ -1,6 +1,6 @@
 import React from "react";
 
-import { Logger, checkNotExists } from "@noli/core";
+import { Logger, checkNotExists } from "@carefree0910/core";
 
 import type {
   AvailablePlugins,

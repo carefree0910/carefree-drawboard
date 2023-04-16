@@ -2,8 +2,8 @@ import { useMemo, useState } from "react";
 import { observer } from "mobx-react-lite";
 import { Flex, Spacer, useToast } from "@chakra-ui/react";
 
-import { getRandomHash } from "@noli/core";
-import { langStore, translate, useSelecting } from "@noli/business";
+import { getRandomHash } from "@carefree0910/core";
+import { langStore, translate, useSelecting } from "@carefree0910/business";
 
 import type { IPlugin } from "@/schema/plugins";
 import { DownloadFormat, allDownloadFormat } from "@/schema/misc";

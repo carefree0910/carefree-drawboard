@@ -9,7 +9,7 @@ import {
   Switch,
 } from "@chakra-ui/react";
 
-import { getRandomHash } from "@noli/core";
+import { getRandomHash } from "@carefree0910/core";
 
 import { themeStore } from "@/stores/theme";
 

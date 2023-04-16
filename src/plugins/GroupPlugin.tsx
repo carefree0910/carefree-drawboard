@@ -1,8 +1,8 @@
 import { useMemo } from "react";
 import { observer } from "mobx-react-lite";
 
-import { getRandomHash } from "@noli/core";
-import { useSelecting } from "@noli/business";
+import { getRandomHash } from "@carefree0910/core";
+import { useSelecting } from "@carefree0910/business";
 
 import type { IPlugin } from "@/schema/plugins";
 import Render from "./components/Render";

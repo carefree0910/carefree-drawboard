@@ -1,5 +1,5 @@
-import { Lang } from "@noli/core";
-import { langDescriptions, langStore, updateDictionary } from "@noli/business";
+import { Lang } from "@carefree0910/core";
+import { langDescriptions, langStore, updateDictionary } from "@carefree0910/business";
 
 import { uiLangRecords } from "./ui";
 import { addLangRecords } from "./add";

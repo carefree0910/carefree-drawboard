@@ -1,6 +1,6 @@
 import { makeObservable, observable } from "mobx";
 
-import { ABCStore } from "@noli/business";
+import { ABCStore } from "@carefree0910/business";
 
 export interface IInitStore {
   working: boolean;

@@ -14,8 +14,8 @@ import {
   runGroupContext,
   setDefault,
   sortBy,
-} from "@noli/core";
-import { BoardStore, translate } from "@noli/business";
+} from "@carefree0910/core";
+import { BoardStore, translate } from "@carefree0910/business";
 
 import type { IToast } from "@/schema/misc";
 import { checkMeta, getOriginMeta, IMeta } from "@/schema/meta";

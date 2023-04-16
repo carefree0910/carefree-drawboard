@@ -1,8 +1,8 @@
 import { useEffect } from "react";
 import { useToast } from "@chakra-ui/toast";
 
-import { FileDropper, FileDropperResponse, Lang } from "@noli/core";
-import { translate, useIsReady } from "@noli/business";
+import { FileDropper, FileDropperResponse, Lang } from "@carefree0910/core";
+import { translate, useIsReady } from "@carefree0910/business";
 
 import { toast } from "@/utils/toast";
 import { Toast_Words } from "@/lang/toast";

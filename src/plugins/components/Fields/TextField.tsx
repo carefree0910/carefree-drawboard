@@ -1,6 +1,6 @@
 import { observer } from "mobx-react-lite";
 
-import { langStore } from "@noli/business";
+import { langStore } from "@carefree0910/business";
 
 import type { IField } from "@/schema/plugins";
 import type { ITextField } from "@/schema/metaFields";

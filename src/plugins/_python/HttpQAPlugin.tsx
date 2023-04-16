@@ -2,8 +2,8 @@ import { useMemo, useState } from "react";
 import { observer } from "mobx-react-lite";
 import { Textarea } from "@chakra-ui/react";
 
-import { getRandomHash } from "@noli/core";
-import { langStore, translate } from "@noli/business";
+import { getRandomHash } from "@carefree0910/core";
+import { langStore, translate } from "@carefree0910/business";
 
 import type { IPythonHttpQAPlugin, IPythonResponse } from "@/schema/_python";
 import { UI_Words } from "@/lang/ui";

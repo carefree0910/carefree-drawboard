@@ -1,4 +1,4 @@
-import type { Dictionary, Lang } from "@noli/core";
+import type { Dictionary, Lang } from "@carefree0910/core";
 
 import type { IToast } from "./misc";
 

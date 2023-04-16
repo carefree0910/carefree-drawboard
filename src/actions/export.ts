@@ -1,6 +1,6 @@
-import { INode, ISingleNode, Lang, toJsonBlob } from "@noli/core";
-import { ExportBlobOptions, exportBlob, exportNodes } from "@noli/svg";
-import { translate } from "@noli/business";
+import { INode, ISingleNode, Lang, toJsonBlob } from "@carefree0910/core";
+import { ExportBlobOptions, exportBlob, exportNodes } from "@carefree0910/svg";
+import { translate } from "@carefree0910/business";
 
 import type { DownloadFormat, IToast, ImageFormat } from "@/schema/misc";
 import { toast } from "@/utils/toast";

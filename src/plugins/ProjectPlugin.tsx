@@ -3,8 +3,8 @@ import { observer } from "mobx-react-lite";
 import { useMemo, useState, useEffect, useCallback } from "react";
 import { Flex, useToast } from "@chakra-ui/react";
 
-import { Dictionary, Graph, INodePack, getRandomHash } from "@noli/core";
-import { langStore, translate, useSafeExecute } from "@noli/business";
+import { Dictionary, Graph, INodePack, getRandomHash } from "@carefree0910/core";
+import { langStore, translate, useSafeExecute } from "@carefree0910/business";
 
 import type { IPlugin } from "@/schema/plugins";
 import { toast } from "@/utils/toast";

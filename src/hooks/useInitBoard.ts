@@ -11,16 +11,16 @@ import {
   Logger,
   Matrix2DFields,
   allInternalPlugins,
-} from "@noli/core";
-import { SVGUnitTest } from "@noli/svg";
-import { NoliNativeBoard } from "@noli/native";
+} from "@carefree0910/core";
+import { SVGUnitTest } from "@carefree0910/svg";
+import { NoliNativeBoard } from "@carefree0910/native";
 import {
   BoardStore,
   BoardStoresOptions,
   useFlags,
   useBoardStore,
   useIsReady,
-} from "@noli/business";
+} from "@carefree0910/business";
 
 import { BOARD_CONTAINER_ID, ENV } from "@/utils/constants";
 import { initStore } from "@/stores/init";
