@@ -4,6 +4,7 @@ import type { AvailablePluginsAndPythonPlugins } from "@/schema/plugins";
 import { reactPluginSettings } from "@/_settings";
 import { usePythonPluginSettings } from "@/stores/_python";
 import { setPluginVisible, setPythonPluginVisible } from "@/stores/plugins";
+import { floatingControlEvent } from "@/plugins/components/Floating";
 
 function setAllPlugins(visible: boolean, except?: AvailablePluginsAndPythonPlugins[]) {
   runInAction(() => {
@@ -22,6 +23,7 @@ function setAllPlugins(visible: boolean, except?: AvailablePluginsAndPythonPlugi
 }
 
 export function hideAllPlugins(opt?: { except?: AvailablePluginsAndPythonPlugins[] }) {
+  floatingControlEvent.emit({ expand: false, ignoreId: true });
   setAllPlugins(false, opt?.except);
 }
 export function showAllPlugins(opt?: { except?: AvailablePluginsAndPythonPlugins[] }) {
