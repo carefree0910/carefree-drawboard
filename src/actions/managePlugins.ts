@@ -23,7 +23,7 @@ function setAllPlugins(visible: boolean, except?: AvailablePluginsAndPythonPlugi
 }
 
 export function hideAllPlugins(opt?: { except?: AvailablePluginsAndPythonPlugins[] }) {
-  floatingControlEvent.emit({ expand: false, ignoreId: true });
+  floatingControlEvent.emit({ expand: false, ignoreId: true, forceCheckIds: opt?.except });
   setAllPlugins(false, opt?.except);
 }
 export function showAllPlugins(opt?: { except?: AvailablePluginsAndPythonPlugins[] }) {
