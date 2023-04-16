@@ -101,6 +101,7 @@ class SingleNodeType(str, Enum):
     RECTANGLE = "rectangle"
     STAR = "star"
     LINE = "line"
+    PATH = "path"
     SVG = "svg"
     TEXT = "text"
     IMAGE = "image"
@@ -194,6 +195,7 @@ class_name2type = {
     "RectangleShapeNode": SingleNodeType.RECTANGLE,
     "StarShapeNode": SingleNodeType.STAR,
     "LineNode": SingleNodeType.LINE,
+    "PathNode": SingleNodeType.PATH,
     "SVGNode": SingleNodeType.SVG,
     "TextNode": SingleNodeType.TEXT,
     "ImageNode": SingleNodeType.IMAGE,
