@@ -4,7 +4,7 @@ import { useEffect } from "react";
 import { Logger } from "@noli/core";
 
 import type { APISources, APIs } from "@/schema/requests";
-import type { IPythonRequest, IPythonSocketMessage } from "@/schema/_python";
+import type { ISocketCallbacks, IPythonSocketMessage } from "@/schema/_python";
 import { pythonStore } from "@/stores/_python";
 import { useInceptors } from "./interceptors";
 
@@ -24,13 +24,10 @@ const log = (...args: any[]) => DEBUG && console.log(...args);
 export function useWebSocket<R>({
   getMessage,
   onMessage,
+  onError,
   interval,
   dependencies,
-}: {
-  getMessage: () => IPythonRequest;
-  onMessage: (
-    data: IPythonSocketMessage<R>,
-  ) => Promise<{ newMessage?: () => IPythonRequest; interval?: number } | undefined>;
+}: ISocketCallbacks<R> & {
   interval?: number;
   dependencies?: any[];
 }) {
@@ -87,6 +84,7 @@ export function useWebSocket<R>({
       };
       socket.onerror = (err) => {
         log("> on error");
+        onError?.(err);
         console.error("Socket error: ", err, ", retrying...");
         socket.close();
       };

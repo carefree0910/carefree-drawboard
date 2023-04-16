@@ -90,6 +90,13 @@ export interface IPythonResponse<T> {
   message: string;
   data: T;
 }
+export interface ISocketCallbacks<R> {
+  getMessage: () => IPythonRequest;
+  onMessage: (
+    data: IPythonSocketMessage<R>,
+  ) => Promise<{ newMessage?: () => IPythonRequest; interval?: number } | undefined>;
+  onError?: (err: any) => void;
+}
 
 // http
 
@@ -106,11 +113,4 @@ export interface IPythonSocketData<R> {
   data: R;
 }
 export interface IPythonSocketMessage<R> extends IPythonResponse<IPythonSocketData<R>> {}
-export interface IUseSocketPython<R> extends IUsePythonInfo {
-  onMessage: (message: IPythonSocketMessage<R>) => Promise<void>;
-  beforeConnect?: () => Promise<void>;
-  onSocketError?: (err: any) => void;
-}
-export interface IUseOneTimeSocketPython<R> extends IUseSocketPython<R> {
-  getInitialMessage: () => string;
-}
+export interface IUseSocketPython<R> extends IUsePythonInfo, ISocketCallbacks<R> {}
