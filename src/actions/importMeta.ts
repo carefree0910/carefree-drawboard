@@ -49,7 +49,7 @@ function consumeUpload({ t, lang, type, metaData }: IImportMeta<"upload">): void
   });
 }
 function consumeAddText({ t, lang, type, metaData }: IImportMeta<"add.text">): void {
-  const newAlias = `new.text.${getRandomHash()}`;
+  const newAlias = `add.text.${getRandomHash()}`;
   const { textColor } = themeStore.styles;
 
   const success = async () => {
