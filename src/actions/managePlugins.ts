@@ -4,7 +4,7 @@ import { setPluginVisible, setPythonPluginVisible } from "@/stores/plugins";
 
 function setAllPlugins(visible: boolean) {
   reactPluginSettings.forEach(({ type }) => {
-    if (type !== "settings") {
+    if (!["settings", "undo", "redo"].includes(type)) {
       setPluginVisible(type, visible);
     }
   });
