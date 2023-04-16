@@ -16,6 +16,7 @@ import { allAvailablePlugins, IPlugin } from "@/schema/plugins";
 import { Plugins_Words } from "@/lang/plugins";
 import { Settings_Words } from "@/lang/settings";
 import { stripHashFromIdentifier } from "@/utils/misc";
+import { uiStore } from "@/stores/ui";
 import { usePythonPluginSettings } from "@/stores/_python";
 import { isInvisible, pythonIsInvisible, setPythonVisible, setVisible } from "@/stores/plugins";
 import { hideAllPlugins, showAllPlugins } from "@/actions/managePlugins";
@@ -30,6 +31,7 @@ import Render from "./components/Render";
 const SettingsPlugin = ({ pluginInfo, ...props }: IPlugin) => {
   const lang = langStore.tgt;
   const commonProps = { fontWeight: 400, size: "md" };
+  const disablePluginSettings = uiStore.disablePluginSettings;
 
   return (
     <Render {...props}>
@@ -74,7 +76,8 @@ const SettingsPlugin = ({ pluginInfo, ...props }: IPlugin) => {
                   value={plugin}
                   isChecked={!isInvisible(plugin)}
                   onChange={() => setVisible(plugin, isInvisible(plugin))}
-                  {...commonProps}>
+                  {...commonProps}
+                  disabled={disablePluginSettings}>
                   {translate(Plugins_Words[plugin], lang)}
                 </Checkbox>
               ))}
@@ -88,16 +91,17 @@ const SettingsPlugin = ({ pluginInfo, ...props }: IPlugin) => {
                   value={identifier}
                   isChecked={!pIsInvisible}
                   onChange={() => setPythonVisible(identifierWithHash, pIsInvisible)}
-                  {...commonProps}>
+                  {...commonProps}
+                  disabled={disablePluginSettings}>
                   {`${translate(Plugins_Words[settings.type], lang)} (${identifier})`}
                 </Checkbox>
               );
             })}
             <Flex w="100%" my="6px" justifyContent="space-around">
-              <CFButton onClick={hideAllPlugins}>
+              <CFButton onClick={hideAllPlugins} isDisabled={disablePluginSettings}>
                 {translate(Settings_Words["hide-all-plugins-message"], lang)}
               </CFButton>
-              <CFButton onClick={showAllPlugins}>
+              <CFButton onClick={showAllPlugins} isDisabled={disablePluginSettings}>
                 {translate(Settings_Words["show-all-plugins-message"], lang)}
               </CFButton>
             </Flex>
