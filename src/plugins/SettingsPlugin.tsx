@@ -18,8 +18,10 @@ import { Settings_Words } from "@/lang/settings";
 import { stripHashFromIdentifier } from "@/utils/misc";
 import { usePythonPluginSettings } from "@/stores/_python";
 import { isInvisible, pythonIsInvisible, setPythonVisible, setVisible } from "@/stores/plugins";
+import { hideAllPlugins, showAllPlugins } from "@/actions/managePlugins";
 import CFSelect from "@/components/CFSelect";
 import CFSlider from "@/components/CFSlider";
+import { CFButton } from "@/components/CFButton";
 import { CFDivider } from "@/components/CFDivider";
 import { CFHeading } from "@/components/CFHeading";
 import { drawboardPluginFactory } from "./utils/factory";
@@ -91,6 +93,14 @@ const SettingsPlugin = ({ pluginInfo, ...props }: IPlugin) => {
                 </Checkbox>
               );
             })}
+            <Flex w="100%" my="6px" justifyContent="space-around">
+              <CFButton onClick={hideAllPlugins}>
+                {translate(Settings_Words["hide-all-plugins-message"], lang)}
+              </CFButton>
+              <CFButton onClick={showAllPlugins}>
+                {translate(Settings_Words["show-all-plugins-message"], lang)}
+              </CFButton>
+            </Flex>
           </Flex>
         </Box>
       </Flex>
