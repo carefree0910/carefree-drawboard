@@ -68,7 +68,7 @@ const PythonHttpPluginWithSubmit = ({
   }
 
   return (
-    <Render {...props}>
+    <Render id={id} {...props}>
       {children}
       <CFDivider />
       <CFButton onClick={onClick}>{buttonText}</CFButton>
