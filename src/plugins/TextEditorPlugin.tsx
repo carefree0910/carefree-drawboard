@@ -2,7 +2,7 @@ import { useMemo, useState } from "react";
 import { observer } from "mobx-react-lite";
 import { Flex, Textarea } from "@chakra-ui/react";
 
-import { isUndefined } from "@noli/core";
+import { getRandomHash, isUndefined } from "@noli/core";
 import { langStore, translate, useEditText } from "@noli/business";
 
 import type { IPlugin } from "@/schema/plugins";
@@ -14,6 +14,7 @@ import { CFDivider } from "@/components/CFDivider";
 import { NodeEditor_Words } from "@/lang/nodeEditor";
 
 const TextEditorPlugin = ({ pluginInfo: { node }, ...props }: IPlugin) => {
+  const id = `textEditor_${getRandomHash()}`;
   const lang = langStore.tgt;
   const { nodeContent, nodeFontSize } = useMemo<{
     nodeContent?: string;
@@ -32,7 +33,7 @@ const TextEditorPlugin = ({ pluginInfo: { node }, ...props }: IPlugin) => {
   if (isUndefined(nodeContent)) return null;
 
   return (
-    <Render {...props}>
+    <Render id={id} {...props}>
       <CFHeading>{translate(NodeEditor_Words["text-editor-plugin-header"], lang)}</CFHeading>
       <CFDivider />
       <Flex direction="column" w="100%" h="100%">

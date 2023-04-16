@@ -2,15 +2,19 @@ import { useState } from "react";
 import { observer } from "mobx-react-lite";
 import { Textarea } from "@chakra-ui/react";
 
+import { getRandomHash } from "@noli/core";
+
 import type { IPythonHttpTextAreaPlugin } from "@/schema/_python";
 import { useHttpPython } from "@/hooks/usePython";
 import { drawboardPluginFactory } from "@/plugins/utils/factory";
 import Render from "@/plugins/components/Render";
+import { usePureIdentifier } from "./hooks";
 
 const PythonHttpTextAreaPlugin = ({
   pluginInfo: { node, nodes, endpoint, identifier, updateInterval, noLoading, textAlign },
   ...props
 }: IPythonHttpTextAreaPlugin) => {
+  const id = `${usePureIdentifier(identifier)}_textArea_${getRandomHash()}`;
   const [value, setValue] = useState("");
 
   useHttpPython<{ text: string }>({
@@ -25,7 +29,7 @@ const PythonHttpTextAreaPlugin = ({
   });
 
   return (
-    <Render {...props}>
+    <Render id={id} {...props}>
       <Textarea w="100%" h="100%" minH="0px" value={value} textAlign={textAlign} readOnly />
     </Render>
   );

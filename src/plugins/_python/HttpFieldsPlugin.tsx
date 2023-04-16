@@ -11,14 +11,15 @@ import type { IPythonHttpFieldsPlugin, IPythonResponse } from "@/schema/_python"
 import { UI_Words } from "@/lang/ui";
 import { Toast_Words } from "@/lang/toast";
 import { toast } from "@/utils/toast";
-import { stripHashFromIdentifier, titleCaseWord } from "@/utils/misc";
+import { titleCaseWord } from "@/utils/misc";
 import { importMeta } from "@/actions/importMeta";
 import { getMetaField } from "@/stores/meta";
 import { drawboardPluginFactory } from "@/plugins/utils/factory";
 import { CFHeading } from "@/components/CFHeading";
-import PythonHttpPluginWithSubmit from "./HttpPluginWithSubmit";
 import { useDefinitions } from "../components/Fields";
 import { floatingControlEvent } from "../components/Floating";
+import { usePureIdentifier } from "./hooks";
+import PythonHttpPluginWithSubmit from "./HttpPluginWithSubmit";
 
 const PythonHttpFieldsPlugin = ({ pluginInfo, ...props }: IPythonHttpFieldsPlugin) => {
   const t = useToast();
@@ -34,10 +35,7 @@ const PythonHttpFieldsPlugin = ({ pluginInfo, ...props }: IPythonHttpFieldsPlugi
     },
     [definitions],
   );
-  const pureIdentifier = useMemo(
-    () => stripHashFromIdentifier(pluginInfo.identifier),
-    [pluginInfo.identifier],
-  );
+  const pureIdentifier = usePureIdentifier(pluginInfo.identifier);
   const currentMeta = useMemo(() => {
     const node = pluginInfo.node;
     let currentMeta: IMeta | undefined;

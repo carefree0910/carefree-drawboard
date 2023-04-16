@@ -20,9 +20,9 @@ import { floatingControlEvent } from "./components/Floating";
 import Render from "./components/Render";
 
 const DownloadPlugin = ({ pluginInfo, ...props }: IPlugin) => {
+  const id = `download_${getRandomHash()}`;
   const t = useToast();
   const lang = langStore.tgt;
-  const id = `download_plugin_${getRandomHash()}`;
   const { type, nodes } = useSelecting("raw");
   const { w, h, imgWH } = useSelecting("basic")({ fixed: 0 }) ?? {};
   const { captionColor } = themeStore.styles;

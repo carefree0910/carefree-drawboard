@@ -20,9 +20,9 @@ import { floatingControlEvent, floatingEvent } from "./components/Floating";
 import Render from "./components/Render";
 
 const AddPlugin = ({ pluginInfo, ...props }: IPlugin) => {
+  const id = `add_${getRandomHash()}`;
   const t = useToast();
   const lang = langStore.tgt;
-  const id = `add_plugin_${getRandomHash()}`;
 
   const closePanel = () => floatingControlEvent.emit({ id, expand: false });
   const onNewProject = () => {

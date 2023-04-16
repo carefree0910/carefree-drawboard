@@ -53,6 +53,7 @@ interface IPythonHttpPluginWithSubmitPluginInfo {
 export interface IPythonHttpPluginWithSubmit<R>
   extends IPythonPlugin,
     IPythonHttpPluginCallbacks<R> {
+  id: string;
   buttonText: string;
   pluginInfo: IPythonPluginInfo & IPythonHttpPluginWithSubmitPluginInfo;
 }

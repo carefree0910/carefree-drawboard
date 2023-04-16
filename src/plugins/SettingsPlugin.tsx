@@ -1,7 +1,7 @@
 import { observer } from "mobx-react-lite";
 import { Box, Checkbox, Flex } from "@chakra-ui/react";
 
-import type { Lang } from "@noli/core";
+import { getRandomHash, Lang } from "@noli/core";
 import {
   BoardStore,
   langDescriptions,
@@ -34,12 +34,13 @@ import { drawboardPluginFactory } from "./utils/factory";
 import Render from "./components/Render";
 
 const SettingsPlugin = ({ pluginInfo, ...props }: IPlugin) => {
+  const id = `settings_${getRandomHash()}`;
   const lang = langStore.tgt;
   const commonProps = { fontWeight: 400, size: "md" };
   const disablePluginSettings = uiStore.disablePluginSettings;
 
   return (
-    <Render {...props}>
+    <Render id={id} {...props}>
       <Flex w="100%" h="100%" direction="column">
         {/* language settings */}
         <Box mt="12px">

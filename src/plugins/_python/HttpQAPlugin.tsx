@@ -2,15 +2,18 @@ import { useState } from "react";
 import { observer } from "mobx-react-lite";
 import { Textarea } from "@chakra-ui/react";
 
+import { getRandomHash } from "@noli/core";
 import { langStore, translate } from "@noli/business";
 
 import type { IPythonHttpQAPlugin, IPythonResponse } from "@/schema/_python";
 import { UI_Words } from "@/lang/ui";
 import { CFInput } from "@/components/CFInput";
 import { drawboardPluginFactory } from "@/plugins/utils/factory";
+import { usePureIdentifier } from "./hooks";
 import PythonHttpPluginWithSubmit from "./HttpPluginWithSubmit";
 
 const PythonHttpQAPlugin = ({ pluginInfo, ...props }: IPythonHttpQAPlugin) => {
+  const id = `${usePureIdentifier(pluginInfo.identifier)}_QA_${getRandomHash()}`;
   const [userInput, setUserInput] = useState("");
   const [serverText, setServerText] = useState(pluginInfo.initialText);
   const lang = langStore.tgt;
@@ -24,6 +27,7 @@ const PythonHttpQAPlugin = ({ pluginInfo, ...props }: IPythonHttpQAPlugin) => {
 
   return (
     <PythonHttpPluginWithSubmit
+      id={id}
       buttonText={translate(UI_Words["submit-task"], lang)}
       getExtraRequestData={getExtraRequestData}
       onUseHttpPythonSuccess={onUseHttpPythonSuccess}

@@ -31,8 +31,8 @@ import { downloadCurrentFullProject } from "@/actions/download";
 
 type IImportLocal = ILoadedProject | INodePack[];
 const ProjectPlugin = ({ pluginInfo, ...props }: IPlugin) => {
-  const t = useToast();
   const id = `project_${getRandomHash()}`;
+  const t = useToast();
   const lang = langStore.tgt;
   const { uid, name } = useCurrentProject();
   const [selectedUid, setSelectedUid] = useState("");

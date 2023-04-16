@@ -37,7 +37,6 @@ const PythonHttpPluginWithSubmit = ({
   const t = useToast();
   const lang = langStore.tgt;
   const [send, setSend] = useState(false);
-  const _id = useMemo(() => id ?? `pythonHttpPluginWithSubmit_${getRandomHash()}`, [id]);
 
   useHttpPython<{ text: string }>({
     node,
@@ -59,7 +58,7 @@ const PythonHttpPluginWithSubmit = ({
   function onClick() {
     setSend(true);
     if (closeOnSubmit) {
-      floatingControlEvent.emit({ id: _id, expand: false });
+      floatingControlEvent.emit({ id, expand: false });
     }
     if (toastOnSubmit) {
       submitToastMessage ??= translate(Toast_Words["submit-task-success-message"], lang);
@@ -68,7 +67,7 @@ const PythonHttpPluginWithSubmit = ({
   }
 
   return (
-    <Render id={_id} {...props}>
+    <Render {...props}>
       {children}
       <CFDivider />
       <CFButton onClick={onClick}>{buttonText}</CFButton>
