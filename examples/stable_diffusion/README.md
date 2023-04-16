@@ -41,7 +41,7 @@ cfdraw run --module {name}
 
 3. We utilized `register_all_available_plugins` to register all internal plugins.
 
-> Currently there is only one internal plugin: `MetaPlugin`, which can show you the `meta` information of a `Node`.
+> Currently there is only one internal plugin: `Meta` plugin, which can show you the `meta` information of a `Node`.
 
 4. If you run image processing consecutively (e.g. first `txt2img` then `img2img`), you will find a `from` field in the `meta` data. This can be used to track the process history of every `Node`.
 
