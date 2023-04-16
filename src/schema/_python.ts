@@ -10,12 +10,12 @@ import type { IDefinitions } from "./metaFields";
 
 export interface IUsePythonInfo extends IPythonPluginInfo {
   isInvisible: boolean;
+  getExtraRequestData?: () => Dictionary<any>;
 }
 export interface IPythonHttpPluginCallbacks<R> {
   onUseHttpPythonSuccess: (res: IPythonResponse<R>) => Promise<void>;
   onUseHttpPythonError?: (err: any) => Promise<void>;
   beforeRequest?: () => Promise<void>;
-  getExtraRequestData?: () => Dictionary<any>;
 }
 export interface INodeData {
   type?: INode["type"];
