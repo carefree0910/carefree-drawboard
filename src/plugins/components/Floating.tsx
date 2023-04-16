@@ -95,8 +95,9 @@ export interface IFloatingRenderEvent {
   noExpand?: boolean;
 }
 export interface IFloatingControlEvent {
-  id: string;
+  id?: string;
   expand?: boolean;
+  ignoreId?: boolean;
 }
 export const floatingEvent = new Event<IFloatingEvent>();
 export const floatingRenderEvent = new Event<IFloatingRenderEvent>();
@@ -171,8 +172,8 @@ const Floating = forwardRef(function (
       },
     );
     const { dispose: disposeControl } = floatingControlEvent.on(
-      ({ id: incomingId, expand: incomingExpand }) => {
-        if (id === incomingId && !isUndefined(incomingExpand)) {
+      ({ id: incomingId, expand: incomingExpand, ignoreId }) => {
+        if ((ignoreId || id === incomingId) && !isUndefined(incomingExpand)) {
           setExpand(incomingExpand);
         }
       },
