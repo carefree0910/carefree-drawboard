@@ -10,10 +10,11 @@ import { uploadImage } from "./uploadImage";
 const isImage = (format: DownloadFormat) => format === "JPG" || format === "PNG";
 const toJpegUrl = (url: string) => `${url}?jpeg=True`;
 
+export type IExportBlob = ExportBlobOptions & { t: IToast; lang: Lang };
 export class Exporter {
   static async exportBlob(
     nodes: ISingleNode[],
-    { t, lang, ...others }: ExportBlobOptions & { t: IToast; lang: Lang },
+    { t, lang, ...others }: IExportBlob,
   ): Promise<Blob | void> {
     return exportBlob(nodes, {
       failedCallback: async () =>
