@@ -9,6 +9,7 @@ from cfdraw import constants
 from cfdraw.utils import exec
 from cfdraw.utils import console
 from cfdraw.utils import processes
+from cfdraw.utils import prerequisites
 from cfdraw.config import get_config
 from cfdraw.utils.template import set_init_codes
 from cfdraw.utils.template import TemplateType
@@ -71,3 +72,8 @@ def init(
 ) -> None:
     folder = os.getcwd()
     set_init_codes(Path(folder), template)
+
+
+@cli.command()
+def install() -> None:
+    prerequisites.install_frontend_packages(verbose=True)
