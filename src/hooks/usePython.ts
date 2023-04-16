@@ -57,7 +57,15 @@ export function useHttpPython<R>({
   beforeRequest,
   getExtraRequestData,
 }: IUseHttpPython<R>) {
-  const deps = [node, nodes, endpoint, identifier, updateInterval, isInvisible, forceNotSend];
+  const deps = [
+    node?.alias,
+    ...nodes.map((n) => n.alias),
+    endpoint,
+    identifier,
+    updateInterval,
+    isInvisible,
+    forceNotSend,
+  ];
   const requestFn = useCallback(() => {
     if (isInvisible || forceNotSend) return Promise.resolve();
     const preprocess = beforeRequest ? beforeRequest() : Promise.resolve();
