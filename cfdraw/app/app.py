@@ -1,4 +1,5 @@
 from typing import Dict
+from typing import List
 from aiohttp import ClientSession
 from fastapi import FastAPI
 from cftool.misc import print_info
@@ -30,10 +31,14 @@ class App(IApp):
         self.add_cors()
         self.add_default_endpoints()
         self.add_events()
-        add_plugins(self)
-        add_websocket(self)
-        add_upload_image(self)
-        add_project_managements(self)
+        self.endpoints: List[IEndpoint] = [
+            UploadEndpoint(self),
+            ProjectEndpoint(self),
+            PluginsEndpoint(self),
+            WebsocketEndpoint(self),
+        ]
+        for endpoint in self.endpoints:
+            endpoint.register()
         self.hash = random_hash()
 
     def __str__(self) -> str:
@@ -63,10 +68,12 @@ class App(IApp):
         async def startup() -> None:
             self.hash = random_hash()
             print_info(f"🚀 Starting Server at {self.config.api_url} ...")
-            print_info("🔨 Compiling Plugins...")
+            print_info("🔨 Compiling Plugins & Endpoints...")
             for plugin in self.plugins.values():
                 plugin.hash = self.hash
                 plugin.http_session = self.http_session
+            for endpoint in self.endpoints:
+                await endpoint.on_startup()
             upload_root_path = self.config.upload_root_path
             print_info(f"🔔 Your files will be saved to '{upload_root_path}'")
             print_info("🎉 Server is Ready!")
@@ -76,6 +83,8 @@ class App(IApp):
             await self.http_session.close()
             for plugin in self.plugins.values():
                 plugin.http_session = None
+            for endpoint in self.endpoints:
+                await endpoint.on_shutdown()
             self.http_session = None
 
     def add_default_endpoints(self) -> None:

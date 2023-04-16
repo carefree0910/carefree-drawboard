@@ -12,6 +12,7 @@ from cfdraw.app.schema import IApp
 from cfdraw.utils.server import get_err_msg
 from cfdraw.utils.server import get_responses
 from cfdraw.utils.server import get_image_response_kwargs
+from cfdraw.app.endpoints.base import IEndpoint
 
 
 class ImageDataModel(BaseModel):
@@ -52,6 +53,11 @@ def add_upload_image(app: IApp) -> None:
         return server.get_image_response(file, jpeg)
 
 
+class UploadEndpoint(IEndpoint):
+    def register(self) -> None:
+        add_upload_image(self.app)
+
+
 __all__ = [
-    "add_upload_image",
+    "UploadEndpoint",
 ]

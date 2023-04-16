@@ -10,6 +10,7 @@ from cfdraw.app.schema import IApp
 from cfdraw.utils.server import raise_err
 from cfdraw.utils.server import get_err_msg
 from cfdraw.utils.server import get_responses
+from cfdraw.app.endpoints.base import IEndpoint
 
 
 class ProjectItem(BaseModel):
@@ -89,6 +90,11 @@ def add_project_managements(app: IApp) -> None:
             raise_err(err)
 
 
+class ProjectEndpoint(IEndpoint):
+    def register(self) -> None:
+        add_project_managements(self.app)
+
+
 __all__ = [
-    "add_project_managements",
+    "ProjectEndpoint",
 ]

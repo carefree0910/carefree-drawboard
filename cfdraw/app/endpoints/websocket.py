@@ -11,6 +11,7 @@ from cfdraw.schema.plugins import IPluginRequest
 from cfdraw.schema.plugins import IPluginResponse
 from cfdraw.schema.plugins import ISocketMessage
 from cfdraw.plugins.base import ISocketPlugin
+from cfdraw.app.endpoints.base import IEndpoint
 
 
 def add_websocket(app: IApp) -> None:
@@ -68,6 +69,11 @@ def add_websocket(app: IApp) -> None:
                 await on_failed(e)
 
 
+class WebsocketEndpoint(IEndpoint):
+    def register(self) -> None:
+        add_websocket(self.app)
+
+
 __all__ = [
-    "add_websocket",
+    "WebsocketEndpoint",
 ]

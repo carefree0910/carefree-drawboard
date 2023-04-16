@@ -7,6 +7,7 @@ from cfdraw.schema.plugins import IPluginRequest
 from cfdraw.schema.plugins import IPluginResponse
 from cfdraw.plugins.base import IHttpPlugin
 from cfdraw.plugins.base import ISocketPlugin
+from cfdraw.app.endpoints.base import IEndpoint
 
 
 def add_plugins(app: IApp) -> None:
@@ -42,6 +43,11 @@ def add_plugins(app: IApp) -> None:
         _register(identifier, plugin)
 
 
+class PluginsEndpoint(IEndpoint):
+    def register(self) -> None:
+        add_plugins(self.app)
+
+
 __all__ = [
-    "add_plugins",
+    "PluginsEndpoint",
 ]
