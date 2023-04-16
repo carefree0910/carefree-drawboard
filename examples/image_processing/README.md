@@ -65,6 +65,6 @@ async def process(self, data: IPluginRequest) -> Image.Image:
     return image.filter(ImageFilter.GaussianBlur(kernel_size))
 ```
 
-6. We specified `upload_root` to `./`, so the images/projects will be saved to the cwd (current working directory).
+6. We specified `upload_root` to `./` (in `cfconfig.py`), so the images/projects will be saved to the cwd (current working directory).
 
 > Default `upload_root` is `~/.cache/carefree-draw`.

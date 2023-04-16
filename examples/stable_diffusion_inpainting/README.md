@@ -52,6 +52,6 @@ cfdraw run --module {name}
 
 > See [`IFieldDefinition`](https://github.com/carefree0910/carefree-drawboard/wiki/PythonHttpFieldsPlugin#ifielddefinition) for more details.
 
-6. We specified `upload_root` to `./`, so the images/projects will be saved to the cwd (current working directory).
+6. We specified `upload_root` to `./` (in `cfconfig.py`), so the images/projects will be saved to the cwd (current working directory).
 
 > Default `upload_root` is `~/.cache/carefree-draw`.
