@@ -19,8 +19,8 @@ import { stripHashFromIdentifier } from "@/utils/misc";
 import { uiStore } from "@/stores/ui";
 import { usePythonPluginSettings } from "@/stores/_python";
 import {
-  pluginIsInvisible,
-  pythonPluginIsInvisible,
+  pluginIsVisible,
+  pythonPluginIsVisible,
   setPythonPluginVisible,
   setPluginVisible,
 } from "@/stores/plugins";
@@ -75,27 +75,30 @@ const SettingsPlugin = ({ pluginInfo, ...props }: IPlugin) => {
           <Flex w="100%" gap="8px" direction="column" justifyContent="space-around">
             {allAvailablePlugins
               .filter((plugin) => !["settings", "undo", "redo"].includes(plugin))
-              .map((plugin, i) => (
-                <Checkbox
-                  key={`plugin-${i}`}
-                  value={plugin}
-                  isChecked={!pluginIsInvisible(plugin)}
-                  onChange={() => setPluginVisible(plugin, pluginIsInvisible(plugin))}
-                  {...commonProps}
-                  disabled={disablePluginSettings}>
-                  {translate(Plugins_Words[plugin], lang)}
-                </Checkbox>
-              ))}
+              .map((plugin, i) => {
+                const pIsVisible = pluginIsVisible(plugin);
+                return (
+                  <Checkbox
+                    key={`plugin-${i}`}
+                    value={plugin}
+                    isChecked={pIsVisible}
+                    onChange={() => setPluginVisible(plugin, !pIsVisible)}
+                    {...commonProps}
+                    disabled={disablePluginSettings}>
+                    {translate(Plugins_Words[plugin], lang)}
+                  </Checkbox>
+                );
+              })}
             {usePythonPluginSettings().map((settings, i) => {
               const identifierWithHash = settings.props.pluginInfo.identifier;
               const identifier = stripHashFromIdentifier(identifierWithHash);
-              const pIsInvisible = pythonPluginIsInvisible(identifierWithHash);
+              const pIsVisible = pythonPluginIsVisible(identifierWithHash);
               return (
                 <Checkbox
                   key={`${identifierWithHash}-${i}`}
                   value={identifier}
-                  isChecked={!pIsInvisible}
-                  onChange={() => setPythonPluginVisible(identifierWithHash, pIsInvisible)}
+                  isChecked={pIsVisible}
+                  onChange={() => setPythonPluginVisible(identifierWithHash, !pIsVisible)}
                   {...commonProps}
                   disabled={disablePluginSettings}>
                   {`${translate(Plugins_Words[settings.type], lang)} (${identifier})`}

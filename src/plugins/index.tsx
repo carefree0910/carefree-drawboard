@@ -2,7 +2,7 @@ import { Logger, shallowCopy } from "@noli/core";
 import { useSelecting } from "@noli/business";
 
 import type { AvailablePluginsAndPythonPlugins, IMakePlugin } from "@/schema/plugins";
-import { pluginIsInvisible, pythonPluginIsInvisible } from "@/stores/plugins";
+import { pluginIsVisible, pythonPluginIsVisible } from "@/stores/plugins";
 import { drawboardPluginFactory } from "./utils/factory";
 import { getNodeFilter } from "./utils/renderFilters";
 
@@ -47,9 +47,9 @@ export function makePlugin<T extends AvailablePluginsAndPythonPlugins>({
     renderInfo.src =
       "https://ailab-huawei-cdn.nolibox.com/upload/images/7eb5a38f422049948dc8655123f2d96a.png";
   if (drawboardPluginFactory.checkIsPython(type)) {
-    renderInfo.isInvisible = pythonPluginIsInvisible((updatedPluginInfo as any).identifier);
+    renderInfo.isInvisible = !pythonPluginIsVisible((updatedPluginInfo as any).identifier);
   } else {
-    renderInfo.isInvisible = pluginIsInvisible(type);
+    renderInfo.isInvisible = !pluginIsVisible(type);
   }
   return (
     <Plugin
