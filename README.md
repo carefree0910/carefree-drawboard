@@ -22,6 +22,12 @@ pip install carefree-drawboard
 npm install --global yarn
 ```
 
+Although we'll always try to help you install the frontend packages, it is recommended to install them beforehands because you can receive much more verbose:
+
+```bash
+cfdraw install
+```
+
 ## Your first `carefree-drawboard` 🎨 App
 
 Create a folder (e.g., `my_fancy_app`) wherever you like, get into it, and run
