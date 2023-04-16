@@ -107,10 +107,10 @@ const SettingsPlugin = ({ pluginInfo, ...props }: IPlugin) => {
               );
             })}
             <Flex w="100%" my="6px" justifyContent="space-around">
-              <CFButton onClick={hideAllPlugins} isDisabled={disablePluginSettings}>
+              <CFButton onClick={() => hideAllPlugins()} isDisabled={disablePluginSettings}>
                 {translate(Settings_Words["hide-all-plugins-message"], lang)}
               </CFButton>
-              <CFButton onClick={showAllPlugins} isDisabled={disablePluginSettings}>
+              <CFButton onClick={() => showAllPlugins()} isDisabled={disablePluginSettings}>
                 {translate(Settings_Words["show-all-plugins-message"], lang)}
               </CFButton>
             </Flex>

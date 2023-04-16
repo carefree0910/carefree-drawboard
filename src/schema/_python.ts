@@ -8,11 +8,13 @@ import type { IDefinitions } from "./metaFields";
 
 // general
 
-export interface IUsePythonInfo extends IPythonPluginInfo {
-  isInvisible: boolean;
+interface IPythonCallbacks {
   getExtraRequestData?: () => Dictionary<any>;
 }
-export interface IPythonHttpPluginCallbacks<R> {
+export interface IUsePythonInfo extends IPythonPluginInfo, IPythonCallbacks {
+  isInvisible: boolean;
+}
+export interface IPythonHttpPluginCallbacks<R> extends IPythonCallbacks {
   onUseHttpPythonSuccess: (res: IPythonResponse<R>) => Promise<void>;
   onUseHttpPythonError?: (err: any) => Promise<void>;
   beforeRequest?: () => Promise<void>;
