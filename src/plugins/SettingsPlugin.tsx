@@ -26,11 +26,11 @@ import {
   setPluginVisible,
 } from "@/stores/plugins";
 import { hideAllPlugins, showAllPlugins } from "@/actions/managePlugins";
+import CFButton from "@/components/CFButton";
 import CFSelect from "@/components/CFSelect";
 import CFSlider from "@/components/CFSlider";
-import { CFButton } from "@/components/CFButton";
-import { CFDivider } from "@/components/CFDivider";
-import { CFHeading } from "@/components/CFHeading";
+import CFDivider from "@/components/CFDivider";
+import CFHeading from "@/components/CFHeading";
 import { drawboardPluginFactory } from "./utils/factory";
 import Render from "./components/Render";
 

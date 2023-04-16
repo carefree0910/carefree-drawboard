@@ -7,7 +7,7 @@ import { langStore, translate } from "@noli/business";
 
 import type { IPythonHttpQAPlugin, IPythonResponse } from "@/schema/_python";
 import { UI_Words } from "@/lang/ui";
-import { CFInput } from "@/components/CFInput";
+import CFInput from "@/components/CFInput";
 import { drawboardPluginFactory } from "@/plugins/utils/factory";
 import { useIdentifierId } from "./hooks";
 import PythonHttpPluginWithSubmit from "./HttpPluginWithSubmit";

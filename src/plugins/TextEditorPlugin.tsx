@@ -9,8 +9,8 @@ import type { IPlugin } from "@/schema/plugins";
 import Render from "./components/Render";
 import { drawboardPluginFactory } from "./utils/factory";
 import CFSlider from "@/components/CFSlider";
-import { CFHeading } from "@/components/CFHeading";
-import { CFDivider } from "@/components/CFDivider";
+import CFDivider from "@/components/CFDivider";
+import CFHeading from "@/components/CFHeading";
 import { NodeEditor_Words } from "@/lang/nodeEditor";
 
 const TextEditorPlugin = ({ pluginInfo: { node }, ...props }: IPlugin) => {

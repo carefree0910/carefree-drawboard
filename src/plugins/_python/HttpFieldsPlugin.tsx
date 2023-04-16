@@ -15,7 +15,7 @@ import { titleCaseWord } from "@/utils/misc";
 import { importMeta } from "@/actions/importMeta";
 import { getMetaField } from "@/stores/meta";
 import { drawboardPluginFactory } from "@/plugins/utils/factory";
-import { CFHeading } from "@/components/CFHeading";
+import CFHeading from "@/components/CFHeading";
 import { useDefinitions } from "../components/Fields";
 import { floatingControlEvent } from "../components/Floating";
 import { useIdentifierId } from "./hooks";

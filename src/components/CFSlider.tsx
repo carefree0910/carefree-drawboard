@@ -7,11 +7,12 @@ import {
   Text,
   FlexProps,
 } from "@chakra-ui/react";
+import { observer } from "mobx-react-lite";
 import { useUnmount } from "ahooks";
 import React, { ReactElement, useCallback, useEffect, useState } from "react";
 
 import { themeStore } from "@/stores/theme";
-import { CFInput } from "./CFInput";
+import CFInput from "./CFInput";
 
 export interface ICFSlider extends FlexProps {
   className?: string;
@@ -174,4 +175,4 @@ const CFSlider: React.FC<ICFSlider> = ({
   );
 };
 
-export default CFSlider;
+export default observer(CFSlider);

@@ -1,18 +1,17 @@
-import { useState, useMemo } from "react";
+import { useState } from "react";
 import { observer } from "mobx-react-lite";
+import { useToast } from "@chakra-ui/react";
 
-import { getRandomHash } from "@noli/core";
 import { langStore, translate } from "@noli/business";
 
 import type { IPythonHttpPluginWithSubmit } from "@/schema/_python";
+import { toast } from "@/utils/toast";
 import { Toast_Words } from "@/lang/toast";
 import { useHttpPython } from "@/hooks/usePython";
-import { CFButton } from "@/components/CFButton";
-import { CFDivider } from "@/components/CFDivider";
+import CFButton from "@/components/CFButton";
+import CFDivider from "@/components/CFDivider";
 import Render from "../components/Render";
 import { floatingControlEvent } from "../components/Floating";
-import { toast } from "@/utils/toast";
-import { useToast } from "@chakra-ui/react";
 
 const PythonHttpPluginWithSubmit = ({
   id,

@@ -17,11 +17,11 @@ import {
   loadProject,
   saveProject,
 } from "@/actions/manageProjects";
-import { CFText } from "@/components/CFText";
-import { CFInput } from "@/components/CFInput";
-import { CFButton } from "@/components/CFButton";
-import { CFDivider } from "@/components/CFDivider";
-import { CFHeading } from "@/components/CFHeading";
+import CFText from "@/components/CFText";
+import CFInput from "@/components/CFInput";
+import CFButton from "@/components/CFButton";
+import CFDivider from "@/components/CFDivider";
+import CFHeading from "@/components/CFHeading";
 import { CFSrollableSelect } from "@/components/CFSelect";
 import { drawboardPluginFactory } from "./utils/factory";
 import Render from "./components/Render";

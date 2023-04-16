@@ -10,14 +10,14 @@ import { Toast_Words } from "@/lang/toast";
 import { importMeta } from "@/actions/importMeta";
 import { uploadImage } from "@/actions/uploadImage";
 
-export interface ImageUploaderProps {
+export interface CFImageUploaderProps {
   className?: string;
   children: ReactNode;
   onUpload?: (url: string) => void;
   addToBoard?: boolean;
 }
 
-const ImageUploader: React.FC<ImageUploaderProps> = ({
+const CFImageUploader: React.FC<CFImageUploaderProps> = ({
   className,
   children,
   onUpload,
@@ -47,4 +47,4 @@ const ImageUploader: React.FC<ImageUploaderProps> = ({
   );
 };
 
-export default observer(ImageUploader);
+export default observer(CFImageUploader);
