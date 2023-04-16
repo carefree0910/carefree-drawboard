@@ -12,6 +12,9 @@ def get_yarn() -> str:
     return yarn_path
 
 
-def install_frontend_packages() -> None:
+def install_frontend_packages(*, verbose: bool = False) -> None:
     console.rule("[bold]Installing frontend packages")
-    subprocess.run([get_yarn()], cwd=constants.PARENT, stdout=subprocess.PIPE)
+    kw = dict(cwd=constants.PARENT)
+    if not verbose:
+        kw["stdout"] = subprocess.PIPE
+    subprocess.run([get_yarn()], **kw)
