@@ -6,14 +6,15 @@ import type { IToast } from "./misc";
 
 export const allMetaTypes = ["upload", "python.httpFields", "add.text"] as const;
 export type MetaType = typeof allMetaTypes[number];
-export interface ICommonMetaData {
+export interface ICommonMetaData<T extends _IMetaData = _IMetaData> {
   timestamp?: number;
   duration?: number;
-  from?: IMeta;
+  from?: IMeta<T>;
 }
-export interface IMeta {
+type _IMetaData = ICommonMetaData & Dictionary<any>;
+export interface IMeta<T extends _IMetaData = _IMetaData> {
   type: MetaType;
-  data: ICommonMetaData & Dictionary<any>;
+  data: T;
 }
 
 // specific
