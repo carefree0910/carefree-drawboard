@@ -9,6 +9,7 @@ import {
   removeNodeTransformEventCallback,
   useBoardContainerLeftTop,
   useBoardContainerWH,
+  useIsReady,
   useSelectHooks,
   useSelecting,
 } from "@noli/business";
@@ -22,6 +23,8 @@ import Floating, {
   getExpandPosition,
   IFloatingRenderEvent,
 } from "./Floating";
+
+let DEBUG_PREFIX: string | undefined;
 
 const Render = (({
   id,
@@ -70,7 +73,7 @@ const Render = (({
   // This effect handles callbacks that dynamically render the plugin's position
   useLayoutEffect(() => {
     const _id = id!;
-    const updateFloating = async () => {
+    const updateFloating = async (e: any) => {
       const _iconW = iconW!;
       const _iconH = iconH!;
       const _pivot = pivot!;
@@ -114,6 +117,10 @@ const Render = (({
         }
       } else {
         const info = useSelecting("raw");
+        if (DEBUG_PREFIX && _id.startsWith(DEBUG_PREFIX)) {
+          console.log("> e", e);
+          console.log("> info", _id, info);
+        }
         if (!info || (updatedRenderInfo.renderFilter && !updatedRenderInfo.renderFilter(info))) {
           return;
         }
@@ -162,22 +169,28 @@ const Render = (({
     };
     const onFloatingReRender = ({ id: renderedId, needRender }: IFloatingRenderEvent) => {
       if (id === renderedId && needRender) {
-        updateFloating();
+        updateFloating({ event: "rerender", needRender });
       }
     };
     const { dispose } = floatingRenderEvent.on(onFloatingReRender);
     injectNodeTransformEventCallback(_id, updateFloating);
     useSelectHooks().register({ key: _id, after: updateFloating });
     window.addEventListener("resize", updateFloating);
-    updateFloating();
+    if (useIsReady()) {
+      updateFloating({ event: "init" });
+    }
 
     return () => {
+      if (DEBUG_PREFIX && _id.startsWith(DEBUG_PREFIX)) {
+        console.log(">>>>> clean up");
+      }
       dispose();
       removeNodeTransformEventCallback(_id);
       useSelectHooks().remove(_id);
       window.removeEventListener("resize", updateFloating);
     };
   }, [
+    id,
     iconW,
     iconH,
     nodeConstraint,
@@ -187,8 +200,8 @@ const Render = (({
     offsetY,
     expandOffsetX,
     expandOffsetY,
-    children,
-    props,
+    JSON.stringify(props),
+    useIsReady(),
   ]);
 
   return (
