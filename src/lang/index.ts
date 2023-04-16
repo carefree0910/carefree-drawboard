@@ -29,11 +29,12 @@ export function initializeLang(): void {
     initLangDirs.forEach((d) => {
       updateDictionary(lang, d[lang]);
       Object.keys(d[lang]).forEach((k) => {
-        if (collected.has(k)) {
+        const _k = `${lang}-${k}`;
+        if (collected.has(_k)) {
           console.warn(`Key ${k} is duplicated!`);
           anyDuplicate = true;
         }
-        collected.add(`${lang}-${k}`);
+        collected.add(_k);
       });
     });
   }
