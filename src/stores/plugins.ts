@@ -5,46 +5,46 @@ import { ABCStore } from "@noli/business";
 
 import type { AvailablePlugins } from "@/schema/plugins";
 
-export type IPluginsInvisible = Partial<Record<AvailablePlugins, boolean>>;
-class PluginsInvisibleStore extends ABCStore<IPluginsInvisible> {
-  invisible: IPluginsInvisible = {};
+export type IPluginsVisible = Partial<Record<AvailablePlugins, boolean>>;
+class PluginsVisibleStore extends ABCStore<IPluginsVisible> {
+  visible: IPluginsVisible = {};
 
   constructor() {
     super();
     makeObservable(this, {
-      invisible: observable,
+      visible: observable,
     });
   }
 
-  get info(): IPluginsInvisible {
-    return this.invisible;
+  get info(): IPluginsVisible {
+    return this.visible;
   }
 }
 
-export const pluginsInvisibleStore = new PluginsInvisibleStore();
+export const pluginsVisibleStore = new PluginsVisibleStore();
 export const pluginIsVisible = (plugin: AvailablePlugins) =>
-  !(pluginsInvisibleStore.info[plugin] ?? false);
+  pluginsVisibleStore.info[plugin] ?? true;
 export const setPluginVisible = (plugin: AvailablePlugins, visible: boolean) =>
-  pluginsInvisibleStore.updateProperty(plugin, !visible);
+  pluginsVisibleStore.updateProperty(plugin, visible);
 
-export type IPythonPluginsInvisible = Dictionary<boolean>;
-class PythonPluginsInvisibleStore extends ABCStore<IPythonPluginsInvisible> {
-  invisible: IPythonPluginsInvisible = {};
+export type IPythonPluginsVisible = Dictionary<boolean>;
+class PythonPluginsVisibleStore extends ABCStore<IPythonPluginsVisible> {
+  visible: IPythonPluginsVisible = {};
 
   constructor() {
     super();
     makeObservable(this, {
-      invisible: observable,
+      visible: observable,
     });
   }
 
-  get info(): IPythonPluginsInvisible {
-    return this.invisible;
+  get info(): IPythonPluginsVisible {
+    return this.visible;
   }
 }
 
-export const pythonPluginsInvisibleStore = new PythonPluginsInvisibleStore();
+export const pythonPluginsVisibleStore = new PythonPluginsVisibleStore();
 export const pythonPluginIsVisible = (identifier: string) =>
-  !(pythonPluginsInvisibleStore.info[identifier] ?? false);
+  pythonPluginsVisibleStore.info[identifier] ?? true;
 export const setPythonPluginVisible = (identifier: string, visible: boolean) =>
-  pythonPluginsInvisibleStore.updateProperty(identifier, !visible);
+  pythonPluginsVisibleStore.updateProperty(identifier, visible);
