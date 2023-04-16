@@ -38,6 +38,8 @@ const PythonHttpPluginWithSubmit = ({
   const [send, setSend] = useState(false);
 
   useHttpPython<{ text: string }>({
+    t,
+    lang,
     node,
     nodes,
     endpoint,

@@ -1,8 +1,9 @@
 import type { TextareaProps } from "@chakra-ui/react";
 
-import type { Dictionary, INode, Matrix2DFields } from "@noli/core";
+import type { Dictionary, INode, Lang, Matrix2DFields } from "@noli/core";
 
 import type { IMeta } from "./meta";
+import type { IToast } from "./misc";
 import type { IPlugin, IPluginInfo } from "./plugins";
 import type { IDefinitions } from "./metaFields";
 
@@ -104,6 +105,8 @@ export interface ISocketCallbacks<R> {
 // http
 
 export interface IUseHttpPython<R> extends IUsePythonInfo, IPythonHttpPluginCallbacks<R> {
+  t: IToast;
+  lang: Lang;
   forceNotSend?: boolean;
 }
 

@@ -1,8 +1,9 @@
 import { useMemo, useState } from "react";
 import { observer } from "mobx-react-lite";
-import { Textarea } from "@chakra-ui/react";
+import { Textarea, useToast } from "@chakra-ui/react";
 
 import { getRandomHash } from "@noli/core";
+import { langStore } from "@noli/business";
 
 import type { IPythonHttpTextAreaPlugin } from "@/schema/_python";
 import { useHttpPython } from "@/hooks/usePython";
@@ -14,11 +15,15 @@ const PythonHttpTextAreaPlugin = ({
   pluginInfo: { node, nodes, endpoint, identifier, updateInterval, noLoading, textAlign },
   ...props
 }: IPythonHttpTextAreaPlugin) => {
+  const t = useToast();
+  const lang = langStore.tgt;
   const identifierId = useIdentifierId(identifier);
   const id = useMemo(() => `${identifierId}_textArea_${getRandomHash()}`, []);
   const [value, setValue] = useState("");
 
   useHttpPython<{ text: string }>({
+    t,
+    lang,
     node,
     nodes,
     endpoint,

@@ -1,6 +1,6 @@
 import { useCallback, useEffect } from "react";
 
-import { INode, Logger } from "@noli/core";
+import { BBox, INode, INodes, Logger } from "@noli/core";
 
 import type { IMeta } from "@/schema/meta";
 import type {
@@ -13,29 +13,51 @@ import type {
 import { IPythonStore, updatePythonStore } from "@/stores/_python";
 import { Requests } from "@/requests/actions";
 import { useWebSocket } from "@/requests/hooks";
+import { uploadImage } from "@/actions/uploadImage";
+import { Exporter, IExportBlob } from "@/actions/export";
 
-async function getNodeData(node: INode | null): Promise<INodeData> {
+type IGetNodeData = IExportBlob & { exportBox: BBox };
+async function getNodeData(node: INode | null, opt: IGetNodeData): Promise<INodeData> {
   if (!node) return {};
   const { x, y } = node.position;
   const { w, h } = node.wh;
   const transform = node.transform.fields;
   const text = node.type === "text" ? node.params.content : undefined;
-  const src = node.type === "image" ? node.renderParams.src : undefined;
+  let src: string | undefined = undefined;
+  if (node.type === "image") {
+    src = node.renderParams.src;
+  } else if (node.type === "path") {
+    // should export the `PathNode` as an image based on the `exportBox`
+    opt.exportOptions ??= {};
+    opt.exportOptions.exportBox = opt.exportBox;
+    src = await Exporter.exportBlob([node], opt)
+      .then((blob) => {
+        if (!blob) throw Error("export blob for `PathNode` failed");
+        return uploadImage(opt.t, opt.lang, blob, { failed: async () => void 0 });
+      })
+      .then((res) => {
+        if (!res) throw Error("upload image for `PathNode` failed");
+        return res.url;
+      });
+  }
   const meta = (node.type === "group" ? undefined : node.params.meta) as IMeta | undefined;
-  const children = node.type === "group" ? await getNodeDataList(node.nodes) : undefined;
+  const children = node.type === "group" ? await getNodeDataList(node.nodes, opt) : undefined;
   return { type: node.type, x, y, w, h, transform, text, src, meta, children };
 }
-async function getNodeDataList(nodes: INode[]): Promise<INodeData[]> {
-  return Promise.all(nodes.map(getNodeData));
+async function getNodeDataList(nodes: INode[], opt: IGetNodeData): Promise<INodeData[]> {
+  return Promise.all(nodes.map((node) => getNodeData(node, opt)));
 }
 async function getPythonRequest({
   node,
   nodes,
   identifier,
   getExtraRequestData,
-}: Omit<IUsePythonInfo, "endpoint" | "isInvisible">): Promise<IPythonRequest> {
-  const nodeData = await getNodeData(node);
-  const nodeDataList = nodes.length <= 1 ? [] : await getNodeDataList(nodes);
+  opt,
+}: Omit<IUsePythonInfo, "endpoint" | "isInvisible"> & {
+  opt: IGetNodeData;
+}): Promise<IPythonRequest> {
+  const nodeData = await getNodeData(node, opt);
+  const nodeDataList = nodes.length <= 1 ? [] : await getNodeDataList(nodes, opt);
   return {
     identifier,
     nodeData,
@@ -45,6 +67,8 @@ async function getPythonRequest({
 }
 
 export function useHttpPython<R>({
+  t,
+  lang,
   node,
   nodes,
   endpoint,
@@ -68,9 +92,18 @@ export function useHttpPython<R>({
   ];
   const requestFn = useCallback(() => {
     if (isInvisible || forceNotSend) return Promise.resolve();
+    const exportBox = new INodes(nodes).bbox;
     const preprocess = beforeRequest ? beforeRequest() : Promise.resolve();
     return preprocess
-      .then(() => getPythonRequest({ node, nodes, identifier, getExtraRequestData }))
+      .then(() =>
+        getPythonRequest({
+          node,
+          nodes,
+          identifier,
+          getExtraRequestData,
+          opt: { t, lang, exportBox },
+        }),
+      )
       .then((req) => Requests.postJson<IPythonResponse<R>>("_python", endpoint, req))
       .then((res) => {
         if (res.success) return onUseHttpPythonSuccess(res);
