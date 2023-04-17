@@ -31,6 +31,22 @@ class Endpoint(Enum):
 
 
 # misc
+ENV_KEY = "CFDRAW_ENV"
+
+
+class Env(str, Enum):
+    DEV = "development"
+    PROD = "production"
+
+
+def get_env() -> Env:
+    return os.environ.get(ENV_KEY, Env.DEV)
+
+
+def set_env(env: Env) -> None:
+    os.environ[ENV_KEY] = env.value
+
+
 class LogLevel(str, Enum):
     DEBUG = "debug"
     INFO = "info"
