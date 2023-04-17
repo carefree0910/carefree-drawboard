@@ -39,7 +39,7 @@ class Env(str, Enum):
 
 
 def get_env() -> Env:
-    return os.environ.get(ENV_KEY, Env.DEV)
+    return os.environ.get(ENV_KEY, Env.DEV)  # type: ignore
 
 
 def set_env(env: Env) -> None:
