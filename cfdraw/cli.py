@@ -26,8 +26,10 @@ def run(
         constants.LogLevel.ERROR,
         help="The log level to use.",
     ),
+    prod: bool = typer.Option(False, help="Whether to run in production mode."),
 ) -> None:
     sys.path.insert(0, os.getcwd())
+    constants.set_env(constants.Env.PROD if prod else constants.Env.DEV)
     # fetch configs
     config = get_config()
     frontend_port = config.frontend_port
@@ -48,7 +50,10 @@ def run(
         backend_port = processes.change_or_terminate_port(backend_port, "backend")
     config.frontend_port = frontend_port
     config.backend_port = backend_port
-    frontend_fn, backend_fn = exec.run_frontend, exec.run_backend
+    if not prod:
+        frontend_fn, backend_fn = exec.run_frontend, exec.run_backend
+    else:
+        frontend_fn, backend_fn = exec.run_frontend_prod, exec.run_backend
     try:
         if not no_frontend:
             frontend_fn()
