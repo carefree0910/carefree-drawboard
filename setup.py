@@ -3,7 +3,7 @@ from setuptools import setup, find_packages
 VERSION = "0.0.0-alpha.0"
 PACKAGE_NAME = "carefree-drawboard"
 
-DESCRIPTION = "An AI-powered drawboard for everyone."
+DESCRIPTION = "🎨 Infinite Drawboard in Python"
 with open("README.md", encoding="utf-8") as f:
     LONG_DESCRIPTION = f.read()
 
