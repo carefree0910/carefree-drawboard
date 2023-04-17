@@ -22,10 +22,8 @@ class App(IApp):
     def __init__(self) -> None:
         # config
         self.config = get_config()
-
         # clients
         self.http_session = ClientSession()
-
         # fastapi
         self.api = FastAPI()
         self.add_cors()
