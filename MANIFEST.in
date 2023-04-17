@@ -1,1 +1,2 @@
 recursive-include cfdraw/.web *
+prune cfdraw/.web/node_modules
