@@ -31,6 +31,9 @@ export default defineConfig({
   server: {
     port: parseInt(process.env.CFDRAW_FE_PORT || "5173"),
   },
+  preview: {
+    port: parseInt(process.env.CFDRAW_FE_PORT || "5173"),
+  },
   build: {
     rollupOptions: {
       output: {
