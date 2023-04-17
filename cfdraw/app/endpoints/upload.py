@@ -50,11 +50,7 @@ def add_upload_image(app: IApp) -> None:
         **get_image_response_kwargs(),
     )
     async def fetch_image(file: str, jpeg: bool = False) -> Response:
-        response = server.get_image_response(file, jpeg)
-        # TODO: I'm not sure the side effects of this
-        csp = "default-src 'self' 'unsafe-inline' 'unsafe-eval' data: *"
-        response.headers["Content-Security-Policy"] = csp
-        return response
+        return server.get_image_response(file, jpeg)
 
 
 class UploadEndpoint(IEndpoint):
