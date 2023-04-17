@@ -6,6 +6,10 @@
 
 <div align="center">
 
+[![PyPI version](https://badge.fury.io/py/carefree-drawboard.svg)](https://badge.fury.io/py/carefree-drawboard.svg)
+![Checks](https://github.com/carefree0910/carefree-drawboard/actions/workflows/checks.yml/badge.svg)
+[![License](https://img.shields.io/badge/License-Apache_2.0-yellowgreen.svg)](https://opensource.org/licenses/Apache-2.0)  
+
 ### [Wiki](https://github.com/carefree0910/carefree-drawboard/wiki) | [Examples](https://github.com/carefree0910/carefree-drawboard/tree/dev/examples) | [Stable Diffusion](https://github.com/carefree0910/carefree-drawboard/tree/dev/examples/stable_diffusion) | [ControlNet](https://github.com/carefree0910/carefree-drawboard/tree/dev/examples/stable_diffusion_controlnet) | [Inpainting](https://github.com/carefree0910/carefree-drawboard/tree/dev/examples/stable_diffusion_inpainting)
 
 <div align="left">
@@ -26,6 +30,14 @@ Although we'll always try to help you install the frontend packages, it is recom
 
 ```bash
 cfdraw install
+```
+
+If you are interested in the latest features, you may use `pip` to install from source as well:
+
+```bash
+git clone https://github.com/carefree0910/carefree-drawboard.git
+cd carefree-drawboard
+pip install -e .
 ```
 
 ## Your first `carefree-drawboard` 🎨 App
@@ -81,6 +93,10 @@ Apart from these:
 * If you are familiar with `React`, you may check out the [Customizations](https://github.com/carefree0910/carefree-drawboard/wiki/Customizations) documentation and try to customize your own plugins and have fun!
 
 > It is also recommended to start from the [Development Guide](https://github.com/carefree0910/carefree-drawboard/wiki/Development-Guide)!
+
+### Style Guide
+
+If you are still interested: `carefree-drawboard` 🎨 adopted [`black`](https://github.com/psf/black) and [`mypy`](https://github.com/python/mypy) to stylize its codes, so you may need to check the format, coding style and type hint with them before your codes could actually be merged.
 
 ## Q&A
 
