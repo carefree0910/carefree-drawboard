@@ -2,6 +2,7 @@
 .test/*
 **/.images/*
 **/.projects/*
+cfdraw/.web/analyze.html
 
 # Logs
 logs
