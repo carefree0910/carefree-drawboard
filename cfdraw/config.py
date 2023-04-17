@@ -18,8 +18,11 @@ class Config:
     # upload
     upload_root: str = str(constants.UPLOAD_ROOT)
     # misc
-    debug: bool = True
     use_react_strict_mode: bool = False
+
+    @property
+    def prod(self) -> bool:
+        return constants.get_env() == constants.Env.PROD
 
     @property
     def api_url(self) -> str:
