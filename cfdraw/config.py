@@ -13,7 +13,6 @@ class Config:
     # frontend
     frontend_port: str = constants.FRONTEND_PORT
     # api
-    api_host: str = constants.API_HOST
     backend_port: str = constants.BACKEND_PORT
     # upload
     upload_root: str = str(constants.UPLOAD_ROOT)
@@ -26,7 +25,7 @@ class Config:
 
     @property
     def api_url(self) -> str:
-        return f"{self.api_host}:{self.backend_port}"
+        return f"http://localhost:{self.backend_port}"
 
     @property
     def upload_root_path(self) -> Path:

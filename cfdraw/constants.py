@@ -17,7 +17,6 @@ FRONTEND_PORT = "5123"
 ERR_CODE = 406
 BACKEND_PORT = "8123"
 DEV_BACKEND_HOST = "0.0.0.0"
-API_HOST = "http://localhost"
 
 
 class Endpoint(Enum):
