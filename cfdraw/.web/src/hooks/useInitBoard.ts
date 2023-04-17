@@ -22,7 +22,7 @@ import {
   useIsReady,
 } from "@carefree0910/business";
 
-import { BOARD_CONTAINER_ID, ENV } from "@/utils/constants";
+import { BOARD_CONTAINER_ID, IS_PROD } from "@/utils/constants";
 import { initStore } from "@/stores/init";
 import { themeStore } from "@/stores/theme";
 
@@ -32,8 +32,7 @@ export function useInitBoard(): void {
     initStore.updateProperty("working", true);
 
     // pre settings
-    const isProduction = ENV === "production";
-    Logger.isDebug = !isProduction;
+    Logger.isDebug = !IS_PROD;
 
     // check cache
     const cache: { graph?: Graph; globalTransform?: Matrix2DFields } = {};
@@ -67,12 +66,10 @@ export function useInitBoard(): void {
     //// setup options
     const storeOptions: BoardStoresOptions = {
       constantsOpt: {
-        env: ENV as BoardStoresOptions["constantsOpt"]["env"],
+        env: IS_PROD ? "production" : "development",
       },
     };
-    if (isProduction) {
-      Logger.isDebug = false;
-    } else {
+    if (!IS_PROD) {
       storeOptions.debug = {
         selecting: true,
         selectingDetails: false,
