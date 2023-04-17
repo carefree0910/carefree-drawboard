@@ -19,7 +19,9 @@
 `carefree-drawboard` 🎨 requires the following to get started:
 
 * Python 3.8+
-* [Node.js 12.22.0+](https://nodejs.org/en/)
+* [Node.js 18+](https://nodejs.org/en/)
+
+> To be exact, we need `^14.13.1 || ^16 || >=18` because of the `tsconfck@2.1.1` package.
 
 ```bash
 pip install carefree-drawboard
