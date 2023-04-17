@@ -11,7 +11,10 @@ import { useInceptors } from "./interceptors";
 // cannot use `useMemo` here
 export function useAPI<T extends APISources>(source: T): APIs[T] {
   const timeout = pythonStore.globalSettings.timeout ?? 300000;
-  const backendPort = import.meta.env.VITE_CFDRAW_BE_PORT ?? 8123;
+  let backendPort = import.meta.env.VITE_CFDRAW_BE_PORT;
+  if (!backendPort) {
+    backendPort = 8123;
+  }
   const apis = {
     _python: axios.create({ baseURL: `http://localhost:${backendPort}`, timeout }),
   };
