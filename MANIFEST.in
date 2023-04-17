@@ -1,9 +1,1 @@
-recursive-include src *
-include .env
-include index.html
-include package.json
-include tsconfig.json
-include tsconfig.node.json
-include tsconfig.paths.json
-include vite.config.ts
-include yarn.lock
+recursive-include cfdraw/.web *

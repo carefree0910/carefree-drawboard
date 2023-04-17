@@ -42,7 +42,7 @@ class LogLevel(str, Enum):
 # directories
 ## common
 ROOT = Path(os.path.dirname(__file__))
-PARENT = ROOT.parent.absolute()
+WEB_ROOT = ROOT / ".web"
 ## upload
 UPLOAD_ROOT = Path("~").expanduser() / ".cache" / "carefree-draw"
 UPLOAD_IMAGE_FOLDER_NAME = ".images"

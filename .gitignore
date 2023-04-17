@@ -1,6 +1,5 @@
 # Injections
 .test/*
-src/panels/_python.ts
 **/.images/*
 **/.projects/*
 

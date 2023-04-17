@@ -20,7 +20,7 @@ def run_frontend() -> None:
     print_info(f"Your app will be ready at http://localhost:{fe_port}")
     subprocess.Popen(
         [prerequisites.get_yarn(), "dev", "--force"],
-        cwd=constants.PARENT,
+        cwd=constants.WEB_ROOT,
         env=os.environ,
         stdout=subprocess.DEVNULL,
         stderr=subprocess.STDOUT,
