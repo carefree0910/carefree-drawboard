@@ -12,12 +12,11 @@ from cfdraw.config import get_config
 
 def setup_frontend() -> None:
     config = get_config()
-    fe_port = config.frontend_port
-    be_port = config.backend_port
     prerequisites.install_frontend_packages()
     console.rule("[bold green]Launching App")
-    os.environ["CFDRAW_FE_PORT"] = fe_port
-    os.environ["CFDRAW_BE_PORT"] = be_port
+    os.environ["CFDRAW_FE_PORT"] = config.frontend_port
+    os.environ["CFDRAW_BE_PORT"] = config.backend_port
+    os.environ["CFDRAW_API_URL"] = config.api_url
 
 
 def run_frontend() -> None:

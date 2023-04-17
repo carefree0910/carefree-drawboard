@@ -120,11 +120,9 @@ def add_project_managements(app: IApp) -> None:
                     if node.renderParams is None:
                         raise ValueError("`ImageNode` should have `renderParams`")
                     src = node.renderParams.src
-                    if (
-                        src
-                        and isinstance(src, str)
-                        and src.startswith(app.config.api_host)
-                    ):
+                    # TODO: this kind of transformation should be included in the
+                    # migration stage, not runtime stage. Will be fixed in the future
+                    if src and isinstance(src, str) and src.startswith("http://"):
                         pivot = constants.UPLOAD_IMAGE_FOLDER_NAME
                         _, path = src.split(pivot)
                         api_url = app.config.api_url

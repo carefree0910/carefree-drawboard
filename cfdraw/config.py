@@ -1,3 +1,4 @@
+from typing import Optional
 from pathlib import Path
 from importlib import import_module
 from dataclasses import dataclass
@@ -14,6 +15,7 @@ class Config:
     frontend_port: str = constants.FRONTEND_PORT
     # api
     backend_port: str = constants.BACKEND_PORT
+    backend_hosting_url: Optional[str] = None  # this must be provided for hosting
     # upload
     upload_root: str = str(constants.UPLOAD_ROOT)
     # misc
@@ -25,7 +27,8 @@ class Config:
 
     @property
     def api_url(self) -> str:
-        return f"http://localhost:{self.backend_port}"
+        api_url = self.backend_hosting_url or f"http://localhost:{self.backend_port}"
+        return api_url.rstrip("/").rstrip("\\")
 
     @property
     def upload_root_path(self) -> Path:
