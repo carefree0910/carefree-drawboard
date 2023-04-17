@@ -67,7 +67,7 @@ class App(IApp):
         @self.api.on_event("startup")
         async def startup() -> None:
             self.hash = random_hash()
-            print_info(f"🚀 Starting Server at {self.config.api_url} ...")
+            print_info(f"🚀 Starting Backend Server at {self.config.api_url} ...")
             print_info("🔨 Compiling Plugins & Endpoints...")
             for plugin in self.plugins.values():
                 plugin.hash = self.hash

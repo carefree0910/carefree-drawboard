@@ -17,7 +17,7 @@ def run_frontend() -> None:
     console.rule("[bold green]Launching App")
     os.environ["CFDRAW_FE_PORT"] = fe_port
     os.environ["CFDRAW_BE_PORT"] = be_port
-    print_info(f"Your app will be ready at http://localhost:{fe_port}")
+    print_info(f"🎉 Your app will be ready at http://localhost:{fe_port}")
     subprocess.Popen(
         [prerequisites.get_yarn(), "dev", "--force"],
         cwd=constants.WEB_ROOT,
