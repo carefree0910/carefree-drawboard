@@ -1,0 +1,8 @@
+recursive-include src *
+include .env
+include index.html
+include tsconfig.json
+include tsconfig.node.json
+include tsconfig.paths.json
+include vite.config.ts
+include yarn.lock
