@@ -31,7 +31,11 @@ class PluginFactory:
     internal_plugins: Dict[str, IPlugin] = {}
 
     @classmethod
-    def _register(cls, d: Dict[str, IPlugin], identifier: str) -> None:
+    def _register(
+        cls,
+        d: Dict[str, IPlugin],
+        identifier: str,
+    ) -> Callable[[TPlugin], TPlugin]:
         if identifier in d:
             raise ValueError(f"plugin {identifier} already exists")
 

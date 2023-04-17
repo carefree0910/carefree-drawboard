@@ -165,6 +165,7 @@ class Graph(BaseModel):
                     result = _search(node.nodes)
                     if result is not None:
                         return result
+            return None
 
         node = _search(self.root_nodes)
         if node is None:
@@ -173,20 +174,23 @@ class Graph(BaseModel):
 
     @property
     def all_single_nodes(self) -> Generator[SingleNode, None, None]:
-        def _generate(nodes: List[INode]) -> List[SingleNode]:
+        def _generate(nodes: List[INode]) -> Generator[SingleNode, None, None]:
             for node in nodes:
                 if node.type in SingleNodeType:
                     yield node
                 elif node.type in GroupType:
+                    if node.nodes is None:
+                        raise ValueError(f"`Group` '{node.alias}' has no nodes")
                     yield from _generate(node.nodes)
 
         yield from _generate(self.root_nodes)
 
     @property
-    def bg_node(self) -> SingleNode:
+    def bg_node(self) -> Optional[SingleNode]:
         for node in self.all_single_nodes:
             if node.params.get("isBackground"):
                 return node
+        return None
 
 
 class_name2type = {
@@ -201,6 +205,7 @@ class_name2type = {
     "ImageNode": SingleNodeType.IMAGE,
     "NoliFrameNode": SingleNodeType.NOLI_FRAME,
     "NoliTextFrameNode": SingleNodeType.NOLI_TEXT_FRAME,
+    "Group": GroupType.GROUP,
 }
 type2class_name = {v: k for k, v in class_name2type.items()}
 

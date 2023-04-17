@@ -12,7 +12,7 @@ from cfdraw.app.endpoints.base import IEndpoint
 
 def add_plugins(app: IApp) -> None:
     for identifier, plugin in app.plugins.items():
-        if isinstance(plugin, ISocketPlugin):
+        if not isinstance(plugin, IHttpPlugin):
             continue
         endpoint = f"/{identifier}"
         print_info(f"registering endpoint '{endpoint}'")

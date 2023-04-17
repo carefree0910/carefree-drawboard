@@ -9,7 +9,7 @@ from typing import Optional
 from cfdraw.utils import console
 
 
-def kill(pid):
+def kill(pid: int) -> None:
     os.kill(pid, signal.SIGTERM)
 
 
@@ -28,7 +28,7 @@ def is_process_on_port(port: str) -> bool:
     return get_process_on_port(port) is not None
 
 
-def kill_process_on_port(port: str):
+def kill_process_on_port(port: str) -> None:
     p = get_process_on_port(port)
     if p is not None:
         with contextlib.suppress(psutil.AccessDenied):

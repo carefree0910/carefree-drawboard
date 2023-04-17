@@ -39,7 +39,7 @@ def get_responses(
     *,
     json_example: Optional[Dict[str, Any]] = None,
 ) -> Dict[int, Dict[str, Type]]:
-    success_response = {"model": success_model}
+    success_response: Dict[str, Any] = {"model": success_model}
     if json_example is not None:
         content = success_response["content"] = {}
         json_field = content["application/json"] = {}

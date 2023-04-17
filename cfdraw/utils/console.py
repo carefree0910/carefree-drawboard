@@ -1,9 +1,12 @@
+from typing import Any
+from typing import Dict
 from typing import List
 from typing import Optional
 
 from rich.prompt import Prompt
 from rich.status import Status
 from rich.console import Console
+
 
 _console = Console()
 
@@ -30,10 +33,10 @@ def ask(
     *,
     default: Optional[str] = None,
 ) -> str:
-    kw = dict(choices=choices)
+    kw: Dict[str, Any] = dict(choices=choices)
     if default is not None:
         kw["default"] = default
-    return Prompt.ask(question, **kw)
+    return Prompt.ask(question, **kw)  # type: ignore
 
 
 def status(msg: str) -> Status:

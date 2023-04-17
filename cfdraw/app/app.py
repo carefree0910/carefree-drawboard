@@ -19,7 +19,7 @@ async def ping() -> str:
 
 
 class App(IApp):
-    def __init__(self):
+    def __init__(self) -> None:
         # config
         self.config = get_config()
 

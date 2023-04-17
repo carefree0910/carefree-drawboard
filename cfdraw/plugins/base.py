@@ -98,7 +98,7 @@ class ISocketPlugin(IBasePlugin, metaclass=ABCMeta):
 class IInternalSocketPlugin(ISocketPlugin, metaclass=ABCMeta):
     @property
     def type(self) -> PluginType:
-        PluginType._INTERNAL
+        return PluginType._INTERNAL
 
     @property
     def settings(self) -> IPluginSettings:

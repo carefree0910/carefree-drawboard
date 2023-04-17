@@ -108,7 +108,7 @@ def add_project_managements(app: IApp) -> None:
         f"/get_project/{{uid:path}}",
         responses=get_responses(ProjectModel),
     )
-    async def fetch_project(uid: str) -> ProjectModel:
+    async def fetch_project(uid: str) -> ProjectModel:  # type: ignore
         try:
             file = f"{uid}{suffix}"
             with open(app.config.upload_project_folder / file, "r") as f:
@@ -117,6 +117,8 @@ def add_project_managements(app: IApp) -> None:
             graph = noli.parse_graph(d["graphInfo"])
             for node in graph.all_single_nodes:
                 if node.type == noli.SingleNodeType.IMAGE:
+                    if node.renderParams is None:
+                        raise ValueError("`ImageNode` should have `renderParams`")
                     src = node.renderParams.src
                     if (
                         src
