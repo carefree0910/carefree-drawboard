@@ -7,6 +7,7 @@ export const _pythonInceptors: Interceptors = {
     if (Logger.isDebug) {
       Logger.debug(`send to Python: ${JSON.stringify(config.data)} (${config.url})`);
     }
+    config.headers["ngrok-skip-browser-warning"] = "";
     return config;
   },
   requestError(error) {
