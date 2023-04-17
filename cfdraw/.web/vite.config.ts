@@ -34,6 +34,9 @@ export default defineConfig({
   preview: {
     port: parseInt(process.env.CFDRAW_FE_PORT || "5173"),
   },
+  esbuild: {
+    keepNames: true,
+  },
   build: {
     rollupOptions: {
       output: {
