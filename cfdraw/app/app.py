@@ -74,7 +74,7 @@ class App(IApp):
                 await endpoint.on_startup()
             upload_root_path = self.config.upload_root_path
             print_info(f"🔔 Your files will be saved to '{upload_root_path}'")
-            print_info("🎉 Server is Ready!")
+            print_info("🎉 Backend Server is Ready!")
 
         @self.api.on_event("shutdown")
         async def shutdown() -> None:

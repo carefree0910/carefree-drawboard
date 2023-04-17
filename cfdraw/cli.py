@@ -30,10 +30,8 @@ def run(
 ) -> None:
     sys.path.insert(0, os.getcwd())
     constants.set_env(constants.Env.PROD if prod else constants.Env.DEV)
-    # fetch configs
+    # fetch config
     config = get_config()
-    frontend_port = config.frontend_port
-    backend_port = config.backend_port
     # fetch module
     if module is None:
         module = constants.DEFAULT_MODULE
@@ -44,6 +42,8 @@ def run(
         module = module[len(path_prefix) :]
     console.rule(f"[bold green]Running {module}")
     # execute
+    frontend_port = config.frontend_port
+    backend_port = config.backend_port
     if not no_frontend and processes.is_process_on_port(frontend_port):
         frontend_port = processes.change_or_terminate_port(frontend_port, "frontend")
     if not no_backend and processes.is_process_on_port(backend_port):
