@@ -16,13 +16,8 @@ def setup_frontend() -> None:
     console.rule("[bold green]Launching App")
     os.environ["CFDRAW_FE_PORT"] = config.frontend_port
     os.environ["CFDRAW_BE_PORT"] = config.backend_port
-    api_url_key = "CFDRAW_API_URL"
     if config.backend_hosting_url is not None:
-        os.environ[api_url_key] = config.api_url
-    else:
-        env_api_url = os.environ.get(api_url_key)
-        if env_api_url is not None:
-            config.backend_hosting_url = env_api_url
+        os.environ[constants.API_URL_KEY] = config.api_url
 
 
 def run_frontend() -> None:

@@ -1,3 +1,5 @@
+import os
+
 from typing import Optional
 from pathlib import Path
 from importlib import import_module
@@ -27,7 +29,14 @@ class Config:
 
     @property
     def api_url(self) -> str:
-        api_url = self.backend_hosting_url or f"http://localhost:{self.backend_port}"
+        if self.backend_hosting_url is not None:
+            api_url = self.backend_hosting_url
+        else:
+            env_api_url = os.environ.get(constants.API_URL_KEY)
+            if env_api_url is not None:
+                api_url = env_api_url
+            else:
+                api_url = f"http://localhost:{self.backend_port}"
         return api_url.rstrip("/").rstrip("\\")
 
     @property
