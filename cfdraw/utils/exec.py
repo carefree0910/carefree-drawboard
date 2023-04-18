@@ -46,13 +46,9 @@ def run_frontend_prod() -> None:
     )
 
 
-def run_backend(
-    module: str,
-    *,
-    log_level: constants.LogLevel = constants.LogLevel.DEBUG,
-) -> None:
-    config = get_config()
+def run_backend(module: str, *, log_level: constants.LogLevel) -> None:
     console.rule("[bold green]Launching Backend")
+    config = get_config()
     # I'm not familiar with production stuffs of `uvicorn`, so currently
     # only the `reload` flag is different.
     uvicorn.run(
