@@ -27,6 +27,7 @@ setup(
         "pillow",
         "aiohttp",
         "charset-normalizer==2.1.0",
+        "tornado",
     ],
     author="carefree0910",
     author_email="syameimaru.saki@gmail.com",

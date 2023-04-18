@@ -17,6 +17,7 @@ class Config:
     frontend_port: str = constants.FRONTEND_PORT
     # api
     backend_port: str = constants.BACKEND_PORT
+    tornado_port: str = constants.TORNADO_PORT
     backend_hosting_url: Optional[str] = None  # this must be provided for hosting
     # upload
     upload_root: str = str(constants.UPLOAD_ROOT)
@@ -28,6 +29,14 @@ class Config:
         return constants.get_env() == constants.Env.PROD
 
     @property
+    def use_tornado(self) -> bool:
+        return constants.use_tornado()
+
+    @property
+    def api_port(self) -> str:
+        return self.tornado_port if self.use_tornado else self.backend_port
+
+    @property
     def api_url(self) -> str:
         if self.backend_hosting_url is not None:
             api_url = self.backend_hosting_url
@@ -36,7 +45,7 @@ class Config:
             if env_api_url is not None:
                 api_url = env_api_url
             else:
-                api_url = f"http://localhost:{self.backend_port}"
+                api_url = f"http://localhost:{self.api_port}"
         return api_url.rstrip("/").rstrip("\\")
 
     @property

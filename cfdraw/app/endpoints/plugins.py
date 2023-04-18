@@ -15,7 +15,8 @@ def add_plugins(app: IApp) -> None:
         if not isinstance(plugin, IHttpPlugin):
             continue
         endpoint = f"/{identifier}"
-        print_info(f"registering endpoint '{endpoint}'")
+        if not app.config.prod:
+            print_info(f"registering endpoint '{endpoint}'")
 
         def _register(_id: str, _p: IHttpPlugin) -> None:
             @app.api.post(

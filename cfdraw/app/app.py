@@ -64,17 +64,21 @@ class App(IApp):
     def add_events(self) -> None:
         @self.api.on_event("startup")
         async def startup() -> None:
+            def info(msg: str) -> None:
+                if not self.config.use_tornado:
+                    print_info(msg)
+
             self.hash = random_hash()
-            print_info(f"🚀 Starting Backend Server at {self.config.api_url} ...")
-            print_info("🔨 Compiling Plugins & Endpoints...")
+            info(f"🚀 Starting Backend Server at {self.config.api_url} ...")
+            info("🔨 Compiling Plugins & Endpoints...")
             for plugin in self.plugins.values():
                 plugin.hash = self.hash
                 plugin.http_session = self.http_session
             for endpoint in self.endpoints:
                 await endpoint.on_startup()
             upload_root_path = self.config.upload_root_path
-            print_info(f"🔔 Your files will be saved to '{upload_root_path}'")
-            print_info("🎉 Backend Server is Ready!")
+            info(f"🔔 Your files will be saved to '{upload_root_path}'")
+            info("🎉 Backend Server is Ready!")
 
         @self.api.on_event("shutdown")
         async def shutdown() -> None:
