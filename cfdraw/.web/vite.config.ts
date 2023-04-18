@@ -23,7 +23,13 @@ export default defineConfig({
     // }),
   ],
   optimizeDeps: {
-    include: ["@carefree0910/core", "@carefree0910/business"],
+    include: [
+      "@carefree0910/core",
+      "@carefree0910/svg",
+      "@carefree0910/business",
+      "@carefree0910/native",
+    ],
+    exclude: ["@carefree0910/core", "@carefree0910/svg"],
     esbuildOptions: {
       keepNames: true,
     },
