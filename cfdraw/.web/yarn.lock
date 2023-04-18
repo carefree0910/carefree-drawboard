@@ -217,10 +217,10 @@
     "@babel/helper-validator-identifier" "^7.19.1"
     to-fast-properties "^2.0.0"
 
-"@carefree0910/business@^0.4.10-alpha.1":
-  version "0.4.10-alpha.1"
-  resolved "https://registry.yarnpkg.com/@carefree0910/business/-/business-0.4.10-alpha.1.tgz#5dea58dd57dd7314461f24e77a45cab09998a565"
-  integrity sha512-ZYEQg7NKCdRNWv4Vczv8dK7YKotK1n4u83EkiNnuHXLjGhO7/Q0WV0S1xVl8MSHsx61+Bhktlm+LvKHq1+SCpg==
+"@carefree0910/business@^0.4.10-alpha.2":
+  version "0.4.10-alpha.2"
+  resolved "https://registry.yarnpkg.com/@carefree0910/business/-/business-0.4.10-alpha.2.tgz#b937f4e1a7c51ba44944dfaac375b3611f0caaae"
+  integrity sha512-tFNFwAtsEAYGOIAJuaBPcmohIlIimzeQp4LpRDhXeDctcEtoenrcfsd6r9Cdcd0Zd1LekjVj/y9CEpfQaBoXeA==
   dependencies:
     "@carefree0910/core" "^0.4.10-alpha.1"
     "@carefree0910/svg" "^0.4.10-alpha.1"
@@ -230,10 +230,10 @@
   resolved "https://registry.yarnpkg.com/@carefree0910/core/-/core-0.4.10-alpha.1.tgz#8a1c579b7073a2119c8f30dae93bc1d1a21a3dbd"
   integrity sha512-bjKvuFAHawgNW/avS/vOh/J70MCw/Lu+04cQvlVmqzYxlOGAZPKsRFNtYgTO2CNo6vgRt3sa+WpnBXibWssw2Q==
 
-"@carefree0910/native@^0.4.10-alpha.1":
-  version "0.4.10-alpha.1"
-  resolved "https://registry.yarnpkg.com/@carefree0910/native/-/native-0.4.10-alpha.1.tgz#4956ebb1d3867b9a6d0e7521bdfa71f7fe91ca95"
-  integrity sha512-Jiehpx8+hSAygO1kkAapfjxUlDpbJZMje1SA2tadZn9zbw8OGuQhtI2mzNWmZZpXcnv15Uc3lj5XQgaMyXRVIQ==
+"@carefree0910/native@^0.4.10-alpha.2":
+  version "0.4.10-alpha.2"
+  resolved "https://registry.yarnpkg.com/@carefree0910/native/-/native-0.4.10-alpha.2.tgz#0a1224046dcbc8ac5864721843a61aa1643a37c0"
+  integrity sha512-NsuHU2gff2PRK0NLVUU/4sfPT87K8gHuXAYaN1L01upOcIlzu6RgwsCoKKphh1uZtl9TYYt0VxjOAVxrONHvyg==
   dependencies:
     "@carefree0910/core" "^0.4.10-alpha.1"
     "@carefree0910/svg" "^0.4.10-alpha.1"
