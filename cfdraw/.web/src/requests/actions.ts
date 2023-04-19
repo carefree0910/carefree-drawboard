@@ -1,3 +1,5 @@
+import type { ResponseType } from "axios";
+
 import type { APISources } from "@/schema/requests";
 import { useAPI } from "./hooks";
 
@@ -15,9 +17,10 @@ export class Requests {
     source: T,
     endpoint: string,
     data: D,
+    responseType: ResponseType = "json",
   ): Promise<R> {
     return useAPI(source)
-      .post(endpoint, data)
+      .post(endpoint, data, { responseType })
       .then((res) => res.data);
   }
 
