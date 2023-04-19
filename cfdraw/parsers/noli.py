@@ -9,6 +9,7 @@ from typing import Union
 from typing import Optional
 from typing import Generator
 from pydantic import BaseModel
+from dataclasses import dataclass
 
 
 class PivotType(str, Enum):
@@ -49,6 +50,21 @@ class NodeConstraints(str, Enum):
 # data structures
 
 
+@dataclass
+class Point:
+    x: float
+    y: float
+
+    @property
+    def tuple(self) -> Tuple[float, float]:
+        return self.x, self.y
+
+    def __rmatmul__(self, other: "Matrix2D") -> "Point":
+        a, b, c, d, e, f = [pair[1] for pair in other]
+        x, y = self.x, self.y
+        return Point(x=a * x + c * y + e, y=b * x + d * y + f)
+
+
 class Matrix2D(BaseModel):
     a: float
     b: float
@@ -56,6 +72,9 @@ class Matrix2D(BaseModel):
     d: float
     e: float
     f: float
+
+    def __matmul__(self, other: Point) -> Point:
+        return other.__rmatmul__(self)
 
     @property
     def w(self) -> float:
