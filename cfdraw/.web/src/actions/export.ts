@@ -5,10 +5,14 @@ import { translate } from "@carefree0910/business";
 import type { DownloadFormat, IToast, ImageFormat } from "@/schema/misc";
 import { toast } from "@/utils/toast";
 import { Toast_Words } from "@/lang/toast";
+import { Requests } from "@/requests/actions";
 import { uploadImage } from "./uploadImage";
 
 const isImage = (format: DownloadFormat) => format === "JPG" || format === "PNG";
-const toJpegUrl = (url: string) => `${url}?jpeg=True`;
+
+function fetchImage(data: { url: string; jpeg: boolean }): Promise<Blob> {
+  return Requests.postJson<Blob>("_python", "/fetch_image", data, "blob");
+}
 
 export type IExportBlob = ExportBlobOptions & { t: IToast; lang: Lang };
 export class Exporter {
@@ -30,12 +34,9 @@ export class Exporter {
     format: ImageFormat,
     exportOriginalSize: boolean,
   ): Promise<Blob | void> {
+    const jpeg = format === "JPG";
     if (isImage(format) && node.type === "image" && exportOriginalSize) {
-      let url = node.renderParams.src;
-      if (format === "JPG") {
-        url = toJpegUrl(url);
-      }
-      return fetch(url).then((res) => res.blob());
+      return fetchImage({ url: node.renderParams.src, jpeg });
     }
     const bounding = node.bbox.bounding.toAABB();
     const targetNodes = node.type === "group" ? node.allChildrenNodes : [node];
@@ -48,7 +49,7 @@ export class Exporter {
       if (!blob || format !== "JPG") return blob;
       const res = await uploadImage(t, lang, blob, { failed: async () => void 0 });
       if (!res) return;
-      return fetch(toJpegUrl(res.url)).then((res) => res.blob());
+      return fetchImage({ url: res.url, jpeg: true });
     }
     const res = await exportNodes(targetNodes, { exportBox: bounding });
     if (!res) {

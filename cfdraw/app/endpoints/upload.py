@@ -27,6 +27,11 @@ class UploadImageResponse(BaseModel):
     data: Optional[ImageDataModel]
 
 
+class FetchImageModel(BaseModel):
+    url: str
+    jpeg: bool
+
+
 def add_upload_image(app: IApp) -> None:
     @app.api.post("/upload_image", responses=get_responses(UploadImageResponse))
     def upload_image(image: UploadFile = File(...)) -> UploadImageResponse:
@@ -45,11 +50,16 @@ def add_upload_image(app: IApp) -> None:
             data=ImageDataModel(**res),
         )
 
+    @app.api.post("/fetch_image", **get_image_response_kwargs())
+    async def fetch_image(data: FetchImageModel) -> Response:
+        file = data.url.split(constants.UPLOAD_IMAGE_FOLDER_NAME)[1][1:]  # remove '/'
+        return server.get_image_response(file, data.jpeg)
+
     @app.api.get(
         f"/{constants.UPLOAD_IMAGE_FOLDER_NAME}/{{file}}/",
         **get_image_response_kwargs(),
     )
-    async def fetch_image(file: str, jpeg: bool = False) -> Response:
+    async def get_image(file: str, jpeg: bool = False) -> Response:
         return server.get_image_response(file, jpeg)
 
 
