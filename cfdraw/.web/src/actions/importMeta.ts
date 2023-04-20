@@ -41,6 +41,7 @@ function consumeUpload({ t, lang, type, metaData }: IImportMeta<"upload">): void
   const { w, h, url, isDrag } = metaData;
   const prefix = isDrag ? "drag-" : "";
   const newAlias = `${prefix}upload.${getRandomHash()}`;
+  metaData.alias = newAlias;
   const bboxInfo: NewImageInfo = { w, h };
   addNewImage(newAlias, url, {
     info: bboxInfo,
@@ -61,6 +62,7 @@ function consumeAddText({ t, lang, type, metaData }: IImportMeta<"add.text">): v
     toast(t, "error", translate(Toast_Words["add-text-error-message"], lang));
   };
   const { addText } = useAddNode({ success, failed });
+  metaData.alias = newAlias;
   addText({ trace: true })({
     alias: newAlias,
     initColor: textColor,
@@ -106,6 +108,7 @@ function consumePythonHttpFields({
       const rectangle = getNewRectangle(`${i}.${getRandomHash()}`, getRectangleInfo(res));
       const iMetaData = shallowCopy(metaData);
       iMetaData.response.value = metaData.response.value[i] as any;
+      iMetaData.alias = newAlias;
       iMetaData.timestamp = Date.now();
       packs.push({ data: getData(res), alias: newAlias, rectangle, metaData: iMetaData });
     });
