@@ -1,7 +1,7 @@
 import { Dictionary, RectangleShapeNode, getRandomHash, shallowCopy } from "@carefree0910/core";
 import { BoardStore, translate, useAddNode } from "@carefree0910/business";
 
-import type { IMetaData, MetaType } from "@/schema/meta";
+import type { IMetaData, IPythonHttpFieldsMetaData, MetaType } from "@/schema/meta";
 import type { IImportMeta } from "@/schema/meta";
 import { toast } from "@/utils/toast";
 import { Toast_Words } from "@/lang/toast";
@@ -93,7 +93,7 @@ function consumePythonHttpFields({
     data: R;
     alias: string;
     rectangle: RectangleShapeNode;
-    metaData: Dictionary<any>;
+    metaData: IPythonHttpFieldsMetaData;
   }
   function gatherPacks<T, R>(
     responses: T[],
