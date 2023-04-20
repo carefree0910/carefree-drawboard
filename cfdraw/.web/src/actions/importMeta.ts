@@ -89,22 +89,18 @@ function consumePythonHttpFields({
     );
   };
   const getNewAlias = () => `python.httpFields.${metaData.identifier}.${getRandomHash()}`;
-  function gatherPacks<T, R>(
-    responses: T[],
-    getRectangleInfo: (res: T) => INewRectangle,
-    getData: (res: T) => R,
-  ): {
+  interface IPack<R> {
     data: R;
     alias: string;
     rectangle: RectangleShapeNode;
     metaData: Dictionary<any>;
-  }[] {
-    const packs: {
-      data: R;
-      alias: string;
-      rectangle: RectangleShapeNode;
-      metaData: Dictionary<any>;
-    }[] = [];
+  }
+  function gatherPacks<T, R>(
+    responses: T[],
+    getRectangleInfo: (res: T) => INewRectangle,
+    getData: (res: T) => R,
+  ): IPack<R>[] {
+    const packs: IPack<R>[] = [];
     responses.forEach((res, i) => {
       const newAlias = getNewAlias();
       const rectangle = getNewRectangle(`${i}.${getRandomHash()}`, getRectangleInfo(res));
