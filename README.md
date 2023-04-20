@@ -95,7 +95,7 @@ Apart from these:
 * If you are truly an enthusiast, you may check out our [Roadmap](https://github.com/carefree0910/carefree-drawboard/wiki/Roadmap), pick up what you are interested, and create the corresponding PR!
 * If you are familiar with `React`, you may check out the [Customizations](https://github.com/carefree0910/carefree-drawboard/wiki/Customizations) documentation and try to customize your own plugins and have fun!
 
-> It is also recommended to start from the [Development Guide](https://github.com/carefree0910/carefree-drawboard/wiki/Development-Guide)!
+> It is also recommended to start from the [Contributing](https://github.com/carefree0910/carefree-drawboard/wiki/Contributing) Wiki page!
 
 ### Style Guide
 
