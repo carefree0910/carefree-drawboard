@@ -31,7 +31,7 @@ def add_websocket(app: IApp) -> None:
                 )
             )
 
-        async def sent_text(data: ISocketMessage) -> None:
+        async def send_text(data: ISocketMessage) -> None:
             await websocket.send_text(json.dumps(data.dict()))
 
         await websocket.accept()
@@ -65,9 +65,9 @@ def add_websocket(app: IApp) -> None:
                         data={},
                     )
                 else:
-                    target_plugin.send_text = sent_text
+                    target_plugin.send_text = send_text
                     response = await target_plugin(data)
-                await sent_text(response)
+                await send_text(response)
             except WebSocketDisconnect:
                 break
             except Exception as e:
