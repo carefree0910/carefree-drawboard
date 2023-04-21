@@ -319,6 +319,7 @@ class IHttpQAPluginInfo(IPluginInfo):
 
 
 __all__ = [
+    "ISendSocketText",
     "PluginType",
     # general
     "IPluginInfo",
