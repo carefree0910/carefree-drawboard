@@ -18,7 +18,7 @@ class TimerMiddleWare(IMiddleWare):
 
     @property
     def subscriptions(self) -> List[PluginType]:
-        return [PluginType.HTTP_FIELDS]
+        return [PluginType.HTTP_FIELDS, PluginType.SOCKET_FIELDS]
 
     async def before(self, request: IPluginRequest) -> None:
         self.t = time.time()

@@ -40,8 +40,10 @@ class IMeta(BaseModel):
 
     @property
     def represenation(self) -> str:
-        if self.type == "python.httpFields":
+        if self.type == f"python.{PluginType.HTTP_FIELDS}":
             return self.data.get("identifier", "unknown")
+        if self.type == f"python.{PluginType.SOCKET_FIELDS}":
+            return f"{self.data.get('identifier', 'unknown')} (socket)"
         return self.type
 
 

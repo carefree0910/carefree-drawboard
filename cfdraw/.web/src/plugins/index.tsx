@@ -21,6 +21,7 @@ export * from "./BrushPlugin";
 export * from "./_python/HttpTextAreaPlugin";
 export * from "./_python/HttpQAPlugin";
 export * from "./_python/HttpFieldsPlugin";
+export * from "./_python/SocketFieldsPlugin";
 
 export function makePlugin<T extends AvailablePluginsAndPythonPlugins>({
   key,

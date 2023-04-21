@@ -85,6 +85,13 @@ export interface IPythonHttpQAPlugin extends IPythonPlugin {
   };
 }
 
+//// socket plugin
+
+export interface IPythonSocketPluginWithSubmit<R>
+  extends Omit<IPythonPlugin, "id" | "pluginInfo">,
+    Omit<IPythonSocketCallbacks<R>, "getMessage">,
+    IPythonPluginWithSubmit {}
+
 // web
 
 export interface IPythonRequest {

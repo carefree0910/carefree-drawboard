@@ -9,6 +9,7 @@ import type {
   IPythonRequest,
   IUseHttpPython,
   IUsePythonInfo,
+  IUseSocketPython,
   IPythonOnSocketMessage,
 } from "@/schema/_python";
 import { IPythonStore, updatePythonStore } from "@/stores/_python";
@@ -148,6 +149,58 @@ export function useOnSocketMessageWithRetry<R>(
     },
     [getMessage, onMessage],
   );
+}
+
+/**
+ * this function will integrate a simple but useful retry mechanism, so we only need to
+ * focus on the core logics in `onMessage` function.
+ */
+export function useSocketPython<R>({
+  t,
+  lang,
+  connect,
+  node,
+  nodes,
+  endpoint,
+  identifier,
+  isInvisible,
+  updateInterval,
+  getExtraRequestData,
+  onMessage,
+  onSocketError,
+}: IUseSocketPython<R>) {
+  const deps = [
+    connect,
+    node?.alias,
+    nodes.map((n) => n.alias).join("_"),
+    endpoint,
+    identifier,
+    updateInterval,
+    isInvisible,
+  ];
+
+  const getMessage = useCallback(
+    () =>
+      getPythonRequest({
+        node,
+        nodes,
+        identifier,
+        getExtraRequestData,
+        opt: { t, lang },
+      }),
+    [deps],
+  );
+
+  const requestFn = useCallback(() => {
+    useWebSocket({
+      connect: connect && !isInvisible,
+      getMessage,
+      onMessage: useOnSocketMessageWithRetry(getMessage, onMessage),
+      onSocketError,
+    });
+  }, [deps, onMessage]);
+
+  requestFn();
 }
 
 export function useSyncPython() {

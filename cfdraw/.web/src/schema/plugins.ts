@@ -85,6 +85,7 @@ export const allAvailablePythonPlugins = [
   "_python.httpTextArea",
   "_python.httpQA",
   "_python.httpFields",
+  "_python.socketFields",
 ] as const;
 export type AvailablePlugins = typeof allAvailablePlugins[number];
 export type AvailablePythonPlugins = typeof allAvailablePythonPlugins[number];
@@ -112,6 +113,7 @@ export interface IPluginProps {
   "_python.httpTextArea": IPythonHttpTextAreaPlugin;
   "_python.httpQA": IPythonHttpQAPlugin;
   "_python.httpFields": IPythonFieldsPlugin;
+  "_python.socketFields": IPythonFieldsPlugin;
 }
 
 export interface IMakePlugin<T extends AvailablePluginsAndPythonPlugins> {

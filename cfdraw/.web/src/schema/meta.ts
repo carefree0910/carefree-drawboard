@@ -4,7 +4,13 @@ import type { IToast } from "./misc";
 
 // general
 
-export const allMetaTypes = ["upload", "python.httpFields", "add.text", "add.sketch.path"] as const;
+export const allMetaTypes = [
+  "upload",
+  "add.text",
+  "add.sketch.path",
+  "python.httpFields",
+  "python.socketFields",
+] as const;
 export type MetaType = typeof allMetaTypes[number];
 export interface ICommonMetaData<T extends _IMetaData = _IMetaData> {
   alias?: string;
@@ -41,6 +47,7 @@ export interface IMetaData {
   "add.text": ICommonMetaData;
   "add.sketch.path": ICommonMetaData;
   "python.httpFields": IPythonFieldsMetaData;
+  "python.socketFields": IPythonFieldsMetaData;
 }
 
 export interface IImportMeta<T extends MetaType> {

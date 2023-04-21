@@ -129,6 +129,12 @@ class IHttpFieldsPlugin(IHttpPlugin):
         return PluginType.HTTP_FIELDS
 
 
+class ISocketFieldsPlugin(ISocketPlugin):
+    @property
+    def type(self) -> PluginType:
+        return PluginType.SOCKET_FIELDS
+
+
 __all__ = [
     "IHttpPlugin",
     "ISocketPlugin",
@@ -136,4 +142,5 @@ __all__ = [
     "IHttpTextAreaPlugin",
     "IHttpQAPlugin",
     "IHttpFieldsPlugin",
+    "ISocketFieldsPlugin",
 ]

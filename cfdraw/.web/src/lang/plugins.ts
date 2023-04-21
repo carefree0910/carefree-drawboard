@@ -26,6 +26,7 @@ const _pluginsLangRecords: Record<Lang, Record<AvailablePluginsAndPythonPlugins,
     "_python.httpTextArea": "Python 文本框",
     "_python.httpQA": "Python 问答",
     "_python.httpFields": "Python 插件",
+    "_python.socketFields": "Python Socket 插件",
   },
   en: {
     settings: "Settings",
@@ -46,6 +47,7 @@ const _pluginsLangRecords: Record<Lang, Record<AvailablePluginsAndPythonPlugins,
     "_python.httpTextArea": "Python TextArea",
     "_python.httpQA": "Python Q & A",
     "_python.httpFields": "Python Plugin",
+    "_python.socketFields": "Python Socket Plugin",
   },
 };
 

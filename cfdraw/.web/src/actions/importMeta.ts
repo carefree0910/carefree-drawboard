@@ -29,6 +29,7 @@ const consumers: Record<MetaType, (input: IImportMeta<any>) => void> = {
   "add.text": consumeAddText,
   "add.sketch.path": consumeAddSketchPath,
   "python.httpFields": consumePythonFields,
+  "python.socketFields": consumePythonFields,
 };
 function consumeUpload({ t, lang, type, metaData }: IImportMeta<"upload">): void {
   const success = async () => {
@@ -79,7 +80,7 @@ function consumePythonFields({
   lang,
   type,
   metaData,
-}: IImportMeta<"python.httpFields">): void {
+}: IImportMeta<"python.httpFields" | "python.socketFields">): void {
   const success = async () => {
     toast(t, "success", translate(Toast_Words["generate-image-success-message"], lang));
   };
@@ -90,7 +91,7 @@ function consumePythonFields({
       `${translate(Toast_Words["post-python-http-fields-plugin-error-message"], lang)} (${err})`,
     );
   };
-  const getNewAlias = () => `python.httpFields.${metaData.identifier}.${getRandomHash()}`;
+  const getNewAlias = () => `${type}.${metaData.identifier}.${getRandomHash()}`;
   interface IPack<R> {
     data: R;
     alias: string;
