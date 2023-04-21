@@ -16,8 +16,8 @@ import CFButton from "@/components/CFButton";
 import CFDivider from "@/components/CFDivider";
 import CFHeading from "@/components/CFHeading";
 import { drawboardPluginFactory } from "./utils/factory";
-import { floatingControlEvent } from "./components/Floating";
 import Render from "./components/Render";
+import { useClosePanel } from "./components/hooks";
 
 const DownloadPlugin = ({ pluginInfo, ...props }: IPlugin) => {
   const id = useMemo(() => `download_${getRandomHash()}`, []);
@@ -45,7 +45,7 @@ const DownloadPlugin = ({ pluginInfo, ...props }: IPlugin) => {
         : Download_Words["download-image-size-drawboard"],
       lang,
     );
-  const closePanel = () => floatingControlEvent.emit({ id, expand: false });
+  const closePanel = useClosePanel(id);
   const onDownload = () => {
     downloadNodes(t, lang, nodes, format, keepOriginal);
     closePanel();

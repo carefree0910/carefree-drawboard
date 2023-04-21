@@ -17,6 +17,7 @@ import {
   loadProject,
   saveProject,
 } from "@/actions/manageProjects";
+import { downloadCurrentFullProject } from "@/actions/download";
 import CFText from "@/components/CFText";
 import CFInput from "@/components/CFInput";
 import CFButton from "@/components/CFButton";
@@ -25,8 +26,8 @@ import CFHeading from "@/components/CFHeading";
 import { CFSrollableSelect } from "@/components/CFSelect";
 import { drawboardPluginFactory } from "./utils/factory";
 import Render from "./components/Render";
-import { floatingControlEvent, floatingEvent, floatingRenderEvent } from "./components/Floating";
-import { downloadCurrentFullProject } from "@/actions/download";
+import { floatingEvent, floatingRenderEvent } from "./components/Floating";
+import { useClosePanel } from "./components/hooks";
 
 type IImportLocal = ILoadedProject | INodePack[];
 const ProjectPlugin = ({ pluginInfo, ...props }: IPlugin) => {
@@ -72,7 +73,7 @@ const ProjectPlugin = ({ pluginInfo, ...props }: IPlugin) => {
     };
   }, [id]);
 
-  const closePanel = () => floatingControlEvent.emit({ id, expand: false });
+  const closePanel = useClosePanel(id);
   function updateProjectStates(uid: string, name: string) {
     setSelectedUid(uid);
     setUserInputName(name);

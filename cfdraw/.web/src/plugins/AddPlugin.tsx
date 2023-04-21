@@ -17,15 +17,16 @@ import CFDivider from "@/components/CFDivider";
 import CFHeading from "@/components/CFHeading";
 import CFImageUploader from "@/components/CFImageUploader";
 import { drawboardPluginFactory } from "./utils/factory";
-import { floatingControlEvent, floatingEvent } from "./components/Floating";
+import { floatingEvent } from "./components/Floating";
 import Render from "./components/Render";
+import { useClosePanel } from "./components/hooks";
 
 const AddPlugin = ({ pluginInfo, ...props }: IPlugin) => {
   const id = useMemo(() => `add_${getRandomHash()}`, []);
   const t = useToast();
   const lang = langStore.tgt;
 
-  const closePanel = () => floatingControlEvent.emit({ id, expand: false });
+  const closePanel = useClosePanel(id);
   const onNewProject = () => {
     toast(t, "info", translate(Toast_Words["adding-project-message"], lang));
     saveProject(

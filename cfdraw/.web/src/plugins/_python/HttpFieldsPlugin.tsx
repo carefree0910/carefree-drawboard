@@ -17,7 +17,7 @@ import { getMetaField } from "@/stores/meta";
 import { drawboardPluginFactory } from "@/plugins/utils/factory";
 import CFHeading from "@/components/CFHeading";
 import { useDefinitions } from "../components/Fields";
-import { floatingControlEvent } from "../components/Floating";
+import { useClosePanel } from "../components/hooks";
 import { useCurrentMeta, useDefinitionsRequestDataFn, useFieldsPluginIds } from "./hooks";
 import PythonHttpPluginWithSubmit from "./HttpPluginWithSubmit";
 
@@ -28,7 +28,7 @@ const PythonHttpFieldsPlugin = ({ pluginInfo, ...props }: IPythonHttpFieldsPlugi
   const definitions = pluginInfo.definitions;
   const getExtraRequestData = useDefinitionsRequestDataFn(definitions);
   const currentMeta = useCurrentMeta(pluginInfo.node);
-  const emitClose = useCallback(() => floatingControlEvent.emit({ id, expand: false }), [id]);
+  const emitClose = useClosePanel(id);
 
   async function onUseHttpPythonSuccess({
     data: { _duration, ...response },
