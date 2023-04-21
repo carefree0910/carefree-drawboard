@@ -54,10 +54,12 @@ async function getPythonRequest({
   getExtraRequestData,
   opt,
 }: Omit<IUsePythonInfo, "endpoint" | "isInvisible"> & {
-  opt: IGetNodeData;
+  opt: IExportBlob;
 }): Promise<IPythonRequest> {
-  const nodeData = await getNodeData(node, opt);
-  const nodeDataList = nodes.length <= 1 ? [] : await getNodeDataList(nodes, opt);
+  const exportBox = new INodes(nodes).bbox;
+  const getNodeDataOpt: IGetNodeData = { exportBox, ...opt };
+  const nodeData = await getNodeData(node, getNodeDataOpt);
+  const nodeDataList = nodes.length <= 1 ? [] : await getNodeDataList(nodes, getNodeDataOpt);
   return {
     identifier,
     nodeData,
@@ -92,7 +94,6 @@ export function useHttpPython<R>({
   ];
   const requestFn = useCallback(() => {
     if (isInvisible || forceNotSend) return Promise.resolve();
-    const exportBox = new INodes(nodes).bbox;
     const preprocess = beforeRequest ? beforeRequest() : Promise.resolve();
     return preprocess
       .then(() =>
@@ -101,7 +102,7 @@ export function useHttpPython<R>({
           nodes,
           identifier,
           getExtraRequestData,
-          opt: { t, lang, exportBox },
+          opt: { t, lang },
         }),
       )
       .then((req) => Requests.postJson<IPythonResponse<R>>("_python", endpoint, req))
