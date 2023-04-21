@@ -6,7 +6,9 @@ from typing import Any
 from typing import Dict
 from typing import List
 from typing import TypeVar
+from typing import Callable
 from typing import Optional
+from typing import Coroutine
 from aiohttp import ClientSession
 from pydantic import Field
 from pydantic import BaseModel
@@ -21,6 +23,7 @@ from cfdraw.parsers.chakra import TextAlign
 
 
 TPluginModel = TypeVar("TPluginModel")
+ISendSocketText = Callable[["ISocketMessage"], Coroutine[Any, Any, None]]
 
 
 class PluginType(str, Enum):

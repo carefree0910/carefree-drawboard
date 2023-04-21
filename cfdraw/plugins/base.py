@@ -5,8 +5,6 @@ from PIL import Image
 from typing import Any
 from typing import Dict
 from typing import List
-from typing import Callable
-from typing import Coroutine
 
 from cfdraw import constants
 from cfdraw.utils import server
@@ -88,7 +86,7 @@ class IHttpPlugin(IBasePlugin, metaclass=ABCMeta):
 
 
 class ISocketPlugin(IBasePlugin, metaclass=ABCMeta):
-    send_text: Callable[[ISocketMessage], Coroutine[Any, Any, None]]
+    send_text: ISendSocketText
 
     @abstractmethod
     async def process(self, data: IPluginRequest) -> ISocketMessage:
