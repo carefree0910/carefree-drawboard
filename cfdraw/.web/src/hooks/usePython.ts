@@ -177,6 +177,7 @@ export function useSyncPython() {
   );
 
   useWebSocket<IPythonStore>({
+    connect: true,
     getMessage,
     onMessage: useOnSocketMessageWithRetry(getMessage, onMessage),
   });

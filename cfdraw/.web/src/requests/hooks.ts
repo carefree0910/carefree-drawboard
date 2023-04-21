@@ -29,12 +29,14 @@ export function useAPI<T extends APISources>(source: T): APIs[T] {
 const DEBUG = false;
 const log = (...args: any[]) => DEBUG && console.log(...args);
 export function useWebSocket<R>({
+  connect,
   getMessage,
   onMessage,
   onSocketError,
   interval,
   dependencies,
 }: IPythonSocketCallbacks<R> & {
+  connect: boolean;
   interval?: number;
   dependencies?: any[];
 }) {
@@ -44,7 +46,7 @@ export function useWebSocket<R>({
   const socketEndpoint = pythonStore.globalSettings.sockenEndpoint ?? "/ws";
 
   useEffect(() => {
-    function connect() {
+    function _connect() {
       log("connecting...");
       socket = new WebSocket(`${socketURL}${socketEndpoint}`);
       socket.onopen = () => {
@@ -92,7 +94,7 @@ export function useWebSocket<R>({
           return;
         }
         Logger.warn(`Socket connection closed (reason: ${e.reason}), retrying...`);
-        timer = setTimeout(connect, interval);
+        timer = setTimeout(_connect, interval);
       };
       socket.onerror = (err) => {
         log("> on error");
@@ -107,7 +109,7 @@ export function useWebSocket<R>({
     let socket: WebSocket;
     let connected = false;
     let shouldTerminate = false;
-    connect();
+    if (connect) _connect();
 
     return () => {
       shouldTerminate = true;
@@ -115,5 +117,5 @@ export function useWebSocket<R>({
       clearTimeout(newTimer);
       if (connected) socket?.close();
     };
-  }, [baseURL, socketURL, socketEndpoint, ...(dependencies ?? [])]);
+  }, [connect, baseURL, socketURL, socketEndpoint, ...(dependencies ?? [])]);
 }
