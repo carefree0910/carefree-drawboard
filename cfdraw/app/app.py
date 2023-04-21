@@ -1,7 +1,9 @@
 from typing import Dict
 from typing import List
+from typing import AsyncGenerator
 from aiohttp import ClientSession
 from fastapi import FastAPI
+from contextlib import asynccontextmanager
 from cftool.misc import print_info
 from cftool.misc import random_hash
 from fastapi.middleware import cors
@@ -20,15 +22,46 @@ async def ping() -> str:
 
 class App(IApp):
     def __init__(self) -> None:
+        # FastAPI lifspan
+
+        @asynccontextmanager
+        async def lifespan(api: FastAPI) -> AsyncGenerator:
+            # startup
+
+            def info(msg: str) -> None:
+                print_info(msg)
+
+            self.hash = random_hash()
+            info(f"🚀 Starting Backend Server at {self.config.api_url} ...")
+            info("🔨 Compiling Plugins & Endpoints...")
+            for plugin in self.plugins.values():
+                plugin.hash = self.hash
+                plugin.http_session = self.http_session
+            for endpoint in self.endpoints:
+                await endpoint.on_startup()
+            upload_root_path = self.config.upload_root_path
+            info(f"🔔 Your files will be saved to '{upload_root_path}'")
+            info("🎉 Backend Server is Ready!")
+
+            yield
+
+            # shutdown
+
+            await self.http_session.close()
+            for plugin in self.plugins.values():
+                plugin.http_session = None
+            for endpoint in self.endpoints:
+                await endpoint.on_shutdown()
+            self.http_session = None
+
         # config
         self.config = get_config()
         # clients
         self.http_session = ClientSession()
         # fastapi
-        self.api = FastAPI()
+        self.api = FastAPI(lifespan=lifespan)
         self.add_cors()
         self.add_default_endpoints()
-        self.add_events()
         self.endpoints: List[IEndpoint] = [
             UploadEndpoint(self),
             ProjectEndpoint(self),
@@ -62,33 +95,6 @@ class App(IApp):
             allow_headers=["*"],
             allow_origins=["*"],
         )
-
-    def add_events(self) -> None:
-        @self.api.on_event("startup")
-        async def startup() -> None:
-            def info(msg: str) -> None:
-                print_info(msg)
-
-            self.hash = random_hash()
-            info(f"🚀 Starting Backend Server at {self.config.api_url} ...")
-            info("🔨 Compiling Plugins & Endpoints...")
-            for plugin in self.plugins.values():
-                plugin.hash = self.hash
-                plugin.http_session = self.http_session
-            for endpoint in self.endpoints:
-                await endpoint.on_startup()
-            upload_root_path = self.config.upload_root_path
-            info(f"🔔 Your files will be saved to '{upload_root_path}'")
-            info("🎉 Backend Server is Ready!")
-
-        @self.api.on_event("shutdown")
-        async def shutdown() -> None:
-            await self.http_session.close()
-            for plugin in self.plugins.values():
-                plugin.http_session = None
-            for endpoint in self.endpoints:
-                await endpoint.on_shutdown()
-            self.http_session = None
 
     def add_default_endpoints(self) -> None:
         self.api.get(str(constants.Endpoint.PING))(ping)
