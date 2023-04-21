@@ -67,7 +67,7 @@ export function useWebSocket<R>({
           }
           onMessage(JSON.parse(data) as IPythonSocketMessage<R>).then((res) => {
             if (!res) return;
-            const { newMessage, interval: newInterval } = res;
+            const { newMessage, newMessageInterval } = res;
             if (newMessage && alive()) {
               log("> on newMessage");
               newTimer = setTimeout(() => {
@@ -78,7 +78,7 @@ export function useWebSocket<R>({
                     }
                   });
                 }
-              }, newInterval ?? interval);
+              }, newMessageInterval ?? interval);
             }
           });
         };
