@@ -63,7 +63,7 @@ def run(
         frontend_fn, backend_fn = exec.run_frontend, exec.run_backend
     else:
         frontend_fn = exec.run_frontend_prod
-        backend_fn = exec.run_backend_prod
+        backend_fn = exec.run_backend_prod  # type: ignore
     try:
         if not no_frontend:
             frontend_fn()
