@@ -9,6 +9,7 @@ import type {
   IPythonRequest,
   IUseHttpPython,
   IUsePythonInfo,
+  IPythonOnSocketMessage,
 } from "@/schema/_python";
 import { IPythonStore, updatePythonStore } from "@/stores/_python";
 import { Requests } from "@/requests/actions";
@@ -133,22 +134,36 @@ export function useHttpPython<R>({
   }, deps);
 }
 
-export function useSyncPython() {
-  const getMessage = async () => ({
-    identifier: "sync",
-    nodeData: {},
-    nodeDataList: [],
-    extraData: {},
-    isInternal: true,
-  });
-
-  useWebSocket<IPythonStore>({
-    getMessage,
-    onMessage: async ({ success, message, data: { status, data } }) => {
+export function useOnSocketMessageWithRetry<R>(
+  getMessage: () => Promise<IPythonRequest>,
+  onMessage: IPythonOnSocketMessage<R>,
+): IPythonOnSocketMessage<R> {
+  return useCallback(
+    ({ success, message, data }) => {
       if (!success) {
         Logger.warn(`sync python settings failed: ${message}`);
-        return { newMessage: getMessage };
+        return Promise.resolve({ newMessage: getMessage });
       }
+      return onMessage({ success, message, data });
+    },
+    [getMessage, onMessage],
+  );
+}
+
+export function useSyncPython() {
+  const getMessage = useCallback(
+    () =>
+      Promise.resolve({
+        identifier: "sync",
+        nodeData: {},
+        nodeDataList: [],
+        extraData: {},
+        isInternal: true,
+      }),
+    [],
+  );
+  const onMessage = useCallback<IPythonOnSocketMessage<IPythonStore>>(
+    async ({ data: { status, data } }) => {
       if (status !== "finished") {
         Logger.warn(`sync in progress: ${JSON.stringify(data)}`);
       } else {
@@ -158,5 +173,11 @@ export function useSyncPython() {
         return { newMessage: getMessage };
       }
     },
+    [],
+  );
+
+  useWebSocket<IPythonStore>({
+    getMessage,
+    onMessage: useOnSocketMessageWithRetry(getMessage, onMessage),
   });
 }
