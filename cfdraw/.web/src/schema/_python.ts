@@ -96,7 +96,7 @@ export interface IPythonResponse<T> {
   message: string;
   data: T;
 }
-export interface ISocketCallbacks<R> {
+export interface IPythonSocketCallbacks<R> {
   getMessage: () => Promise<IPythonRequest>;
   onMessage: (
     data: IPythonSocketMessage<R>,
@@ -121,4 +121,4 @@ export interface IPythonSocketData<R> {
   data: R;
 }
 export interface IPythonSocketMessage<R> extends IPythonResponse<IPythonSocketData<R>> {}
-export interface IUseSocketPython<R> extends IUsePythonInfo, ISocketCallbacks<R> {}
+export interface IUseSocketPython<R> extends IUsePythonInfo, IPythonSocketCallbacks<R> {}

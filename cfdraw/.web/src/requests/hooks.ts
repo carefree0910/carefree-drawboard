@@ -4,7 +4,7 @@ import { useEffect } from "react";
 import { Logger } from "@carefree0910/core";
 
 import type { APISources, APIs } from "@/schema/requests";
-import type { ISocketCallbacks, IPythonSocketMessage } from "@/schema/_python";
+import type { IPythonSocketCallbacks, IPythonSocketMessage } from "@/schema/_python";
 import { pythonStore } from "@/stores/_python";
 import { useInceptors } from "./interceptors";
 
@@ -34,7 +34,7 @@ export function useWebSocket<R>({
   onError,
   interval,
   dependencies,
-}: ISocketCallbacks<R> & {
+}: IPythonSocketCallbacks<R> & {
   interval?: number;
   dependencies?: any[];
 }) {
