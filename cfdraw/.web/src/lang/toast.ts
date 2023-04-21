@@ -59,7 +59,7 @@ export const toastLangRecords: Record<Lang, Record<Toast_Words, string>> = {
     [Toast_Words["add-text-success-message"]]: "添加文字成功",
     [Toast_Words["add-text-error-message"]]: "添加文字时出了些问题",
     [Toast_Words["auto-arrange-no-need-message"]]: "当前节点无需整理",
-    [Toast_Words["submit-task-busy-message"]]: "当前任务正在执行中，请稍候",
+    [Toast_Words["submit-task-busy-message"]]: "当前任务正在执行中，请稍候...",
     [Toast_Words["submit-task-success-message"]]: "任务提交成功",
     [Toast_Words["submit-task-error-message"]]: "执行任务时出了些问题",
     [Toast_Words["submit-task-finished-message"]]: "任务已执行完成",
@@ -93,7 +93,7 @@ export const toastLangRecords: Record<Lang, Record<Toast_Words, string>> = {
     [Toast_Words["add-text-error-message"]]: "Something is wrong when adding Text Node",
     [Toast_Words["auto-arrange-no-need-message"]]: "There is no need to arrange the Nodes",
     [Toast_Words["submit-task-busy-message"]]:
-      "The current task is being executed, please wait for a while",
+      "Current task is being executed, please wait for a while...",
     [Toast_Words["submit-task-success-message"]]: "Task submitted successfully!",
     [Toast_Words["submit-task-error-message"]]: "Something is wrong when executing the task",
     [Toast_Words["submit-task-finished-message"]]: "Task has been executed successfully",
