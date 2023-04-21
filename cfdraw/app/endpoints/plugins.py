@@ -6,7 +6,6 @@ from cfdraw.utils.server import get_responses
 from cfdraw.schema.plugins import IPluginRequest
 from cfdraw.schema.plugins import IPluginResponse
 from cfdraw.plugins.base import IHttpPlugin
-from cfdraw.plugins.base import ISocketPlugin
 from cfdraw.app.endpoints.base import IEndpoint
 
 
