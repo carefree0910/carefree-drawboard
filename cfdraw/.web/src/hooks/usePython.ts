@@ -141,7 +141,7 @@ export function useOnSocketMessageWithRetry<R>(
   return useCallback(
     ({ success, message, data }) => {
       if (data.status === "exception") {
-        Logger.warn(`sync python settings failed: ${data.message}`);
+        Logger.warn(`socket exception occurred: ${data.message}`);
         return Promise.resolve({ newMessage: getMessage });
       }
       return onMessage({ success, message, data });
