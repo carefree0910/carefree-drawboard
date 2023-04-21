@@ -1,18 +1,19 @@
 import json
 import logging
 
+from asyncio import Event
 from fastapi import WebSocket
 from fastapi import WebSocketDisconnect
 
 from cfdraw import constants
 from cfdraw.app.schema import IApp
+from cfdraw.app.schema import IRequestQueueData
 from cfdraw.utils.server import get_err_msg
 from cfdraw.schema.plugins import IPluginRequest
 from cfdraw.schema.plugins import IPluginResponse
 from cfdraw.schema.plugins import ISocketMessage
 from cfdraw.plugins.base import ISocketPlugin
 from cfdraw.app.endpoints.base import IEndpoint
-from cfdraw.app.endpoints.utils import offload
 
 
 def add_websocket(app: IApp) -> None:
@@ -66,10 +67,12 @@ def add_websocket(app: IApp) -> None:
                         data={},
                     )
                 else:
-                    target_plugin.send_text = send_text
                     # `send_text` should be handled by the plugin itself, or by
                     # the `SocketMessageMiddleWare` which will provide a default handling
-                    await offload(target_plugin(data))
+                    target_plugin.send_text = send_text
+                    queue_data = IRequestQueueData(data, target_plugin, Event())
+                    uid = app.request_queue.push(queue_data)
+                    await app.request_queue.wait(uid)
                     response = None
                 if response is not None:
                     await send_text(ISocketMessage.from_response(response))

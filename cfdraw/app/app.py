@@ -58,6 +58,8 @@ class App(IApp):
         self.config = get_config()
         # clients
         self.http_session = ClientSession()
+        # queue
+        self.request_queue = RequestQueue()
         # fastapi
         self.api = FastAPI(lifespan=lifespan)
         self.add_cors()
