@@ -206,6 +206,8 @@ class ISocketMessage(IPluginResponse):
     @classmethod
     def from_response(cls, response: IPluginResponse) -> "ISocketData":
         return cls(
+            success=True,
+            message="",
             data=ISocketData(
                 status=SocketStatus.FINISHED
                 if response.success
@@ -214,7 +216,7 @@ class ISocketMessage(IPluginResponse):
                 data=response.data
                 if response.success
                 else dict(message=response.message),
-            )
+            ),
         )
 
 
