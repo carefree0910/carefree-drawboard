@@ -50,7 +50,7 @@ class IPluginInfo(BaseModel):
         None,
         description="Whether trigger a toast message when the submit button is clicked",
     )
-    submitToastMessage: Optional[str] = Field(
+    toastMessageOnSubmit: Optional[str] = Field(
         None,
         description="The message of the toast, only take effect when `toastOnSubmit` is `True`",
     )

@@ -23,7 +23,7 @@ const PythonHttpPluginWithSubmit = ({
     updateInterval,
     closeOnSubmit = true,
     toastOnSubmit = true,
-    submitToastMessage,
+    toastMessageOnSubmit,
   },
   buttonText,
   onUseHttpPythonError,
@@ -62,8 +62,8 @@ const PythonHttpPluginWithSubmit = ({
       floatingControlEvent.emit({ id, expand: false });
     }
     if (toastOnSubmit) {
-      submitToastMessage ??= translate(Toast_Words["submit-task-success-message"], lang);
-      toast(t, "info", submitToastMessage);
+      toastMessageOnSubmit ??= translate(Toast_Words["submit-task-success-message"], lang);
+      toast(t, "info", toastMessageOnSubmit);
     }
   }
 

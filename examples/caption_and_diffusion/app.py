@@ -52,7 +52,7 @@ class HttpTextToImagePlugin(IHttpFieldsPlugin):
                 header="Text to Image",
                 numColumns=2,
                 definitions=txt2img_fields,
-                submitToastMessage="Generating images using the `diffusers` 🤗 library...",
+                toastMessageOnSubmit="Generating images using the `diffusers` 🤗 library...",
             ),
         )
 
