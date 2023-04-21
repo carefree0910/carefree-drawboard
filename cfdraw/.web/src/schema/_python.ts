@@ -101,7 +101,7 @@ export interface IPythonSocketCallbacks<R> {
   onMessage: (
     data: IPythonSocketMessage<R>,
   ) => Promise<{ newMessage?: () => Promise<IPythonRequest>; interval?: number } | undefined>;
-  onError?: (err: any) => void;
+  onSocketError?: (err: any) => void;
 }
 
 // http

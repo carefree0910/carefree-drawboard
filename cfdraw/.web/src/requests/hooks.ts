@@ -31,7 +31,7 @@ const log = (...args: any[]) => DEBUG && console.log(...args);
 export function useWebSocket<R>({
   getMessage,
   onMessage,
-  onError,
+  onSocketError,
   interval,
   dependencies,
 }: IPythonSocketCallbacks<R> & {
@@ -96,7 +96,7 @@ export function useWebSocket<R>({
       };
       socket.onerror = (err) => {
         log("> on error");
-        onError?.(err);
+        onSocketError?.(err);
         console.error("Socket error: ", err, ", retrying...");
         socket.close();
       };
