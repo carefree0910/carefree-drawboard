@@ -99,7 +99,7 @@ export interface IPythonResponse<T> {
 export type IPythonOnSocketMessage<R> = (
   data: IPythonSocketMessage<R>,
 ) => Promise<{ newMessage?: () => Promise<IPythonRequest>; interval?: number } | undefined>;
-export interface IPythonSocketCallbacks<R> {
+export interface IPythonSocketCallbacks<R> extends IPythonCallbacks {
   getMessage: () => Promise<IPythonRequest>;
   onMessage: IPythonOnSocketMessage<R>;
   onSocketError?: (err: any) => void;
