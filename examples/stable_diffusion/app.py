@@ -65,7 +65,7 @@ class HttpTextToImagePlugin(IHttpFieldsPlugin):
             follow=False,
             # Since there are quite a few parameters, we use Modal to display them
             useModal=True,
-            pluginInfo=IHttpFieldsPluginInfo(
+            pluginInfo=IFieldsPluginInfo(
                 header="Text to Image",
                 numColumns=2,
                 definitions=txt2img_fields,
@@ -88,7 +88,7 @@ class HttpImageToImagePlugin(IHttpFieldsPlugin):
             pivot=PivotType.RT,
             follow=True,
             useModal=True,
-            pluginInfo=IHttpFieldsPluginInfo(
+            pluginInfo=IFieldsPluginInfo(
                 header="Image to Image",
                 numColumns=2,
                 definitions=img2img_fields,

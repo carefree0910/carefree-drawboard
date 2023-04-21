@@ -48,7 +48,7 @@ class HttpTextToImagePlugin(IHttpFieldsPlugin):
             follow=True,
             # Since there are quite a few parameters, we use Modal to display them
             useModal=True,
-            pluginInfo=IHttpFieldsPluginInfo(
+            pluginInfo=IFieldsPluginInfo(
                 header="Text to Image",
                 numColumns=2,
                 definitions=txt2img_fields,
@@ -72,7 +72,7 @@ class HttpImageCaptioningPlugin(IHttpFieldsPlugin):
             src="https://ailab-huawei-cdn.nolibox.com/upload/images/6e594b60538b467f95d144f03de8412e.png",
             pivot=PivotType.RT,
             follow=True,
-            pluginInfo=IHttpFieldsPluginInfo(header="Image Captioning", definitions={}),
+            pluginInfo=IFieldsPluginInfo(header="Image Captioning", definitions={}),
         )
 
     async def process(self, data: IPluginRequest) -> List[str]:

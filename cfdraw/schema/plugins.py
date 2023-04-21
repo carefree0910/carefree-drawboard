@@ -269,6 +269,16 @@ class IMiddleWare(ABC):
 
 # (react) bindings
 
+
+class IFieldsPluginInfo(IPluginInfo):
+    header: Optional[str] = Field(None, description="Header of the plugin")
+    definitions: Dict[str, IFieldDefinition] = Field(
+        ...,
+        description="Field definitions",
+    )
+    numColumns: Optional[int] = Field(None, description="Number of columns")
+
+
 ## (http) text area
 
 
@@ -289,18 +299,6 @@ class IHttpQAPluginInfo(IPluginInfo):
     )
 
 
-## (http) fields
-
-
-class IHttpFieldsPluginInfo(IPluginInfo):
-    header: Optional[str] = Field(None, description="Header of the plugin")
-    definitions: Dict[str, IFieldDefinition] = Field(
-        ...,
-        description="Field definitions",
-    )
-    numColumns: Optional[int] = Field(None, description="Number of columns")
-
-
 __all__ = [
     "PluginType",
     # general
@@ -316,8 +314,8 @@ __all__ = [
     # plugin interface
     "IPlugin",
     "IMiddleWare",
+    "IFieldsPluginInfo",
     # bindings
     "IHttpTextAreaPluginInfo",
     "IHttpQAPluginInfo",
-    "IHttpFieldsPluginInfo",
 ]

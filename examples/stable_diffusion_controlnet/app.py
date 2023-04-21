@@ -58,7 +58,7 @@ class HttpCannyPlugin(IHttpFieldsPlugin):
             pivot=PivotType.RT,
             follow=True,
             offsetY=104,
-            pluginInfo=IHttpFieldsPluginInfo(definitions={}),
+            pluginInfo=IFieldsPluginInfo(definitions={}),
         )
 
     async def process(self, data: IPluginRequest) -> Image.Image:
@@ -84,7 +84,7 @@ class HttpControlNetPlugin(IHttpFieldsPlugin):
             pivot=PivotType.RT,
             follow=True,
             useModal=True,
-            pluginInfo=IHttpFieldsPluginInfo(
+            pluginInfo=IFieldsPluginInfo(
                 header="ControlNet",
                 numColumns=2,
                 definitions=inpainting_fields,

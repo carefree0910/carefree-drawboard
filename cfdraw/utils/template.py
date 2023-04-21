@@ -21,7 +21,7 @@ class Plugin(IHttpFieldsPlugin):
             nodeConstraint=NodeConstraints.IMAGE,
             pivot=PivotType.RT,
             follow=True,
-            pluginInfo=IHttpFieldsPluginInfo(
+            pluginInfo=IFieldsPluginInfo(
                 definitions=dict(
                     size=INumberField(
                         default=3,

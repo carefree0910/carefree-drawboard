@@ -47,7 +47,7 @@ class HttpInpaintingPlugin(IHttpFieldsPlugin):
             pivot=PivotType.RT,
             follow=True,
             useModal=True,
-            pluginInfo=IHttpFieldsPluginInfo(
+            pluginInfo=IFieldsPluginInfo(
                 header="Inpainting",
                 numColumns=2,
                 definitions=inpainting_fields,

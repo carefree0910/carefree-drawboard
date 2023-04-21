@@ -36,7 +36,7 @@ cfdraw run --module {name}
 5. The `GaussianBlur` plugin has a `size` parameter, which is an `int` type. We can use `cfdraw`'s `INumberField` to create a slider for it. This is a good example of how to declare custom interactive fields, here's a quick explanation of the codes:
 
 ```python
-pluginInfo=IHttpFieldsPluginInfo(
+pluginInfo=IFieldsPluginInfo(
     definitions=dict(
         size=INumberField(
             default=3,
