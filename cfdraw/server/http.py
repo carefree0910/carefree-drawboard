@@ -17,6 +17,7 @@ class HttpProxyHandler(RequestHandler):
             headers=self.request.headers,
             body=self.request.body if self.request.method != "GET" else None,
             raise_error=False,
+            request_timeout=300,
         )
         self.set_status(response.code)
         for k, v in response.headers.get_all():
