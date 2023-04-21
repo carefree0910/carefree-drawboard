@@ -15,10 +15,8 @@ class FieldsMiddleWare(IMiddleWare):
 
     async def process(
         self,
-        response: Union[str, List[str], Image, List[Image], IPluginResponse],
+        response: Union[str, List[str], Image, List[Image]],
     ) -> IPluginResponse:
-        if isinstance(response, IPluginResponse):
-            return response
         if not isinstance(response, list):
             response = [response]
         if isinstance(response[0], str):

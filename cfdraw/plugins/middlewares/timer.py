@@ -13,6 +13,10 @@ class TimerMiddleWare(IMiddleWare):
     t: Optional[float]
 
     @property
+    def can_inject_response(self) -> bool:
+        return True
+
+    @property
     def subscriptions(self) -> List[PluginType]:
         return [PluginType.HTTP_FIELDS]
 

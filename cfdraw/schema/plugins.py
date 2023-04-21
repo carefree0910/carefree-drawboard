@@ -242,9 +242,17 @@ class IMiddleWare(ABC):
 
     @abstractmethod
     async def process(self, response: Any) -> IPluginResponse:
-        pass
+        """
+        If `can_inject_response` is `False`, the `response` here could be anything except
+        `IPluginResponse`, because in this case if `response` is already an `IPluginResponse`,
+        it will be returned directly in the `__call__` method.
+        """
 
     # optional callbacks
+
+    @property
+    def can_inject_response(self) -> bool:
+        return False
 
     async def before(self, request: IPluginRequest) -> None:
         pass
@@ -253,6 +261,8 @@ class IMiddleWare(ABC):
 
     async def __call__(self, plugin: IPlugin, response: Any) -> IPluginResponse:
         if plugin.type not in self.subscriptions:
+            return response
+        if isinstance(response, IPluginResponse) and not self.can_inject_response:
             return response
         return await self.process(response)
 
