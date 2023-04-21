@@ -13,10 +13,10 @@ import { titleCaseWord } from "@/utils/misc";
 import { importMeta } from "@/actions/importMeta";
 import { drawboardPluginFactory } from "@/plugins/utils/factory";
 import CFHeading from "@/components/CFHeading";
-import { useDefinitions } from "../components/Fields";
 import { useClosePanel } from "../components/hooks";
 import { useCurrentMeta, useDefinitionsRequestDataFn, useFieldsPluginIds } from "./hooks";
 import PythonHttpPluginWithSubmit from "./HttpPluginWithSubmit";
+import DefinitionFields from "./DefinitionFields";
 
 const PythonHttpFieldsPlugin = ({ pluginInfo, ...props }: IPythonHttpFieldsPlugin) => {
   const { id, identifierId } = useFieldsPluginIds(pluginInfo.identifier);
@@ -62,11 +62,7 @@ const PythonHttpFieldsPlugin = ({ pluginInfo, ...props }: IPythonHttpFieldsPlugi
         <Spacer />
         <CloseIcon w="12px" cursor="pointer" onClick={emitClose} />
       </Flex>
-      {Object.keys(definitions).length > 0 && (
-        <Flex p="12px" gap="12px" flexWrap="wrap" alignItems="center" justifyContent="space-around">
-          {useDefinitions(definitions, pluginInfo.numColumns)}
-        </Flex>
-      )}
+      <DefinitionFields definitions={definitions} numColumns={pluginInfo.numColumns} />
     </PythonHttpPluginWithSubmit>
   );
 };
