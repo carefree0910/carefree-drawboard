@@ -18,12 +18,11 @@ import { drawboardPluginFactory } from "@/plugins/utils/factory";
 import CFHeading from "@/components/CFHeading";
 import { useDefinitions } from "../components/Fields";
 import { floatingControlEvent } from "../components/Floating";
-import { useIdentifierId } from "./hooks";
+import { useFieldsPluginIds } from "./hooks";
 import PythonHttpPluginWithSubmit from "./HttpPluginWithSubmit";
 
 const PythonHttpFieldsPlugin = ({ pluginInfo, ...props }: IPythonHttpFieldsPlugin) => {
-  const identifierId = useIdentifierId(pluginInfo.identifier);
-  const id = useMemo(() => `${identifierId}_${getRandomHash()}`, [identifierId]);
+  const { id, identifierId } = useFieldsPluginIds(pluginInfo.identifier);
   const t = useToast();
   const lang = langStore.tgt;
   const definitions = pluginInfo.definitions;
