@@ -96,11 +96,12 @@ export interface IPythonResponse<T> {
   message: string;
   data: T;
 }
+export type IPythonOnSocketMessage<R> = (
+  data: IPythonSocketMessage<R>,
+) => Promise<{ newMessage?: () => Promise<IPythonRequest>; interval?: number } | undefined>;
 export interface IPythonSocketCallbacks<R> {
   getMessage: () => Promise<IPythonRequest>;
-  onMessage: (
-    data: IPythonSocketMessage<R>,
-  ) => Promise<{ newMessage?: () => Promise<IPythonRequest>; interval?: number } | undefined>;
+  onMessage: IPythonOnSocketMessage<R>;
   onSocketError?: (err: any) => void;
 }
 
