@@ -12,6 +12,7 @@ from cfdraw.schema.plugins import IPluginResponse
 from cfdraw.schema.plugins import ISocketMessage
 from cfdraw.plugins.base import ISocketPlugin
 from cfdraw.app.endpoints.base import IEndpoint
+from cfdraw.app.endpoints.utils import offload
 
 
 def add_websocket(app: IApp) -> None:
@@ -68,7 +69,7 @@ def add_websocket(app: IApp) -> None:
                     target_plugin.send_text = send_text
                     # `send_text` should be handled by the plugin itself, or by
                     # the `SocketMessageMiddleWare` which will provide a default handling
-                    await target_plugin(data)
+                    await offload(target_plugin(data))
                     response = None
                 if response is not None:
                     await send_text(ISocketMessage.from_response(response))

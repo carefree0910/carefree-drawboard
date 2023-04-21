@@ -7,6 +7,7 @@ from cfdraw.schema.plugins import IPluginRequest
 from cfdraw.schema.plugins import IPluginResponse
 from cfdraw.plugins.base import IHttpPlugin
 from cfdraw.app.endpoints.base import IEndpoint
+from cfdraw.app.endpoints.utils import offload
 
 
 def add_plugins(app: IApp) -> None:
@@ -35,7 +36,7 @@ def add_plugins(app: IApp) -> None:
                         data={},
                     )
                 try:
-                    return await _p(data)
+                    return await offload(_p(data))
                 except Exception as err:
                     err_msg = get_err_msg(err)
                     return IPluginResponse(success=False, message=err_msg, data={})
