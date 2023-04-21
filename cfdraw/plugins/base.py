@@ -88,8 +88,13 @@ class IHttpPlugin(IBasePlugin, metaclass=ABCMeta):
 class ISocketPlugin(IBasePlugin, metaclass=ABCMeta):
     send_text: ISendSocketText
 
+    @property
+    def middlewares(self) -> List[IMiddleWare]:
+        socket_message_middleware = SocketMessageMiddleWare(self.send_text)
+        return [FieldsMiddleWare(), TimerMiddleWare(), socket_message_middleware]
+
     @abstractmethod
-    async def process(self, data: IPluginRequest) -> ISocketMessage:
+    async def process(self, data: IPluginRequest) -> Any:
         pass
 
 

@@ -7,23 +7,19 @@ from cfdraw.plugins.factory import PluginFactory
 
 @PluginFactory.register_internal("sync")
 class SyncSocketPlugin(IInternalSocketPlugin):
-    async def process(self, data: IPluginRequest) -> ISocketMessage:
+    async def process(self, data: IPluginRequest) -> IPluginResponse:
         config = get_config()
-        return ISocketMessage(
+        return IPluginResponse(
             success=True,
             message="",
-            data=ISocketData(
-                status=SocketStatus.FINISHED,
-                pending=0,
-                data=dict(
-                    pluginSettings=[
-                        plugin.to_plugin_settings()
-                        for plugin in PluginFactory.plugins.values()
-                    ],
-                    globalSettings=dict(
-                        useStrictMode=config.use_react_strict_mode,
-                        sockenEndpoint=str(constants.Endpoint.WEBSOCKET),
-                    ),
+            data=dict(
+                pluginSettings=[
+                    plugin.to_plugin_settings()
+                    for plugin in PluginFactory.plugins.values()
+                ],
+                globalSettings=dict(
+                    useStrictMode=config.use_react_strict_mode,
+                    sockenEndpoint=str(constants.Endpoint.WEBSOCKET),
                 ),
             ),
         )

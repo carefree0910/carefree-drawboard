@@ -66,8 +66,12 @@ def add_websocket(app: IApp) -> None:
                     )
                 else:
                     target_plugin.send_text = send_text
-                    response = await target_plugin(data)
-                await send_text(response)
+                    # `send_text` should be handled by the plugin itself, or by
+                    # the `SocketMessageMiddleWare` which will provide a default handling
+                    await target_plugin(data)
+                    response = None
+                if response is not None:
+                    await send_text(ISocketMessage.from_response(response))
             except WebSocketDisconnect:
                 break
             except Exception as e:
