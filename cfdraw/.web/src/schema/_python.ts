@@ -109,7 +109,7 @@ export interface IPythonSocketCallbacks<R> {
 export interface IUseHttpPython<R> extends IUsePythonInfo, IPythonHttpPluginCallbacks<R> {
   t: IToast;
   lang: Lang;
-  forceNotSend?: boolean;
+  send: boolean;
 }
 
 // socket

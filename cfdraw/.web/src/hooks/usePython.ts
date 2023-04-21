@@ -71,29 +71,29 @@ async function getPythonRequest({
 export function useHttpPython<R>({
   t,
   lang,
+  send,
   node,
   nodes,
   endpoint,
   identifier,
   isInvisible,
   updateInterval,
-  forceNotSend,
   onUseHttpPythonSuccess,
   onUseHttpPythonError,
   beforeRequest,
   getExtraRequestData,
 }: IUseHttpPython<R>) {
   const deps = [
+    send,
     node?.alias,
     nodes.map((n) => n.alias).join("_"),
     endpoint,
     identifier,
     updateInterval,
     isInvisible,
-    forceNotSend,
   ];
   const requestFn = useCallback(() => {
-    if (isInvisible || forceNotSend) return Promise.resolve();
+    if (!send || isInvisible) return Promise.resolve();
     const preprocess = beforeRequest ? beforeRequest() : Promise.resolve();
     return preprocess
       .then(() =>

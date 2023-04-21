@@ -24,6 +24,7 @@ const PythonHttpTextAreaPlugin = ({
   useHttpPython<{ text: string }>({
     t,
     lang,
+    send: true,
     node,
     nodes,
     endpoint,

@@ -40,13 +40,13 @@ function PythonHttpPluginWithSubmit<R>({
   useHttpPython<R>({
     t,
     lang,
+    send,
     node,
     nodes,
     endpoint,
     identifier,
     isInvisible: props.renderInfo.isInvisible ?? false,
     updateInterval,
-    forceNotSend: !send,
     onUseHttpPythonError,
     onUseHttpPythonSuccess,
     beforeRequest: async () => {
