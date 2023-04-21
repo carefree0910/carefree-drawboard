@@ -198,6 +198,7 @@ class ISocketData(BaseModel):
 
     status: SocketStatus = Field(..., description="Status of the current task")
     pending: int = Field(..., description="Number of pending tasks")
+    message: str = Field(..., description="Message of the current status")
     data: Optional[Dict[str, Any]] = Field(None, description="Response data, if any")
 
 
@@ -214,9 +215,8 @@ class ISocketMessage(IPluginResponse):
                 if response.success
                 else SocketStatus.EXCEPTION,
                 pending=0,
-                data=response.data
-                if response.success
-                else dict(message=response.message),
+                message=response.message,
+                data=response.data,
             ),
         )
 

@@ -140,8 +140,8 @@ export function useOnSocketMessageWithRetry<R>(
 ): IPythonOnSocketMessage<R> {
   return useCallback(
     ({ success, message, data }) => {
-      if (!success) {
-        Logger.warn(`sync python settings failed: ${message}`);
+      if (data.status === "exception") {
+        Logger.warn(`sync python settings failed: ${data.message}`);
         return Promise.resolve({ newMessage: getMessage });
       }
       return onMessage({ success, message, data });

@@ -133,8 +133,18 @@ export type PythonSocketStatus = "pending" | "working" | "finished" | "exception
 export interface IPythonSocketData<R> {
   status: PythonSocketStatus;
   pending: number;
+  message: string;
   data: R;
 }
+/**
+ * for `IPythonSocketMessage`, it should always have `success=true` & `message=""`
+ * > this is because socket connection is either alive or dead, and once it's alive,
+ * messages will always transfer successfully.
+ * > to check whether a request is 'truly' success, we can check the `status` field
+ * of the returned `data`. It is one of the `PythonSocketStatus`, and when its value
+ * is `exception`, we know something bad is happening, and the message can be extracted
+ * from the `message` field of the returned `data`.
+ */
 export interface IPythonSocketMessage<R> extends IPythonResponse<IPythonSocketData<R>> {}
 export interface IUseSocketPython<R>
   extends IUsePythonInfo,
