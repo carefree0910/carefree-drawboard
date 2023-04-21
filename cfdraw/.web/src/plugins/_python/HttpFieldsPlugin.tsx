@@ -1,19 +1,16 @@
-import { useMemo, useCallback } from "react";
 import { observer } from "mobx-react-lite";
 import { CloseIcon } from "@chakra-ui/icons";
 import { Flex, Spacer, useToast } from "@chakra-ui/react";
 
-import { Dictionary, getRandomHash } from "@carefree0910/core";
 import { langStore, translate } from "@carefree0910/business";
 
-import type { IMeta, IPythonHttpFieldsResponse } from "@/schema/meta";
+import type { IPythonHttpFieldsResponse } from "@/schema/meta";
 import type { IPythonHttpFieldsPlugin, IPythonResponse } from "@/schema/_python";
 import { UI_Words } from "@/lang/ui";
 import { Toast_Words } from "@/lang/toast";
 import { toast } from "@/utils/toast";
 import { titleCaseWord } from "@/utils/misc";
 import { importMeta } from "@/actions/importMeta";
-import { getMetaField } from "@/stores/meta";
 import { drawboardPluginFactory } from "@/plugins/utils/factory";
 import CFHeading from "@/components/CFHeading";
 import { useDefinitions } from "../components/Fields";
