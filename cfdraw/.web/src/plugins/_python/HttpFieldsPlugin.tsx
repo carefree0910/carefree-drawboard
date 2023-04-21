@@ -18,7 +18,7 @@ import { drawboardPluginFactory } from "@/plugins/utils/factory";
 import CFHeading from "@/components/CFHeading";
 import { useDefinitions } from "../components/Fields";
 import { floatingControlEvent } from "../components/Floating";
-import { useDefinitionsRequestDataFn, useFieldsPluginIds } from "./hooks";
+import { useCurrentMeta, useDefinitionsRequestDataFn, useFieldsPluginIds } from "./hooks";
 import PythonHttpPluginWithSubmit from "./HttpPluginWithSubmit";
 
 const PythonHttpFieldsPlugin = ({ pluginInfo, ...props }: IPythonHttpFieldsPlugin) => {
@@ -27,14 +27,7 @@ const PythonHttpFieldsPlugin = ({ pluginInfo, ...props }: IPythonHttpFieldsPlugi
   const lang = langStore.tgt;
   const definitions = pluginInfo.definitions;
   const getExtraRequestData = useDefinitionsRequestDataFn(definitions);
-  const currentMeta = useMemo(() => {
-    const node = pluginInfo.node;
-    let currentMeta: IMeta | undefined;
-    if (node && node.type !== "group") {
-      currentMeta = node.params.meta as IMeta;
-    }
-    return currentMeta;
-  }, [pluginInfo.node]);
+  const currentMeta = useCurrentMeta(pluginInfo.node);
   const emitClose = useCallback(() => floatingControlEvent.emit({ id, expand: false }), [id]);
 
   async function onUseHttpPythonSuccess({
