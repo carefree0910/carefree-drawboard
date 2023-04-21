@@ -4,8 +4,8 @@ import { Flex, Spacer, useToast } from "@chakra-ui/react";
 
 import { langStore, translate } from "@carefree0910/business";
 
-import type { IPythonHttpFieldsResponse } from "@/schema/meta";
-import type { IPythonHttpFieldsPlugin, IPythonResponse } from "@/schema/_python";
+import type { IPythonFieldsResponse } from "@/schema/meta";
+import type { IPythonFieldsPlugin, IPythonResponse } from "@/schema/_python";
 import { UI_Words } from "@/lang/ui";
 import { Toast_Words } from "@/lang/toast";
 import { toast } from "@/utils/toast";
@@ -18,7 +18,7 @@ import { useCurrentMeta, useDefinitionsRequestDataFn, useFieldsPluginIds } from 
 import PythonHttpPluginWithSubmit from "./HttpPluginWithSubmit";
 import DefinitionFields from "./DefinitionFields";
 
-const PythonHttpFieldsPlugin = ({ pluginInfo, ...props }: IPythonHttpFieldsPlugin) => {
+const PythonHttpFieldsPlugin = ({ pluginInfo, ...props }: IPythonFieldsPlugin) => {
   const { id, identifierId } = useFieldsPluginIds(pluginInfo.identifier);
   const t = useToast();
   const lang = langStore.tgt;
@@ -29,7 +29,7 @@ const PythonHttpFieldsPlugin = ({ pluginInfo, ...props }: IPythonHttpFieldsPlugi
 
   async function onUseHttpPythonSuccess({
     data: { _duration, ...response },
-  }: IPythonResponse<IPythonHttpFieldsResponse>) {
+  }: IPythonResponse<IPythonFieldsResponse>) {
     importMeta({
       t,
       lang,

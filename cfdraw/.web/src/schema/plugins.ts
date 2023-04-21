@@ -6,7 +6,7 @@ import type { IResponse } from "@carefree0910/business";
 
 import type { IFieldDefinition, _IFieldDefinition } from "./metaFields";
 import type {
-  IPythonHttpFieldsPlugin,
+  IPythonFieldsPlugin,
   IPythonHttpQAPlugin,
   IPythonHttpTextAreaPlugin,
 } from "./_python";
@@ -111,7 +111,7 @@ export interface IPluginProps {
   // python plugins
   "_python.httpTextArea": IPythonHttpTextAreaPlugin;
   "_python.httpQA": IPythonHttpQAPlugin;
-  "_python.httpFields": IPythonHttpFieldsPlugin;
+  "_python.httpFields": IPythonFieldsPlugin;
 }
 
 export interface IMakePlugin<T extends AvailablePluginsAndPythonPlugins> {

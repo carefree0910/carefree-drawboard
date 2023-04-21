@@ -43,6 +43,25 @@ export interface INodeData {
 
 // plugin
 
+interface IPythonPluginWithSubmitPluginInfo {
+  closeOnSubmit?: boolean;
+  toastOnSubmit?: boolean;
+  toastMessageOnSubmit?: string;
+}
+interface IPythonPluginWithSubmit {
+  id: string;
+  buttonText: string;
+  pluginInfo: IPythonPluginInfo & IPythonPluginWithSubmitPluginInfo;
+}
+export interface IPythonFieldsPlugin extends IPythonPlugin {
+  pluginInfo: IPythonPluginInfo &
+    IPythonPluginWithSubmitPluginInfo & {
+      header?: string;
+      definitions: IDefinitions;
+      numColumns?: number;
+    };
+}
+
 //// http plugin
 
 interface IPythonHttpPluginCallbacks<R> extends IPythonCallbacks {
@@ -50,18 +69,10 @@ interface IPythonHttpPluginCallbacks<R> extends IPythonCallbacks {
   onUseHttpPythonError?: (err: any) => Promise<void>;
   beforeRequest?: () => Promise<void>;
 }
-interface IPythonHttpPluginWithSubmitPluginInfo {
-  closeOnSubmit?: boolean;
-  toastOnSubmit?: boolean;
-  toastMessageOnSubmit?: string;
-}
 export interface IPythonHttpPluginWithSubmit<R>
-  extends IPythonPlugin,
-    IPythonHttpPluginCallbacks<R> {
-  id: string;
-  buttonText: string;
-  pluginInfo: IPythonPluginInfo & IPythonHttpPluginWithSubmitPluginInfo;
-}
+  extends Omit<IPythonPlugin, "id" | "pluginInfo">,
+    IPythonHttpPluginCallbacks<R>,
+    IPythonPluginWithSubmit {}
 export interface IPythonHttpTextAreaPlugin extends IPythonPlugin {
   pluginInfo: IPythonPluginInfo & {
     noLoading?: boolean;
@@ -72,14 +83,6 @@ export interface IPythonHttpQAPlugin extends IPythonPlugin {
   pluginInfo: IPythonPluginInfo & {
     initialText: string;
   };
-}
-export interface IPythonHttpFieldsPlugin extends IPythonPlugin {
-  pluginInfo: IPythonPluginInfo &
-    IPythonHttpPluginWithSubmitPluginInfo & {
-      header?: string;
-      definitions: IDefinitions;
-      numColumns?: number;
-    };
 }
 
 // web
@@ -133,4 +136,10 @@ export interface IPythonSocketData<R> {
   data: R;
 }
 export interface IPythonSocketMessage<R> extends IPythonResponse<IPythonSocketData<R>> {}
-export interface IUseSocketPython<R> extends IUsePythonInfo, IPythonSocketCallbacks<R> {}
+export interface IUseSocketPython<R>
+  extends IUsePythonInfo,
+    Omit<IPythonSocketCallbacks<R>, "getMessage"> {
+  t: IToast;
+  lang: Lang;
+  connect: boolean;
+}

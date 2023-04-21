@@ -1,7 +1,7 @@
 import { Dictionary, RectangleShapeNode, getRandomHash, shallowCopy } from "@carefree0910/core";
 import { BoardStore, translate, useAddNode } from "@carefree0910/business";
 
-import type { IMetaData, IPythonHttpFieldsMetaData, MetaType } from "@/schema/meta";
+import type { IMetaData, IPythonFieldsMetaData, MetaType } from "@/schema/meta";
 import type { IImportMeta } from "@/schema/meta";
 import { toast } from "@/utils/toast";
 import { Toast_Words } from "@/lang/toast";
@@ -28,7 +28,7 @@ const consumers: Record<MetaType, (input: IImportMeta<any>) => void> = {
   upload: consumeUpload,
   "add.text": consumeAddText,
   "add.sketch.path": consumeAddSketchPath,
-  "python.httpFields": consumePythonHttpFields,
+  "python.httpFields": consumePythonFields,
 };
 function consumeUpload({ t, lang, type, metaData }: IImportMeta<"upload">): void {
   const success = async () => {
@@ -74,7 +74,7 @@ function consumeAddText({ t, lang, type, metaData }: IImportMeta<"add.text">): v
 function consumeAddSketchPath(): void {
   throw Error("Add sketch path by `importMeta` is not supported yet.");
 }
-function consumePythonHttpFields({
+function consumePythonFields({
   t,
   lang,
   type,
@@ -95,7 +95,7 @@ function consumePythonHttpFields({
     data: R;
     alias: string;
     rectangle: RectangleShapeNode;
-    metaData: IPythonHttpFieldsMetaData;
+    metaData: IPythonFieldsMetaData;
   }
   function gatherPacks<T, R>(
     responses: T[],
