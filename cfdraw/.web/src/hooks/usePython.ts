@@ -133,7 +133,7 @@ export function useHttpPython<R>({
 }
 
 export function useSyncPython() {
-  const getMessage = () => ({
+  const getMessage = async () => ({
     identifier: "sync",
     nodeData: {},
     nodeDataList: [],

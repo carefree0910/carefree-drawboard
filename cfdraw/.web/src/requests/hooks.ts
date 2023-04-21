@@ -56,22 +56,27 @@ export function useWebSocket<R>({
           return;
         }
         log("> send message");
-        socket.send(JSON.stringify(getMessage()));
+        getMessage().then((data) => socket.send(JSON.stringify(data)));
         socket.onmessage = ({ data }) => {
+          const alive = () => connected && !shouldTerminate;
           log("> on message");
-          if (shouldTerminate) {
-            log(">> shouldTerminate");
+          if (!alive()) {
+            log(">> not alive");
             socket.close();
             return;
           }
           onMessage(JSON.parse(data) as IPythonSocketMessage<R>).then((res) => {
             if (!res) return;
             const { newMessage, interval: newInterval } = res;
-            if (newMessage && !shouldTerminate) {
+            if (newMessage && alive()) {
               log("> on newMessage");
               newTimer = setTimeout(() => {
-                if (connected && !shouldTerminate) {
-                  socket.send(JSON.stringify(newMessage()));
+                if (alive()) {
+                  newMessage().then((data) => {
+                    if (alive()) {
+                      socket.send(JSON.stringify(data));
+                    }
+                  });
                 }
               }, newInterval ?? interval);
             }

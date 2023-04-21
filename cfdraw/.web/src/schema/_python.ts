@@ -95,10 +95,10 @@ export interface IPythonResponse<T> {
   data: T;
 }
 export interface ISocketCallbacks<R> {
-  getMessage: () => IPythonRequest;
+  getMessage: () => Promise<IPythonRequest>;
   onMessage: (
     data: IPythonSocketMessage<R>,
-  ) => Promise<{ newMessage?: () => IPythonRequest; interval?: number } | undefined>;
+  ) => Promise<{ newMessage?: () => Promise<IPythonRequest>; interval?: number } | undefined>;
   onError?: (err: any) => void;
 }
 
