@@ -43,7 +43,7 @@ def add_websocket(app: IApp) -> None:
                     identifier = data.identifier
                     target_plugin = app.internal_plugins.get(identifier)
                 else:
-                    identifier = data.identifier.split(".", 1)[-1]  # remove hash
+                    identifier = data.identifier.split(".", 1)[0]  # remove hash
                     target_plugin = app.plugins.get(identifier)
                 if target_plugin is None:
                     plugin_str = "internal plugin" if data.isInternal else "plugin"
