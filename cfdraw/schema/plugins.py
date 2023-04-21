@@ -251,7 +251,7 @@ class IMiddleWare(ABC):
     # optional callbacks
 
     @property
-    def can_inject_response(self) -> bool:
+    def can_handle_response(self) -> bool:
         return False
 
     async def before(self, request: IPluginRequest) -> None:
@@ -262,7 +262,7 @@ class IMiddleWare(ABC):
     async def __call__(self, plugin: IPlugin, response: Any) -> IPluginResponse:
         if plugin.type not in self.subscriptions:
             return response
-        if isinstance(response, IPluginResponse) and not self.can_inject_response:
+        if isinstance(response, IPluginResponse) and not self.can_handle_response:
             return response
         return await self.process(response)
 

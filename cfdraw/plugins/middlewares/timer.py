@@ -13,7 +13,7 @@ class TimerMiddleWare(IMiddleWare):
     t: Optional[float]
 
     @property
-    def can_inject_response(self) -> bool:
+    def can_handle_response(self) -> bool:
         return True
 
     @property
