@@ -1,4 +1,4 @@
-import { useMemo } from "react";
+import { useCallback, useMemo } from "react";
 
 import { Dictionary, INode, getRandomHash } from "@carefree0910/core";
 
@@ -16,16 +16,13 @@ export function useFieldsPluginIds(identifier: string): { id: string; identifier
   return { id, identifierId };
 }
 export function useDefinitionsRequestDataFn(definitions: IDefinitions): () => Dictionary<any> {
-  return useMemo(
-    () => () => {
-      const data: Dictionary<any> = {};
-      Object.keys(definitions).forEach((field) => {
-        data[field] = getMetaField(field);
-      });
-      return data;
-    },
-    [definitions],
-  );
+  return useCallback(() => {
+    const data: Dictionary<any> = {};
+    Object.keys(definitions).forEach((field) => {
+      data[field] = getMetaField(field);
+    });
+    return data;
+  }, [definitions]);
 }
 export function useCurrentMeta(node: INode | null): IMeta | undefined {
   return useMemo(() => {
