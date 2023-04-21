@@ -9,16 +9,19 @@ import type { IDefinitions } from "./metaFields";
 
 // general
 
+interface IPythonPluginInfo extends IPluginInfo {
+  endpoint: string;
+  identifier: string;
+  updateInterval?: number;
+}
+export interface IPythonPlugin extends IPlugin {
+  pluginInfo: IPythonPluginInfo;
+}
 interface IPythonCallbacks {
   getExtraRequestData?: () => Dictionary<any>;
 }
 export interface IUsePythonInfo extends IPythonPluginInfo, IPythonCallbacks {
   isInvisible: boolean;
-}
-export interface IPythonHttpPluginCallbacks<R> extends IPythonCallbacks {
-  onUseHttpPythonSuccess: (res: IPythonResponse<R>) => Promise<void>;
-  onUseHttpPythonError?: (err: any) => Promise<void>;
-  beforeRequest?: () => Promise<void>;
 }
 export interface INodeData {
   type?: INode["type"];
@@ -40,13 +43,12 @@ export interface INodeData {
 
 // plugin
 
-interface IPythonPluginInfo extends IPluginInfo {
-  endpoint: string;
-  identifier: string;
-  updateInterval?: number;
-}
-export interface IPythonPlugin extends IPlugin {
-  pluginInfo: IPythonPluginInfo;
+//// http plugin
+
+interface IPythonHttpPluginCallbacks<R> extends IPythonCallbacks {
+  onUseHttpPythonSuccess: (res: IPythonResponse<R>) => Promise<void>;
+  onUseHttpPythonError?: (err: any) => Promise<void>;
+  beforeRequest?: () => Promise<void>;
 }
 interface IPythonHttpPluginWithSubmitPluginInfo {
   closeOnSubmit?: boolean;
