@@ -13,7 +13,7 @@ import CFDivider from "@/components/CFDivider";
 import Render from "../components/Render";
 import { floatingControlEvent } from "../components/Floating";
 
-const PythonHttpPluginWithSubmit = ({
+function PythonHttpPluginWithSubmit<R>({
   id,
   pluginInfo: {
     node,
@@ -32,12 +32,12 @@ const PythonHttpPluginWithSubmit = ({
   getExtraRequestData,
   children,
   ...props
-}: IPythonHttpPluginWithSubmit<any>) => {
+}: IPythonHttpPluginWithSubmit<R>) {
   const t = useToast();
   const lang = langStore.tgt;
   const [send, setSend] = useState(false);
 
-  useHttpPython<{ text: string }>({
+  useHttpPython<R>({
     t,
     lang,
     node,
@@ -74,6 +74,6 @@ const PythonHttpPluginWithSubmit = ({
       <CFButton onClick={onClick}>{buttonText}</CFButton>
     </Render>
   );
-};
+}
 
 export default observer(PythonHttpPluginWithSubmit);
