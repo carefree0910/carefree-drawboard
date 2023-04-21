@@ -163,12 +163,19 @@ export function useSyncPython() {
     [],
   );
   const onMessage = useCallback<IPythonOnSocketMessage<IPythonStore>>(
-    async ({ data: { status, data } }) => {
+    async ({
+      data: {
+        status,
+        data: { progress, final },
+      },
+    }) => {
       if (status !== "finished") {
-        Logger.warn(`sync in progress: ${JSON.stringify(data)}`);
+        Logger.warn(`sync in progress: ${progress}`);
       } else {
-        if (updatePythonStore(data)) {
-          Logger.log(`sync successfully: ${JSON.stringify(data)}, rerendering`);
+        if (!final) {
+          Logger.warn("sync data not found");
+        } else if (updatePythonStore(final)) {
+          Logger.log(`sync successfully: ${JSON.stringify(final)}, rerendering`);
         }
         return { newMessage: getMessage };
       }

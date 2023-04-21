@@ -193,13 +193,42 @@ class SocketStatus(str, Enum):
     EXCEPTION = "exception"
 
 
+class ISocketIntermediate(BaseModel):
+    """This should align with `IPythonSocketIntermediate` at `src/schema/_python.ts`"""
+
+    imageList: Optional[List[str]] = Field(
+        None,
+        description="Intermediate images, if any",
+    )
+    textList: Optional[List[str]] = Field(
+        None,
+        description="Intermediate texts, if any",
+    )
+
+
+class ISocketResponse(BaseModel):
+    """This should align with `IPythonSocketResponse` at `src/schema/_python.ts`"""
+
+    progress: Optional[float] = Field(
+        None,
+        ge=0.0,
+        le=1.0,
+        description="Progress of current task, if any",
+    )
+    intermediate: Optional[ISocketIntermediate] = Field(
+        None,
+        description="Intermediate responses, if any",
+    )
+    final: Optional[Dict[str, Any]] = Field(None, description="Final response, if any")
+
+
 class ISocketData(BaseModel):
     """This should align with `IPythonSocketData` at `src/schema/_python.ts`"""
 
     status: SocketStatus = Field(..., description="Status of the current task")
     pending: int = Field(..., description="Number of pending tasks")
     message: str = Field(..., description="Message of the current status")
-    data: Optional[Dict[str, Any]] = Field(None, description="Response data, if any")
+    data: ISocketResponse = Field(ISocketResponse(), description="Response data")
 
 
 class ISocketMessage(IPluginResponse):
@@ -216,7 +245,7 @@ class ISocketMessage(IPluginResponse):
                 else SocketStatus.EXCEPTION,
                 pending=0,
                 message=response.message,
-                data=response.data,
+                data=ISocketResponse(final=response.data),
             ),
         )
 
