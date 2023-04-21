@@ -203,6 +203,20 @@ class ISocketData(BaseModel):
 class ISocketMessage(IPluginResponse):
     data: ISocketData = Field(..., description="Socket data of the current task")
 
+    @classmethod
+    def from_response(cls, response: IPluginResponse) -> "ISocketData":
+        return cls(
+            data=ISocketData(
+                status=SocketStatus.FINISHED
+                if response.success
+                else SocketStatus.EXCEPTION,
+                pending=0,
+                data=response.data
+                if response.success
+                else dict(message=response.message),
+            )
+        )
+
 
 # plugin interface
 

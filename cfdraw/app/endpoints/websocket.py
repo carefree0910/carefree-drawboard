@@ -19,12 +19,17 @@ def add_websocket(app: IApp) -> None:
     async def websocket(websocket: WebSocket) -> None:
         async def on_failed(e: Exception) -> None:
             logging.exception(e)
-            response = IPluginResponse(
-                success=False,
-                message=f"Invalid data: {get_err_msg(e)}",
-                data={},
+            await websocket.send_text(
+                json.dumps(
+                    ISocketMessage.from_response(
+                        IPluginResponse(
+                            success=False,
+                            message=f"Invalid data: {get_err_msg(e)}",
+                            data={},
+                        )
+                    ).dict()
+                )
             )
-            await websocket.send_text(json.dumps(response.dict()))
 
         async def sent_text(data: ISocketMessage) -> None:
             await websocket.send_text(json.dumps(data.dict()))
