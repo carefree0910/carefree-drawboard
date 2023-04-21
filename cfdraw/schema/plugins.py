@@ -1,5 +1,6 @@
 from abc import abstractmethod
 from abc import ABC
+from abc import ABCMeta
 from PIL import Image
 from enum import Enum
 from typing import Any
@@ -284,6 +285,11 @@ class IMiddleWare(ABC):
         if isinstance(response, IPluginResponse) and not self.can_handle_response:
             return response
         return await self.process(response)
+
+
+class ISocketMiddleWare(IMiddleWare, metaclass=ABCMeta):
+    def __init__(self, send_text: ISendSocketText) -> None:
+        self.send_text = send_text
 
 
 # (react) bindings
