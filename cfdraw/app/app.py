@@ -35,6 +35,8 @@ class App(IApp):
             PluginsEndpoint(self),
             WebsocketEndpoint(self),
         ]
+        if self.config.use_unified:
+            self.endpoints.append(AssetsEndpoint(self))
         for endpoint in self.endpoints:
             endpoint.register()
         self.hash = random_hash()
@@ -65,8 +67,7 @@ class App(IApp):
         @self.api.on_event("startup")
         async def startup() -> None:
             def info(msg: str) -> None:
-                if not self.config.use_tornado:
-                    print_info(msg)
+                print_info(msg)
 
             self.hash = random_hash()
             info(f"🚀 Starting Backend Server at {self.config.api_url} ...")

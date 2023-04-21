@@ -27,18 +27,18 @@ def run(
         help="The log level to use.",
     ),
     prod: bool = typer.Option(False, help="Whether to run in production mode."),
-    tornado: bool = typer.Option(False, help="Whether use tornado to unify servers."),
+    unified: bool = typer.Option(False, help="Whether use unified servers."),
 ) -> None:
     sys.path.insert(0, os.getcwd())
-    if tornado:
+    if unified:
         if not prod:
             console.print(
-                "[bold orange1]Tornado is only available in production mode, "
+                "[bold orange1]`--unified` is only available in production mode, "
                 "so `--prod` flag will be forced."
             )
             prod = True
     constants.set_env(constants.Env.PROD if prod else constants.Env.DEV)
-    constants.set_tornado(tornado)
+    constants.set_unified(unified)
     # fetch config
     config = get_config()
     # fetch module
@@ -53,21 +53,17 @@ def run(
     # execute
     frontend_port = config.frontend_port
     backend_port = config.backend_port
-    tornado_port = config.tornado_port
     if not no_frontend and processes.is_process_on_port(frontend_port):
         frontend_port = processes.change_or_terminate_port(frontend_port, "frontend")
     if not no_backend and processes.is_process_on_port(backend_port):
         backend_port = processes.change_or_terminate_port(backend_port, "backend")
-    if tornado and not no_backend and processes.is_process_on_port(tornado_port):
-        tornado_port = processes.change_or_terminate_port(tornado_port, "tornado")
     config.frontend_port = frontend_port
     config.backend_port = backend_port
-    config.tornado_port = tornado_port
     if not prod:
         frontend_fn, backend_fn = exec.run_frontend, exec.run_backend
     else:
         frontend_fn = exec.run_frontend_prod
-        backend_fn = exec.run_tornado if tornado else exec.run_backend
+        backend_fn = exec.run_backend_prod
     try:
         if not no_frontend:
             frontend_fn()

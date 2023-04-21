@@ -8,8 +8,6 @@ from cfdraw import constants
 from cfdraw.utils import console
 from cfdraw.utils import prerequisites
 from cfdraw.config import get_config
-from cfdraw.config import Config
-from cfdraw.server import launch_server
 
 
 def setup_frontend() -> None:
@@ -31,14 +29,13 @@ def run_frontend() -> None:
         stdout=subprocess.DEVNULL,
         stderr=subprocess.STDOUT,
     )
-    frontend_url = f"http://localhost:{get_config().frontend_port}"
-    print_info(f"👌 Your app will be ready at {frontend_url} soon...")
+    print_info(f"👌 Your app will be ready at {get_config().frontend_url} soon...")
 
 
 def run_frontend_prod() -> None:
     setup_frontend()
     config = get_config()
-    if config.use_tornado:
+    if config.use_unified:
         print_info(f"👀 Your app codes are being compiled, please wait for a while...")
         subprocess.run(
             [prerequisites.get_yarn(), "build"],
@@ -57,8 +54,14 @@ def run_frontend_prod() -> None:
         )
 
 
-def run_backend(module: str, *, log_level: constants.LogLevel) -> None:
-    console.rule("[bold green]Launching Backend")
+def run_backend(
+    module: str,
+    *,
+    log_level: constants.LogLevel,
+    verbose: bool = True,
+) -> None:
+    if verbose:
+        console.rule("[bold green]Launching Backend")
     config = get_config()
     # I'm not familiar with production stuffs of `uvicorn`, so currently
     # only the `reload` flag is different.
@@ -71,16 +74,9 @@ def run_backend(module: str, *, log_level: constants.LogLevel) -> None:
     )
 
 
-def run_tornado(module: str, *, log_level: constants.LogLevel) -> None:
-    def before_launch(config: Config) -> None:
-        cmd = [
-            "uvicorn",
-            f"{module}:{config.entry}.{constants.API_VAR}",
-            f"--host={constants.DEV_BACKEND_HOST}",
-            f"--port={config.backend_port}",
-            f"--log-level={log_level}",
-        ]
-        subprocess.Popen(cmd)
-
-    console.rule("[bold green]Launching Tornado Backend")
-    launch_server(before_launch)
+def run_backend_prod(module: str, *, log_level: constants.LogLevel) -> None:
+    console.rule("[bold green]Launching Production Backend")
+    config = get_config()
+    if config.use_unified:
+        print_info(f"👌 Your app will be ready at {config.api_url} soon...")
+    run_backend(module, log_level=log_level, verbose=False)

@@ -16,7 +16,6 @@ FRONTEND_PORT = "5123"
 # api
 ERR_CODE = 406
 BACKEND_PORT = "8123"
-TORNADO_PORT = "8234"
 DEV_BACKEND_HOST = "0.0.0.0"
 API_URL_KEY = "CFDRAW_API_URL"
 
@@ -33,7 +32,7 @@ class Endpoint(Enum):
 
 # misc
 ENV_KEY = "CFDRAW_ENV"
-TORNADO_KEY = "CFDRAW_TORNADO"
+UNIFIED_KEY = "CFDRAW_UNIFIED"
 
 
 class Env(str, Enum):
@@ -49,12 +48,12 @@ def set_env(env: Env) -> None:
     os.environ[ENV_KEY] = env.value
 
 
-def use_tornado() -> bool:
-    return os.environ.get(TORNADO_KEY, None) == "enabled"
+def use_unified() -> bool:
+    return os.environ.get(UNIFIED_KEY, None) == "enabled"
 
 
-def set_tornado(enable: bool) -> None:
-    os.environ[TORNADO_KEY] = "enabled" if enable else "disabled"
+def set_unified(enable: bool) -> None:
+    os.environ[UNIFIED_KEY] = "enabled" if enable else "disabled"
 
 
 class LogLevel(str, Enum):
