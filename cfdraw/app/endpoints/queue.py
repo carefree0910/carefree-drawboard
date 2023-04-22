@@ -5,11 +5,15 @@ import asyncio
 
 from typing import Dict
 from typing import Optional
+from cftool.misc import print_error
 from cftool.misc import random_hash
 
 from cfdraw.utils.server import get_err_msg
 from cfdraw.utils.data_structures import Item
 from cfdraw.utils.data_structures import Bundle
+from cfdraw.schema.plugins import ISocketData
+from cfdraw.schema.plugins import SocketStatus
+from cfdraw.schema.plugins import ISocketMessage
 from cfdraw.schema.plugins import IPluginResponse
 from cfdraw.plugins.base import IHttpPlugin
 from cfdraw.app.schema import ISend
@@ -60,6 +64,7 @@ class RequestQueue(IRequestQueue):
             request_item.data.event.set()
             self._queue.remove(uid)
             self._senders.pop(uid, None)
+            await self._broadcast_pending()
             await asyncio.sleep(0)
 
     async def wait(self, uid: str) -> None:
@@ -67,11 +72,54 @@ class RequestQueue(IRequestQueue):
         if request_item is None:
             msg = "Internal error occurred: cannot find request item after submitted"
             raise ValueError(msg)
+        await self._broadcast_pending(uid)
         event_task = asyncio.create_task(request_item.data.event.wait())
         tasks = [event_task, self.run()]
         await asyncio.wait(tasks, return_when=asyncio.FIRST_COMPLETED)
         if not event_task.done():
             await asyncio.wait([event_task])
+
+    # broadcast
+
+    def _get_pending(self, uid: str) -> Optional[int]:
+        for i, item in enumerate(self._queue):
+            if item.key == uid:
+                return i
+        return None
+
+    async def _broadcast_pending(self, uid: Optional[str] = None) -> None:
+        for key, sender in self._senders.items():
+            if uid is not None and key != uid:
+                continue
+            pending = self._get_pending(key)
+            try:
+                if pending is None:
+                    await sender(
+                        ISocketMessage.from_response(
+                            IPluginResponse(
+                                success=False,
+                                message=(
+                                    f"Internal error occurred: "
+                                    f"cannot find pending request after submitted"
+                                ),
+                                data={},
+                            )
+                        )
+                    )
+                elif pending > 0:
+                    await sender(
+                        ISocketMessage(
+                            success=True,
+                            message="",
+                            data=ISocketData(
+                                status=SocketStatus.PENDING,
+                                pending=pending,
+                                message="",
+                            ),
+                        )
+                    )
+            except Exception as err:
+                print_error(get_err_msg(err))
 
 
 __all__ = [
