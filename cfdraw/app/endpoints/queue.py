@@ -7,9 +7,12 @@ from typing import Any
 from typing import Dict
 from typing import List
 from typing import Tuple
+from typing import TypeVar
 from typing import Optional
+from typing import Coroutine
 from cftool.misc import print_error
 from cftool.misc import random_hash
+from concurrent.futures import ThreadPoolExecutor
 
 from cfdraw.utils.server import get_err_msg
 from cfdraw.utils.data_structures import Item
@@ -27,6 +30,20 @@ from cfdraw.app.schema import IRequestQueueData
 
 DEBUG = False
 log: Any = print if DEBUG else lambda *args, **kwargs: None
+
+TFutureResponse = TypeVar("TFutureResponse")
+
+
+# TODO : maybe there will be better solutions?
+async def offload(future: Coroutine[Any, Any, TFutureResponse]) -> TFutureResponse:
+    loop = asyncio.get_event_loop()
+    with ThreadPoolExecutor() as executor:
+        return await loop.run_in_executor(
+            executor,
+            lambda new_loop, _future: new_loop.run_until_complete(_future),
+            asyncio.new_event_loop(),
+            future,
+        )
 
 
 class RequestQueue(IRequestQueue):
@@ -71,7 +88,7 @@ class RequestQueue(IRequestQueue):
             request = request_item.data.request
             log(">>> run", uid)
             try:
-                response = await plugin(request)
+                response = await offload(plugin(request))
             except Exception as err:
                 msg = get_err_msg(err)
                 response = IPluginResponse(success=False, message=msg, data={})
