@@ -227,6 +227,7 @@ class ISocketData(BaseModel):
     """This should align with `IPythonSocketData` at `src/schema/_python.ts`"""
 
     status: SocketStatus = Field(..., description="Status of the current task")
+    total: int = Field(..., description="Number of tasks")
     pending: int = Field(..., description="Number of pending tasks")
     message: str = Field(..., description="Message of the current status")
     data: ISocketResponse = Field(ISocketResponse(), description="Response data")
@@ -244,6 +245,7 @@ class ISocketMessage(IPluginResponse):
                 status=SocketStatus.FINISHED
                 if response.success
                 else SocketStatus.EXCEPTION,
+                total=0,
                 pending=0,
                 message=response.message,
                 data=ISocketResponse(final=response.data),

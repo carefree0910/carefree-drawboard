@@ -149,6 +149,7 @@ export interface IPythonSocketResponse<R> {
 }
 export interface IPythonSocketData<R> {
   status: PythonSocketStatus;
+  total: number;
   pending: number;
   message: string;
   data: IPythonSocketResponse<R>;

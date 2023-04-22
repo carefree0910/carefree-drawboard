@@ -228,6 +228,7 @@ export function useSyncPython() {
     async ({
       data: {
         status,
+        total,
         pending,
         message,
         data: { progress, final },
@@ -235,7 +236,7 @@ export function useSyncPython() {
     }) => {
       if (status !== "finished") {
         if (status === "pending") {
-          Logger.warn(`sync pending: ${pending}`);
+          Logger.warn(`sync pending: ${pending} / ${total}`);
         } else if (status === "working") {
           Logger.warn(`sync in progress: ${progress}`);
         } else {

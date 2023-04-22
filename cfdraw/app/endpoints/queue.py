@@ -74,7 +74,7 @@ class RequestQueue(IRequestQueue):
         if request_item is None:
             msg = "Internal error occurred: cannot find request item after submitted"
             raise ValueError(msg)
-        await self._broadcast_pending(uid)
+        await self._broadcast_pending()
         event_task = asyncio.create_task(request_item.data.event.wait())
         tasks = [event_task, self.run()]
         await asyncio.wait(tasks, return_when=asyncio.FIRST_COMPLETED)
@@ -91,11 +91,9 @@ class RequestQueue(IRequestQueue):
                 return pending[:-1]
         return None
 
-    async def _broadcast_pending(self, uid: Optional[str] = None) -> None:
-        for key, sender in self._senders.items():
-            if uid is not None and key != uid:
-                continue
-            pending = self._get_pending(key)
+    async def _broadcast_pending(self) -> None:
+        for uid, sender in self._senders.items():
+            pending = self._get_pending(uid)
             try:
                 if pending is None:
                     await sender(
@@ -117,6 +115,7 @@ class RequestQueue(IRequestQueue):
                             message=f"in queue: {', '.join([str(item.data) for item in pending])}",
                             data=ISocketData(
                                 status=SocketStatus.PENDING,
+                                total=len(self._queue),
                                 pending=len(pending),
                                 message="",
                             ),

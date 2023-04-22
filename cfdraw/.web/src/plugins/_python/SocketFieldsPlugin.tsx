@@ -32,6 +32,7 @@ const PythonSocketFieldsPlugin = ({ pluginInfo, ...props }: IPythonFieldsPlugin)
     async ({
       data: {
         status,
+        total,
         pending,
         data: { progress, intermediate, final },
       },
