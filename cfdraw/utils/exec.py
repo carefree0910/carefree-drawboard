@@ -20,10 +20,13 @@ def setup_frontend() -> None:
         os.environ[constants.API_URL_KEY] = config.api_url
 
 
-def run_frontend() -> None:
+def run_frontend(host: bool) -> None:
     setup_frontend()
+    cmd = [prerequisites.get_yarn(), "dev", "--force"]
+    if host:
+        cmd.append("--host")
     subprocess.Popen(
-        [prerequisites.get_yarn(), "dev", "--force"],
+        cmd,
         cwd=constants.WEB_ROOT,
         env=os.environ,
         stdout=subprocess.DEVNULL,

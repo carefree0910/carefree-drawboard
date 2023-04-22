@@ -28,6 +28,7 @@ def run(
     ),
     prod: bool = typer.Option(False, help="Whether to run in production mode."),
     unified: bool = typer.Option(False, help="Whether use unified servers."),
+    host: bool = typer.Option(False, help="Whether use `--host` in development mode."),
 ) -> None:
     sys.path.insert(0, os.getcwd())
     if unified:
@@ -60,7 +61,8 @@ def run(
     config.frontend_port = frontend_port
     config.backend_port = backend_port
     if not prod:
-        frontend_fn, backend_fn = exec.run_frontend, exec.run_backend
+        frontend_fn = lambda: exec.run_frontend(host)
+        backend_fn = exec.run_backend
     else:
         frontend_fn = exec.run_frontend_prod
         backend_fn = exec.run_backend_prod  # type: ignore
