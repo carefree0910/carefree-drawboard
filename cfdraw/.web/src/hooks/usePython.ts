@@ -225,7 +225,7 @@ export function useSyncPython() {
         if (status === "pending") {
           Logger.warn(`sync pending: ${pending} / ${total}`);
         } else if (status === "working") {
-          Logger.warn(`sync in progress: ${progress}`);
+          // Logger.warn(`sync in progress: ${progress}`);
         } else {
           Logger.warn(`sync failed: ${message}`);
           return { newMessage: getMessage };
