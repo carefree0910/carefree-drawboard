@@ -23,6 +23,11 @@ class IRequestQueueData:
     plugin: IPlugin
     event: Event
 
+    def __str__(self) -> str:
+        return self.request.identifier.split(".")[0]
+
+    __repr__ = __str__
+
 
 ISend = Callable[[ISocketMessage], Coroutine[Any, Any, None]]
 

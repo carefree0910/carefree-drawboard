@@ -4,6 +4,7 @@
 import asyncio
 
 from typing import Dict
+from typing import List
 from typing import Optional
 from cftool.misc import print_error
 from cftool.misc import random_hash
@@ -14,6 +15,7 @@ from cfdraw.utils.data_structures import Bundle
 from cfdraw.schema.plugins import ISocketData
 from cfdraw.schema.plugins import SocketStatus
 from cfdraw.schema.plugins import ISocketMessage
+from cfdraw.schema.plugins import ISocketResponse
 from cfdraw.schema.plugins import IPluginResponse
 from cfdraw.plugins.base import IHttpPlugin
 from cfdraw.app.schema import ISend
@@ -81,10 +83,12 @@ class RequestQueue(IRequestQueue):
 
     # broadcast
 
-    def _get_pending(self, uid: str) -> Optional[int]:
-        for i, item in enumerate(self._queue):
+    def _get_pending(self, uid: str) -> Optional[List[Item[IRequestQueueData]]]:
+        pending = []
+        for item in self._queue:
+            pending.append(item)
             if item.key == uid:
-                return i
+                return pending[:-1]
         return None
 
     async def _broadcast_pending(self, uid: Optional[str] = None) -> None:
@@ -106,14 +110,14 @@ class RequestQueue(IRequestQueue):
                             )
                         )
                     )
-                elif pending > 0:
+                elif len(pending) > 0:
                     await sender(
                         ISocketMessage(
                             success=True,
-                            message="",
+                            message=f"in queue: {', '.join([str(item.data) for item in pending])}",
                             data=ISocketData(
                                 status=SocketStatus.PENDING,
-                                pending=pending,
+                                pending=len(pending),
                                 message="",
                             ),
                         )
