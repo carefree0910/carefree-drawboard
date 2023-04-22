@@ -88,6 +88,7 @@ class RequestQueue(IRequestQueue):
             request = request_item.data.request
             log(">>> run", uid)
             try:
+                await self._broadcast_working(uid)
                 response = await offload(plugin(request))
             except Exception as err:
                 msg = get_err_msg(err)
@@ -165,6 +166,28 @@ class RequestQueue(IRequestQueue):
                     )
             except Exception as err:
                 print_error(get_err_msg(err))
+
+    async def _broadcast_working(self, uid: str) -> None:
+        sender_pack = self._senders.get(uid)
+        if sender_pack is None:
+            return
+        hash, sender = sender_pack
+        try:
+            await sender(
+                ISocketMessage(
+                    success=True,
+                    message="",
+                    data=ISocketData(
+                        hash=hash,
+                        status=SocketStatus.WORKING,
+                        total=len(self._queue),
+                        pending=0,
+                        message="",
+                    ),
+                )
+            )
+        except Exception as err:
+            print_error(get_err_msg(err))
 
 
 __all__ = [
