@@ -219,11 +219,19 @@ export function useSyncPython() {
     async ({
       data: {
         status,
+        pending,
+        message,
         data: { progress, final },
       },
     }) => {
       if (status !== "finished") {
-        Logger.warn(`sync in progress: ${progress}`);
+        if (status === "pending") {
+          Logger.warn(`sync pending: ${pending}`);
+        } else if (status === "working") {
+          Logger.warn(`sync in progress: ${progress}`);
+        } else {
+          Logger.warn(`sync failed: ${message}`);
+        }
       } else {
         if (!final) {
           Logger.warn("sync data not found");
