@@ -225,15 +225,18 @@ export function useSyncPython() {
           Logger.warn(`sync in progress: ${progress}`);
         } else {
           Logger.warn(`sync failed: ${message}`);
+          return { newMessage: getMessage };
         }
+        return {};
       } else {
         if (!final) {
           Logger.warn("sync data not found");
           return { newMessage: getMessage };
-        } else if (updatePythonStore(final)) {
-          Logger.log(`sync successfully: ${JSON.stringify(final)}, rerendering`);
-          return {};
         }
+        if (updatePythonStore(final)) {
+          Logger.log(`sync successfully: ${JSON.stringify(final)}, rerendering`);
+        }
+        return {};
       }
     },
     [],
