@@ -141,22 +141,6 @@ export function useHttpPython<R>({
   }, deps);
 }
 
-export function useOnSocketMessageWithRetry<R>(
-  getMessage: () => Promise<IPythonRequest>,
-  onMessage: IPythonOnSocketMessage<R>,
-): IPythonOnSocketMessage<R> {
-  return useCallback(
-    ({ success, message, data }) => {
-      if (data.status === "exception") {
-        Logger.warn(`socket exception occurred: ${data.message}`);
-        return Promise.resolve({ newMessage: getMessage });
-      }
-      return onMessage({ success, message, data });
-    },
-    [getMessage, onMessage],
-  );
-}
-
 /**
  * this function will integrate a simple but useful retry mechanism, so we only need to
  * focus on the core logics in `onMessage` function.
@@ -204,7 +188,7 @@ export function useSocketPython<R>({
     useWebSocket({
       connectHash: isInvisible ? undefined : connectHash,
       getMessage,
-      onMessage: useOnSocketMessageWithRetry(getMessage, onMessage),
+      onMessage,
       onSocketError,
     });
   }, [...deps, onMessage, onSocketError]);
@@ -255,9 +239,5 @@ export function useSyncPython() {
     [],
   );
 
-  useWebSocket<IPythonStore>({
-    connectHash: 0,
-    getMessage,
-    onMessage: useOnSocketMessageWithRetry(getMessage, onMessage),
-  });
+  useWebSocket<IPythonStore>({ connectHash: 0, getMessage, onMessage });
 }

@@ -1,10 +1,15 @@
 import axios from "axios";
-import { useEffect } from "react";
+import { useCallback, useEffect, useMemo, useRef } from "react";
 
 import { Logger } from "@carefree0910/core";
 
 import type { APISources, APIs } from "@/schema/requests";
-import type { IPythonSocketCallbacks, IPythonSocketMessage } from "@/schema/_python";
+import type {
+  IPythonOnSocketMessage,
+  IPythonRequest,
+  IPythonSocketCallbacks,
+  IPythonSocketMessage,
+} from "@/schema/_python";
 import { pythonStore } from "@/stores/_python";
 import { useInceptors } from "./interceptors";
 
@@ -28,6 +33,21 @@ export function useAPI<T extends APISources>(source: T): APIs[T] {
 
 const DEBUG = false;
 const log = (...args: any[]) => DEBUG && console.log(...args);
+function useOnSocketMessageWithRetry<R>(
+  getMessage: () => Promise<IPythonRequest>,
+  onMessage: IPythonOnSocketMessage<R>,
+): IPythonOnSocketMessage<R> {
+  return useCallback(
+    ({ success, message, data }) => {
+      if (data.status === "exception") {
+        Logger.warn(`socket exception occurred: ${data.message}`);
+        return Promise.resolve({ newMessage: getMessage });
+      }
+      return onMessage({ success, message, data });
+    },
+    [getMessage, onMessage],
+  );
+}
 export function useWebSocket<R>({
   connectHash,
   getMessage,
@@ -35,15 +55,22 @@ export function useWebSocket<R>({
   onSocketError,
   interval,
   dependencies,
+  useRetry = true,
 }: IPythonSocketCallbacks<R> & {
   connectHash?: number;
   interval?: number;
   dependencies?: any[];
+  useRetry?: boolean;
 }) {
   interval ??= 1000;
   const baseURL = useAPI("_python").defaults.baseURL!;
   const socketURL = baseURL.replace("http", "ws").replace("https", "wss");
   const socketEndpoint = pythonStore.globalSettings.sockenEndpoint ?? "/ws";
+
+  onMessage = useMemo(
+    () => (useRetry ? useOnSocketMessageWithRetry(getMessage, onMessage) : onMessage),
+    [getMessage, onMessage, useRetry],
+  );
 
   useEffect(() => {
     function _connect() {
