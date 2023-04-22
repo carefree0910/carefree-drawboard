@@ -12,6 +12,7 @@ from cfdraw.utils.data_structures import Item
 from cfdraw.utils.data_structures import Bundle
 from cfdraw.schema.plugins import IPluginResponse
 from cfdraw.plugins.base import IHttpPlugin
+from cfdraw.app.schema import ISend
 from cfdraw.app.schema import IRequestQueue
 from cfdraw.app.schema import IRequestQueueData
 from cfdraw.app.endpoints.utils import offload
@@ -21,11 +22,14 @@ class RequestQueue(IRequestQueue):
     def __init__(self) -> None:
         self._is_busy = False
         self._queue = Bundle[IRequestQueueData](no_mapping=True)
+        self._senders: Dict[str, ISend] = {}
         self._responses: Dict[str, IPluginResponse] = {}
 
-    def push(self, data: IRequestQueueData) -> str:
+    def push(self, data: IRequestQueueData, send_text: Optional[ISend] = None) -> str:
         uid = random_hash()
         self._queue.push(Item(uid, data))
+        if send_text is not None:
+            self._senders[uid] = send_text
         return uid
 
     def pop_response(self, uid: str) -> Optional[IPluginResponse]:
@@ -55,6 +59,7 @@ class RequestQueue(IRequestQueue):
             # cleanup
             request_item.data.event.set()
             self._queue.remove(uid)
+            self._senders.pop(uid, None)
             await asyncio.sleep(0)
 
     async def wait(self, uid: str) -> None:

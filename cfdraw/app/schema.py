@@ -1,7 +1,10 @@
 from abc import abstractmethod
 from abc import ABC
+from typing import Any
 from typing import Dict
+from typing import Callable
 from typing import Optional
+from typing import Coroutine
 from aiohttp import ClientSession
 from asyncio import Event
 from fastapi import FastAPI
@@ -11,6 +14,7 @@ from cfdraw.config import Config
 from cfdraw.schema.plugins import IPlugin
 from cfdraw.schema.plugins import IPluginRequest
 from cfdraw.schema.plugins import IPluginResponse
+from cfdraw.schema.plugins import ISocketMessage
 
 
 @dataclass
@@ -20,9 +24,12 @@ class IRequestQueueData:
     event: Event
 
 
+ISend = Callable[[ISocketMessage], Coroutine[Any, Any, None]]
+
+
 class IRequestQueue(ABC):
     @abstractmethod
-    def push(self, data: IRequestQueueData) -> str:
+    def push(self, data: IRequestQueueData, send_text: Optional[ISend] = None) -> str:
         pass
 
     @abstractmethod
