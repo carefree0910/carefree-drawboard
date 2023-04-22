@@ -1,4 +1,4 @@
-import { useState } from "react";
+import { useState, useCallback } from "react";
 import { observer } from "mobx-react-lite";
 import { useToast } from "@chakra-ui/react";
 
@@ -8,10 +8,11 @@ import type { IPythonHttpPluginWithSubmit } from "@/schema/_python";
 import { toast } from "@/utils/toast";
 import { Toast_Words } from "@/lang/toast";
 import { useHttpPython } from "@/hooks/usePython";
-import CFButton from "@/components/CFButton";
+import { CFButtonWithBusyTooltip } from "@/components/CFButton";
 import CFDivider from "@/components/CFDivider";
 import Render from "../components/Render";
 import { floatingControlEvent } from "../components/Floating";
+import { userStore } from "@/stores/user";
 
 function PythonHttpPluginWithSubmit<R>({
   id,
@@ -29,6 +30,7 @@ function PythonHttpPluginWithSubmit<R>({
   onUseHttpPythonError,
   onUseHttpPythonSuccess,
   beforeRequest,
+  afterResponse,
   getExtraRequestData,
   children,
   ...props
@@ -36,6 +38,16 @@ function PythonHttpPluginWithSubmit<R>({
   const t = useToast();
   const lang = langStore.tgt;
   const [send, setSend] = useState(false);
+  const onClick = useCallback(() => {
+    setSend(true);
+    if (closeOnSubmit) {
+      floatingControlEvent.emit({ id, expand: false });
+    }
+    if (toastOnSubmit) {
+      toastMessageOnSubmit ??= translate(Toast_Words["submit-task-success-message"], lang);
+      toast(t, "info", toastMessageOnSubmit);
+    }
+  }, [id, t, lang, closeOnSubmit, toastOnSubmit, toastMessageOnSubmit]);
 
   useHttpPython<R>({
     t,
@@ -50,28 +62,28 @@ function PythonHttpPluginWithSubmit<R>({
     onUseHttpPythonError,
     onUseHttpPythonSuccess,
     beforeRequest: async () => {
+      if (userStore.canAlwaysSubmit) {
+        setSend(false);
+      }
+      return beforeRequest?.();
+    },
+    afterResponse: async () => {
       setSend(false);
-      beforeRequest && (await beforeRequest());
+      return afterResponse?.();
     },
     getExtraRequestData,
   });
-
-  function onClick() {
-    setSend(true);
-    if (closeOnSubmit) {
-      floatingControlEvent.emit({ id, expand: false });
-    }
-    if (toastOnSubmit) {
-      toastMessageOnSubmit ??= translate(Toast_Words["submit-task-success-message"], lang);
-      toast(t, "info", toastMessageOnSubmit);
-    }
-  }
 
   return (
     <Render id={id} {...props}>
       {children}
       <CFDivider />
-      <CFButton onClick={onClick}>{buttonText}</CFButton>
+      <CFButtonWithBusyTooltip
+        busy={send}
+        tooltip={translate(Toast_Words["submit-task-busy-message"], lang)}
+        onClick={onClick}>
+        {buttonText}
+      </CFButtonWithBusyTooltip>
     </Render>
   );
 }
