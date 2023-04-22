@@ -1,6 +1,6 @@
 import { useEffect, useState } from "react";
 import { observer } from "mobx-react-lite";
-import { Tooltip, useToast } from "@chakra-ui/react";
+import { useToast } from "@chakra-ui/react";
 
 import { langStore, translate } from "@carefree0910/business";
 
@@ -10,7 +10,7 @@ import { toast } from "@/utils/toast";
 import { Toast_Words } from "@/lang/toast";
 import { userStore } from "@/stores/user";
 import { useSocketPython } from "@/hooks/usePython";
-import CFButton from "@/components/CFButton";
+import { CFButtonWithBusyTooltip } from "@/components/CFButton";
 import CFDivider from "@/components/CFDivider";
 import Render from "../components/Render";
 import { floatingControlEvent } from "../components/Floating";
@@ -87,13 +87,12 @@ function PythonSocketPluginWithSubmit<R>({
     <Render id={id} {...props}>
       {children}
       <CFDivider />
-      <Tooltip
-        label={busy ? translate(Toast_Words["submit-task-busy-message"], lang) : ""}
-        shouldWrapChildren>
-        <CFButton w="100%" onClick={onClick} isDisabled={busy}>
-          {buttonText}
-        </CFButton>
-      </Tooltip>
+      <CFButtonWithBusyTooltip
+        busy={busy}
+        tooltip={translate(Toast_Words["submit-task-busy-message"], lang)}
+        onClick={onClick}>
+        {buttonText}
+      </CFButtonWithBusyTooltip>
     </Render>
   );
 }
