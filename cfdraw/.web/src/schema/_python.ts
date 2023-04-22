@@ -168,5 +168,5 @@ export interface IUseSocketPython<R>
     Omit<IPythonSocketCallbacks<R>, "getMessage"> {
   t: IToast;
   lang: Lang;
-  connect: boolean;
+  connectHash?: number;
 }

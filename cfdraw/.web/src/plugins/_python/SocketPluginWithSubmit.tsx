@@ -2,6 +2,7 @@ import { useCallback, useEffect, useState } from "react";
 import { observer } from "mobx-react-lite";
 import { useToast } from "@chakra-ui/react";
 
+import { getRandomHash } from "@carefree0910/core";
 import { langStore, translate } from "@carefree0910/business";
 
 import type { IPythonSocketPluginWithSubmit } from "@/schema/_python";
@@ -37,14 +38,14 @@ function PythonSocketPluginWithSubmit<R>({
 }: IPythonSocketPluginWithSubmit<R>) {
   const t = useToast();
   const lang = langStore.tgt;
-  const [connect, setConnect] = useState(false);
+  const [connectHash, setConnectHash] = useState<number | undefined>(undefined);
   const [busy, setBusy] = useState(false);
   const onClick = useCallback(() => {
     if (busy) return;
     if (!userStore.canAlwaysSubmit) {
       setBusy(true);
     }
-    setConnect(true);
+    setConnectHash(getRandomHash());
     if (closeOnSubmit) {
       floatingControlEvent.emit({ id, expand: false });
     }
@@ -57,7 +58,7 @@ function PythonSocketPluginWithSubmit<R>({
   useSocketPython<R>({
     t,
     lang,
-    connect,
+    connectHash,
     node,
     nodes,
     endpoint,
@@ -73,14 +74,14 @@ function PythonSocketPluginWithSubmit<R>({
     const { dispose } = socketFinishedEvent.on(({ id: incomingId }) => {
       if (incomingId === id) {
         setBusy(false);
-        setConnect(false);
+        setConnectHash(undefined);
       }
     });
 
     return () => {
       dispose();
     };
-  }, [id, setBusy, setConnect]);
+  }, [id, setBusy, setConnectHash]);
 
   return (
     <Render id={id} {...props}>

@@ -164,7 +164,7 @@ export function useOnSocketMessageWithRetry<R>(
 export function useSocketPython<R>({
   t,
   lang,
-  connect,
+  connectHash,
   node,
   nodes,
   endpoint,
@@ -178,7 +178,7 @@ export function useSocketPython<R>({
   const deps = [
     t,
     lang,
-    connect,
+    connectHash,
     node?.alias,
     nodes.map((n) => n.alias).join("_"),
     endpoint,
@@ -202,7 +202,7 @@ export function useSocketPython<R>({
 
   const requestFn = useCallback(() => {
     useWebSocket({
-      connect: connect && !isInvisible,
+      connectHash: isInvisible ? undefined : connectHash,
       getMessage,
       onMessage: useOnSocketMessageWithRetry(getMessage, onMessage),
       onSocketError,
@@ -254,7 +254,7 @@ export function useSyncPython() {
   );
 
   useWebSocket<IPythonStore>({
-    connect: true,
+    connectHash: 0,
     getMessage,
     onMessage: useOnSocketMessageWithRetry(getMessage, onMessage),
   });
