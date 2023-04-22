@@ -23,7 +23,6 @@ from cfdraw.plugins.base import IHttpPlugin
 from cfdraw.app.schema import ISend
 from cfdraw.app.schema import IRequestQueue
 from cfdraw.app.schema import IRequestQueueData
-from cfdraw.app.endpoints.utils import offload
 
 
 DEBUG = False
@@ -72,7 +71,7 @@ class RequestQueue(IRequestQueue):
             request = request_item.data.request
             log(">>> run", uid)
             try:
-                response = await offload(plugin(request))
+                response = await plugin(request)
             except Exception as err:
                 msg = get_err_msg(err)
                 response = IPluginResponse(success=False, message=msg, data={})
