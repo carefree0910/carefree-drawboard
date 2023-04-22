@@ -5,11 +5,7 @@ import { Flex, Spacer, useToast } from "@chakra-ui/react";
 
 import { langStore, translate } from "@carefree0910/business";
 
-import type {
-  IPythonFieldsPlugin,
-  IPythonOnSocketMessage,
-  IPythonSocketResponse,
-} from "@/schema/_python";
+import type { IPythonFieldsPlugin, IPythonOnSocketMessage } from "@/schema/_python";
 import { UI_Words } from "@/lang/ui";
 import { Toast_Words } from "@/lang/toast";
 import { toast } from "@/utils/toast";
@@ -70,9 +66,12 @@ const PythonSocketFieldsPlugin = ({ pluginInfo, ...props }: IPythonFieldsPlugin)
     },
     [id, lang, identifierId, currentMeta, getExtraRequestData],
   );
-  async function onSocketError(err: any) {
-    toast(t, "error", `${translate(Toast_Words["submit-task-error-message"], lang)} - ${err}`);
-  }
+  const onSocketError = useCallback(
+    async (err: any) => {
+      toast(t, "error", `${translate(Toast_Words["submit-task-error-message"], lang)} - ${err}`);
+    },
+    [t, lang],
+  );
 
   const header = pluginInfo.header ?? titleCaseWord(identifierId);
   return (

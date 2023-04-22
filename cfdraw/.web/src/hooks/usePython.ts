@@ -85,7 +85,11 @@ export function useHttpPython<R>({
   beforeRequest,
   getExtraRequestData,
 }: IUseHttpPython<R>) {
+  // TODO : `deps` here is not fully correct, but `useHttpPython` will be
+  // deprecated soon so maybe leave it as-is is OK.
   const deps = [
+    t,
+    lang,
     send,
     node?.alias,
     nodes.map((n) => n.alias).join("_"),
@@ -170,6 +174,8 @@ export function useSocketPython<R>({
   onSocketError,
 }: IUseSocketPython<R>) {
   const deps = [
+    t,
+    lang,
     connect,
     node?.alias,
     nodes.map((n) => n.alias).join("_"),
@@ -177,6 +183,7 @@ export function useSocketPython<R>({
     identifier,
     updateInterval,
     isInvisible,
+    getExtraRequestData,
   ];
 
   const getMessage = useCallback(
@@ -198,7 +205,7 @@ export function useSocketPython<R>({
       onMessage: useOnSocketMessageWithRetry(getMessage, onMessage),
       onSocketError,
     });
-  }, [deps, onMessage]);
+  }, [...deps, onMessage, onSocketError]);
 
   requestFn();
 }
