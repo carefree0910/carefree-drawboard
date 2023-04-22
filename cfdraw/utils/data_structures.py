@@ -3,6 +3,7 @@ from typing import List
 from typing import Generic
 from typing import TypeVar
 from typing import Optional
+from typing import Iterator
 
 
 TItemData = TypeVar("TItemData")
@@ -42,6 +43,9 @@ class Bundle(Generic[TItemData]):
 
     def __len__(self) -> int:
         return len(self._items)
+
+    def __iter__(self) -> Iterator[Item[TItemData]]:
+        return iter(self._items)
 
     @property
     def first(self) -> Optional[Item[TItemData]]:
