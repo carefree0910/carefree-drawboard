@@ -8,6 +8,7 @@ import type { IPythonSocketPluginWithSubmit } from "@/schema/_python";
 import { Event } from "@/utils/event";
 import { toast } from "@/utils/toast";
 import { Toast_Words } from "@/lang/toast";
+import { userStore } from "@/stores/user";
 import { useSocketPython } from "@/hooks/usePython";
 import CFButton from "@/components/CFButton";
 import CFDivider from "@/components/CFDivider";
@@ -69,7 +70,9 @@ function PythonSocketPluginWithSubmit<R>({
 
   function onClick() {
     if (busy) return;
-    setBusy(true);
+    if (!userStore.canAlwaysSubmit) {
+      setBusy(true);
+    }
     setConnect(true);
     if (closeOnSubmit) {
       floatingControlEvent.emit({ id, expand: false });
