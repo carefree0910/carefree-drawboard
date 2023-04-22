@@ -83,6 +83,7 @@ export function useHttpPython<R>({
   onUseHttpPythonSuccess,
   onUseHttpPythonError,
   beforeRequest,
+  afterResponse,
   getExtraRequestData,
 }: IUseHttpPython<R>) {
   // TODO : `deps` here is not fully correct, but `useHttpPython` will be
@@ -116,6 +117,7 @@ export function useHttpPython<R>({
         if (res.success) return onUseHttpPythonSuccess(res);
         throw Error(res.message);
       })
+      .then(() => afterResponse?.())
       .catch((err) => {
         if (onUseHttpPythonError) return onUseHttpPythonError(err);
         Logger.error(err);

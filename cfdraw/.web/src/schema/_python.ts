@@ -68,6 +68,7 @@ interface IPythonHttpPluginCallbacks<R> extends IPythonCallbacks {
   onUseHttpPythonSuccess: (res: IPythonResponse<R>) => Promise<void>;
   onUseHttpPythonError?: (err: any) => Promise<void>;
   beforeRequest?: () => Promise<void>;
+  afterResponse?: () => Promise<void>;
 }
 export interface IPythonHttpPluginWithSubmit<R>
   extends Omit<IPythonPlugin, "id" | "pluginInfo">,
