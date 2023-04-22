@@ -1,3 +1,4 @@
+from typing import Any
 from typing import Dict
 from typing import List
 from typing import Type
@@ -107,12 +108,12 @@ class Types(Generic[TTypes]):
     def __setitem__(self, key: str, value: Type[TTypes]) -> None:
         self._types[key] = value
 
-    def make(self, key: str, *args, **kwargs) -> Optional[TTypes]:
+    def make(self, key: str, *args: Any, **kwargs: Any) -> Optional[TTypes]:
         t = self._types.get(key)
         return None if t is None else t(*args, **kwargs)
 
     def items(self) -> Iterator[Tuple[str, Type[TTypes]]]:
-        return self._types.items()
+        return self._types.items()  # type: ignore
 
     def values(self) -> Iterator[Type[TTypes]]:
-        return self._types.values()
+        return self._types.values()  # type: ignore
