@@ -60,7 +60,8 @@ class RequestQueue(IRequestQueue):
     async def wait(self, uid: str) -> None:
         request_item = self._queue.get(uid)
         if request_item is None:
-            return
+            msg = "Internal error occurred: cannot find request item after submitted"
+            raise ValueError(msg)
         event_task = asyncio.create_task(request_item.data.event.wait())
         tasks = [event_task, self.run()]
         await asyncio.wait(tasks, return_when=asyncio.FIRST_COMPLETED)
