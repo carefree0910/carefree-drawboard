@@ -245,10 +245,11 @@ export function useSyncPython() {
       } else {
         if (!final) {
           Logger.warn("sync data not found");
+          return { newMessage: getMessage };
         } else if (updatePythonStore(final)) {
           Logger.log(`sync successfully: ${JSON.stringify(final)}, rerendering`);
+          return {};
         }
-        return { newMessage: getMessage };
       }
     },
     [],
