@@ -5,19 +5,20 @@ import { Flex, Spacer, useToast } from "@chakra-ui/react";
 
 import { langStore, translate } from "@carefree0910/business";
 
+import type { IPythonFieldsResponse } from "@/schema/meta";
 import type { IPythonFieldsPlugin, IPythonOnSocketMessage } from "@/schema/_python";
 import { UI_Words } from "@/lang/ui";
 import { Toast_Words } from "@/lang/toast";
 import { toast } from "@/utils/toast";
 import { titleCaseWord } from "@/utils/misc";
-import { drawboardPluginFactory } from "@/plugins/utils/factory";
+import { removeSocketHook, socketStore } from "@/stores/socket";
+import { importMeta } from "@/actions/importMeta";
 import CFHeading from "@/components/CFHeading";
+import { drawboardPluginFactory } from "@/plugins/utils/factory";
 import { useClosePanel } from "../components/hooks";
 import { useCurrentMeta, useDefinitionsRequestDataFn, useFieldsPluginIds } from "./hooks";
 import PythonSocketPluginWithSubmit, { socketFinishedEvent } from "./SocketPluginWithSubmit";
 import DefinitionFields from "./DefinitionFields";
-import { importMeta } from "@/actions/importMeta";
-import { IPythonFieldsResponse } from "@/schema/meta";
 
 const PythonSocketFieldsPlugin = ({ pluginInfo, ...props }: IPythonFieldsPlugin) => {
   const { id, identifierId } = useFieldsPluginIds(pluginInfo.identifier);
@@ -31,6 +32,7 @@ const PythonSocketFieldsPlugin = ({ pluginInfo, ...props }: IPythonFieldsPlugin)
   const onMessage = useCallback<IPythonOnSocketMessage<IPythonFieldsResponse>>(
     async ({
       data: {
+        hash,
         status,
         total,
         pending,
@@ -61,6 +63,8 @@ const PythonSocketFieldsPlugin = ({ pluginInfo, ...props }: IPythonFieldsPlugin)
               },
             });
           }
+          socketStore.log(`> remove hook (${hash})`);
+          removeSocketHook(hash);
         }
       }
       return {};
