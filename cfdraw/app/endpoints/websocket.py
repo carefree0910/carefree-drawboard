@@ -39,14 +39,15 @@ def add_websocket(app: IApp) -> None:
         await websocket.accept()
         while True:
             try:
+                target_plugin = None
                 raw_data = await websocket.receive_text()
                 data = IPluginRequest(**json.loads(raw_data))
                 if data.isInternal:
                     identifier = data.identifier
-                    target_plugin = app.internal_plugins.get(identifier)
+                    target_plugin = app.internal_plugins.make(identifier)
                 else:
                     identifier = data.identifier.split(".", 1)[0]  # remove hash
-                    target_plugin = app.plugins.get(identifier)
+                    target_plugin = app.plugins.make(identifier)
                 if target_plugin is None:
                     plugin_str = "internal plugin" if data.isInternal else "plugin"
                     response = IPluginResponse(
@@ -80,6 +81,8 @@ def add_websocket(app: IApp) -> None:
                 break
             except Exception as e:
                 await on_failed(e)
+            finally:
+                del target_plugin
 
 
 class WebsocketEndpoint(IEndpoint):

@@ -12,7 +12,7 @@ from cfdraw import constants
 from cfdraw.config import get_config
 from cfdraw.app.schema import IApp
 from cfdraw.app.endpoints import *
-from cfdraw.schema.plugins import IPlugin
+from cfdraw.plugins.factory import Plugins
 from cfdraw.plugins.factory import PluginFactory
 
 
@@ -34,9 +34,9 @@ class App(IApp):
             self.hash = random_hash()
             info(f"🚀 Starting Backend Server at {self.config.api_url} ...")
             info("🔨 Compiling Plugins & Endpoints...")
-            for plugin in self.plugins.values():
-                plugin.hash = self.hash
-                plugin.http_session = self.http_session
+            for plugin_type in self.plugins.values():
+                plugin_type.hash = self.hash
+                plugin_type.http_session = self.http_session
             for endpoint in self.endpoints:
                 await endpoint.on_startup()
             upload_root_path = self.config.upload_root_path
@@ -48,8 +48,8 @@ class App(IApp):
             # shutdown
 
             await self.http_session.close()
-            for plugin in self.plugins.values():
-                plugin.http_session = None
+            for plugin_type in self.plugins.values():
+                plugin_type.http_session = None
             for endpoint in self.endpoints:
                 await endpoint.on_shutdown()
             self.http_session = None
@@ -82,11 +82,11 @@ class App(IApp):
     __repr__ = __str__
 
     @property
-    def plugins(self) -> Dict[str, IPlugin]:
+    def plugins(self) -> Plugins:
         return PluginFactory.plugins
 
     @property
-    def internal_plugins(self) -> Dict[str, IPlugin]:
+    def internal_plugins(self) -> Plugins:
         return PluginFactory.internal_plugins
 
     def add_cors(self) -> None:

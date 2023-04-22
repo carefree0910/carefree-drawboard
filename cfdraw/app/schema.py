@@ -1,7 +1,6 @@
 from abc import abstractmethod
 from abc import ABC
 from typing import Any
-from typing import Dict
 from typing import Callable
 from typing import Optional
 from typing import Coroutine
@@ -15,6 +14,7 @@ from cfdraw.schema.plugins import IPlugin
 from cfdraw.schema.plugins import IPluginRequest
 from cfdraw.schema.plugins import IPluginResponse
 from cfdraw.schema.plugins import ISocketMessage
+from cfdraw.plugins.factory import Plugins
 
 
 @dataclass
@@ -58,10 +58,10 @@ class IApp(ABC):
 
     @property
     @abstractmethod
-    def plugins(self) -> Dict[str, IPlugin]:
+    def plugins(self) -> Plugins:
         pass
 
     @property
     @abstractmethod
-    def internal_plugins(self) -> Dict[str, IPlugin]:
+    def internal_plugins(self) -> Plugins:
         pass

@@ -1,3 +1,4 @@
+from typing import Type
 from asyncio import Event
 from cftool.misc import print_info
 
@@ -12,22 +13,23 @@ from cfdraw.app.endpoints.base import IEndpoint
 
 
 def add_plugins(app: IApp) -> None:
-    for identifier, plugin in app.plugins.items():
-        if not isinstance(plugin, IHttpPlugin):
+    for identifier, plugin_type in app.plugins.items():
+        if not issubclass(plugin_type, IHttpPlugin):
             continue
         endpoint = f"/{identifier}"
         if not app.config.prod:
             print_info(f"registering endpoint '{endpoint}'")
 
-        def _register(_id: str, _p: IHttpPlugin) -> None:
+        def _register(_id: str, _tp: Type[IHttpPlugin]) -> None:
             @app.api.post(
                 endpoint,
                 name=endpoint[1:].replace("/", "_"),
                 responses=get_responses(IPluginResponse),
             )
             async def fn(data: IPluginRequest) -> IPluginResponse:
+                _p = _tp()
                 if _p.hash_identifier(_id) != data.identifier:
-                    return IPluginResponse(
+                    response = IPluginResponse(
                         success=False,
                         message=(
                             f"internal error occurred: identifier mismatch, "
@@ -36,6 +38,8 @@ def add_plugins(app: IApp) -> None:
                         ),
                         data={},
                     )
+                    del _p
+                    return response
                 try:
                     uid = app.request_queue.push(IRequestQueueData(data, _p, Event()))
                     await app.request_queue.wait(uid)
@@ -53,8 +57,10 @@ def add_plugins(app: IApp) -> None:
                 except Exception as err:
                     err_msg = get_err_msg(err)
                     return IPluginResponse(success=False, message=err_msg, data={})
+                finally:
+                    del _p
 
-        _register(identifier, plugin)
+        _register(identifier, plugin_type)
 
 
 class PluginsEndpoint(IEndpoint):

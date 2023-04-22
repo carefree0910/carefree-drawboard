@@ -3,10 +3,16 @@ from typing import Type
 from typing import Callable
 from typing import NamedTuple
 
+from cfdraw.utils.data_structures import Types
 from cfdraw.schema.plugins import IPlugin
 from cfdraw.schema.plugins import IPluginSettings
 
+
 TPlugin = Type[IPlugin]
+
+
+class Plugins(Types[IPlugin]):
+    pass
 
 
 class PluginInfo(NamedTuple):
@@ -26,9 +32,9 @@ class PluginFactory:
     >> `plugins` use 'identifier' as the key, and `recorded` use 'name' as the key
     """
 
-    plugins: Dict[str, IPlugin] = {}
-    recorded: Dict[str, IPlugin] = {}
-    internal_plugins: Dict[str, IPlugin] = {}
+    plugins = Plugins()
+    recorded = Plugins()
+    internal_plugins = Plugins()
 
     @classmethod
     def _register(
@@ -39,10 +45,10 @@ class PluginFactory:
         if identifier in d:
             raise ValueError(f"plugin {identifier} already exists")
 
-        def _fn(plugin: TPlugin) -> TPlugin:
-            plugin.identifier = identifier
-            d[identifier] = plugin()
-            return plugin
+        def _fn(plugin_type: TPlugin) -> TPlugin:
+            plugin_type.identifier = identifier
+            d[identifier] = plugin_type
+            return plugin_type
 
         return _fn
 
@@ -59,21 +65,22 @@ class PluginFactory:
         if name in cls.recorded:
             raise ValueError(f"plugin {name} already recorded")
 
-        def _record(plugin: TPlugin) -> TPlugin:
-            cls.recorded[name] = plugin()
-            return plugin
+        def _record(plugin_type: TPlugin) -> TPlugin:
+            cls.recorded[name] = plugin_type
+            return plugin_type
 
         return _record
 
     @classmethod
     def available(cls) -> Dict[str, PluginInfo]:
         return {
-            name: PluginInfo(name, plugin.settings, plugin.__class__)
-            for name, plugin in cls.recorded.items()
+            name: PluginInfo(name, plugin_type().settings, plugin_type)
+            for name, plugin_type in cls.recorded.items()
         }
 
 
 __all__ = [
+    "Plugins",
     "PluginInfo",
     "PluginFactory",
 ]

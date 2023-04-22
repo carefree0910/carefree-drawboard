@@ -14,8 +14,8 @@ class SyncSocketPlugin(IInternalSocketPlugin):
             message="",
             data=dict(
                 pluginSettings=[
-                    plugin.to_plugin_settings()
-                    for plugin in PluginFactory.plugins.values()
+                    plugin_type().to_plugin_settings()
+                    for plugin_type in PluginFactory.plugins.values()
                 ],
                 globalSettings=dict(
                     useStrictMode=config.use_react_strict_mode,
