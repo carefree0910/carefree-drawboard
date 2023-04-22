@@ -1,4 +1,4 @@
-import { useEffect, useState } from "react";
+import { useCallback, useEffect, useState } from "react";
 import { observer } from "mobx-react-lite";
 import { useToast } from "@chakra-ui/react";
 
@@ -39,6 +39,20 @@ function PythonSocketPluginWithSubmit<R>({
   const lang = langStore.tgt;
   const [connect, setConnect] = useState(false);
   const [busy, setBusy] = useState(false);
+  const onClick = useCallback(() => {
+    if (busy) return;
+    if (!userStore.canAlwaysSubmit) {
+      setBusy(true);
+    }
+    setConnect(true);
+    if (closeOnSubmit) {
+      floatingControlEvent.emit({ id, expand: false });
+    }
+    if (toastOnSubmit) {
+      toastMessageOnSubmit ??= translate(Toast_Words["submit-task-success-message"], lang);
+      toast(t, "info", toastMessageOnSubmit);
+    }
+  }, [id, t, lang, closeOnSubmit, toastOnSubmit, toastMessageOnSubmit, busy]);
 
   useSocketPython<R>({
     t,
@@ -67,21 +81,6 @@ function PythonSocketPluginWithSubmit<R>({
       dispose();
     };
   }, [id, setBusy, setConnect]);
-
-  function onClick() {
-    if (busy) return;
-    if (!userStore.canAlwaysSubmit) {
-      setBusy(true);
-    }
-    setConnect(true);
-    if (closeOnSubmit) {
-      floatingControlEvent.emit({ id, expand: false });
-    }
-    if (toastOnSubmit) {
-      toastMessageOnSubmit ??= translate(Toast_Words["submit-task-success-message"], lang);
-      toast(t, "info", toastMessageOnSubmit);
-    }
-  }
 
   return (
     <Render id={id} {...props}>
