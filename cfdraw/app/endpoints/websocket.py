@@ -10,7 +10,7 @@ from cfdraw.app.schema import IApp
 from cfdraw.app.schema import IRequestQueueData
 from cfdraw.utils.server import get_err_msg
 from cfdraw.schema.plugins import ISocketMessage
-from cfdraw.schema.plugins import IPluginRequest
+from cfdraw.schema.plugins import ISocketRequest
 from cfdraw.schema.plugins import IPluginResponse
 from cfdraw.plugins.base import ISocketPlugin
 from cfdraw.app.endpoints.base import IEndpoint
@@ -19,16 +19,17 @@ from cfdraw.app.endpoints.base import IEndpoint
 def add_websocket(app: IApp) -> None:
     @app.api.websocket(str(constants.Endpoint.WEBSOCKET))
     async def websocket(websocket: WebSocket) -> None:
-        async def on_failed(e: Exception) -> None:
+        async def on_failed(e: Exception, hash: str) -> None:
             logging.exception(e)
             await websocket.send_text(
                 json.dumps(
                     ISocketMessage.from_response(
+                        hash,
                         IPluginResponse(
                             success=False,
                             message=f"Invalid data: {get_err_msg(e)}",
                             data={},
-                        )
+                        ),
                     ).dict()
                 )
             )
@@ -41,7 +42,7 @@ def add_websocket(app: IApp) -> None:
             try:
                 target_plugin = None
                 raw_data = await websocket.receive_text()
-                data = IPluginRequest(**json.loads(raw_data))
+                data = ISocketRequest(**json.loads(raw_data))
                 if data.isInternal:
                     identifier = data.identifier
                     target_plugin = app.internal_plugins.make(identifier)
@@ -76,11 +77,11 @@ def add_websocket(app: IApp) -> None:
                     await app.request_queue.wait(uid)
                     response = None
                 if response is not None:
-                    await send_text(ISocketMessage.from_response(response))
+                    await send_text(ISocketMessage.from_response(data.hash, response))
             except WebSocketDisconnect:
                 break
             except Exception as e:
-                await on_failed(e)
+                await on_failed(e, data.hash)
             finally:
                 del target_plugin
 

@@ -11,10 +11,11 @@ import type {
   IUsePythonInfo,
   IUseSocketPython,
   IPythonOnSocketMessage,
+  IPythonSocketRequest,
 } from "@/schema/_python";
 import { IPythonStore, updatePythonStore } from "@/stores/_python";
 import { Requests } from "@/requests/actions";
-import { useWebSocket } from "@/requests/hooks";
+import { useWebSocketHook } from "@/requests/hooks";
 import { uploadImage } from "@/actions/uploadImage";
 import { Exporter, IExportBlob } from "@/actions/export";
 
@@ -148,7 +149,7 @@ export function useHttpPython<R>({
 export function useSocketPython<R>({
   t,
   lang,
-  connectHash,
+  hash,
   node,
   nodes,
   endpoint,
@@ -162,7 +163,7 @@ export function useSocketPython<R>({
   const deps = [
     t,
     lang,
-    connectHash,
+    hash,
     node?.alias,
     nodes.map((n) => n.alias).join("_"),
     endpoint,
@@ -180,13 +181,13 @@ export function useSocketPython<R>({
         identifier,
         getExtraRequestData,
         opt: { t, lang },
-      }),
+      }).then((req) => ({ hash: hash!, ...req })),
     [deps],
   );
 
   const requestFn = useCallback(() => {
-    useWebSocket({
-      connectHash: isInvisible ? undefined : connectHash,
+    useWebSocketHook({
+      hash: isInvisible ? undefined : hash,
       getMessage,
       onMessage,
       onSocketError,
@@ -197,9 +198,11 @@ export function useSocketPython<R>({
 }
 
 export function useSyncPython() {
+  const hash = "0";
   const getMessage = useCallback(
-    () =>
+    (): Promise<IPythonSocketRequest> =>
       Promise.resolve({
+        hash,
         identifier: "sync",
         nodeData: {},
         nodeDataList: [],
@@ -242,5 +245,5 @@ export function useSyncPython() {
     [],
   );
 
-  useWebSocket<IPythonStore>({ connectHash: 0, getMessage, onMessage });
+  useWebSocketHook<IPythonStore>({ hash, getMessage, onMessage });
 }

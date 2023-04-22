@@ -5,6 +5,7 @@ import asyncio
 
 from typing import Dict
 from typing import List
+from typing import Tuple
 from typing import Optional
 from cftool.misc import print_error
 from cftool.misc import random_hash
@@ -15,6 +16,7 @@ from cfdraw.utils.data_structures import Bundle
 from cfdraw.schema.plugins import ISocketData
 from cfdraw.schema.plugins import SocketStatus
 from cfdraw.schema.plugins import ISocketMessage
+from cfdraw.schema.plugins import ISocketRequest
 from cfdraw.schema.plugins import ISocketResponse
 from cfdraw.schema.plugins import IPluginResponse
 from cfdraw.plugins.base import IHttpPlugin
@@ -28,14 +30,15 @@ class RequestQueue(IRequestQueue):
     def __init__(self) -> None:
         self._is_busy = False
         self._queue = Bundle[IRequestQueueData](no_mapping=True)
-        self._senders: Dict[str, ISend] = {}
+        self._senders: Dict[str, Tuple[str, ISend]] = {}
         self._responses: Dict[str, IPluginResponse] = {}
 
     def push(self, data: IRequestQueueData, send_text: Optional[ISend] = None) -> str:
         uid = random_hash()
         self._queue.push(Item(uid, data))
         if send_text is not None:
-            self._senders[uid] = send_text
+            hash = data.request.hash if isinstance(data.request, ISocketRequest) else ""
+            self._senders[uid] = hash, send_text
         return uid
 
     def pop_response(self, uid: str) -> Optional[IPluginResponse]:
@@ -92,12 +95,13 @@ class RequestQueue(IRequestQueue):
         return None
 
     async def _broadcast_pending(self) -> None:
-        for uid, sender in self._senders.items():
+        for uid, (hash, sender) in self._senders.items():
             pending = self._get_pending(uid)
             try:
                 if pending is None:
                     await sender(
                         ISocketMessage.from_response(
+                            hash,
                             IPluginResponse(
                                 success=False,
                                 message=(
@@ -105,7 +109,7 @@ class RequestQueue(IRequestQueue):
                                     f"cannot find pending request after submitted"
                                 ),
                                 data={},
-                            )
+                            ),
                         )
                     )
                 elif len(pending) > 0:
@@ -114,6 +118,7 @@ class RequestQueue(IRequestQueue):
                             success=True,
                             message=f"in queue: {', '.join([str(item.data) for item in pending])}",
                             data=ISocketData(
+                                hash=hash,
                                 status=SocketStatus.PENDING,
                                 total=len(self._queue),
                                 pending=len(pending),

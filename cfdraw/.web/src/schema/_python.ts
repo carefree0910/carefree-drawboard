@@ -122,7 +122,7 @@ export type IPythonOnSocketMessage<R> = (data: IPythonSocketMessage<R>) => Promi
   | undefined
 >;
 export interface IPythonSocketCallbacks<R> extends IPythonCallbacks {
-  getMessage: () => Promise<IPythonRequest>;
+  getMessage: () => Promise<IPythonSocketRequest>;
   onMessage: IPythonOnSocketMessage<R>;
   onSocketError?: (err: any) => void;
 }
@@ -137,6 +137,9 @@ export interface IUseHttpPython<R> extends IUsePythonInfo, IPythonHttpPluginCall
 
 // socket
 
+export interface IPythonSocketRequest extends IPythonRequest {
+  hash: string;
+}
 export type PythonSocketStatus = "pending" | "working" | "finished" | "exception";
 interface IPythonSocketIntermediate {
   imageList?: string[]; // intermediate images, if any
@@ -148,6 +151,7 @@ export interface IPythonSocketResponse<R> {
   final?: R;
 }
 export interface IPythonSocketData<R> {
+  hash: string;
   status: PythonSocketStatus;
   total: number;
   pending: number;
@@ -169,5 +173,5 @@ export interface IUseSocketPython<R>
     Omit<IPythonSocketCallbacks<R>, "getMessage"> {
   t: IToast;
   lang: Lang;
-  connectHash?: number;
+  hash?: string;
 }

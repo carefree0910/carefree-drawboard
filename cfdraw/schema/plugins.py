@@ -185,6 +185,12 @@ class IPluginResponse(BaseModel):
     data: Dict[str, Any] = Field(..., description="The data of the response")
 
 
+class ISocketRequest(IPluginRequest):
+    """This should align with `IPythonSocketRequest` at `src/schema/_python.ts`"""
+
+    hash: str = Field(..., description="The hash of the request")
+
+
 class SocketStatus(str, Enum):
     """This should align with `PythonSocketStatus` at `src/schema/_python.ts`"""
 
@@ -226,6 +232,7 @@ class ISocketResponse(BaseModel):
 class ISocketData(BaseModel):
     """This should align with `IPythonSocketData` at `src/schema/_python.ts`"""
 
+    hash: str = Field(..., description="Hash of the current task")
     status: SocketStatus = Field(..., description="Status of the current task")
     total: int = Field(..., description="Number of tasks")
     pending: int = Field(..., description="Number of pending tasks")
@@ -237,11 +244,12 @@ class ISocketMessage(IPluginResponse):
     data: ISocketData = Field(..., description="Socket data of the current task")
 
     @classmethod
-    def from_response(cls, response: IPluginResponse) -> "ISocketData":
+    def from_response(cls, hash: str, response: IPluginResponse) -> "ISocketData":
         return cls(
             success=True,
             message="",
             data=ISocketData(
+                hash=hash,
                 status=SocketStatus.FINISHED
                 if response.success
                 else SocketStatus.EXCEPTION,

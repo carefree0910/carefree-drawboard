@@ -3,6 +3,7 @@ import { observer } from "mobx-react-lite";
 
 import { langStore } from "@carefree0910/business";
 
+import { useWebSocket } from "./stores/socket";
 import { useInitBoard } from "./hooks/useInitBoard";
 import { useFileDropper } from "./hooks/useFileDropper";
 import { useGridLines } from "./hooks/useGridLines";
@@ -12,6 +13,7 @@ import { useSyncPython } from "./hooks/usePython";
 import BoardPanel from "./BoardPanel";
 
 function App() {
+  useWebSocket();
   useSyncPython();
   useInitBoard();
   useFileDropper(langStore.tgt);

@@ -38,14 +38,14 @@ function PythonSocketPluginWithSubmit<R>({
 }: IPythonSocketPluginWithSubmit<R>) {
   const t = useToast();
   const lang = langStore.tgt;
-  const [connectHash, setConnectHash] = useState<number | undefined>(undefined);
+  const [hash, setHash] = useState<number | undefined>(undefined);
   const [busy, setBusy] = useState(false);
   const onClick = useCallback(() => {
     if (busy) return;
     if (!userStore.canAlwaysSubmit) {
       setBusy(true);
     }
-    setConnectHash(getRandomHash());
+    setHash(getRandomHash());
     if (closeOnSubmit) {
       floatingControlEvent.emit({ id, expand: false });
     }
@@ -58,7 +58,7 @@ function PythonSocketPluginWithSubmit<R>({
   useSocketPython<R>({
     t,
     lang,
-    connectHash,
+    hash: hash?.toString(),
     node,
     nodes,
     endpoint,
@@ -74,14 +74,14 @@ function PythonSocketPluginWithSubmit<R>({
     const { dispose } = socketFinishedEvent.on(({ id: incomingId }) => {
       if (incomingId === id) {
         setBusy(false);
-        setConnectHash(undefined);
+        setHash(undefined);
       }
     });
 
     return () => {
       dispose();
     };
-  }, [id, setBusy, setConnectHash]);
+  }, [id, setBusy, setHash]);
 
   return (
     <Render id={id} {...props}>

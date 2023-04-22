@@ -1,17 +1,17 @@
 import axios from "axios";
-import { useCallback, useEffect, useMemo, useRef } from "react";
+import { useCallback, useEffect } from "react";
 
-import { Logger } from "@carefree0910/core";
+import { Logger, isUndefined, waitUntil } from "@carefree0910/core";
 
 import type { APISources, APIs } from "@/schema/requests";
 import type {
   IPythonOnSocketMessage,
   IPythonRequest,
   IPythonSocketCallbacks,
-  IPythonSocketMessage,
 } from "@/schema/_python";
 import { pythonStore } from "@/stores/_python";
 import { useInceptors } from "./interceptors";
+import { pushSocketHook, removeSocketHook, socketStore } from "@/stores/socket";
 
 // cannot use `useMemo` here
 export function useAPI<T extends APISources>(source: T): APIs[T] {
@@ -31,8 +31,6 @@ export function useAPI<T extends APISources>(source: T): APIs[T] {
   return apis[source];
 }
 
-const DEBUG = false;
-const log = (...args: any[]) => DEBUG && console.log(...args);
 function useOnSocketMessageWithRetry<R>(
   getMessage: () => Promise<IPythonRequest>,
   onMessage: IPythonOnSocketMessage<R>,
@@ -48,101 +46,43 @@ function useOnSocketMessageWithRetry<R>(
     [getMessage, onMessage],
   );
 }
-export function useWebSocket<R>({
-  connectHash,
+export function useWebSocketHook<R>({
+  hash,
   getMessage,
   onMessage,
   onSocketError,
-  interval,
   dependencies,
   useRetry = true,
 }: IPythonSocketCallbacks<R> & {
-  connectHash?: number;
-  interval?: number;
+  hash?: string;
   dependencies?: any[];
   useRetry?: boolean;
 }) {
-  interval ??= 1000;
-  const baseURL = useAPI("_python").defaults.baseURL!;
-  const socketURL = baseURL.replace("http", "ws").replace("https", "wss");
-  const socketEndpoint = pythonStore.globalSettings.sockenEndpoint ?? "/ws";
-
-  onMessage = useMemo(
-    () => (useRetry ? useOnSocketMessageWithRetry(getMessage, onMessage) : onMessage),
-    [getMessage, onMessage, useRetry],
-  );
+  const onMessageWithRetry = useOnSocketMessageWithRetry(getMessage, onMessage);
+  const chosenOnMessage = useRetry ? onMessageWithRetry : onMessage;
 
   useEffect(() => {
-    function _connect() {
-      log("connecting...");
-      socket = new WebSocket(`${socketURL}${socketEndpoint}`);
-      socket.onopen = () => {
-        log("> onopen");
-        connected = true;
-        if (shouldTerminate) {
-          log(">> shouldTerminate");
-          socket.close();
+    if (isUndefined(hash)) return;
+    socketStore.log(`> add hook (${hash})`);
+    pushSocketHook({ key: hash, onMessage: chosenOnMessage, onSocketError });
+    socketStore.log(`> current hooks: ${socketStore.hooks.map((h) => h.key).join(", ")}`);
+    waitUntil(() => !!socketStore.socket).then(() => {
+      socketStore.log(`>> send message (${hash})`);
+      getMessage().then((data) => {
+        if (data.hash !== hash) {
+          Logger.warn("Internal error: hash mismatched.");
           return;
         }
-        log("> send message");
-        getMessage().then((data) => socket.send(JSON.stringify(data)));
-        socket.onmessage = ({ data }) => {
-          const alive = () => connected && !shouldTerminate;
-          log("> on message");
-          if (!alive()) {
-            log(">> not alive");
-            socket.close();
-            return;
-          }
-          onMessage(JSON.parse(data) as IPythonSocketMessage<R>).then((res) => {
-            if (!res) return;
-            const { newMessage, newMessageInterval } = res;
-            if (newMessage && alive()) {
-              log("> on newMessage");
-              newTimer = setTimeout(() => {
-                if (alive()) {
-                  newMessage().then((data) => {
-                    if (alive()) {
-                      socket.send(JSON.stringify(data));
-                    }
-                  });
-                }
-              }, newMessageInterval ?? interval);
-            }
-          });
-        };
-      };
-      socket.onclose = (e) => {
-        connected = false;
-        log("> on close");
-        if (shouldTerminate) {
-          log(">> shouldTerminate");
-          Logger.log("Socket connection terminated.");
-          return;
-        }
-        Logger.warn(`Socket connection closed (reason: ${e.reason}), retrying...`);
-        timer = setTimeout(_connect, interval);
-      };
-      socket.onerror = (err) => {
-        log("> on error");
-        onSocketError?.(err);
-        console.error("Socket error: ", err, ", retrying...");
-        socket.close();
-      };
-    }
-
-    let timer: any;
-    let newTimer: any;
-    let socket: WebSocket;
-    let connected = false;
-    let shouldTerminate = false;
-    if (!!connectHash || connectHash === 0) _connect();
+        socketStore.socket!.send(JSON.stringify(data));
+        socketStore.log(`>>> message sent (${hash})`);
+      });
+    });
 
     return () => {
-      shouldTerminate = true;
-      clearTimeout(timer);
-      clearTimeout(newTimer);
-      if (connected) socket?.close();
+      if (!isUndefined(hash)) {
+        socketStore.log(`> remove hook (${hash})`);
+        removeSocketHook(hash);
+      }
     };
-  }, [connectHash, baseURL, socketURL, socketEndpoint, ...(dependencies ?? [])]);
+  }, [hash, ...(dependencies ?? [])]);
 }
