@@ -16,7 +16,7 @@ setup(
     install_requires=[
         "rich",
         "typer",
-        "fastapi",
+        "fastapi>=0.95.1",
         "gunicorn",
         "pydantic",
         "uvicorn",
