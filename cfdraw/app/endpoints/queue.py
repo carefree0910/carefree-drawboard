@@ -17,13 +17,16 @@ from cfdraw.schema.plugins import ISocketData
 from cfdraw.schema.plugins import SocketStatus
 from cfdraw.schema.plugins import ISocketMessage
 from cfdraw.schema.plugins import ISocketRequest
-from cfdraw.schema.plugins import ISocketResponse
 from cfdraw.schema.plugins import IPluginResponse
 from cfdraw.plugins.base import IHttpPlugin
 from cfdraw.app.schema import ISend
 from cfdraw.app.schema import IRequestQueue
 from cfdraw.app.schema import IRequestQueueData
 from cfdraw.app.endpoints.utils import offload
+
+
+DEBUG = False
+log = print if DEBUG else lambda *args, **kwargs: None
 
 
 class RequestQueue(IRequestQueue):
@@ -39,6 +42,14 @@ class RequestQueue(IRequestQueue):
         if send_text is not None:
             hash = data.request.hash if isinstance(data.request, ISocketRequest) else ""
             self._senders[uid] = hash, send_text
+        log("~" * 50)
+        log("> push", uid)
+        log(
+            "> push.hash",
+            data.request.hash
+            if isinstance(data.request, ISocketRequest)
+            else data.request.identifier,
+        )
         return uid
 
     def pop_response(self, uid: str) -> Optional[IPluginResponse]:
@@ -58,6 +69,7 @@ class RequestQueue(IRequestQueue):
             uid = request_item.key
             plugin = request_item.data.plugin
             request = request_item.data.request
+            log(">>> run", uid)
             try:
                 response = await offload(plugin(request))
             except Exception as err:
@@ -71,6 +83,7 @@ class RequestQueue(IRequestQueue):
             self._senders.pop(uid, None)
             await self._broadcast_pending()
             await asyncio.sleep(0)
+            log(">>> cleanup", uid)
 
     async def wait(self, uid: str) -> None:
         request_item = self._queue.get(uid)
@@ -83,6 +96,9 @@ class RequestQueue(IRequestQueue):
         await asyncio.wait(tasks, return_when=asyncio.FIRST_COMPLETED)
         if not event_task.done():
             await asyncio.wait([event_task])
+        log("=" * 50)
+        log("> finished", uid)
+        log("^" * 50)
 
     # broadcast
 
@@ -97,6 +113,13 @@ class RequestQueue(IRequestQueue):
     async def _broadcast_pending(self) -> None:
         for uid, (hash, sender) in self._senders.items():
             pending = self._get_pending(uid)
+            log("-" * 50)
+            log(">> uid", uid)
+            log(">> hash", hash)
+            log(
+                ">> queue",
+                [getattr(item.data.request, "hash", None) for item in self._queue],
+            )
             try:
                 if pending is None:
                     await sender(
