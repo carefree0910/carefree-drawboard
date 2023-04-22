@@ -3,6 +3,7 @@
 
 import asyncio
 
+from typing import Any
 from typing import Dict
 from typing import List
 from typing import Tuple
@@ -26,7 +27,7 @@ from cfdraw.app.endpoints.utils import offload
 
 
 DEBUG = False
-log = print if DEBUG else lambda *args, **kwargs: None
+log: Any = print if DEBUG else lambda *args, **kwargs: None
 
 
 class RequestQueue(IRequestQueue):
