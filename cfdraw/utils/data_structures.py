@@ -1,5 +1,7 @@
 from typing import Dict
 from typing import List
+from typing import Type
+from typing import Tuple
 from typing import Generic
 from typing import TypeVar
 from typing import Optional
@@ -7,6 +9,7 @@ from typing import Iterator
 
 
 TItemData = TypeVar("TItemData")
+TTypes = TypeVar("TTypes")
 
 
 class Item(Generic[TItemData]):
@@ -92,3 +95,24 @@ class Bundle(Generic[TItemData]):
                     self._items.pop(i)
                     break
         return item
+
+
+class Types(Generic[TTypes]):
+    def __init__(self) -> None:
+        self._types: Dict[str, Type[TTypes]] = {}
+
+    def __iter__(self) -> Iterator[str]:
+        return iter(self._types)
+
+    def __setitem__(self, key: str, value: Type[TTypes]) -> None:
+        self._types[key] = value
+
+    def make(self, key: str, *args, **kwargs) -> Optional[TTypes]:
+        t = self._types.get(key)
+        return None if t is None else t(*args, **kwargs)
+
+    def items(self) -> Iterator[Tuple[str, Type[TTypes]]]:
+        return self._types.items()
+
+    def values(self) -> Iterator[Type[TTypes]]:
+        return self._types.values()
