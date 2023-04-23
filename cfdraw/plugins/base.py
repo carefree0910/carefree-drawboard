@@ -16,14 +16,20 @@ from cfdraw.parsers.noli import NodeConstraints
 from cfdraw.parsers.chakra import IChakra
 
 
-class IBasePlugin(IPlugin, metaclass=ABCMeta):
+class ISocketPlugin(IPlugin, metaclass=ABCMeta):
     @abstractmethod
     async def process(self, data: ISocketRequest) -> Any:
         pass
 
     @property
     def middlewares(self) -> List[IMiddleWare]:
-        return []
+        common_middlewares: List[IMiddleWare] = [
+            TextAreaMiddleWare(self.send_text),
+            FieldsMiddleWare(self.send_text),
+            TimerMiddleWare(self.send_text),
+        ]
+        send_message_middleware = SendSocketMessageMiddleWare(self.send_text)
+        return common_middlewares + [send_message_middleware]
 
     async def __call__(self, data: ISocketRequest) -> ISocketMessage:
         middlewares = self.middlewares
@@ -78,22 +84,6 @@ class IBasePlugin(IPlugin, metaclass=ABCMeta):
             return server.get_image(file)
         async with self.http_session.get(src) as res:
             return Image.open(BytesIO(await res.read()))
-
-
-class ISocketPlugin(IBasePlugin, metaclass=ABCMeta):
-    @property
-    def middlewares(self) -> List[IMiddleWare]:
-        common_middlewares: List[IMiddleWare] = [
-            TextAreaMiddleWare(self.send_text),
-            FieldsMiddleWare(self.send_text),
-            TimerMiddleWare(self.send_text),
-        ]
-        send_message_middleware = SendSocketMessageMiddleWare(self.send_text)
-        return common_middlewares + [send_message_middleware]
-
-    @abstractmethod
-    async def process(self, data: ISocketRequest) -> Any:
-        pass
 
 
 class IInternalSocketPlugin(ISocketPlugin, metaclass=ABCMeta):
