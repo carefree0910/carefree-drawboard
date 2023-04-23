@@ -84,5 +84,4 @@ class HttpImageCaptioningPlugin(IHttpFieldsPlugin):
 # get_models()
 register_plugin("txt2img")(HttpTextToImagePlugin)
 register_plugin("captioning")(HttpImageCaptioningPlugin)
-register_all_available_plugins()
 app = App()

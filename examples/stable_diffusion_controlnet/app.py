@@ -100,5 +100,4 @@ class HttpControlNetPlugin(IHttpFieldsPlugin):
 # get_model()
 register_plugin("canny")(HttpCannyPlugin)
 register_plugin("controlnet")(HttpControlNetPlugin)
-register_all_available_plugins()
 app = App()

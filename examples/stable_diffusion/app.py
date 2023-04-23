@@ -104,5 +104,4 @@ class HttpImageToImagePlugin(IHttpFieldsPlugin):
 # get_models()
 register_plugin("txt2img")(HttpTextToImagePlugin)
 register_plugin("img2img")(HttpImageToImagePlugin)
-register_all_available_plugins()
 app = App()

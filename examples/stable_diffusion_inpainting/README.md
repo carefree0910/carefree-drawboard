@@ -42,17 +42,13 @@ cfdraw run --module {name}
 
 > See [Plugin Positioning](https://github.com/carefree0910/carefree-drawboard/wiki/Plugin-Positioning) for more details.
 
-3. We utilized `register_all_available_plugins` to register all internal plugins.
+3. We specified `useModal=True` for the plugin, so it will always popup as a modal.
 
-> Currently there is only one internal plugin: `Meta` plugin, which can show you the `meta` information of a `Node`.
-
-4. We specified `useModal=True` for the plugin, so it will always popup as a modal.
-
-5. We specified lots of `definitions`, in order to align with the parameters exposed by the `diffusers` library.
+4. We specified lots of `definitions`, in order to align with the parameters exposed by the `diffusers` library.
 
 > See [`IFieldDefinition`](https://github.com/carefree0910/carefree-drawboard/wiki/PythonHttpFieldsPlugin#ifielddefinition) for more details.
 
-6. We used a special internal method: `filter` in the first two lines of the `process` method:
+5. We used a special internal method: `filter` in the first two lines of the `process` method:
 
 ```python
 path_data = self.filter(data.nodeDataList, SingleNodeType.PATH)[0]
@@ -65,6 +61,6 @@ So, the `nodeDataList` should be of length 2, and we can use the `filter` method
 
 After the extraction, we can use the common internal method `load_image` to load `PIL.Image` from `src`.
 
-7. We specified `upload_root` to `./` (in `cfconfig.py`), so the images/projects will be saved to the cwd (current working directory).
+6. We specified `upload_root` to `./` (in `cfconfig.py`), so the images/projects will be saved to the cwd (current working directory).
 
 > Default `upload_root` is `~/.cache/carefree-draw`.

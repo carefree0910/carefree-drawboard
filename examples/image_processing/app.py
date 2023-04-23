@@ -78,5 +78,4 @@ class HttpGaussianBlurPlugin(IHttpFieldsPlugin):
 register_plugin("gray_scale")(HttpGrayScalePlugin)
 register_plugin("edge")(HttpEdgePlugin)
 register_plugin("blur")(HttpGaussianBlurPlugin)
-register_all_available_plugins()
 app = App()

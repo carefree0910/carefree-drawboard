@@ -68,5 +68,4 @@ class HttpInpaintingPlugin(IHttpFieldsPlugin):
 # uncomment this line to pre-load the models
 # get_model()
 register_plugin("inpainting")(HttpInpaintingPlugin)
-register_all_available_plugins()
 app = App()

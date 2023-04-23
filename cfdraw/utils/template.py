@@ -41,7 +41,6 @@ class Plugin(IHttpFieldsPlugin):
 
 
 register_plugin("blur")(Plugin)
-register_all_available_plugins()
 {constants.DEFAULT_ENTRY} = App()
 """
 
