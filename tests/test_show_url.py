@@ -1,7 +1,7 @@
 from cfdraw import *
 
 
-class HttpShowUrlPlugin(IHttpTextAreaPlugin):
+class ShowUrlPlugin(ITextAreaPlugin):
     @property
     def settings(self) -> IPluginSettings:
         return IPluginSettings(
@@ -11,12 +11,11 @@ class HttpShowUrlPlugin(IHttpTextAreaPlugin):
             src="https://ailab-huawei-cdn.nolibox.com/upload/images/effd9650ce934b239242c6122b701514.png",
             follow=True,
             pivot=PivotType.RT,
-            offsetY=48,
         )
 
     async def process(self, data: IPluginRequest) -> str:
         return data.nodeData.src or "Not Found"
 
 
-register_plugin("show_url")(HttpShowUrlPlugin)
+register_plugin("show_url")(ShowUrlPlugin)
 app = App()

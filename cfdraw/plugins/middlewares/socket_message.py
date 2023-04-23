@@ -12,7 +12,7 @@ class SocketMessageMiddleWare(ISocketMiddleWare):
 
     @property
     def subscriptions(self) -> List[PluginType]:
-        return [PluginType.SOCKET_FIELDS, PluginType._INTERNAL]
+        return [PluginType.TEXT_AREA, PluginType.SOCKET_FIELDS, PluginType._INTERNAL]
 
     @property
     def can_handle_response(self) -> bool:

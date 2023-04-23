@@ -8,6 +8,7 @@ from typing import List
 
 from cfdraw import constants
 from cfdraw.utils import server
+from cfdraw.utils.misc import deprecated
 from cfdraw.schema.plugins import *
 from cfdraw.plugins.middlewares import *
 from cfdraw.parsers.noli import SingleNodeType
@@ -90,8 +91,13 @@ class ISocketPlugin(IBasePlugin, metaclass=ABCMeta):
 
     @property
     def middlewares(self) -> List[IMiddleWare]:
+        common_middlewares = [
+            TextAreaMiddleWare(),
+            FieldsMiddleWare(),
+            TimerMiddleWare(),
+        ]
         socket_message_middleware = SocketMessageMiddleWare(self.send_text)
-        return [FieldsMiddleWare(), TimerMiddleWare(), socket_message_middleware]
+        return common_middlewares + [socket_message_middleware]
 
     @abstractmethod
     async def process(self, data: IPluginRequest) -> Any:
@@ -111,10 +117,15 @@ class IInternalSocketPlugin(ISocketPlugin, metaclass=ABCMeta):
 # bindings
 
 
-class IHttpTextAreaPlugin(IHttpPlugin):
+class ITextAreaPlugin(ISocketPlugin):
     @property
     def type(self) -> PluginType:
-        return PluginType.HTTP_TEXT_AREA
+        return PluginType.TEXT_AREA
+
+
+@deprecated("please use `ITextAreaPlugin` instead")
+class IHttpTextAreaPlugin(ITextAreaPlugin):
+    pass
 
 
 class IHttpQAPlugin(IHttpPlugin):
@@ -139,8 +150,10 @@ __all__ = [
     "IHttpPlugin",
     "ISocketPlugin",
     "IInternalSocketPlugin",
-    "IHttpTextAreaPlugin",
+    "ITextAreaPlugin",
     "IHttpQAPlugin",
     "IHttpFieldsPlugin",
     "ISocketFieldsPlugin",
+    # deprecated
+    "IHttpTextAreaPlugin",
 ]

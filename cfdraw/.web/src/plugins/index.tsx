@@ -19,7 +19,7 @@ export * from "./TextEditorPlugin";
 export * from "./GroupPlugin";
 export * from "./LinksPlugin";
 export * from "./BrushPlugin";
-export * from "./_python/HttpTextAreaPlugin";
+export * from "./_python/TextAreaPlugin";
 export * from "./_python/HttpQAPlugin";
 export * from "./_python/HttpFieldsPlugin";
 export * from "./_python/SocketFieldsPlugin";

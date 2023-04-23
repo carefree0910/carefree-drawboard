@@ -4,7 +4,7 @@ from cftool.constants import TIME_FORMAT
 from cfdraw import *
 
 
-class HttpTimerPlugin(IHttpTextAreaPlugin):
+class TimerPlugin(ITextAreaPlugin):
     @property
     def settings(self) -> IPluginSettings:
         return IPluginSettings(
@@ -13,7 +13,7 @@ class HttpTimerPlugin(IHttpTextAreaPlugin):
             nodeConstraint=NodeConstraints.NONE,
             src="https://ailab-huawei-cdn.nolibox.com/upload/images/63c07ca52b2b42ef943bcf04c8e78878.png",
             pivot=PivotType.TOP,
-            pluginInfo=IHttpTextAreaPluginInfo(
+            pluginInfo=ITextAreaPluginInfo(
                 updateInterval=1000,
                 noLoading=True,
                 textAlign=TextAlign.CENTER,
@@ -24,5 +24,5 @@ class HttpTimerPlugin(IHttpTextAreaPlugin):
         return datetime.now().strftime(TIME_FORMAT)
 
 
-register_plugin("timer")(HttpTimerPlugin)
+register_plugin("timer")(TimerPlugin)
 app = App()

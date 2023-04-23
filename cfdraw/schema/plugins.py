@@ -14,6 +14,7 @@ from aiohttp import ClientSession
 from pydantic import Field
 from pydantic import BaseModel
 
+from cfdraw.utils.misc import deprecated
 from cfdraw.schema.fields import IFieldDefinition
 from cfdraw.parsers.noli import Matrix2D
 from cfdraw.parsers.noli import INodeType
@@ -28,7 +29,9 @@ ISendSocketText = Callable[["ISocketMessage"], Coroutine[Any, Any, None]]
 
 
 class PluginType(str, Enum):
-    HTTP_TEXT_AREA = "httpTextArea"
+    # These types should align with the `allAvailablePythonPlugins` locates at
+    # `cfdraw/.web/src/schema/plugins.ts` (without the `_python.` prefix)
+    TEXT_AREA = "textArea"
     HTTP_QA = "httpQA"
     HTTP_FIELDS = "httpFields"
     SOCKET_FIELDS = "socketFields"
@@ -345,14 +348,19 @@ class IFieldsPluginInfo(IPluginInfo):
     numColumns: Optional[int] = Field(None, description="Number of columns")
 
 
-## (http) text area
+## text area
 
 
-class IHttpTextAreaPluginInfo(IPluginInfo):
+class ITextAreaPluginInfo(IPluginInfo):
     noLoading: bool = Field(
         False, description="Whether to show the 'Loading...' text or not"
     )
     textAlign: Optional[TextAlign] = Field(None, description="Text align")
+
+
+@deprecated("please use `ITextAreaPluginInfo` instead")
+class IHttpTextAreaPluginInfo(ITextAreaPluginInfo):
+    pass
 
 
 ## (http) qa
@@ -383,6 +391,8 @@ __all__ = [
     "IMiddleWare",
     "IFieldsPluginInfo",
     # bindings
-    "IHttpTextAreaPluginInfo",
+    "ITextAreaPluginInfo",
     "IHttpQAPluginInfo",
+    # deprecated
+    "IHttpTextAreaPluginInfo",
 ]

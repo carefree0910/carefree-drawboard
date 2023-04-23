@@ -5,11 +5,7 @@ import type { INode, NodeType, PivotType } from "@carefree0910/core";
 import type { IResponse } from "@carefree0910/business";
 
 import type { IFieldDefinition, _IFieldDefinition } from "./metaFields";
-import type {
-  IPythonFieldsPlugin,
-  IPythonHttpQAPlugin,
-  IPythonHttpTextAreaPlugin,
-} from "./_python";
+import type { IPythonFieldsPlugin, IPythonHttpQAPlugin, IPythonTextAreaPlugin } from "./_python";
 
 // general
 
@@ -83,7 +79,7 @@ export const allAvailablePlugins = [
   "brush",
 ] as const;
 export const allAvailablePythonPlugins = [
-  "_python.httpTextArea",
+  "_python.textArea",
   "_python.httpQA",
   "_python.httpFields",
   "_python.socketFields",
@@ -111,7 +107,7 @@ export interface IPluginProps {
   multiEditor: IPlugin;
   brush: IPlugin;
   // python plugins
-  "_python.httpTextArea": IPythonHttpTextAreaPlugin;
+  "_python.textArea": IPythonTextAreaPlugin;
   "_python.httpQA": IPythonHttpQAPlugin;
   "_python.httpFields": IPythonFieldsPlugin;
   "_python.socketFields": IPythonFieldsPlugin;

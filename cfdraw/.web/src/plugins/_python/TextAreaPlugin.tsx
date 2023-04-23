@@ -1,38 +1,49 @@
-import { useMemo, useState } from "react";
+import { useCallback, useMemo, useState } from "react";
 import { observer } from "mobx-react-lite";
 import { Textarea, useToast } from "@chakra-ui/react";
 
 import { getRandomHash } from "@carefree0910/core";
 import { langStore } from "@carefree0910/business";
 
-import type { IPythonHttpTextAreaPlugin } from "@/schema/_python";
-import { useHttpPython } from "@/hooks/usePython";
+import type { IPythonTextAreaPlugin, IPythonOnSocketMessage } from "@/schema/_python";
+import { useSocketPython } from "@/hooks/usePython";
 import { drawboardPluginFactory } from "@/plugins/utils/factory";
 import Render from "@/plugins/components/Render";
 import { useIdentifierId } from "./hooks";
 
-const PythonHttpTextAreaPlugin = ({
+const PythonTextAreaPlugin = ({
   pluginInfo: { node, nodes, endpoint, identifier, updateInterval, noLoading, textAlign },
   ...props
-}: IPythonHttpTextAreaPlugin) => {
+}: IPythonTextAreaPlugin) => {
   const t = useToast();
   const lang = langStore.tgt;
   const identifierId = useIdentifierId(identifier);
-  const id = useMemo(() => `${identifierId}_textArea_${getRandomHash()}`, []);
+  const id = useMemo(() => `${identifierId}_textArea_${getRandomHash()}`, [identifierId]);
+  const hash = useMemo(() => getRandomHash().toString(), [id]);
   const [value, setValue] = useState("");
+  const onMessage = useCallback<IPythonOnSocketMessage<{ text: string }>>(
+    async ({ data: { status, data } }) => {
+      if (status === "finished") {
+        setValue(data.final?.text ?? "");
+      } else if (!noLoading) {
+        setValue("Loading...");
+      }
+      return {};
+    },
+    [setValue],
+  );
 
-  useHttpPython<{ text: string }>({
+  useSocketPython({
     t,
     lang,
-    send: true,
+    hash,
     node,
     nodes,
     endpoint,
     identifier,
     isInvisible: props.renderInfo.isInvisible ?? false,
     updateInterval,
-    onUseHttpPythonSuccess: async (res) => setValue(res.data.text),
-    beforeRequest: noLoading ? undefined : async () => setValue("Loading..."),
+    onMessage,
   });
 
   return (
@@ -42,7 +53,4 @@ const PythonHttpTextAreaPlugin = ({
   );
 };
 
-drawboardPluginFactory.registerPython(
-  "_python.httpTextArea",
-  true,
-)(observer(PythonHttpTextAreaPlugin));
+drawboardPluginFactory.registerPython("_python.textArea", true)(observer(PythonTextAreaPlugin));
