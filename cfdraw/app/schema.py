@@ -46,7 +46,7 @@ class IRequestQueue(ABC):
         pass
 
     @abstractmethod
-    async def wait(self, uid: str) -> None:
+    async def wait(self, user_id: str, uid: str) -> None:
         pass
 
 

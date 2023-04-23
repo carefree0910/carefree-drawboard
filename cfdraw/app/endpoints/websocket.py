@@ -75,7 +75,7 @@ def add_websocket(app: IApp) -> None:
                     target_plugin.send_text = send_text
                     queue_data = IRequestQueueData(data, target_plugin, Event())
                     uid = app.request_queue.push(queue_data, send_text)
-                    asyncio.create_task(app.request_queue.wait(uid))
+                    asyncio.create_task(app.request_queue.wait(data.userId, uid))
                     response = None
                 if response is not None:
                     await send_text(ISocketMessage.from_response(data.hash, response))

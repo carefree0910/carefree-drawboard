@@ -13,6 +13,7 @@ import type {
   IPythonOnSocketMessage,
   IPythonSocketRequest,
 } from "@/schema/_python";
+import { userStore } from "@/stores/user";
 import { IPythonStore, updatePythonStore } from "@/stores/_python";
 import { Requests } from "@/requests/actions";
 import { useWebSocketHook } from "@/requests/hooks";
@@ -64,6 +65,7 @@ async function getPythonRequest({
   const nodeData = await getNodeData(node, getNodeDataOpt);
   const nodeDataList = nodes.length <= 1 ? [] : await getNodeDataList(nodes, getNodeDataOpt);
   return {
+    userId: userStore.userId,
     identifier,
     nodeData,
     nodeDataList,
@@ -203,6 +205,7 @@ export function useSyncPython() {
     (): Promise<IPythonSocketRequest> =>
       Promise.resolve({
         hash,
+        userId: userStore.userId,
         identifier: "sync",
         nodeData: {},
         nodeDataList: [],

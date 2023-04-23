@@ -42,7 +42,7 @@ def add_plugins(app: IApp) -> None:
                     return response
                 try:
                     uid = app.request_queue.push(IRequestQueueData(data, _p, Event()))
-                    await app.request_queue.wait(uid)
+                    await app.request_queue.wait(data.userId, uid)
                     res = app.request_queue.pop_response(uid)
                     if res is not None:
                         return res

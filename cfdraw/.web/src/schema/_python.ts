@@ -96,6 +96,7 @@ export interface IPythonSocketPluginWithSubmit<R>
 // web
 
 export interface IPythonRequest {
+  userId: string;
   identifier: string;
   nodeData: INodeData;
   nodeDataList: INodeData[];

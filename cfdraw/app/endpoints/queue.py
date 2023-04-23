@@ -12,11 +12,12 @@ from typing import Optional
 from typing import Coroutine
 from cftool.misc import print_error
 from cftool.misc import random_hash
+from cftool.misc import print_warning
 from concurrent.futures import ThreadPoolExecutor
 
 from cfdraw.utils.server import get_err_msg
 from cfdraw.utils.data_structures import Item
-from cfdraw.utils.data_structures import Bundle
+from cfdraw.utils.data_structures import QueuesInQueue
 from cfdraw.schema.plugins import ISocketData
 from cfdraw.schema.plugins import SocketStatus
 from cfdraw.schema.plugins import ISocketMessage
@@ -49,18 +50,19 @@ async def offload(future: Coroutine[Any, Any, TFutureResponse]) -> TFutureRespon
 class RequestQueue(IRequestQueue):
     def __init__(self) -> None:
         self._is_busy = False
-        self._queue = Bundle[IRequestQueueData](no_mapping=True)
+        self._queues = QueuesInQueue[IRequestQueueData]()
         self._senders: Dict[str, Tuple[str, ISend]] = {}
         self._responses: Dict[str, IPluginResponse] = {}
 
     def push(self, data: IRequestQueueData, send_text: Optional[ISend] = None) -> str:
         uid = random_hash()
-        self._queue.push(Item(uid, data))
+        self._queues.push(data.request.userId, Item(uid, data))
         if send_text is not None:
             hash = data.request.hash if isinstance(data.request, ISocketRequest) else ""
             self._senders[uid] = hash, send_text
         log("~" * 50)
-        log("> push", uid)
+        log("> push.uid", uid)
+        log("> push.userId", data.request.userId)
         log(
             "> push.hash",
             data.request.hash
@@ -77,12 +79,10 @@ class RequestQueue(IRequestQueue):
             return
         self._is_busy = True
         while True:
-            if self._queue.is_empty:
+            user_id, request_item = self._queues.next()
+            if user_id is None or request_item is None:
                 self._is_busy = False
                 break
-            request_item = self._queue.first
-            if request_item is None:
-                continue
             uid = request_item.key
             plugin = request_item.data.plugin
             request = request_item.data.request
@@ -97,17 +97,24 @@ class RequestQueue(IRequestQueue):
                 self._responses[uid] = response
             # cleanup
             request_item.data.event.set()
-            self._queue.remove(uid)
+            self._queues.remove(user_id, uid)
             self._senders.pop(uid, None)
             await self._broadcast_pending()
             await asyncio.sleep(0)
             log(">>> cleanup", uid)
 
-    async def wait(self, uid: str) -> None:
-        request_item = self._queue.get(uid)
+    async def wait(self, user_id: str, uid: str) -> None:
+        # Maybe in some rare cases, the task completes so fast that
+        # the corresponding data has already been removed.
+        # So here we simply warn instead of raise.
+        queue_item = self._queues.get(user_id)
+        if queue_item is None:
+            print_warning("cannot find user request queue after submitted")
+            return
+        request_item = queue_item.data.get(uid)
         if request_item is None:
-            msg = "Internal error occurred: cannot find request item after submitted"
-            raise ValueError(msg)
+            print_warning("cannot find request item after submitted")
+            return
         await self._broadcast_pending()
         asyncio.create_task(self.run())
         await request_item.data.event.wait()
@@ -117,23 +124,27 @@ class RequestQueue(IRequestQueue):
 
     # broadcast
 
-    def _get_pending(self, uid: str) -> Optional[List[Item[IRequestQueueData]]]:
-        pending = []
-        for item in self._queue:
-            pending.append(item)
-            if item.key == uid:
-                return pending[:-1]
-        return None
-
     async def _broadcast_pending(self) -> None:
         for uid, (hash, sender) in self._senders.items():
-            pending = self._get_pending(uid)
+            pending = self._queues.get_pending(uid)
             log("-" * 50)
             log(">> uid", uid)
             log(">> hash", hash)
             log(
-                ">> queue",
-                [getattr(item.data.request, "hash", None) for item in self._queue],
+                ">> queues\n\n",
+                "\n".join(
+                    [
+                        f"{queue_item.key} : "
+                        + ", ".join(
+                            [
+                                getattr(item.data.request, "hash", "None")
+                                for item in queue_item.data
+                            ]
+                        )
+                        for queue_item in self._queues
+                    ]
+                ),
+                "\n",
             )
             try:
                 if pending is None:
@@ -158,7 +169,7 @@ class RequestQueue(IRequestQueue):
                             data=ISocketData(
                                 hash=hash,
                                 status=SocketStatus.PENDING,
-                                total=len(self._queue),
+                                total=self._queues.num_items,
                                 pending=len(pending),
                                 message="",
                             ),
@@ -180,7 +191,7 @@ class RequestQueue(IRequestQueue):
                     data=ISocketData(
                         hash=hash,
                         status=SocketStatus.WORKING,
-                        total=len(self._queue),
+                        total=self._queues.num_items,
                         pending=0,
                         message="",
                     ),

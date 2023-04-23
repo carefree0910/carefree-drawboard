@@ -158,6 +158,7 @@ Image url of the node, will be `None` if the node is not intended to be converte
 class IPluginRequest(BaseModel):
     """This should align with `IPythonRequest` at `src/schema/_python.ts`"""
 
+    userId: str = Field(..., description="The id of the user")
     identifier: str = Field(..., description="The identifier of the plugin")
     nodeData: INodeData = Field(
         ...,
