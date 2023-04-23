@@ -8,6 +8,7 @@ import {
 
 const _pluginsLangRecords: Record<Lang, Record<AvailablePluginsAndPythonPlugins, string>> = {
   zh: {
+    meta: "元数据",
     settings: "设置",
     project: "项目",
     add: "添加",
@@ -29,6 +30,7 @@ const _pluginsLangRecords: Record<Lang, Record<AvailablePluginsAndPythonPlugins,
     "_python.socketFields": "Python Socket 插件",
   },
   en: {
+    meta: "Meta",
     settings: "Settings",
     project: "Project",
     add: "Add",

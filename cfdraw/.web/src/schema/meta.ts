@@ -66,3 +66,7 @@ export function getOriginMeta(meta: any): IMeta | undefined {
   if (!checkMeta(meta)) return;
   return getOriginMeta(meta.data.from);
 }
+export function getMetaTrace(meta: IMeta): IMeta[] {
+  if (!checkMeta(meta)) return [];
+  return [meta, ...(meta.data.from ? getMetaTrace(meta.data.from) : [])];
+}

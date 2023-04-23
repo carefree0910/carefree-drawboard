@@ -2,6 +2,21 @@ import type { AvailablePlugins, IMakePlugin } from "@/schema/plugins";
 
 export const reactPluginSettings: IMakePlugin<AvailablePlugins>[] = [
   {
+    type: "meta",
+    props: {
+      offsetY: 48,
+      nodeConstraint: "singleNode",
+      renderInfo: {
+        w: 400,
+        h: 400,
+        src: "https://ailab-huawei-cdn.nolibox.com/upload/images/0ec1b08f9c3e4ef4813ecb80bebf3b42.png",
+        pivot: "rt",
+        follow: true,
+      },
+      pluginInfo: {},
+    },
+  },
+  {
     type: "settings",
     props: {
       nodeConstraint: "none",

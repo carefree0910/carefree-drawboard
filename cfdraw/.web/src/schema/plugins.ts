@@ -65,6 +65,7 @@ export interface IField<T extends _IFieldDefinition> {
 // factory
 
 export const allAvailablePlugins = [
+  "meta",
   "settings",
   "project",
   "add",
