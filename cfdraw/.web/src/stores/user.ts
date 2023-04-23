@@ -9,7 +9,7 @@ export interface IUserStore {
 }
 class UserStore extends ABCStore<IUserStore> implements IUserStore {
   userId: string = getRandomHash().toString();
-  canAlwaysSubmit: boolean = true;
+  canAlwaysSubmit: boolean = false;
 
   constructor() {
     super();
