@@ -17,7 +17,7 @@ import CFHeading from "@/components/CFHeading";
 import { drawboardPluginFactory } from "@/plugins/utils/factory";
 import { useClosePanel } from "../components/hooks";
 import { useCurrentMeta, useDefinitionsRequestDataFn, useFieldsPluginIds } from "./hooks";
-import PythonSocketPluginWithSubmit, { socketFinishedEvent } from "./SocketPluginWithSubmit";
+import PythonPluginWithSubmit, { socketFinishedEvent } from "./PluginWithSubmit";
 import DefinitionFields from "./DefinitionFields";
 
 const PythonFieldsPlugin = ({ pluginInfo, ...props }: IPythonFieldsPlugin) => {
@@ -80,7 +80,7 @@ const PythonFieldsPlugin = ({ pluginInfo, ...props }: IPythonFieldsPlugin) => {
 
   const header = pluginInfo.header ?? titleCaseWord(identifierId);
   return (
-    <PythonSocketPluginWithSubmit
+    <PythonPluginWithSubmit
       id={id}
       buttonText={translate(UI_Words["submit-task"], lang)}
       getExtraRequestData={getExtraRequestData}
@@ -94,7 +94,7 @@ const PythonFieldsPlugin = ({ pluginInfo, ...props }: IPythonFieldsPlugin) => {
         <CloseIcon w="12px" cursor="pointer" onClick={emitClose} />
       </Flex>
       <DefinitionFields definitions={definitions} numColumns={pluginInfo.numColumns} />
-    </PythonSocketPluginWithSubmit>
+    </PythonPluginWithSubmit>
   );
 };
 

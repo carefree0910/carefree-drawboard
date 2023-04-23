@@ -17,7 +17,7 @@ import Render from "../components/Render";
 import { floatingControlEvent } from "../components/Floating";
 
 export const socketFinishedEvent = new Event<{ id: string }>();
-function PythonSocketPluginWithSubmit<R>({
+function PythonPluginWithSubmit<R>({
   id,
   pluginInfo: {
     node,
@@ -97,4 +97,4 @@ function PythonSocketPluginWithSubmit<R>({
   );
 }
 
-export default observer(PythonSocketPluginWithSubmit);
+export default observer(PythonPluginWithSubmit);

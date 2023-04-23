@@ -34,7 +34,6 @@ class PluginType(str, Enum):
     TEXT_AREA = "textArea"
     QA = "QA"
     FIELDS = "fields"
-    HTTP_FIELDS = "httpFields"
     # this type of plugins will not be rendered on the drawboard 🎨
     _INTERNAL = "_internal"
 

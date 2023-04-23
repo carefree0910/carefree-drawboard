@@ -48,11 +48,6 @@ interface IPythonPluginWithSubmitPluginInfo {
   toastOnSubmit?: boolean;
   toastMessageOnSubmit?: string;
 }
-interface IPythonPluginWithSubmit {
-  id: string;
-  buttonText: string;
-  pluginInfo: IPythonPluginInfo & IPythonPluginWithSubmitPluginInfo;
-}
 export interface IPythonFieldsPlugin extends IPythonPlugin {
   pluginInfo: IPythonPluginInfo &
     IPythonPluginWithSubmitPluginInfo & {
@@ -61,21 +56,6 @@ export interface IPythonFieldsPlugin extends IPythonPlugin {
       numColumns?: number;
     };
 }
-
-//// http plugin
-
-interface IPythonHttpPluginCallbacks<R> extends IPythonCallbacks {
-  onUseHttpPythonSuccess: (res: IPythonResponse<R>) => Promise<void>;
-  onUseHttpPythonError?: (err: any) => Promise<void>;
-  beforeRequest?: () => Promise<void>;
-  afterResponse?: () => Promise<void>;
-}
-export interface IPythonHttpPluginWithSubmit<R>
-  extends Omit<IPythonPlugin, "id" | "pluginInfo">,
-    IPythonHttpPluginCallbacks<R>,
-    IPythonPluginWithSubmit {}
-
-//// socket plugin
 
 export interface IPythonTextAreaPlugin extends IPythonPlugin {
   pluginInfo: IPythonPluginInfo & {
@@ -91,8 +71,11 @@ export interface IPythonQAPlugin extends IPythonPlugin {
 
 export interface IPythonSocketPluginWithSubmit<R>
   extends Omit<IPythonPlugin, "id" | "pluginInfo">,
-    Omit<IPythonSocketCallbacks<R>, "getMessage">,
-    IPythonPluginWithSubmit {}
+    Omit<IPythonSocketCallbacks<R>, "getMessage"> {
+  id: string;
+  buttonText: string;
+  pluginInfo: IPythonPluginInfo & IPythonPluginWithSubmitPluginInfo;
+}
 
 // web
 
@@ -128,16 +111,6 @@ export interface IPythonSocketCallbacks<R> extends IPythonCallbacks {
   onMessage: IPythonOnSocketMessage<R>;
   onSocketError?: (err: any) => void;
 }
-
-// http
-
-export interface IUseHttpPython<R> extends IUsePythonInfo, IPythonHttpPluginCallbacks<R> {
-  t: IToast;
-  lang: Lang;
-  send: boolean;
-}
-
-// socket
 
 export interface IPythonSocketRequest extends IPythonRequest {
   hash: string;

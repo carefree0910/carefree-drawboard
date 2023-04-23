@@ -47,7 +47,7 @@ inpainting_fields = dict(
 )
 
 
-class HttpCannyPlugin(IHttpFieldsPlugin):
+class CannyPlugin(IFieldsPlugin):
     @property
     def settings(self) -> IPluginSettings:
         return IPluginSettings(
@@ -73,7 +73,7 @@ class HttpCannyPlugin(IHttpFieldsPlugin):
         return Image.fromarray(image)
 
 
-class HttpControlNetPlugin(IHttpFieldsPlugin):
+class ControlNetPlugin(IFieldsPlugin):
     @property
     def settings(self) -> IPluginSettings:
         return IPluginSettings(
@@ -98,6 +98,6 @@ class HttpControlNetPlugin(IHttpFieldsPlugin):
 
 # uncomment this line to pre-load the models
 # get_model()
-register_plugin("canny")(HttpCannyPlugin)
-register_plugin("controlnet")(HttpControlNetPlugin)
+register_plugin("canny")(CannyPlugin)
+register_plugin("controlnet")(ControlNetPlugin)
 app = App()

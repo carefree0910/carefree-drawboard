@@ -36,7 +36,7 @@ inpainting_fields = dict(
 )
 
 
-class HttpInpaintingPlugin(IHttpFieldsPlugin):
+class InpaintingPlugin(IFieldsPlugin):
     @property
     def settings(self) -> IPluginSettings:
         return IPluginSettings(
@@ -67,5 +67,5 @@ class HttpInpaintingPlugin(IHttpFieldsPlugin):
 
 # uncomment this line to pre-load the models
 # get_model()
-register_plugin("inpainting")(HttpInpaintingPlugin)
+register_plugin("inpainting")(InpaintingPlugin)
 app = App()

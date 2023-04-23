@@ -36,7 +36,7 @@ txt2img_fields = dict(
 )
 
 
-class HttpTextToImagePlugin(IHttpFieldsPlugin):
+class TextToImagePlugin(IFieldsPlugin):
     @property
     def settings(self) -> IPluginSettings:
         return IPluginSettings(
@@ -61,7 +61,7 @@ class HttpTextToImagePlugin(IHttpFieldsPlugin):
         return get_models()[0](prompt=prompt, **data.extraData).images
 
 
-class HttpImageCaptioningPlugin(IHttpFieldsPlugin):
+class ImageCaptioningPlugin(IFieldsPlugin):
     @property
     def settings(self) -> IPluginSettings:
         return IPluginSettings(
@@ -82,6 +82,6 @@ class HttpImageCaptioningPlugin(IHttpFieldsPlugin):
 
 # uncomment this line to pre-load the models
 # get_models()
-register_plugin("txt2img")(HttpTextToImagePlugin)
-register_plugin("captioning")(HttpImageCaptioningPlugin)
+register_plugin("txt2img")(TextToImagePlugin)
+register_plugin("captioning")(ImageCaptioningPlugin)
 app = App()

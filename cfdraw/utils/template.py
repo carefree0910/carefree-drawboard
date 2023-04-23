@@ -12,7 +12,7 @@ from PIL import ImageFilter
 from cfdraw import *
 
 # This will perform a Gaussian blur on the image
-class Plugin(IHttpFieldsPlugin):
+class Plugin(IFieldsPlugin):
     @property
     def settings(self) -> IPluginSettings:
         return IPluginSettings(

@@ -38,10 +38,6 @@ class IRequestQueue(ABC):
         pass
 
     @abstractmethod
-    def pop_response(self, uid: str) -> Optional[IPluginResponse]:
-        pass
-
-    @abstractmethod
     async def run(self) -> None:
         pass
 

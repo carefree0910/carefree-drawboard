@@ -67,7 +67,6 @@ class App(IApp):
         self.endpoints: List[IEndpoint] = [
             UploadEndpoint(self),
             ProjectEndpoint(self),
-            PluginsEndpoint(self),
             WebsocketEndpoint(self),
         ]
         if self.config.use_unified:

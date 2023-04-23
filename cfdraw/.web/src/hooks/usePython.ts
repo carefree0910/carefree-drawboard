@@ -7,7 +7,6 @@ import type {
   INodeData,
   IPythonResponse,
   IPythonRequest,
-  IUseHttpPython,
   IUsePythonInfo,
   IUseSocketPython,
   IPythonOnSocketMessage,
@@ -72,77 +71,6 @@ async function getPythonRequest({
     nodeDataList,
     extraData: getExtraRequestData ? getExtraRequestData() : {},
   };
-}
-
-export function useHttpPython<R>({
-  t,
-  lang,
-  send,
-  node,
-  nodes,
-  endpoint,
-  identifier,
-  isInvisible,
-  updateInterval,
-  onUseHttpPythonSuccess,
-  onUseHttpPythonError,
-  beforeRequest,
-  afterResponse,
-  getExtraRequestData,
-}: IUseHttpPython<R>) {
-  // TODO : `deps` here is not fully correct, but `useHttpPython` will be
-  // deprecated soon so maybe leave it as-is is OK.
-  const deps = [
-    t,
-    lang,
-    send,
-    node?.alias,
-    nodes.map((n) => n.alias).join("_"),
-    endpoint,
-    identifier,
-    updateInterval,
-    isInvisible,
-  ];
-  const requestFn = useCallback(() => {
-    if (!send || isInvisible) return Promise.resolve();
-    const preprocess = beforeRequest ? beforeRequest() : Promise.resolve();
-    return preprocess
-      .then(() =>
-        getPythonRequest({
-          node,
-          nodes,
-          identifier,
-          getExtraRequestData,
-          opt: { t, lang },
-        }),
-      )
-      .then((req) => Requests.postJson<IPythonResponse<R>>("_python", endpoint, req))
-      .then((res) => {
-        if (res.success) return onUseHttpPythonSuccess(res);
-        throw Error(res.message);
-      })
-      .then(() => afterResponse?.())
-      .catch((err) => {
-        if (onUseHttpPythonError) return onUseHttpPythonError(err);
-        Logger.error(err);
-      });
-  }, deps);
-
-  useEffect(() => {
-    let timer: any;
-    let shouldIgnore = false; // IMPORTANT!
-    function requestWithTimeout() {
-      if (isInvisible || shouldIgnore) return;
-      requestFn().then(() => (timer = setTimeout(requestWithTimeout, updateInterval)));
-    }
-    if (!updateInterval) requestFn();
-    else requestWithTimeout();
-
-    return () => {
-      shouldIgnore = true;
-      clearTimeout(timer);
-    };
-  }, deps);
 }
 
 /**

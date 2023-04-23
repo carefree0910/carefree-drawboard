@@ -10,7 +10,7 @@ import { UI_Words } from "@/lang/ui";
 import CFInput from "@/components/CFInput";
 import { drawboardPluginFactory } from "@/plugins/utils/factory";
 import { useIdentifierId } from "./hooks";
-import PythonSocketPluginWithSubmit from "./SocketPluginWithSubmit";
+import PythonPluginWithSubmit from "./PluginWithSubmit";
 
 const PythonQAPlugin = ({ pluginInfo, ...props }: IPythonQAPlugin) => {
   const identifierId = useIdentifierId(pluginInfo.identifier);
@@ -32,7 +32,7 @@ const PythonQAPlugin = ({ pluginInfo, ...props }: IPythonQAPlugin) => {
   );
 
   return (
-    <PythonSocketPluginWithSubmit
+    <PythonPluginWithSubmit
       id={id}
       buttonText={translate(UI_Words["submit-task"], lang)}
       getExtraRequestData={getExtraRequestData}
@@ -48,7 +48,7 @@ const PythonQAPlugin = ({ pluginInfo, ...props }: IPythonQAPlugin) => {
         onChange={(event) => setUserInput(event.target.value)}
         placeholder={translate(UI_Words["qa-field-placeholder"], langStore.tgt)}
       />
-    </PythonSocketPluginWithSubmit>
+    </PythonPluginWithSubmit>
   );
 };
 

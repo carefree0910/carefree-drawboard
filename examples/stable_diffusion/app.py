@@ -53,7 +53,7 @@ img2img_fields.pop("width")
 img2img_fields["strength"] = INumberField(default=0.8, min=0.0, max=1.0, step=0.01)
 
 
-class HttpTextToImagePlugin(IHttpFieldsPlugin):
+class TextToImagePlugin(IFieldsPlugin):
     @property
     def settings(self) -> IPluginSettings:
         return IPluginSettings(
@@ -77,7 +77,7 @@ class HttpTextToImagePlugin(IHttpFieldsPlugin):
         return get_models()[0](**data.extraData).images
 
 
-class HttpImageToImagePlugin(IHttpFieldsPlugin):
+class ImageToImagePlugin(IFieldsPlugin):
     @property
     def settings(self) -> IPluginSettings:
         return IPluginSettings(
@@ -102,6 +102,6 @@ class HttpImageToImagePlugin(IHttpFieldsPlugin):
 
 # uncomment this line to pre-load the models
 # get_models()
-register_plugin("txt2img")(HttpTextToImagePlugin)
-register_plugin("img2img")(HttpImageToImagePlugin)
+register_plugin("txt2img")(TextToImagePlugin)
+register_plugin("img2img")(ImageToImagePlugin)
 app = App()

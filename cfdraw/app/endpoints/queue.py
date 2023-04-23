@@ -23,7 +23,6 @@ from cfdraw.schema.plugins import SocketStatus
 from cfdraw.schema.plugins import ISocketMessage
 from cfdraw.schema.plugins import ISocketRequest
 from cfdraw.schema.plugins import IPluginResponse
-from cfdraw.plugins.base import IHttpPlugin
 from cfdraw.app.schema import ISend
 from cfdraw.app.schema import IRequestQueue
 from cfdraw.app.schema import IRequestQueueData
@@ -52,7 +51,6 @@ class RequestQueue(IRequestQueue):
         self._is_busy = False
         self._queues = QueuesInQueue[IRequestQueueData]()
         self._senders: Dict[str, Tuple[str, ISend]] = {}
-        self._responses: Dict[str, IPluginResponse] = {}
 
     def push(self, data: IRequestQueueData, send_text: Optional[ISend] = None) -> str:
         uid = random_hash()
@@ -71,9 +69,6 @@ class RequestQueue(IRequestQueue):
         )
         return uid
 
-    def pop_response(self, uid: str) -> Optional[IPluginResponse]:
-        return self._responses.pop(uid, None)
-
     async def run(self) -> None:
         if self._is_busy:
             return
@@ -89,12 +84,9 @@ class RequestQueue(IRequestQueue):
             log(">>> run", uid)
             try:
                 await self._broadcast_working(uid)
-                response = await offload(plugin(request))
+                await offload(plugin(request))
             except Exception as err:
-                msg = get_err_msg(err)
-                response = IPluginResponse(success=False, message=msg, data={})
-            if isinstance(plugin, IHttpPlugin):
-                self._responses[uid] = response
+                await self._broadcast_exception(uid, get_err_msg(err))
             # cleanup
             request_item.data.event.set()
             self._queues.remove(user_id, uid)
@@ -194,6 +186,28 @@ class RequestQueue(IRequestQueue):
                         total=self._queues.num_items,
                         pending=0,
                         message="",
+                    ),
+                )
+            )
+        except Exception as err:
+            print_error(get_err_msg(err))
+
+    async def _broadcast_exception(self, uid: str, message: str) -> None:
+        sender_pack = self._senders.get(uid)
+        if sender_pack is None:
+            return
+        hash, sender = sender_pack
+        try:
+            await sender(
+                ISocketMessage(
+                    success=True,
+                    message="",
+                    data=ISocketData(
+                        hash=hash,
+                        status=SocketStatus.EXCEPTION,
+                        total=0,
+                        pending=0,
+                        message=message,
                     ),
                 )
             )

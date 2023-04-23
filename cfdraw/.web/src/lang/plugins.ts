@@ -27,7 +27,6 @@ const _pluginsLangRecords: Record<Lang, Record<AvailablePluginsAndPythonPlugins,
     "_python.textArea": "Python 文本框",
     "_python.QA": "Python 问答",
     "_python.fields": "Python 插件",
-    "_python.httpFields": "Python 插件",
   },
   en: {
     meta: "Meta",
@@ -49,7 +48,6 @@ const _pluginsLangRecords: Record<Lang, Record<AvailablePluginsAndPythonPlugins,
     "_python.textArea": "Python TextArea",
     "_python.QA": "Python Q & A",
     "_python.fields": "Python Plugin",
-    "_python.httpFields": "Python Plugin",
   },
 };
 

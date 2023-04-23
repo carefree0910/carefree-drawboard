@@ -46,7 +46,7 @@ cfdraw run --module {name}
 
 4. We specified lots of `definitions`, in order to align with the parameters exposed by the `diffusers` library.
 
-> See [`IFieldDefinition`](https://github.com/carefree0910/carefree-drawboard/wiki/PythonHttpFieldsPlugin#ifielddefinition) for more details.
+> See [`IFieldDefinition`](https://github.com/carefree0910/carefree-drawboard/wiki/PythonFieldsPlugin#ifielddefinition) for more details.
 
 5. We used a special internal method: `filter` in the first two lines of the `process` method:
 

@@ -4,7 +4,7 @@ from PIL import ImageFilter
 from cfdraw import *
 
 
-class HttpGrayScalePlugin(IHttpFieldsPlugin):
+class GrayScalePlugin(IFieldsPlugin):
     @property
     def settings(self) -> IPluginSettings:
         return IPluginSettings(
@@ -24,7 +24,7 @@ class HttpGrayScalePlugin(IHttpFieldsPlugin):
         return image.convert("L")
 
 
-class HttpEdgePlugin(IHttpFieldsPlugin):
+class EdgePlugin(IFieldsPlugin):
     @property
     def settings(self) -> IPluginSettings:
         return IPluginSettings(
@@ -43,7 +43,7 @@ class HttpEdgePlugin(IHttpFieldsPlugin):
         return image.convert("L").filter(ImageFilter.FIND_EDGES)
 
 
-class HttpGaussianBlurPlugin(IHttpFieldsPlugin):
+class GaussianBlurPlugin(IFieldsPlugin):
     @property
     def settings(self) -> IPluginSettings:
         return IPluginSettings(
@@ -75,7 +75,7 @@ class HttpGaussianBlurPlugin(IHttpFieldsPlugin):
         return image.filter(ImageFilter.GaussianBlur(data.extraData["size"]))
 
 
-register_plugin("gray_scale")(HttpGrayScalePlugin)
-register_plugin("edge")(HttpEdgePlugin)
-register_plugin("blur")(HttpGaussianBlurPlugin)
+register_plugin("gray_scale")(GrayScalePlugin)
+register_plugin("edge")(EdgePlugin)
+register_plugin("blur")(GaussianBlurPlugin)
 app = App()

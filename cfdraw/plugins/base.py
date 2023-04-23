@@ -80,12 +80,6 @@ class IBasePlugin(IPlugin, metaclass=ABCMeta):
             return Image.open(BytesIO(await res.read()))
 
 
-class IHttpPlugin(IBasePlugin, metaclass=ABCMeta):
-    @property
-    def middlewares(self) -> List[IMiddleWare]:
-        return [TextAreaMiddleWare(), FieldsMiddleWare(), TimerMiddleWare()]
-
-
 class ISocketPlugin(IBasePlugin, metaclass=ABCMeta):
     send_text: ISendSocketText
 
@@ -135,13 +129,12 @@ class IFieldsPlugin(ISocketPlugin):
         return PluginType.FIELDS
 
 
-class IHttpFieldsPlugin(IHttpPlugin):
-    @property
-    def type(self) -> PluginType:
-        return PluginType.HTTP_FIELDS
-
-
 ## deprecated
+
+
+@deprecated("please use `ISocketPlugin` instead")
+class IHttpPlugin(ISocketPlugin, metaclass=ABCMeta):
+    pass
 
 
 @deprecated("please use `ITextAreaPlugin` instead")
@@ -154,15 +147,20 @@ class IHttpQAPlugin(IQAPlugin):
     pass
 
 
+@deprecated("please use `IFieldsPlugin` instead")
+class IHttpFieldsPlugin(IFieldsPlugin):
+    pass
+
+
 __all__ = [
-    "IHttpPlugin",
     "ISocketPlugin",
     "IInternalSocketPlugin",
     "ITextAreaPlugin",
     "IQAPlugin",
     "IFieldsPlugin",
-    "IHttpFieldsPlugin",
     # deprecated
+    "IHttpPlugin",
     "IHttpTextAreaPlugin",
     "IHttpQAPlugin",
+    "IHttpFieldsPlugin",
 ]

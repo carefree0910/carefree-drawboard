@@ -29,7 +29,6 @@ const consumers: Record<MetaType, (input: IImportMeta<any>) => void> = {
   "add.text": consumeAddText,
   "add.sketch.path": consumeAddSketchPath,
   "python.fields": consumePythonFields,
-  "python.httpFields": consumePythonFields,
 };
 function consumeUpload({ t, lang, type, metaData }: IImportMeta<"upload">): void {
   const success = async () => {
@@ -75,12 +74,7 @@ function consumeAddText({ t, lang, type, metaData }: IImportMeta<"add.text">): v
 function consumeAddSketchPath(): void {
   throw Error("Add sketch path by `importMeta` is not supported yet.");
 }
-function consumePythonFields({
-  t,
-  lang,
-  type,
-  metaData,
-}: IImportMeta<"python.fields" | "python.httpFields">): void {
+function consumePythonFields({ t, lang, type, metaData }: IImportMeta<"python.fields">): void {
   const success = async () => {
     toast(t, "success", translate(Toast_Words["generate-image-success-message"], lang));
   };
