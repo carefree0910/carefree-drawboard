@@ -52,7 +52,7 @@ class SocketStore extends ABCStore<ISocketStore> implements ISocketStore {
         return;
       }
       const hash = hook.key;
-      socketStore.log(`>> send message (${hash})`);
+      socketLog(`>> send message (${hash})`);
 
       const send = () => {
         hook.getMessage().then((data) => {
@@ -61,7 +61,7 @@ class SocketStore extends ABCStore<ISocketStore> implements ISocketStore {
             return;
           }
           socketStore.socket!.send(JSON.stringify(data));
-          socketStore.log(`>>> message sent (${hash})`);
+          socketLog(`>>> message sent (${hash})`);
           if (hook.updateInterval && !hook.shouldTerminate) {
             hook.timer = setTimeout(send, hook.updateInterval);
           }
@@ -72,11 +72,11 @@ class SocketStore extends ABCStore<ISocketStore> implements ISocketStore {
       send();
     });
   }
-
-  log = (...args: any[]) => DEBUG && console.log(...args);
 }
 
-export const socketStore = new SocketStore();
+const socketStore = new SocketStore();
+export const socketLog = (...args: any[]) => DEBUG && console.log(...args);
+export const getSocketHooks = () => socketStore.hooks;
 export const runSocketHook = (key: string) => socketStore.run(key);
 export const pushSocketHook = <R>(hook: SocketHook<R>) => {
   const hooks = socketStore.hooks.clone();
@@ -91,7 +91,7 @@ export const removeSocketHook = (hash: string) => {
   socketStore.updateProperty("hooks", hooks);
 };
 
-const log = socketStore.log;
+const log = socketLog;
 interface IUseWebSocket {
   interval?: number;
 }

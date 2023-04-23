@@ -11,7 +11,7 @@ import { UI_Words } from "@/lang/ui";
 import { Toast_Words } from "@/lang/toast";
 import { toast } from "@/utils/toast";
 import { titleCaseWord } from "@/utils/misc";
-import { removeSocketHook, socketStore } from "@/stores/socket";
+import { removeSocketHook, socketLog } from "@/stores/socket";
 import { importMeta } from "@/actions/importMeta";
 import CFHeading from "@/components/CFHeading";
 import { drawboardPluginFactory } from "@/plugins/utils/factory";
@@ -63,7 +63,7 @@ const PythonSocketFieldsPlugin = ({ pluginInfo, ...props }: IPythonFieldsPlugin)
               },
             });
           }
-          socketStore.log(`> remove hook (${hash})`);
+          socketLog(`> remove hook (${hash})`);
           removeSocketHook(hash);
         }
       }
