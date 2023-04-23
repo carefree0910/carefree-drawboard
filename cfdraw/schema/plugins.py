@@ -284,6 +284,9 @@ class IPlugin(ABC):
 
 
 class IMiddleWare(ABC):
+    hash: str
+    send_text: ISendSocketText
+
     # abstract
 
     @property
@@ -306,9 +309,12 @@ class IMiddleWare(ABC):
         return False
 
     async def before(self, request: ISocketRequest) -> None:
-        pass
+        self.hash = request.hash
 
     # api
+
+    def __init__(self, send_text: ISendSocketText) -> None:
+        self.send_text = send_text
 
     async def __call__(self, plugin: IPlugin, response: Any) -> ISocketMessage:
         if plugin.type not in self.subscriptions:
@@ -316,16 +322,6 @@ class IMiddleWare(ABC):
         if isinstance(response, ISocketMessage) and not self.can_handle_message:
             return response
         return await self.process(response)
-
-
-class ISocketMiddleWare(IMiddleWare, metaclass=ABCMeta):
-    hash: str
-
-    def __init__(self, send_text: ISendSocketText) -> None:
-        self.send_text = send_text
-
-    async def before(self, request: ISocketRequest) -> None:
-        self.hash = request.hash
 
     def make_success(self, final: Dict[str, Any]) -> ISocketMessage:
         return ISocketMessage.make_success(self.hash, final)

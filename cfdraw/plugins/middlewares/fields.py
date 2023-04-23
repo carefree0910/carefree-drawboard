@@ -4,11 +4,11 @@ from PIL.Image import Image
 
 from cfdraw.utils.server import upload_image
 from cfdraw.schema.plugins import PluginType
+from cfdraw.schema.plugins import IMiddleWare
 from cfdraw.schema.plugins import ISocketMessage
-from cfdraw.schema.plugins import ISocketMiddleWare
 
 
-class FieldsMiddleWare(ISocketMiddleWare):
+class FieldsMiddleWare(IMiddleWare):
     @property
     def subscriptions(self) -> List[PluginType]:
         return [PluginType.FIELDS]

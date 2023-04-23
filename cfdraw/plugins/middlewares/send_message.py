@@ -1,13 +1,11 @@
 from typing import List
 
 from cfdraw.schema.plugins import PluginType
+from cfdraw.schema.plugins import IMiddleWare
 from cfdraw.schema.plugins import ISocketMessage
-from cfdraw.schema.plugins import ISocketMiddleWare
 
 
-class SendSocketMessageMiddleWare(ISocketMiddleWare):
-    hash: str
-
+class SendSocketMessageMiddleWare(IMiddleWare):
     @property
     def subscriptions(self) -> List[PluginType]:
         return [

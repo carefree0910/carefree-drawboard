@@ -1,11 +1,11 @@
 from typing import List
 
 from cfdraw.schema.plugins import PluginType
+from cfdraw.schema.plugins import IMiddleWare
 from cfdraw.schema.plugins import ISocketMessage
-from cfdraw.schema.plugins import ISocketMiddleWare
 
 
-class TextAreaMiddleWare(ISocketMiddleWare):
+class TextAreaMiddleWare(IMiddleWare):
     @property
     def subscriptions(self) -> List[PluginType]:
         return [PluginType.TEXT_AREA, PluginType.QA]
