@@ -14,6 +14,7 @@ import type {
   IPythonSocketRequest,
 } from "@/schema/_python";
 import { userStore } from "@/stores/user";
+import { debugStore } from "@/stores/debug";
 import { IPythonStore, updatePythonStore } from "@/stores/_python";
 import { Requests } from "@/requests/actions";
 import { useWebSocketHook } from "@/requests/hooks";
@@ -244,7 +245,7 @@ export function useSyncPython() {
         if (updatePythonStore(final)) {
           Logger.log(`sync successfully: ${JSON.stringify(final)}, rerendering`);
         }
-        return {};
+        return debugStore.pollSync ? { newMessage: getMessage } : {};
       }
     },
     [],
