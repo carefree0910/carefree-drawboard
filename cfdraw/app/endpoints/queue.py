@@ -1,6 +1,3 @@
-# A simple memory based request queue
-# Should be easy to replace with a redis based one
-
 import asyncio
 
 from typing import Any
