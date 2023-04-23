@@ -1,10 +1,14 @@
 import { makeObservable, observable } from "mobx";
 import { useEffect } from "react";
 
-import { Bundle, IWithKey, Logger } from "@carefree0910/core";
+import { Bundle, IWithKey, Logger, waitUntil } from "@carefree0910/core";
 import { ABCStore } from "@carefree0910/business";
 
-import type { IPythonOnSocketMessage, IPythonSocketMessage } from "@/schema/_python";
+import type {
+  IPythonOnSocketMessage,
+  IPythonSocketMessage,
+  IPythonSocketRequest,
+} from "@/schema/_python";
 import { pythonStore } from "@/stores/_python";
 import { useAPI } from "@/requests/hooks";
 
@@ -12,6 +16,7 @@ const DEBUG = false;
 
 interface SocketHook<R> {
   key: string;
+  getMessage: () => Promise<IPythonSocketRequest>;
   onMessage: IPythonOnSocketMessage<R>;
   onSocketError?: (err: any) => void;
 }
@@ -36,10 +41,31 @@ class SocketStore extends ABCStore<ISocketStore> implements ISocketStore {
     return this;
   }
 
+  run(key: string) {
+    waitUntil(() => !!socketStore.socket).then(() => {
+      const hook = socketStore.hooks.get(key);
+      if (!hook) {
+        Logger.warn(`hook not found: ${key}`);
+        return;
+      }
+      const hash = hook.key;
+      socketStore.log(`>> send message (${hash})`);
+      hook.getMessage().then((data) => {
+        if (data.hash !== hash) {
+          Logger.warn("Internal error: hash mismatched.");
+          return;
+        }
+        socketStore.socket!.send(JSON.stringify(data));
+        socketStore.log(`>>> message sent (${hash})`);
+      });
+    });
+  }
+
   log = (...args: any[]) => DEBUG && console.log(...args);
 }
 
 export const socketStore = new SocketStore();
+export const runSocketHook = (key: string) => socketStore.run(key);
 export const pushSocketHook = <R>(hook: SocketHook<R>) => {
   const hooks = socketStore.hooks.clone();
   hooks.push(hook);

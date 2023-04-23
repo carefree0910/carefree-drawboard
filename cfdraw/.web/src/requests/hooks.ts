@@ -1,7 +1,7 @@
 import axios from "axios";
 import { useCallback, useEffect } from "react";
 
-import { Logger, isUndefined, waitUntil } from "@carefree0910/core";
+import { Logger, isUndefined } from "@carefree0910/core";
 
 import type { APISources, APIs } from "@/schema/requests";
 import type {
@@ -11,7 +11,7 @@ import type {
 } from "@/schema/_python";
 import { pythonStore } from "@/stores/_python";
 import { useInceptors } from "./interceptors";
-import { pushSocketHook, socketStore } from "@/stores/socket";
+import { pushSocketHook, runSocketHook, socketStore } from "@/stores/socket";
 
 // cannot use `useMemo` here
 export function useAPI<T extends APISources>(source: T): APIs[T] {
@@ -64,18 +64,13 @@ export function useWebSocketHook<R>({
   useEffect(() => {
     if (isUndefined(hash)) return;
     socketStore.log(`> add hook (${hash})`);
-    pushSocketHook({ key: hash, onMessage: chosenOnMessage, onSocketError });
-    socketStore.log(`> current hooks: ${socketStore.hooks.map((h) => h.key).join(", ")}`);
-    waitUntil(() => !!socketStore.socket).then(() => {
-      socketStore.log(`>> send message (${hash})`);
-      getMessage().then((data) => {
-        if (data.hash !== hash) {
-          Logger.warn("Internal error: hash mismatched.");
-          return;
-        }
-        socketStore.socket!.send(JSON.stringify(data));
-        socketStore.log(`>>> message sent (${hash})`);
-      });
+    pushSocketHook({
+      key: hash,
+      getMessage,
+      onMessage: chosenOnMessage,
+      onSocketError,
     });
+    socketStore.log(`> current hooks: ${socketStore.hooks.map((h) => h.key).join(", ")}`);
+    runSocketHook(hash);
   }, [hash, ...(dependencies ?? [])]);
 }
