@@ -1,5 +1,5 @@
 import axios from "axios";
-import { useCallback, useEffect } from "react";
+import { useCallback, useEffect, useMemo } from "react";
 
 import { Logger, isUndefined } from "@carefree0910/core";
 
@@ -47,17 +47,22 @@ function useOnSocketMessageWithRetry<R>(
   );
 }
 export function useWebSocketHook<R>({
-  hash,
+  isInvisible,
+  hash: _hash,
   getMessage,
   onMessage,
   onSocketError,
   dependencies,
   useRetry = true,
+  updateInterval,
 }: IPythonSocketCallbacks<R> & {
+  isInvisible: boolean;
   hash?: string;
   dependencies?: any[];
   useRetry?: boolean;
+  updateInterval?: number;
 }) {
+  const hash = useMemo(() => (isInvisible ? undefined : _hash), [isInvisible, _hash]);
   const onMessageWithRetry = useOnSocketMessageWithRetry(getMessage, onMessage);
   const chosenOnMessage = useRetry ? onMessageWithRetry : onMessage;
 

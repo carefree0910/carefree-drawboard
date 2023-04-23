@@ -189,12 +189,13 @@ export function useSocketPython<R>({
 
   const requestFn = useCallback(() => {
     useWebSocketHook({
-      hash: isInvisible ? undefined : hash,
+      isInvisible,
+      hash,
       getMessage,
       onMessage,
       onSocketError,
     });
-  }, [...deps, onMessage, onSocketError]);
+  }, [getMessage, onMessage, onSocketError]);
 
   requestFn();
 }
@@ -248,5 +249,5 @@ export function useSyncPython() {
     [],
   );
 
-  useWebSocketHook<IPythonStore>({ hash, getMessage, onMessage });
+  useWebSocketHook<IPythonStore>({ isInvisible: false, hash, getMessage, onMessage });
 }
