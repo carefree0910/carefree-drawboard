@@ -16,7 +16,7 @@ class HelloQAPlugin(IQAPlugin):
             ),
         )
 
-    async def process(self, data: IPluginRequest) -> str:
+    async def process(self, data: ISocketRequest) -> str:
         return f"Hello, {data.extraData['text']}!"
 
 

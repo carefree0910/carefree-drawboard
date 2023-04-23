@@ -157,9 +157,10 @@ Image url of the node, will be `None` if the node is not intended to be converte
     )
 
 
-class IPluginRequest(BaseModel):
-    """This should align with `IPythonRequest` at `src/schema/_python.ts`"""
+class ISocketRequest(BaseModel):
+    """This should align with `IPythonSocketRequest` at `src/schema/_python.ts`"""
 
+    hash: str = Field(..., description="The hash of the request")
     userId: str = Field(..., description="The id of the user")
     identifier: str = Field(..., description="The identifier of the plugin")
     nodeData: INodeData = Field(
@@ -186,12 +187,6 @@ class IPluginResponse(BaseModel):
     success: bool = Field(..., description="Whether returned successfully")
     message: str = Field(..., description="The message of the response")
     data: Dict[str, Any] = Field(..., description="The data of the response")
-
-
-class ISocketRequest(IPluginRequest):
-    """This should align with `IPythonSocketRequest` at `src/schema/_python.ts`"""
-
-    hash: str = Field(..., description="The hash of the request")
 
 
 class SocketStatus(str, Enum):
@@ -283,7 +278,7 @@ class IPlugin(ABC):
         pass
 
     @abstractmethod
-    async def __call__(self, data: IPluginRequest) -> IPluginResponse:
+    async def __call__(self, data: ISocketRequest) -> IPluginResponse:
         pass
 
     @abstractmethod
@@ -317,7 +312,7 @@ class IMiddleWare(ABC):
     def can_handle_response(self) -> bool:
         return False
 
-    async def before(self, request: IPluginRequest) -> None:
+    async def before(self, request: ISocketRequest) -> None:
         pass
 
     # api
@@ -388,7 +383,7 @@ __all__ = [
     "IPluginSettings",
     # web
     "INodeData",
-    "IPluginRequest",
+    "ISocketRequest",
     "IPluginResponse",
     "SocketStatus",
     "ISocketData",

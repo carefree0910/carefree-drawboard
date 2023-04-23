@@ -56,7 +56,7 @@ class TextToImagePlugin(IFieldsPlugin):
             ),
         )
 
-    async def process(self, data: IPluginRequest) -> List[Image.Image]:
+    async def process(self, data: ISocketRequest) -> List[Image.Image]:
         prompt = data.nodeData.text
         return get_models()[0](prompt=prompt, **data.extraData).images
 
@@ -75,7 +75,7 @@ class ImageCaptioningPlugin(IFieldsPlugin):
             pluginInfo=IFieldsPluginInfo(header="Image Captioning", definitions={}),
         )
 
-    async def process(self, data: IPluginRequest) -> List[str]:
+    async def process(self, data: ISocketRequest) -> List[str]:
         responses = get_models()[1](await self.load_image(data.nodeData.src))
         return [res["generated_text"] for res in responses]
 

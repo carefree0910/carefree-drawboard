@@ -18,14 +18,14 @@ from cfdraw.parsers.chakra import IChakra
 
 class IBasePlugin(IPlugin, metaclass=ABCMeta):
     @abstractmethod
-    async def process(self, data: IPluginRequest) -> Any:
+    async def process(self, data: ISocketRequest) -> Any:
         pass
 
     @property
     def middlewares(self) -> List[IMiddleWare]:
         return []
 
-    async def __call__(self, data: IPluginRequest) -> IPluginResponse:
+    async def __call__(self, data: ISocketRequest) -> IPluginResponse:
         middlewares = self.middlewares
         for middleware in middlewares:
             await middleware.before(data)
@@ -94,7 +94,7 @@ class ISocketPlugin(IBasePlugin, metaclass=ABCMeta):
         return common_middlewares + [socket_message_middleware]
 
     @abstractmethod
-    async def process(self, data: IPluginRequest) -> Any:
+    async def process(self, data: ISocketRequest) -> Any:
         pass
 
 

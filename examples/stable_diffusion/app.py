@@ -73,7 +73,7 @@ class TextToImagePlugin(IFieldsPlugin):
             ),
         )
 
-    async def process(self, data: IPluginRequest) -> List[Image.Image]:
+    async def process(self, data: ISocketRequest) -> List[Image.Image]:
         return get_models()[0](**data.extraData).images
 
 
@@ -95,7 +95,7 @@ class ImageToImagePlugin(IFieldsPlugin):
             ),
         )
 
-    async def process(self, data: IPluginRequest) -> List[Image.Image]:
+    async def process(self, data: ISocketRequest) -> List[Image.Image]:
         image = await self.load_image(data.nodeData.src)
         return get_models()[1](image=image, **data.extraData).images
 

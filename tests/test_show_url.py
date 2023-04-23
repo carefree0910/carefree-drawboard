@@ -13,7 +13,7 @@ class ShowUrlPlugin(ITextAreaPlugin):
             pivot=PivotType.RT,
         )
 
-    async def process(self, data: IPluginRequest) -> str:
+    async def process(self, data: ISocketRequest) -> str:
         return data.nodeData.src or "Not Found"
 
 

@@ -1,21 +1,18 @@
-import { useCallback, useEffect } from "react";
+import { useCallback } from "react";
 
 import { BBox, INode, INodes, Logger } from "@carefree0910/core";
 
 import type { IMeta } from "@/schema/meta";
 import type {
   INodeData,
-  IPythonResponse,
-  IPythonRequest,
+  IPythonSocketRequest,
   IUsePythonInfo,
   IUseSocketPython,
   IPythonOnSocketMessage,
-  IPythonSocketRequest,
 } from "@/schema/_python";
 import { userStore } from "@/stores/user";
 import { debugStore } from "@/stores/debug";
 import { IPythonStore, updatePythonStore } from "@/stores/_python";
-import { Requests } from "@/requests/actions";
 import { useWebSocketHook } from "@/requests/hooks";
 import { uploadImage } from "@/actions/uploadImage";
 import { Exporter, IExportBlob } from "@/actions/export";
@@ -59,7 +56,7 @@ async function getPythonRequest({
   opt,
 }: Omit<IUsePythonInfo, "endpoint" | "isInvisible"> & {
   opt: IExportBlob;
-}): Promise<IPythonRequest> {
+}): Promise<Omit<IPythonSocketRequest, "hash">> {
   const exportBox = new INodes(nodes).bbox;
   const getNodeDataOpt: IGetNodeData = { exportBox, ...opt };
   const nodeData = await getNodeData(node, getNodeDataOpt);

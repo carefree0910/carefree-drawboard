@@ -11,7 +11,7 @@ from dataclasses import dataclass
 
 from cfdraw.config import Config
 from cfdraw.schema.plugins import IPlugin
-from cfdraw.schema.plugins import IPluginRequest
+from cfdraw.schema.plugins import ISocketRequest
 from cfdraw.schema.plugins import IPluginResponse
 from cfdraw.schema.plugins import ISocketMessage
 from cfdraw.plugins.factory import Plugins
@@ -19,7 +19,7 @@ from cfdraw.plugins.factory import Plugins
 
 @dataclass
 class IRequestQueueData:
-    request: IPluginRequest
+    request: ISocketRequest
     plugin: IPlugin
     event: Event
 

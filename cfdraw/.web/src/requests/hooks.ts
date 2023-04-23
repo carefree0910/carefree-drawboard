@@ -6,7 +6,7 @@ import { Logger, isUndefined } from "@carefree0910/core";
 import type { APISources, APIs } from "@/schema/requests";
 import type {
   IPythonOnSocketMessage,
-  IPythonRequest,
+  IPythonSocketRequest,
   IPythonSocketCallbacks,
 } from "@/schema/_python";
 import { pythonStore } from "@/stores/_python";
@@ -32,7 +32,7 @@ export function useAPI<T extends APISources>(source: T): APIs[T] {
 }
 
 function useOnSocketMessageWithRetry<R>(
-  getMessage: () => Promise<IPythonRequest>,
+  getMessage: () => Promise<IPythonSocketRequest>,
   onMessage: IPythonOnSocketMessage<R>,
 ): IPythonOnSocketMessage<R> {
   return useCallback(

@@ -55,17 +55,12 @@ class RequestQueue(IRequestQueue):
     def push(self, data: IRequestQueueData, send_text: ISend) -> str:
         uid = random_hash()
         self._queues.push(data.request.userId, Item(uid, data))
-        hash = data.request.hash if isinstance(data.request, ISocketRequest) else ""
+        hash = data.request.hash
         self._senders[uid] = hash, send_text
         log("~" * 50)
         log("> push.uid", uid)
         log("> push.userId", data.request.userId)
-        log(
-            "> push.hash",
-            data.request.hash
-            if isinstance(data.request, ISocketRequest)
-            else data.request.identifier,
-        )
+        log("> push.hash", hash)
         return uid
 
     async def run(self) -> None:

@@ -5,7 +5,7 @@ from typing import Optional
 
 from cfdraw.schema.plugins import PluginType
 from cfdraw.schema.plugins import IMiddleWare
-from cfdraw.schema.plugins import IPluginRequest
+from cfdraw.schema.plugins import ISocketRequest
 from cfdraw.schema.plugins import IPluginResponse
 
 
@@ -20,7 +20,7 @@ class TimerMiddleWare(IMiddleWare):
     def subscriptions(self) -> List[PluginType]:
         return [PluginType.FIELDS]
 
-    async def before(self, request: IPluginRequest) -> None:
+    async def before(self, request: ISocketRequest) -> None:
         self.t = time.time()
 
     async def process(self, response: IPluginResponse) -> IPluginResponse:

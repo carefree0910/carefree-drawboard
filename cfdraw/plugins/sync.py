@@ -7,7 +7,7 @@ from cfdraw.plugins.factory import PluginFactory
 
 @PluginFactory.register_internal("sync")
 class SyncSocketPlugin(IInternalSocketPlugin):
-    async def process(self, data: IPluginRequest) -> IPluginResponse:
+    async def process(self, data: ISocketRequest) -> IPluginResponse:
         config = get_config()
         return IPluginResponse(
             success=True,

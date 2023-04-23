@@ -20,7 +20,7 @@ class TimerPlugin(ITextAreaPlugin):
             ),
         )
 
-    async def process(self, data: IPluginRequest) -> str:
+    async def process(self, data: ISocketRequest) -> str:
         return datetime.now().strftime(TIME_FORMAT)
 
 

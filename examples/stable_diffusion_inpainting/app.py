@@ -54,7 +54,7 @@ class InpaintingPlugin(IFieldsPlugin):
             ),
         )
 
-    async def process(self, data: IPluginRequest) -> List[Image.Image]:
+    async def process(self, data: ISocketRequest) -> List[Image.Image]:
         path_data = self.filter(data.nodeDataList, SingleNodeType.PATH)[0]
         image_data = self.filter(data.nodeDataList, SingleNodeType.IMAGE)[0]
         mask = await self.load_image(path_data.src)

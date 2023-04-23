@@ -19,7 +19,7 @@ class GrayScalePlugin(IFieldsPlugin):
             expandProps=IChakra(bg="green.50"),
         )
 
-    async def process(self, data: IPluginRequest) -> Image.Image:
+    async def process(self, data: ISocketRequest) -> Image.Image:
         image = await self.load_image(data.nodeData.src)
         return image.convert("L")
 
@@ -38,7 +38,7 @@ class EdgePlugin(IFieldsPlugin):
             pluginInfo=IFieldsPluginInfo(definitions={}),
         )
 
-    async def process(self, data: IPluginRequest) -> Image.Image:
+    async def process(self, data: ISocketRequest) -> Image.Image:
         image = await self.load_image(data.nodeData.src)
         return image.convert("L").filter(ImageFilter.FIND_EDGES)
 
@@ -70,7 +70,7 @@ class GaussianBlurPlugin(IFieldsPlugin):
             ),
         )
 
-    async def process(self, data: IPluginRequest) -> Image.Image:
+    async def process(self, data: ISocketRequest) -> Image.Image:
         image = await self.load_image(data.nodeData.src)
         return image.filter(ImageFilter.GaussianBlur(data.extraData["size"]))
 

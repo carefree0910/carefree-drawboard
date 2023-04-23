@@ -53,7 +53,7 @@ pluginInfo=IFieldsPluginInfo(
 * The name of the parameter is `size`, so we can use `size` in the `process` function to get the value of the slider.
 
 ```python
-async def process(self, data: IPluginRequest) -> Image.Image:
+async def process(self, data: ISocketRequest) -> Image.Image:
     # `load_image` is an internal helper function to load an image (Image.Image) from `src`.
     image = await self.load_image(data.nodeData.src)
     # here we can access the value of the slider by `data.extraData["size"]`

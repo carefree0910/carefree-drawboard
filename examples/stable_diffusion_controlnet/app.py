@@ -61,7 +61,7 @@ class CannyPlugin(IFieldsPlugin):
             pluginInfo=IFieldsPluginInfo(definitions={}),
         )
 
-    async def process(self, data: IPluginRequest) -> Image.Image:
+    async def process(self, data: ISocketRequest) -> Image.Image:
         image = np.array(await self.load_image(data.nodeData.src))
 
         # Exercise: try to expose these two parameters to the `definitions`!
@@ -91,7 +91,7 @@ class ControlNetPlugin(IFieldsPlugin):
             ),
         )
 
-    async def process(self, data: IPluginRequest) -> List[Image.Image]:
+    async def process(self, data: ISocketRequest) -> List[Image.Image]:
         image = await self.load_image(data.nodeData.src)
         return get_model()(image=image, **data.extraData).images
 
