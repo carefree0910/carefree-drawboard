@@ -16,5 +16,6 @@ const RedoPlugin = ({ pluginInfo, ...props }: IPlugin) => {
   const id = useMemo(() => `redo_${getRandomHash()}`, []);
   return <Render id={id} onFloatingButtonClick={async () => safeRedo()} {...props} />;
 };
-drawboardPluginFactory.register("undo")(observer(UndoPlugin));
-drawboardPluginFactory.register("redo")(observer(RedoPlugin));
+
+drawboardPluginFactory.register("undo", true)(observer(UndoPlugin));
+drawboardPluginFactory.register("redo", true)(observer(RedoPlugin));

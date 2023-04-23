@@ -141,4 +141,4 @@ const BrushPlugin = ({ pluginInfo, ...props }: IPlugin) => {
     </Render>
   );
 };
-drawboardPluginFactory.register("brush")(observer(BrushPlugin));
+drawboardPluginFactory.register("brush", true)(observer(BrushPlugin));

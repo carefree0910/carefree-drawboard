@@ -173,6 +173,4 @@ const ProjectPlugin = ({ pluginInfo, ...props }: IPlugin) => {
   );
 };
 
-const _ = observer(ProjectPlugin);
-drawboardPluginFactory.register("project")(_);
-export default _;
+drawboardPluginFactory.register("project", true)(observer(ProjectPlugin));

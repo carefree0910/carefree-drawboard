@@ -75,6 +75,4 @@ const AddPlugin = ({ pluginInfo, ...props }: IPlugin) => {
   );
 };
 
-const _ = observer(AddPlugin);
-drawboardPluginFactory.register("add")(_);
-export default _;
+drawboardPluginFactory.register("add", true)(observer(AddPlugin));

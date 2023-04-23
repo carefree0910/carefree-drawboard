@@ -18,5 +18,6 @@ const MultiEditorPlugin = ({ pluginInfo, ...props }: IPlugin) => {
   const { setGroup } = useSelecting("multiple") ?? {};
   return <Render id={id} onFloatingButtonClick={async () => setGroup?.()} {...props} />;
 };
-drawboardPluginFactory.register("groupEditor")(observer(GroupEditorPlugin));
-drawboardPluginFactory.register("multiEditor")(observer(MultiEditorPlugin));
+
+drawboardPluginFactory.register("groupEditor", true)(observer(GroupEditorPlugin));
+drawboardPluginFactory.register("multiEditor", true)(observer(MultiEditorPlugin));

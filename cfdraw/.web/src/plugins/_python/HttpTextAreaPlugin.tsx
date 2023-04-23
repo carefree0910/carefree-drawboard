@@ -42,6 +42,7 @@ const PythonHttpTextAreaPlugin = ({
   );
 };
 
-const _ = observer(PythonHttpTextAreaPlugin);
-drawboardPluginFactory.registerPython("_python.httpTextArea", true)(_);
-export default _;
+drawboardPluginFactory.registerPython(
+  "_python.httpTextArea",
+  true,
+)(observer(PythonHttpTextAreaPlugin));

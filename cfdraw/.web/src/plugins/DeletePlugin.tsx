@@ -18,6 +18,4 @@ const DeletePlugin = ({ pluginInfo, ...props }: IPlugin) => {
   return <Render id={id} onFloatingButtonClick={async () => onDelete()} {...props} />;
 };
 
-const _ = observer(DeletePlugin);
-drawboardPluginFactory.register("delete")(_);
-export default _;
+drawboardPluginFactory.register("delete", true)(observer(DeletePlugin));

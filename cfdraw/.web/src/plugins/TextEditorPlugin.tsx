@@ -64,4 +64,4 @@ const TextEditorPlugin = ({ pluginInfo: { node }, ...props }: IPlugin) => {
     </Render>
   );
 };
-drawboardPluginFactory.register("textEditor")(observer(TextEditorPlugin));
+drawboardPluginFactory.register("textEditor", true)(observer(TextEditorPlugin));

@@ -98,6 +98,7 @@ const PythonSocketFieldsPlugin = ({ pluginInfo, ...props }: IPythonFieldsPlugin)
   );
 };
 
-const _ = observer(PythonSocketFieldsPlugin);
-drawboardPluginFactory.registerPython("_python.socketFields", true)(_);
-export default _;
+drawboardPluginFactory.registerPython(
+  "_python.socketFields",
+  true,
+)(observer(PythonSocketFieldsPlugin));

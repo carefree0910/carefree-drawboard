@@ -67,6 +67,4 @@ const PythonHttpFieldsPlugin = ({ pluginInfo, ...props }: IPythonFieldsPlugin) =
   );
 };
 
-const _ = observer(PythonHttpFieldsPlugin);
-drawboardPluginFactory.registerPython("_python.httpFields", true)(_);
-export default _;
+drawboardPluginFactory.registerPython("_python.httpFields", true)(observer(PythonHttpFieldsPlugin));

@@ -47,6 +47,4 @@ const PythonHttpQAPlugin = ({ pluginInfo, ...props }: IPythonHttpQAPlugin) => {
   );
 };
 
-const _ = observer(PythonHttpQAPlugin);
-drawboardPluginFactory.registerPython("_python.httpQA", true)(_);
-export default _;
+drawboardPluginFactory.registerPython("_python.httpQA", true)(observer(PythonHttpQAPlugin));

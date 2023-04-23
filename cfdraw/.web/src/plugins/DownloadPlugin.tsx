@@ -87,6 +87,4 @@ const DownloadPlugin = ({ pluginInfo, ...props }: IPlugin) => {
   );
 };
 
-const _ = observer(DownloadPlugin);
-drawboardPluginFactory.register("download")(_);
-export default _;
+drawboardPluginFactory.register("download", true)(observer(DownloadPlugin));

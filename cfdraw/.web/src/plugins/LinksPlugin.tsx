@@ -19,6 +19,7 @@ const GitHubPlugin = (props: IPlugin) => {
   const id = useMemo(() => `githubLink_${getRandomHash()}`, []);
   return <Link id={id} url="https://github.com/carefree0910/carefree-drawboard" {...props} />;
 };
-drawboardPluginFactory.register("wiki")(observer(WikiPlugin));
-drawboardPluginFactory.register("email")(observer(EmailPlugin));
-drawboardPluginFactory.register("github")(observer(GitHubPlugin));
+
+drawboardPluginFactory.register("wiki", true)(observer(WikiPlugin));
+drawboardPluginFactory.register("email", true)(observer(EmailPlugin));
+drawboardPluginFactory.register("github", true)(observer(GitHubPlugin));

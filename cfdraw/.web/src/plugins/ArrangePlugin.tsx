@@ -23,4 +23,4 @@ const ArrangePlugin = ({ pluginInfo: { nodes }, ...props }: IPlugin) => {
     />
   );
 };
-drawboardPluginFactory.register("arrange")(observer(ArrangePlugin));
+drawboardPluginFactory.register("arrange", true)(observer(ArrangePlugin));
