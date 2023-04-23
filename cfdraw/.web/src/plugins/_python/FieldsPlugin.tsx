@@ -20,7 +20,7 @@ import { useCurrentMeta, useDefinitionsRequestDataFn, useFieldsPluginIds } from 
 import PythonSocketPluginWithSubmit, { socketFinishedEvent } from "./SocketPluginWithSubmit";
 import DefinitionFields from "./DefinitionFields";
 
-const PythonSocketFieldsPlugin = ({ pluginInfo, ...props }: IPythonFieldsPlugin) => {
+const PythonFieldsPlugin = ({ pluginInfo, ...props }: IPythonFieldsPlugin) => {
   const { id, identifierId } = useFieldsPluginIds(pluginInfo.identifier);
   const t = useToast();
   const lang = langStore.tgt;
@@ -53,7 +53,7 @@ const PythonSocketFieldsPlugin = ({ pluginInfo, ...props }: IPythonFieldsPlugin)
             importMeta({
               t,
               lang,
-              type: "python.socketFields",
+              type: "python.fields",
               metaData: {
                 identifier: identifierId,
                 parameters: getExtraRequestData(),
@@ -98,7 +98,4 @@ const PythonSocketFieldsPlugin = ({ pluginInfo, ...props }: IPythonFieldsPlugin)
   );
 };
 
-drawboardPluginFactory.registerPython(
-  "_python.socketFields",
-  true,
-)(observer(PythonSocketFieldsPlugin));
+drawboardPluginFactory.registerPython("_python.fields", true)(observer(PythonFieldsPlugin));

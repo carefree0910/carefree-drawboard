@@ -8,10 +8,10 @@ export const allMetaTypes = [
   "upload",
   "add.text",
   "add.sketch.path",
+  "python.fields",
   "python.httpFields",
-  "python.socketFields",
 ] as const;
-export type MetaType = typeof allMetaTypes[number];
+export type MetaType = (typeof allMetaTypes)[number];
 export interface ICommonMetaData<T extends _IMetaData = _IMetaData> {
   alias?: string;
   timestamp?: number;
@@ -46,8 +46,8 @@ export interface IMetaData {
   upload: IUploadMetaData;
   "add.text": ICommonMetaData;
   "add.sketch.path": ICommonMetaData;
+  "python.fields": IPythonFieldsMetaData;
   "python.httpFields": IPythonFieldsMetaData;
-  "python.socketFields": IPythonFieldsMetaData;
 }
 
 export interface IImportMeta<T extends MetaType> {

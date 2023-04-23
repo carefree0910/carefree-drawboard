@@ -21,8 +21,8 @@ export * from "./LinksPlugin";
 export * from "./BrushPlugin";
 export * from "./_python/TextAreaPlugin";
 export * from "./_python/QAPlugin";
+export * from "./_python/FieldsPlugin";
 export * from "./_python/HttpFieldsPlugin";
-export * from "./_python/SocketFieldsPlugin";
 
 export function makePlugin<T extends AvailablePluginsAndPythonPlugins>({
   key,

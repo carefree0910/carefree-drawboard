@@ -15,7 +15,7 @@ class SocketMessageMiddleWare(ISocketMiddleWare):
         return [
             PluginType.TEXT_AREA,
             PluginType.QA,
-            PluginType.SOCKET_FIELDS,
+            PluginType.FIELDS,
             PluginType._INTERNAL,
         ]
 

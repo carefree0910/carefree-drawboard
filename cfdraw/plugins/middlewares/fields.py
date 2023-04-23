@@ -11,7 +11,7 @@ from cfdraw.schema.plugins import IPluginResponse
 class FieldsMiddleWare(IMiddleWare):
     @property
     def subscriptions(self) -> List[PluginType]:
-        return [PluginType.HTTP_FIELDS, PluginType.SOCKET_FIELDS]
+        return [PluginType.FIELDS, PluginType.HTTP_FIELDS]
 
     async def process(
         self,

@@ -33,8 +33,8 @@ class PluginType(str, Enum):
     # `cfdraw/.web/src/schema/plugins.ts` (without the `_python.` prefix)
     TEXT_AREA = "textArea"
     QA = "QA"
+    FIELDS = "fields"
     HTTP_FIELDS = "httpFields"
-    SOCKET_FIELDS = "socketFields"
     # this type of plugins will not be rendered on the drawboard 🎨
     _INTERNAL = "_internal"
 

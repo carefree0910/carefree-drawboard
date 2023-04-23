@@ -129,16 +129,16 @@ class IQAPlugin(ISocketPlugin):
         return PluginType.QA
 
 
+class IFieldsPlugin(ISocketPlugin):
+    @property
+    def type(self) -> PluginType:
+        return PluginType.FIELDS
+
+
 class IHttpFieldsPlugin(IHttpPlugin):
     @property
     def type(self) -> PluginType:
         return PluginType.HTTP_FIELDS
-
-
-class ISocketFieldsPlugin(ISocketPlugin):
-    @property
-    def type(self) -> PluginType:
-        return PluginType.SOCKET_FIELDS
 
 
 ## deprecated
@@ -160,8 +160,8 @@ __all__ = [
     "IInternalSocketPlugin",
     "ITextAreaPlugin",
     "IQAPlugin",
+    "IFieldsPlugin",
     "IHttpFieldsPlugin",
-    "ISocketFieldsPlugin",
     # deprecated
     "IHttpTextAreaPlugin",
     "IHttpQAPlugin",

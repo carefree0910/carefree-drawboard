@@ -11,9 +11,7 @@ import Render from "./components/Render";
 function getMetaRepresentation(meta: IMeta): string {
   const { type, data } = meta;
   if (type.startsWith("python.")) {
-    const identifier = data.identifier ?? "unknown";
-    if (type === "python.httpFields") return identifier;
-    if (type === "python.socketFields") return `${identifier} (socket)`;
+    return data.identifier ?? "unknown";
   }
   return type;
 }

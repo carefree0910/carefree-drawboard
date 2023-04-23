@@ -28,8 +28,8 @@ const consumers: Record<MetaType, (input: IImportMeta<any>) => void> = {
   upload: consumeUpload,
   "add.text": consumeAddText,
   "add.sketch.path": consumeAddSketchPath,
+  "python.fields": consumePythonFields,
   "python.httpFields": consumePythonFields,
-  "python.socketFields": consumePythonFields,
 };
 function consumeUpload({ t, lang, type, metaData }: IImportMeta<"upload">): void {
   const success = async () => {
@@ -80,7 +80,7 @@ function consumePythonFields({
   lang,
   type,
   metaData,
-}: IImportMeta<"python.httpFields" | "python.socketFields">): void {
+}: IImportMeta<"python.fields" | "python.httpFields">): void {
   const success = async () => {
     toast(t, "success", translate(Toast_Words["generate-image-success-message"], lang));
   };
