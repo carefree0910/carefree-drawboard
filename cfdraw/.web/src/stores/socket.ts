@@ -123,12 +123,12 @@ export function useWebSocket(opt?: IUseWebSocket) {
           }
           const parsed = JSON.parse(data) as IPythonSocketMessage<any>;
           log(
-            `>> incoming message : ${parsed.data.hash}, current hooks: ${socketStore.hooks
+            `>> incoming message : ${parsed.hash}, current hooks: ${socketStore.hooks
               .map((h) => h.key)
               .join(", ")}`,
           );
           socketStore.hooks.forEach((hook) => {
-            if (parsed.data.hash !== hook.key) return;
+            if (parsed.hash !== hook.key) return;
             log(`>>> onMessage (${hook.key})`);
             hook.onMessage(parsed).then((res) => {
               if (!res) return;

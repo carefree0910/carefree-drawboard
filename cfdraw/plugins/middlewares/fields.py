@@ -4,11 +4,11 @@ from PIL.Image import Image
 
 from cfdraw.utils.server import upload_image
 from cfdraw.schema.plugins import PluginType
-from cfdraw.schema.plugins import IMiddleWare
-from cfdraw.schema.plugins import IPluginResponse
+from cfdraw.schema.plugins import ISocketMessage
+from cfdraw.schema.plugins import ISocketMiddleWare
 
 
-class FieldsMiddleWare(IMiddleWare):
+class FieldsMiddleWare(ISocketMiddleWare):
     @property
     def subscriptions(self) -> List[PluginType]:
         return [PluginType.FIELDS]
@@ -16,20 +16,13 @@ class FieldsMiddleWare(IMiddleWare):
     async def process(
         self,
         response: Union[str, List[str], Image, List[Image]],
-    ) -> IPluginResponse:
+    ) -> ISocketMessage:
         if not isinstance(response, list):
             response = [response]
         if isinstance(response[0], str):
-            return IPluginResponse(
-                success=True,
-                message="",
-                data=dict(type="text", value=response),
-            )
-        return IPluginResponse(
-            success=True,
-            message="",
-            data=dict(type="image", value=[upload_image(image) for image in response]),
-        )
+            return self.make_success(dict(type="text", value=response))
+        urls = [upload_image(image) for image in response]
+        return self.make_success(dict(type="image", value=urls))
 
 
 __all__ = [

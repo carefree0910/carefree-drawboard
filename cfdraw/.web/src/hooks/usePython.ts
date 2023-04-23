@@ -143,15 +143,7 @@ export function useSyncPython() {
     [],
   );
   const onMessage = useCallback<IPythonOnSocketMessage<IPythonStore>>(
-    async ({
-      data: {
-        status,
-        total,
-        pending,
-        message,
-        data: { progress, final },
-      },
-    }) => {
+    async ({ status, total, pending, message, data: { progress, final } }) => {
       if (status !== "finished") {
         if (status === "pending") {
           Logger.warn(`sync pending: ${pending} / ${total}`);

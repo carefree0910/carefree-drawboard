@@ -88,11 +88,6 @@ export interface IPythonSocketRequest {
   extraData: Dictionary<any>;
   isInternal?: boolean;
 }
-export interface IPythonResponse<T> {
-  success: boolean;
-  message: string;
-  data: T;
-}
 export type IPythonOnSocketMessage<R> = (data: IPythonSocketMessage<R>) => Promise<
   | {
       newMessage?: () => Promise<IPythonSocketRequest>;
@@ -123,7 +118,7 @@ export interface IPythonSocketResponse<R> {
   intermediate?: IPythonSocketIntermediate;
   final?: R;
 }
-export interface IPythonSocketData<R> {
+export interface IPythonSocketMessage<R> {
   hash: string;
   status: PythonSocketStatus;
   total: number;
@@ -131,16 +126,6 @@ export interface IPythonSocketData<R> {
   message: string;
   data: IPythonSocketResponse<R>;
 }
-/**
- * for `IPythonSocketMessage`, it should always have `success=true` & `message=""`
- * > this is because socket connection is either alive or dead, and once it's alive,
- * messages will always transfer successfully.
- * > to check whether a request is 'truly' success, we can check the `status` field
- * of the returned `data`. It is one of the `PythonSocketStatus`, and when its value
- * is `exception`, we know something bad is happening, and the message can be extracted
- * from the `message` field of the returned `data`.
- */
-export interface IPythonSocketMessage<R> extends IPythonResponse<IPythonSocketData<R>> {}
 export interface IUseSocketPython<R>
   extends IUsePythonInfo,
     Omit<IPythonSocketCallbacks<R>, "getMessage"> {

@@ -20,7 +20,7 @@ const PythonQAPlugin = ({ pluginInfo, ...props }: IPythonQAPlugin) => {
   const lang = langStore.tgt;
   const getExtraRequestData = useCallback(() => ({ text: userInput }), [userInput]);
   const onMessage = useCallback<IPythonOnSocketMessage<{ text: string }>>(
-    async ({ data: { status, data } }) => {
+    async ({ status, data }) => {
       if (status === "finished") {
         setServerText(data.final?.text ?? "");
       } else {

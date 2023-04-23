@@ -22,7 +22,7 @@ const PythonTextAreaPlugin = ({
   const hash = useMemo(() => getRandomHash().toString(), [id]);
   const [value, setValue] = useState("");
   const onMessage = useCallback<IPythonOnSocketMessage<{ text: string }>>(
-    async ({ data: { status, data } }) => {
+    async ({ status, data }) => {
       if (status === "finished") {
         setValue(data.final?.text ?? "");
       } else if (!noLoading) {

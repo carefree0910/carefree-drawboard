@@ -181,14 +181,6 @@ List of data extracted from `nodes`.
     isInternal: bool = Field(False, description="Whether the request is internal")
 
 
-class IPluginResponse(BaseModel):
-    """This should align with `IPythonResponse` at `src/schema/_python.ts`"""
-
-    success: bool = Field(..., description="Whether returned successfully")
-    message: str = Field(..., description="The message of the response")
-    data: Dict[str, Any] = Field(..., description="The data of the response")
-
-
 class SocketStatus(str, Enum):
     """This should align with `PythonSocketStatus` at `src/schema/_python.ts`"""
 
@@ -227,8 +219,8 @@ class ISocketResponse(BaseModel):
     final: Optional[Dict[str, Any]] = Field(None, description="Final response, if any")
 
 
-class ISocketData(BaseModel):
-    """This should align with `IPythonSocketData` at `src/schema/_python.ts`"""
+class ISocketMessage(BaseModel):
+    """This should align with `IPythonSocketMessage` at `src/schema/_python.ts`"""
 
     hash: str = Field(..., description="Hash of the current task")
     status: SocketStatus = Field(..., description="Status of the current task")
@@ -237,25 +229,25 @@ class ISocketData(BaseModel):
     message: str = Field(..., description="Message of the current status")
     data: ISocketResponse = Field(ISocketResponse(), description="Response data")
 
-
-class ISocketMessage(IPluginResponse):
-    data: ISocketData = Field(..., description="Socket data of the current task")
+    @classmethod
+    def make_success(cls, hash: str, final: Dict[str, Any]) -> "ISocketMessage":
+        return cls(
+            hash=hash,
+            status=SocketStatus.FINISHED,
+            total=0,
+            pending=0,
+            message="",
+            data=ISocketResponse(final=final),
+        )
 
     @classmethod
-    def from_response(cls, hash: str, response: IPluginResponse) -> "ISocketData":
+    def make_exception(cls, hash: str, message: str) -> "ISocketMessage":
         return cls(
-            success=True,
-            message="",
-            data=ISocketData(
-                hash=hash,
-                status=SocketStatus.FINISHED
-                if response.success
-                else SocketStatus.EXCEPTION,
-                total=0,
-                pending=0,
-                message=response.message,
-                data=ISocketResponse(final=response.data),
-            ),
+            hash=hash,
+            status=SocketStatus.EXCEPTION,
+            total=0,
+            pending=0,
+            message=message,
         )
 
 
@@ -266,6 +258,7 @@ class IPlugin(ABC):
     hash: str
     identifier: str
     http_session: ClientSession
+    send_text: ISendSocketText
 
     @property
     @abstractmethod
@@ -278,7 +271,7 @@ class IPlugin(ABC):
         pass
 
     @abstractmethod
-    async def __call__(self, data: ISocketRequest) -> IPluginResponse:
+    async def __call__(self, data: ISocketRequest) -> ISocketMessage:
         pass
 
     @abstractmethod
@@ -299,17 +292,17 @@ class IMiddleWare(ABC):
         pass
 
     @abstractmethod
-    async def process(self, response: Any) -> IPluginResponse:
+    async def process(self, response: Any) -> ISocketMessage:
         """
-        If `can_inject_response` is `False`, the `response` here could be anything except
-        `IPluginResponse`, because in this case if `response` is already an `IPluginResponse`,
+        If `can_handle_message` is `False`, the `response` here could be anything except
+        `ISocketMessage`, because in this case if `response` is already an `ISocketMessage`,
         it will be returned directly in the `__call__` method.
         """
 
     # optional callbacks
 
     @property
-    def can_handle_response(self) -> bool:
+    def can_handle_message(self) -> bool:
         return False
 
     async def before(self, request: ISocketRequest) -> None:
@@ -317,17 +310,25 @@ class IMiddleWare(ABC):
 
     # api
 
-    async def __call__(self, plugin: IPlugin, response: Any) -> IPluginResponse:
+    async def __call__(self, plugin: IPlugin, response: Any) -> ISocketMessage:
         if plugin.type not in self.subscriptions:
             return response
-        if isinstance(response, IPluginResponse) and not self.can_handle_response:
+        if isinstance(response, ISocketMessage) and not self.can_handle_message:
             return response
         return await self.process(response)
 
 
 class ISocketMiddleWare(IMiddleWare, metaclass=ABCMeta):
+    hash: str
+
     def __init__(self, send_text: ISendSocketText) -> None:
         self.send_text = send_text
+
+    async def before(self, request: ISocketRequest) -> None:
+        self.hash = request.hash
+
+    def make_success(self, final: Dict[str, Any]) -> ISocketMessage:
+        return ISocketMessage.make_success(self.hash, final)
 
 
 # (react) bindings
@@ -384,9 +385,7 @@ __all__ = [
     # web
     "INodeData",
     "ISocketRequest",
-    "IPluginResponse",
     "SocketStatus",
-    "ISocketData",
     "ISocketMessage",
     # plugin interface
     "IPlugin",

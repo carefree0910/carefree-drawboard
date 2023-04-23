@@ -5,10 +5,8 @@ import asyncio
 
 from typing import Any
 from typing import Dict
-from typing import List
 from typing import Tuple
 from typing import TypeVar
-from typing import Optional
 from typing import Coroutine
 from cftool.misc import print_error
 from cftool.misc import random_hash
@@ -18,11 +16,8 @@ from concurrent.futures import ThreadPoolExecutor
 from cfdraw.utils.server import get_err_msg
 from cfdraw.utils.data_structures import Item
 from cfdraw.utils.data_structures import QueuesInQueue
-from cfdraw.schema.plugins import ISocketData
 from cfdraw.schema.plugins import SocketStatus
 from cfdraw.schema.plugins import ISocketMessage
-from cfdraw.schema.plugins import ISocketRequest
-from cfdraw.schema.plugins import IPluginResponse
 from cfdraw.app.schema import ISend
 from cfdraw.app.schema import IRequestQueue
 from cfdraw.app.schema import IRequestQueueData
@@ -135,30 +130,22 @@ class RequestQueue(IRequestQueue):
             try:
                 if pending is None:
                     await sender(
-                        ISocketMessage.from_response(
+                        ISocketMessage.make_exception(
                             hash,
-                            IPluginResponse(
-                                success=False,
-                                message=(
-                                    f"Internal error occurred: "
-                                    f"cannot find pending request after submitted"
-                                ),
-                                data={},
+                            message=(
+                                f"Internal error occurred: "
+                                f"cannot find pending request after submitted"
                             ),
                         )
                     )
                 elif len(pending) > 0:
                     await sender(
                         ISocketMessage(
-                            success=True,
+                            hash=hash,
+                            status=SocketStatus.PENDING,
+                            total=self._queues.num_items,
+                            pending=len(pending),
                             message=f"in queue: {', '.join([str(item.data) for item in pending])}",
-                            data=ISocketData(
-                                hash=hash,
-                                status=SocketStatus.PENDING,
-                                total=self._queues.num_items,
-                                pending=len(pending),
-                                message="",
-                            ),
                         )
                     )
             except Exception as err:
@@ -172,15 +159,11 @@ class RequestQueue(IRequestQueue):
         try:
             await sender(
                 ISocketMessage(
-                    success=True,
+                    hash=hash,
+                    status=SocketStatus.WORKING,
+                    total=self._queues.num_items,
+                    pending=0,
                     message="",
-                    data=ISocketData(
-                        hash=hash,
-                        status=SocketStatus.WORKING,
-                        total=self._queues.num_items,
-                        pending=0,
-                        message="",
-                    ),
                 )
             )
         except Exception as err:
@@ -194,15 +177,11 @@ class RequestQueue(IRequestQueue):
         try:
             await sender(
                 ISocketMessage(
-                    success=True,
+                    hash=hash,
+                    status=SocketStatus.WORKING,
+                    total=self._queues.num_items,
+                    pending=0,
                     message="",
-                    data=ISocketData(
-                        hash=hash,
-                        status=SocketStatus.EXCEPTION,
-                        total=0,
-                        pending=0,
-                        message=message,
-                    ),
                 )
             )
         except Exception as err:

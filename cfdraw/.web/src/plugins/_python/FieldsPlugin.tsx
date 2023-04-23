@@ -30,15 +30,7 @@ const PythonFieldsPlugin = ({ pluginInfo, ...props }: IPythonFieldsPlugin) => {
   const emitClose = useClosePanel(id);
 
   const onMessage = useCallback<IPythonOnSocketMessage<IPythonFieldsResponse>>(
-    async ({
-      data: {
-        hash,
-        status,
-        total,
-        pending,
-        data: { progress, intermediate, final },
-      },
-    }) => {
+    async ({ hash, status, total, pending, data: { progress, intermediate, final } }) => {
       switch (status) {
         case "finished": {
           socketFinishedEvent.emit({ id });

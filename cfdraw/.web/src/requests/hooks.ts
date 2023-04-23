@@ -36,12 +36,12 @@ function useOnSocketMessageWithRetry<R>(
   onMessage: IPythonOnSocketMessage<R>,
 ): IPythonOnSocketMessage<R> {
   return useCallback(
-    ({ success, message, data }) => {
-      if (data.status === "exception") {
-        Logger.warn(`socket exception occurred: ${data.message}`);
+    (message) => {
+      if (message.status === "exception") {
+        Logger.warn(`socket exception occurred: ${message.message}`);
         return Promise.resolve({ newMessage: getMessage });
       }
-      return onMessage({ success, message, data });
+      return onMessage(message);
     },
     [getMessage, onMessage],
   );

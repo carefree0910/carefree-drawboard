@@ -25,7 +25,7 @@ class IBasePlugin(IPlugin, metaclass=ABCMeta):
     def middlewares(self) -> List[IMiddleWare]:
         return []
 
-    async def __call__(self, data: ISocketRequest) -> IPluginResponse:
+    async def __call__(self, data: ISocketRequest) -> ISocketMessage:
         middlewares = self.middlewares
         for middleware in middlewares:
             await middleware.before(data)
@@ -81,17 +81,15 @@ class IBasePlugin(IPlugin, metaclass=ABCMeta):
 
 
 class ISocketPlugin(IBasePlugin, metaclass=ABCMeta):
-    send_text: ISendSocketText
-
     @property
     def middlewares(self) -> List[IMiddleWare]:
         common_middlewares = [
-            TextAreaMiddleWare(),
-            FieldsMiddleWare(),
-            TimerMiddleWare(),
+            TextAreaMiddleWare(self.send_text),
+            FieldsMiddleWare(self.send_text),
+            TimerMiddleWare(self.send_text),
         ]
-        socket_message_middleware = SocketMessageMiddleWare(self.send_text)
-        return common_middlewares + [socket_message_middleware]
+        send_message_middleware = SendSocketMessageMiddleWare(self.send_text)
+        return common_middlewares + [send_message_middleware]
 
     @abstractmethod
     async def process(self, data: ISocketRequest) -> Any:
