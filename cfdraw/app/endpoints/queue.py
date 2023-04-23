@@ -175,15 +175,7 @@ class RequestQueue(IRequestQueue):
             return
         hash, sender = sender_pack
         try:
-            await sender(
-                ISocketMessage(
-                    hash=hash,
-                    status=SocketStatus.WORKING,
-                    total=self._queues.num_items,
-                    pending=0,
-                    message="",
-                )
-            )
+            await sender(ISocketMessage.make_exception(hash, message))
         except Exception as err:
             print_error(get_err_msg(err))
 
