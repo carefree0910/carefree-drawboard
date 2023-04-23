@@ -52,12 +52,11 @@ class RequestQueue(IRequestQueue):
         self._queues = QueuesInQueue[IRequestQueueData]()
         self._senders: Dict[str, Tuple[str, ISend]] = {}
 
-    def push(self, data: IRequestQueueData, send_text: Optional[ISend] = None) -> str:
+    def push(self, data: IRequestQueueData, send_text: ISend) -> str:
         uid = random_hash()
         self._queues.push(data.request.userId, Item(uid, data))
-        if send_text is not None:
-            hash = data.request.hash if isinstance(data.request, ISocketRequest) else ""
-            self._senders[uid] = hash, send_text
+        hash = data.request.hash if isinstance(data.request, ISocketRequest) else ""
+        self._senders[uid] = hash, send_text
         log("~" * 50)
         log("> push.uid", uid)
         log("> push.userId", data.request.userId)

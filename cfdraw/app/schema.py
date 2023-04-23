@@ -34,7 +34,7 @@ ISend = Callable[[ISocketMessage], Coroutine[Any, Any, None]]
 
 class IRequestQueue(ABC):
     @abstractmethod
-    def push(self, data: IRequestQueueData, send_text: Optional[ISend] = None) -> str:
+    def push(self, data: IRequestQueueData, send_text: ISend) -> str:
         pass
 
     @abstractmethod
