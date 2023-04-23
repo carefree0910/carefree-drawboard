@@ -4,6 +4,7 @@ import { observer } from "mobx-react-lite";
 import { langStore } from "@carefree0910/business";
 
 import { useWebSocket } from "./stores/socket";
+import { useUserInitialization } from "./stores/user";
 import { useInitBoard } from "./hooks/useInitBoard";
 import { useFileDropper } from "./hooks/useFileDropper";
 import { useGridLines } from "./hooks/useGridLines";
@@ -14,6 +15,7 @@ import BoardPanel from "./BoardPanel";
 
 function App() {
   useWebSocket();
+  useUserInitialization();
   useSyncPython();
   useInitBoard();
   useFileDropper(langStore.tgt);

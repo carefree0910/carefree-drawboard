@@ -1,3 +1,4 @@
+import { useEffect } from "react";
 import { makeObservable, observable } from "mobx";
 
 import { getRandomHash } from "@carefree0910/core";
@@ -10,7 +11,7 @@ export interface IUserStore {
   canAlwaysSubmit: boolean;
 }
 class UserStore extends ABCStore<IUserStore> implements IUserStore {
-  userId: string = getRandomHash().toString();
+  userId: string = "";
   canAlwaysSubmit: boolean = debugStore.allowAlwaysCommit;
 
   constructor() {
@@ -27,3 +28,8 @@ class UserStore extends ABCStore<IUserStore> implements IUserStore {
 }
 
 export const userStore = new UserStore();
+export const useUserInitialization = () => {
+  useEffect(() => {
+    userStore.updateProperty("userId", getRandomHash().toString());
+  }, []);
+};
