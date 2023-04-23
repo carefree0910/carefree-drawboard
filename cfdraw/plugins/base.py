@@ -123,10 +123,10 @@ class ITextAreaPlugin(ISocketPlugin):
         return PluginType.TEXT_AREA
 
 
-class IHttpQAPlugin(IHttpPlugin):
+class IQAPlugin(ISocketPlugin):
     @property
     def type(self) -> PluginType:
-        return PluginType.HTTP_QA
+        return PluginType.QA
 
 
 class IHttpFieldsPlugin(IHttpPlugin):
@@ -149,14 +149,20 @@ class IHttpTextAreaPlugin(ITextAreaPlugin):
     pass
 
 
+@deprecated("please use `IQAPlugin` instead")
+class IHttpQAPlugin(IQAPlugin):
+    pass
+
+
 __all__ = [
     "IHttpPlugin",
     "ISocketPlugin",
     "IInternalSocketPlugin",
     "ITextAreaPlugin",
-    "IHttpQAPlugin",
+    "IQAPlugin",
     "IHttpFieldsPlugin",
     "ISocketFieldsPlugin",
     # deprecated
     "IHttpTextAreaPlugin",
+    "IHttpQAPlugin",
 ]

@@ -32,7 +32,7 @@ class PluginType(str, Enum):
     # These types should align with the `allAvailablePythonPlugins` locates at
     # `cfdraw/.web/src/schema/plugins.ts` (without the `_python.` prefix)
     TEXT_AREA = "textArea"
-    HTTP_QA = "httpQA"
+    QA = "QA"
     HTTP_FIELDS = "httpFields"
     SOCKET_FIELDS = "socketFields"
     # this type of plugins will not be rendered on the drawboard 🎨
@@ -358,10 +358,10 @@ class ITextAreaPluginInfo(IPluginInfo):
     textAlign: Optional[TextAlign] = Field(None, description="Text align")
 
 
-## (http) qa
+## qa
 
 
-class IHttpQAPluginInfo(IPluginInfo):
+class IQAPluginInfo(IPluginInfo):
     initialText: str = Field(
         ...,
         description="The initial text to be displayed in the text area",
@@ -373,6 +373,11 @@ class IHttpQAPluginInfo(IPluginInfo):
 
 @deprecated("please use `ITextAreaPluginInfo` instead")
 class IHttpTextAreaPluginInfo(ITextAreaPluginInfo):
+    pass
+
+
+@deprecated("please use `IQAPluginInfo` instead")
+class IHttpQAPluginInfo(IQAPluginInfo):
     pass
 
 
@@ -395,7 +400,8 @@ __all__ = [
     "IFieldsPluginInfo",
     # bindings
     "ITextAreaPluginInfo",
-    "IHttpQAPluginInfo",
+    "IQAPluginInfo",
     # deprecated
     "IHttpTextAreaPluginInfo",
+    "IHttpQAPluginInfo",
 ]

@@ -74,11 +74,6 @@ export interface IPythonHttpPluginWithSubmit<R>
   extends Omit<IPythonPlugin, "id" | "pluginInfo">,
     IPythonHttpPluginCallbacks<R>,
     IPythonPluginWithSubmit {}
-export interface IPythonHttpQAPlugin extends IPythonPlugin {
-  pluginInfo: IPythonPluginInfo & {
-    initialText: string;
-  };
-}
 
 //// socket plugin
 
@@ -86,6 +81,11 @@ export interface IPythonTextAreaPlugin extends IPythonPlugin {
   pluginInfo: IPythonPluginInfo & {
     noLoading?: boolean;
     textAlign?: TextareaProps["textAlign"];
+  };
+}
+export interface IPythonQAPlugin extends IPythonPlugin {
+  pluginInfo: IPythonPluginInfo & {
+    initialText: string;
   };
 }
 

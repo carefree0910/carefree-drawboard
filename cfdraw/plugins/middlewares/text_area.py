@@ -8,7 +8,7 @@ from cfdraw.schema.plugins import IPluginResponse
 class TextAreaMiddleWare(IMiddleWare):
     @property
     def subscriptions(self) -> List[PluginType]:
-        return [PluginType.TEXT_AREA, PluginType.HTTP_QA]
+        return [PluginType.TEXT_AREA, PluginType.QA]
 
     async def process(self, response: str) -> IPluginResponse:
         return IPluginResponse(success=True, message="", data=dict(text=response))
