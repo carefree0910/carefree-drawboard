@@ -19,6 +19,9 @@ interface SocketHook<R> {
   getMessage: () => Promise<IPythonSocketRequest>;
   onMessage: IPythonOnSocketMessage<R>;
   onSocketError?: (err: any) => void;
+  updateInterval?: number;
+  timer?: any;
+  shouldTerminate?: boolean;
 }
 
 export interface ISocketStore {
@@ -50,14 +53,23 @@ class SocketStore extends ABCStore<ISocketStore> implements ISocketStore {
       }
       const hash = hook.key;
       socketStore.log(`>> send message (${hash})`);
-      hook.getMessage().then((data) => {
-        if (data.hash !== hash) {
-          Logger.warn("Internal error: hash mismatched.");
-          return;
-        }
-        socketStore.socket!.send(JSON.stringify(data));
-        socketStore.log(`>>> message sent (${hash})`);
-      });
+
+      const send = () => {
+        hook.getMessage().then((data) => {
+          if (data.hash !== hash) {
+            Logger.warn("Internal error: hash mismatched.");
+            return;
+          }
+          socketStore.socket!.send(JSON.stringify(data));
+          socketStore.log(`>>> message sent (${hash})`);
+          if (hook.updateInterval && !hook.shouldTerminate) {
+            hook.timer = setTimeout(send, hook.updateInterval);
+          }
+        });
+      };
+
+      hook.shouldTerminate = false;
+      send();
     });
   }
 
@@ -73,7 +85,9 @@ export const pushSocketHook = <R>(hook: SocketHook<R>) => {
 };
 export const removeSocketHook = (hash: string) => {
   const hooks = socketStore.hooks.clone();
-  hooks.remove(hash);
+  const hook = hooks.remove(hash);
+  hook.shouldTerminate = true;
+  clearTimeout(hook.timer);
   socketStore.updateProperty("hooks", hooks);
 };
 

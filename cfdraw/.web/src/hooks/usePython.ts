@@ -194,6 +194,7 @@ export function useSocketPython<R>({
       getMessage,
       onMessage,
       onSocketError,
+      updateInterval,
     });
   }, [getMessage, onMessage, onSocketError]);
 

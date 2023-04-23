@@ -74,6 +74,7 @@ export function useWebSocketHook<R>({
       getMessage,
       onMessage: chosenOnMessage,
       onSocketError,
+      updateInterval,
     });
     socketStore.log(`> current hooks: ${socketStore.hooks.map((h) => h.key).join(", ")}`);
     runSocketHook(hash);
