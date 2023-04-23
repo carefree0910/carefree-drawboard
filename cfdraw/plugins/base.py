@@ -123,11 +123,6 @@ class ITextAreaPlugin(ISocketPlugin):
         return PluginType.TEXT_AREA
 
 
-@deprecated("please use `ITextAreaPlugin` instead")
-class IHttpTextAreaPlugin(ITextAreaPlugin):
-    pass
-
-
 class IHttpQAPlugin(IHttpPlugin):
     @property
     def type(self) -> PluginType:
@@ -144,6 +139,14 @@ class ISocketFieldsPlugin(ISocketPlugin):
     @property
     def type(self) -> PluginType:
         return PluginType.SOCKET_FIELDS
+
+
+## deprecated
+
+
+@deprecated("please use `ITextAreaPlugin` instead")
+class IHttpTextAreaPlugin(ITextAreaPlugin):
+    pass
 
 
 __all__ = [

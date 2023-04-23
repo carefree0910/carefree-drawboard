@@ -358,11 +358,6 @@ class ITextAreaPluginInfo(IPluginInfo):
     textAlign: Optional[TextAlign] = Field(None, description="Text align")
 
 
-@deprecated("please use `ITextAreaPluginInfo` instead")
-class IHttpTextAreaPluginInfo(ITextAreaPluginInfo):
-    pass
-
-
 ## (http) qa
 
 
@@ -371,6 +366,14 @@ class IHttpQAPluginInfo(IPluginInfo):
         ...,
         description="The initial text to be displayed in the text area",
     )
+
+
+## deprecated
+
+
+@deprecated("please use `ITextAreaPluginInfo` instead")
+class IHttpTextAreaPluginInfo(ITextAreaPluginInfo):
+    pass
 
 
 __all__ = [
