@@ -83,7 +83,7 @@ class IBasePlugin(IPlugin, metaclass=ABCMeta):
 class ISocketPlugin(IBasePlugin, metaclass=ABCMeta):
     @property
     def middlewares(self) -> List[IMiddleWare]:
-        common_middlewares = [
+        common_middlewares: List[IMiddleWare] = [
             TextAreaMiddleWare(self.send_text),
             FieldsMiddleWare(self.send_text),
             TimerMiddleWare(self.send_text),
