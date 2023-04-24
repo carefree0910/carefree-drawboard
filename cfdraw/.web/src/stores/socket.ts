@@ -22,6 +22,7 @@ interface SocketHook<R> {
   updateInterval?: number;
   timer?: any;
   shouldTerminate?: boolean;
+  isInternal?: boolean;
 }
 
 export interface ISocketStore {
@@ -165,7 +166,12 @@ export function useWebSocket(opt?: IUseWebSocket) {
           Logger.log("Socket connection terminated.");
           return;
         }
-        Logger.warn(`Socket connection closed (reason: ${e.reason}), retrying...`);
+        Logger.warn(
+          `Socket connection closed (reason: ${e.reason}), ` +
+            "cleaning up external hooks and retrying...",
+        );
+        const externalHooks = socketStore.hooks.filter((h) => !h.isInternal);
+        removeSocketHooks(...externalHooks.map((h) => h.key));
         timer = setTimeout(_connect, interval);
       };
       socket.onerror = (err) => {

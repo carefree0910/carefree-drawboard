@@ -162,5 +162,11 @@ export function useSyncPython() {
     [],
   );
 
-  useWebSocketHook<IPythonStore>({ isInvisible: false, hash, getMessage, onMessage });
+  useWebSocketHook<IPythonStore>({
+    isInvisible: false,
+    hash,
+    getMessage,
+    onMessage,
+    isInternal: true,
+  });
 }

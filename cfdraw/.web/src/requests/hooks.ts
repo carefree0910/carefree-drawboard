@@ -59,12 +59,14 @@ export function useWebSocketHook<R>({
   dependencies,
   useRetry = true,
   updateInterval,
+  isInternal,
 }: IPythonSocketCallbacks<R> & {
   isInvisible: boolean;
   hash?: string;
   dependencies?: any[];
   useRetry?: boolean;
   updateInterval?: number;
+  isInternal?: boolean;
 }) {
   const hash = useMemo(() => (isInvisible ? undefined : _hash), [isInvisible, _hash]);
   const onMessageWithRetry = useOnSocketMessageWithRetry(getMessage, onMessage);
@@ -79,6 +81,7 @@ export function useWebSocketHook<R>({
       onMessage: chosenOnMessage,
       onSocketError,
       updateInterval,
+      isInternal,
     });
     socketLog(
       `> current hooks: ${getSocketHooks()
@@ -86,5 +89,5 @@ export function useWebSocketHook<R>({
         .join(", ")}`,
     );
     runSocketHook(hash);
-  }, [hash, ...(dependencies ?? [])]);
+  }, [hash, isInternal, ...(dependencies ?? [])]);
 }
