@@ -70,10 +70,6 @@ async function getPythonRequest({
   };
 }
 
-/**
- * this function will integrate a simple but useful retry mechanism, so we only need to
- * focus on the core logics in `onMessage` function.
- */
 export function useSocketPython<R>({
   t,
   lang,
