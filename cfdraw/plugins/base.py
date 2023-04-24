@@ -95,7 +95,7 @@ class ISocketPlugin(IPlugin, metaclass=ABCMeta):
         progress: float,
         intermediate: Optional[ISocketIntermediate] = None,
     ) -> None:
-        message = ISocketMessage.make_progress(self.hash, progress, intermediate)
+        message = ISocketMessage.make_progress(self.task_hash, progress, intermediate)
         await self.send_message(message)
 
 

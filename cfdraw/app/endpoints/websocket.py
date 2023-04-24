@@ -47,6 +47,7 @@ def add_websocket(app: IApp) -> None:
                 if target_plugin is not None:
                     # `send_message` should be handled by the plugin itself, or by
                     # the `SendSocketMessageMiddleWare` which will provide a default handling
+                    target_plugin.task_hash = data.hash
                     target_plugin.send_message = send_message
                     queue_data = IRequestQueueData(data, target_plugin, Event())
                     uid = app.request_queue.push(queue_data, send_message)

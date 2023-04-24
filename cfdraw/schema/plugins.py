@@ -273,6 +273,8 @@ class IPlugin(ABC):
     hash: str
     identifier: str
     http_session: ClientSession
+    # task specific
+    task_hash: str
     send_message: ISendSocketMessage
 
     @property
