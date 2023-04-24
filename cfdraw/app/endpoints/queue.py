@@ -3,6 +3,7 @@ import asyncio
 from typing import Any
 from typing import Dict
 from typing import Tuple
+from typing import Optional
 from cftool.misc import print_error
 from cftool.misc import random_hash
 from cftool.misc import print_warning
@@ -24,9 +25,9 @@ log: Any = print if DEBUG else lambda *args, **kwargs: None
 
 class RequestQueue(IRequestQueue):
     def __init__(self) -> None:
-        self._is_busy = False
         self._queues = QueuesInQueue[IRequestQueueData]()
         self._senders: Dict[str, Tuple[str, ISend]] = {}
+        self._busy_uid: Optional[str] = None
 
     def push(self, data: IRequestQueueData, send_message: ISend) -> str:
         uid = random_hash()
@@ -40,17 +41,17 @@ class RequestQueue(IRequestQueue):
         return uid
 
     async def run(self) -> None:
-        if self._is_busy:
+        if self._busy_uid is not None:
             return
-        self._is_busy = True
         while True:
             user_id, request_item = self._queues.next()
             if user_id is None or request_item is None:
-                self._is_busy = False
+                self._busy_uid = None
                 break
             uid = request_item.key
             plugin = request_item.data.plugin
             request = request_item.data.request
+            self._busy_uid = uid
             log(">>> run", uid)
             try:
                 await self._broadcast_working(uid)
@@ -88,6 +89,8 @@ class RequestQueue(IRequestQueue):
 
     async def _broadcast_pending(self) -> None:
         for uid, (hash, sender) in self._senders.items():
+            if uid == self._busy_uid:
+                continue
             pending = self._queues.get_pending(uid)
             log("-" * 50)
             log(">> uid", uid)
