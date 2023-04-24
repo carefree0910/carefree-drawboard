@@ -1,4 +1,5 @@
 import asyncio
+import threading
 
 from typing import Any
 from typing import TypeVar
@@ -37,3 +38,15 @@ async def offload(future: Coroutine[Any, Any, TFutureResponse]) -> TFutureRespon
             asyncio.new_event_loop(),
             future,
         )
+
+
+# TODO : maybe there will be better solutions?
+def offload_run(future: Coroutine[Any, Any, None]) -> None:
+    def _run() -> None:
+        loop = asyncio.new_event_loop()
+        asyncio.set_event_loop(loop)
+        loop.run_until_complete(future)
+        loop.close()
+
+    progress = threading.Thread(target=_run)
+    progress.start()
