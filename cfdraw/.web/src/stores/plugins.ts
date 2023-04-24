@@ -1,3 +1,4 @@
+import { useEffect } from "react";
 import { makeObservable, observable } from "mobx";
 
 import { Dictionary, getRandomHash, shallowCopy } from "@carefree0910/core";
@@ -39,12 +40,20 @@ const pluginsStore = new PluginsStore();
 // ids
 export const getPluginIds = (identifier: string): IDs => {
   const pureIdentifier = stripHashFromIdentifier(identifier).replaceAll(".", "_");
-  if (!pluginsStore.ids[pureIdentifier]) {
-    const ids = shallowCopy(pluginsStore.ids);
+  let ids = pluginsStore.ids;
+  const shouldUpdate = !ids[pureIdentifier];
+  if (shouldUpdate) {
+    ids = shallowCopy(ids);
     ids[pureIdentifier] = { id: `${pureIdentifier}_${getRandomHash()}`, pureIdentifier };
-    pluginsStore.updateProperty("ids", ids);
   }
-  return pluginsStore.ids[pureIdentifier];
+  // wrap updates in `useEffect` to avoid cross-update-warning in React
+  useEffect(() => {
+    if (shouldUpdate) {
+      pluginsStore.updateProperty("ids", ids);
+    }
+  });
+
+  return ids[pureIdentifier];
 };
 // hashes
 export const getPluginHash = (id: string): string => {
