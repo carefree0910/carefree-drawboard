@@ -76,3 +76,10 @@ export const removePluginMessage = (id: string) => {
   delete messages[id];
   pluginsStore.updateProperty("messages", messages);
 };
+export const removePluginMessageFromHash = (hash: string) => {
+  const id = Object.keys(pluginsStore.messages).find((id) => pluginsStore.hashes[id] === hash);
+  if (!id) return;
+  const messages = shallowCopy(pluginsStore.messages);
+  delete messages[id];
+  pluginsStore.updateProperty("messages", messages);
+};
