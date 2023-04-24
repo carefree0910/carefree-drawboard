@@ -11,6 +11,7 @@ import type {
 } from "@/schema/_python";
 import { pythonStore } from "@/stores/_python";
 import { useAPI } from "@/requests/hooks";
+import { removePluginMessageFromHash } from "./plugins";
 
 const DEBUG = false;
 
@@ -94,6 +95,7 @@ export const removeSocketHooks = (...hashes: string[]) => {
     const hook = hooks.remove(hash);
     hook.shouldTerminate = true;
     clearTimeout(hook.timer);
+    removePluginMessageFromHash(hash);
   });
   socketStore.updateProperty("hooks", hooks);
 };
