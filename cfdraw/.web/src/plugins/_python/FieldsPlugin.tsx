@@ -11,7 +11,7 @@ import { UI_Words } from "@/lang/ui";
 import { Toast_Words } from "@/lang/toast";
 import { toast } from "@/utils/toast";
 import { titleCaseWord } from "@/utils/misc";
-import { removeSocketHook, socketLog } from "@/stores/socket";
+import { removeSocketHooks, socketLog } from "@/stores/socket";
 import { getPluginIds, removePluginMessage, updatePluginMessage } from "@/stores/plugins";
 import { importMeta } from "@/actions/importMeta";
 import CFHeading from "@/components/CFHeading";
@@ -71,7 +71,7 @@ const PythonFieldsPlugin = ({ pluginInfo, ...props }: IPythonFieldsPlugin) => {
             });
           }
           socketLog(`> remove hook (${hash})`);
-          removeSocketHook(hash);
+          removeSocketHooks(hash);
           break;
         }
       }

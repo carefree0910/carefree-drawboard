@@ -87,11 +87,13 @@ export const pushSocketHook = <R>(hook: SocketHook<R>) => {
     socketStore.updateProperty("hooks", hooks);
   });
 };
-export const removeSocketHook = (hash: string) => {
-  const hooks = socketStore.hooks.clone();
-  const hook = hooks.remove(hash);
-  hook.shouldTerminate = true;
-  clearTimeout(hook.timer);
+export const removeSocketHooks = (...hashes: string[]) => {
+  const hooks = socketStore.hooks;
+  hashes.forEach((hash) => {
+    const hook = hooks.remove(hash);
+    hook.shouldTerminate = true;
+    clearTimeout(hook.timer);
+  });
   socketStore.updateProperty("hooks", hooks);
 };
 
