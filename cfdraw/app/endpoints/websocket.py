@@ -13,6 +13,7 @@ from cfdraw.utils.server import get_err_msg
 from cfdraw.schema.plugins import ISocketRequest
 from cfdraw.schema.plugins import ISocketMessage
 from cfdraw.app.endpoints.base import IEndpoint
+from cfdraw.app.endpoints.queue import offload
 
 
 def add_websocket(app: IApp) -> None:
@@ -49,9 +50,12 @@ def add_websocket(app: IApp) -> None:
                     # the `SendSocketMessageMiddleWare` which will provide a default handling
                     target_plugin.task_hash = data.hash
                     target_plugin.send_message = send_message
-                    queue_data = IRequestQueueData(data, target_plugin, Event())
-                    uid = app.request_queue.push(queue_data, send_message)
-                    asyncio.create_task(app.request_queue.wait(data.userId, uid))
+                    if data.isInternal:
+                        await offload(target_plugin(data))
+                    else:
+                        queue_data = IRequestQueueData(data, target_plugin, Event())
+                        uid = app.request_queue.push(queue_data, send_message)
+                        asyncio.create_task(app.request_queue.wait(data.userId, uid))
                 else:
                     plugin_str = "internal plugin" if data.isInternal else "plugin"
                     await send_message(
