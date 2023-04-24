@@ -29,11 +29,11 @@ class PluginsStore extends ABCStore<IPluginsStore> implements IPluginsStore {
 
 const pluginsStore = new PluginsStore();
 export const getPluginIds = (identifier: string): IDs => {
-  if (!pluginsStore.ids[identifier]) {
+  const pureIdentifier = stripHashFromIdentifier(identifier).replaceAll(".", "_");
+  if (!pluginsStore.ids[pureIdentifier]) {
     const ids = shallowCopy(pluginsStore.ids);
-    const pureIdentifier = stripHashFromIdentifier(identifier).replaceAll(".", "_");
-    ids[identifier] = { id: `${pureIdentifier}_${getRandomHash()}`, pureIdentifier };
+    ids[pureIdentifier] = { id: `${pureIdentifier}_${getRandomHash()}`, pureIdentifier };
     pluginsStore.updateProperty("ids", ids);
   }
-  return pluginsStore.ids[identifier];
+  return pluginsStore.ids[pureIdentifier];
 };
