@@ -189,28 +189,46 @@ const Floating = forwardRef(function (
   const progressCaptionProps = useMemo<TextProps>(() => {
     const p = 8;
     const w = 100;
+    const defaultTop = "-32px";
     let top, left;
-    if (
-      ["left", "right"].includes(pivot) ||
-      (offsetY && ["lt", "rt", "lb", "rb"].includes(pivot))
-    ) {
-      top = "0px";
-      if (!offsetY && !["left", "right"].includes(pivot)) {
+    if (!follow) {
+      if (["lt", "top", "rt", "center"].includes(pivot)) {
+        top = `${iconH + p}px`;
+      } else if (["left", "right"].includes(pivot)) {
+        top = "0px";
+      } else {
+        top = defaultTop;
+      }
+      if (["lt", "left", "lb"].includes(pivot)) {
+        left = `${iconW}px`;
+      } else if (["top", "center", "bottom"].includes(pivot)) {
         left = `${0.5 * (iconW - w)}px`;
       } else {
-        if (["lt", "left", "lb"].includes(pivot)) {
-          left = `${-w - (offsetX ?? 0)}px`;
-        } else {
-          left = `${iconW + (offsetX ?? 0)}px`;
-        }
+        left = `${-w}px`;
       }
     } else {
-      if (["lt", "top", "rt"].includes(pivot)) {
-        top = `${-32}px`;
+      if (
+        ["left", "right"].includes(pivot) ||
+        (offsetY && ["lt", "rt", "lb", "rb"].includes(pivot))
+      ) {
+        top = "0px";
+        if (!offsetY && !["left", "right"].includes(pivot)) {
+          left = `${0.5 * (iconW - w)}px`;
+        } else {
+          if (["lt", "left", "lb"].includes(pivot)) {
+            left = `${-w}px`;
+          } else {
+            left = `${iconW}px`;
+          }
+        }
       } else {
-        top = `${iconH + p}px`;
+        if (["lt", "top", "rt"].includes(pivot)) {
+          top = defaultTop;
+        } else {
+          top = `${iconH + p}px`;
+        }
+        left = `${0.5 * (iconW - w)}px`;
       }
-      left = `${0.5 * (iconW - w)}px`;
     }
     return { w: `${w}px`, top, left, position: "absolute" };
   }, [iconW, pivot]);
