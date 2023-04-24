@@ -79,9 +79,13 @@ export const socketLog = (...args: any[]) => DEBUG && console.log(...args);
 export const getSocketHooks = () => socketStore.hooks;
 export const runSocketHook = (key: string) => socketStore.run(key);
 export const pushSocketHook = <R>(hook: SocketHook<R>) => {
-  const hooks = socketStore.hooks.clone();
-  hooks.push(hook);
-  socketStore.updateProperty("hooks", hooks);
+  waitUntil(() => !!socketStore.socket).then(() => {
+    // need to wait until socket is ready, to avoid hooks being pushed too early that
+    // `runSocketHook` will be executed twice (one at `onopen`, other at `useWebSocketHook`)
+    const hooks = socketStore.hooks.clone();
+    hooks.push(hook);
+    socketStore.updateProperty("hooks", hooks);
+  });
 };
 export const removeSocketHook = (hash: string) => {
   const hooks = socketStore.hooks.clone();
@@ -148,6 +152,8 @@ export function useWebSocket(opt?: IUseWebSocket) {
             });
           });
         };
+        // run existing hooks
+        socketStore.hooks.forEach(({ key }) => runSocketHook(key));
       };
       socket.onclose = (e) => {
         connected = false;
