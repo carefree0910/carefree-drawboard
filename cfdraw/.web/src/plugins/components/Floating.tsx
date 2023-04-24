@@ -328,7 +328,7 @@ const Floating = forwardRef(function (
             {taskMessage.status === "pending" ? (
               <CFPendingProgress
                 {...progressProps}
-                value={(taskMessage.pending / Math.max(taskMessage.total, 1)) * 100}
+                value={(1.0 - taskMessage.pending / Math.max(taskMessage.total, 1)) * 100}
               />
             ) : (
               <CFWorkingProgress
