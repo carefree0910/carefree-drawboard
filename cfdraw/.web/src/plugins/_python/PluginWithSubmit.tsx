@@ -2,7 +2,6 @@ import { useCallback, useEffect, useState } from "react";
 import { observer } from "mobx-react-lite";
 import { useToast } from "@chakra-ui/react";
 
-import { getRandomHash } from "@carefree0910/core";
 import { langStore, translate } from "@carefree0910/business";
 
 import type { IPythonSocketPluginWithSubmit } from "@/schema/_python";
