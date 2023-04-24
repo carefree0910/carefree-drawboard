@@ -37,6 +37,11 @@ type ThemeStyles = {
   };
   // styles for the `brush`
   defaultBrushStyles: Partial<IPathOptions>;
+  // styles for the `CFCircularProgress` component
+  circularProgressColors: {
+    pendingColor: string;
+    workingColor: string;
+  };
 };
 
 export const allThemes: Record<ThemeType, ThemeStyles> = {
@@ -68,6 +73,10 @@ export const allThemes: Record<ThemeType, ThemeStyles> = {
       fill: "rgba(96, 120, 244, 0.4)",
       width: 3,
     },
+    circularProgressColors: {
+      pendingColor: "#5e7fd8",
+      workingColor: "#3fc9a8",
+    },
   },
   // currently dark mode is just a placeholder
   dark: {
@@ -97,6 +106,10 @@ export const allThemes: Record<ThemeType, ThemeStyles> = {
       stroke: "rgba(96, 120, 244, 0.7)",
       fill: "rgba(96, 120, 244, 0.7)",
       width: 3,
+    },
+    circularProgressColors: {
+      pendingColor: "#5e7fd8",
+      workingColor: "#3fc9a8",
     },
   },
 };
