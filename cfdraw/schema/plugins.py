@@ -41,7 +41,12 @@ class PluginType(str, Enum):
 
 
 class IPluginInfo(BaseModel):
-    """The common data used in `usePython` hook & each React component."""
+    """
+    This should align with:
+    * `cfdraw/.web/src/schema/_python.ts`
+    * `IPythonSocketIntervals`: `retryInterval`, `updateInterval`
+    * `IPythonPluginWithSubmitPluginInfo`: `closeOnSubmit`, `toastOnSubmit`, `toastMessageOnSubmit`
+    """
 
     retryInterval: Optional[int] = Field(
         None,
@@ -353,6 +358,8 @@ class IMiddleWare(ABC):
 
 
 class IFieldsPluginInfo(IPluginInfo):
+    """This should align with `IPythonFieldsPlugin` at `cfdraw/.web/src/schema/_python.ts`"""
+
     header: Optional[str] = Field(None, description="Header of the plugin")
     definitions: Dict[str, IFieldDefinition] = Field(
         ...,
@@ -361,20 +368,18 @@ class IFieldsPluginInfo(IPluginInfo):
     numColumns: Optional[int] = Field(None, description="Number of columns")
 
 
-## text area
-
-
 class ITextAreaPluginInfo(IPluginInfo):
+    """This should align with `IPythonTextAreaPlugin` at `cfdraw/.web/src/schema/_python.ts`"""
+
     noLoading: bool = Field(
         False, description="Whether to show the 'Loading...' text or not"
     )
     textAlign: Optional[TextAlign] = Field(None, description="Text align")
 
 
-## qa
-
-
 class IQAPluginInfo(IPluginInfo):
+    """This should align with `IPythonQAPlugin` at `cfdraw/.web/src/schema/_python.ts`"""
+
     initialText: str = Field(
         ...,
         description="The initial text to be displayed in the text area",
