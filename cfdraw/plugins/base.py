@@ -10,6 +10,7 @@ from typing import Optional
 from cfdraw import constants
 from cfdraw.utils import server
 from cfdraw.utils.misc import deprecated
+from cfdraw.utils.misc import offload_run
 from cfdraw.schema.plugins import *
 from cfdraw.plugins.middlewares import *
 from cfdraw.parsers.noli import SingleNodeType
@@ -84,13 +85,13 @@ class ISocketPlugin(IPlugin, metaclass=ABCMeta):
         async with self.http_session.get(src) as res:
             return Image.open(BytesIO(await res.read()))
 
-    async def send_progress(
+    def send_progress(
         self,
         progress: float,
         intermediate: Optional[ISocketIntermediate] = None,
     ) -> None:
         message = ISocketMessage.make_progress(self.task_hash, progress, intermediate)
-        await self.send_message(message)
+        offload_run(self.send_message(message))
 
 
 class IInternalSocketPlugin(ISocketPlugin, metaclass=ABCMeta):
