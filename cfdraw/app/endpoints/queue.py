@@ -158,7 +158,7 @@ class RequestQueue(IRequestQueue):
                 ISocketMessage(
                     hash=hash,
                     status=SocketStatus.WORKING,
-                    total=self._queues.num_items,
+                    total=0,
                     pending=0,
                     message="",
                 )
