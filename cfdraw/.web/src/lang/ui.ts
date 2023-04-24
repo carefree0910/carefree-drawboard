@@ -9,6 +9,8 @@ export enum UI_Words {
   "num_steps-field-label" = "num_steps-field-label",
   "guidance_scale-field-label" = "guidance_scale-field-label",
   "qa-field-placeholder" = "qa-field-placeholder",
+  "task-pending-caption" = "task-pending-caption",
+  "task-working-caption" = "task-working-caption",
 }
 
 export const uiLangRecords: Record<Lang, Record<UI_Words, string>> = {
@@ -21,6 +23,8 @@ export const uiLangRecords: Record<Lang, Record<UI_Words, string>> = {
     [UI_Words["num_steps-field-label"]]: "采样步数",
     [UI_Words["guidance_scale-field-label"]]: "引导强度",
     [UI_Words["qa-field-placeholder"]]: "请输入您的问题",
+    [UI_Words["task-pending-caption"]]: "排队中",
+    [UI_Words["task-working-caption"]]: "执行中",
   },
   en: {
     [UI_Words["submit-task"]]: "Submit",
@@ -31,5 +35,7 @@ export const uiLangRecords: Record<Lang, Record<UI_Words, string>> = {
     [UI_Words["num_steps-field-label"]]: "Steps",
     [UI_Words["guidance_scale-field-label"]]: "Cfg",
     [UI_Words["qa-field-placeholder"]]: "Input your question",
+    [UI_Words["task-pending-caption"]]: "Pending",
+    [UI_Words["task-working-caption"]]: "Working",
   },
 };

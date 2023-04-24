@@ -42,6 +42,10 @@ type ThemeStyles = {
     pendingColor: string;
     workingColor: string;
   };
+  // styles for the `Floating` component
+  floatingColors: {
+    busyColor: string;
+  };
 };
 
 export const allThemes: Record<ThemeType, ThemeStyles> = {
@@ -77,6 +81,9 @@ export const allThemes: Record<ThemeType, ThemeStyles> = {
       pendingColor: "#5e7fd8",
       workingColor: "#3fc9a8",
     },
+    floatingColors: {
+      busyColor: "#999999",
+    },
   },
   // currently dark mode is just a placeholder
   dark: {
@@ -110,6 +117,9 @@ export const allThemes: Record<ThemeType, ThemeStyles> = {
     circularProgressColors: {
       pendingColor: "#5e7fd8",
       workingColor: "#3fc9a8",
+    },
+    floatingColors: {
+      busyColor: "#999999",
     },
   },
 };

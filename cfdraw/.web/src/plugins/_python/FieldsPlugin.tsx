@@ -12,7 +12,7 @@ import { Toast_Words } from "@/lang/toast";
 import { toast } from "@/utils/toast";
 import { titleCaseWord } from "@/utils/misc";
 import { removeSocketHook, socketLog } from "@/stores/socket";
-import { getPluginIds } from "@/stores/plugins";
+import { getPluginIds, removePluginMessage, updatePluginMessage } from "@/stores/plugins";
 import { importMeta } from "@/actions/importMeta";
 import CFHeading from "@/components/CFHeading";
 import { drawboardPluginFactory } from "@/plugins/utils/factory";
@@ -31,9 +31,23 @@ const PythonFieldsPlugin = ({ pluginInfo, ...props }: IPythonFieldsPlugin) => {
   const emitClose = useClosePanel(id);
 
   const onMessage = useCallback<IPythonOnSocketMessage<IPythonResults>>(
-    async ({ hash, status, total, pending, data: { progress, intermediate, final } }) => {
+    async (message) => {
+      const {
+        hash,
+        status,
+        data: { final },
+      } = message;
       switch (status) {
+        case "pending": {
+          updatePluginMessage(id, message);
+          break;
+        }
+        case "working": {
+          updatePluginMessage(id, message);
+          break;
+        }
         case "finished": {
+          removePluginMessage(id);
           socketFinishedEvent.emit({ id });
           if (!final) {
             toast(
@@ -58,6 +72,7 @@ const PythonFieldsPlugin = ({ pluginInfo, ...props }: IPythonFieldsPlugin) => {
           }
           socketLog(`> remove hook (${hash})`);
           removeSocketHook(hash);
+          break;
         }
       }
       return {};

@@ -10,6 +10,7 @@ import { Event } from "@/utils/event";
 import { toast } from "@/utils/toast";
 import { Toast_Words } from "@/lang/toast";
 import { userStore } from "@/stores/user";
+import { getPluginHash } from "@/stores/plugins";
 import { useSocketPython } from "@/hooks/usePython";
 import { CFButtonWithBusyTooltip } from "@/components/CFButton";
 import CFDivider from "@/components/CFDivider";
@@ -38,14 +39,14 @@ function PythonPluginWithSubmit<R>({
 }: IPythonSocketPluginWithSubmit<R>) {
   const t = useToast();
   const lang = langStore.tgt;
-  const [hash, setHash] = useState<number | undefined>(undefined);
+  const [hash, setHash] = useState<string | undefined>(undefined);
   const [busy, setBusy] = useState(false);
   const onClick = useCallback(() => {
     if (busy) return;
     if (!userStore.canAlwaysSubmit) {
       setBusy(true);
     }
-    setHash(getRandomHash());
+    setHash(getPluginHash(id));
     if (closeOnSubmit) {
       floatingControlEvent.emit({ id, expand: false });
     }
@@ -58,7 +59,7 @@ function PythonPluginWithSubmit<R>({
   useSocketPython<R>({
     t,
     lang,
-    hash: hash?.toString(),
+    hash,
     node,
     nodes,
     endpoint,

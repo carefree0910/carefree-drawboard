@@ -1,9 +1,20 @@
 import { observer } from "mobx-react-lite";
 import { useState, useMemo, useLayoutEffect, forwardRef } from "react";
-import { Box, BoxProps, Flex, FlexProps, Image, Portal } from "@chakra-ui/react";
+import {
+  Box,
+  BoxProps,
+  CircularProgressProps,
+  Flex,
+  FlexProps,
+  Image,
+  Portal,
+  TextProps,
+} from "@chakra-ui/react";
 
 import { Coordinate, Dictionary, isUndefined } from "@carefree0910/core";
 import {
+  langStore,
+  translate,
   useBoardContainerLeftTop,
   useBoardContainerWH,
   useIsReady,
@@ -12,8 +23,12 @@ import {
 
 import type { IFloating, IExpandPositionInfo } from "@/schema/plugins";
 import { Event } from "@/utils/event";
-import { DEFAULT_PLUGIN_SETTINGS, VISIBILITY_TRANSITION } from "@/utils/constants";
+import { BG_TRANSITION, DEFAULT_PLUGIN_SETTINGS, VISIBILITY_TRANSITION } from "@/utils/constants";
+import { UI_Words } from "@/lang/ui";
 import { themeStore } from "@/stores/theme";
+import { getPluginMessage } from "@/stores/plugins";
+import CFText from "@/components/CFText";
+import { CFPendingProgress, CFWorkingProgress } from "@/components/CFCircularProgress";
 
 export function getExpandId(id: string): string {
   return `${id}_expand`;
@@ -119,6 +134,8 @@ const Floating = forwardRef(function (
       expandOffsetX,
       expandOffsetY,
       src,
+      offsetX,
+      offsetY,
       bgOpacity,
       renderFilter,
       useModal,
@@ -133,17 +150,70 @@ const Floating = forwardRef(function (
   }: IFloating,
   ref,
 ) {
+  const lang = langStore.tgt;
+  const taskMessage = getPluginMessage(id);
   const needRender = useIsReady() && (!renderFilter || renderFilter(useSelecting("raw")));
-  const { panelBg } = themeStore.styles;
+  const [expand, setExpand] = useState(false);
+  const [transform, setTransform] = useState<string | undefined>();
+  const isBusy = useMemo(
+    () => ["pending", "working"].includes(taskMessage?.status ?? ""),
+    [taskMessage?.status],
+  );
+  const expandId = useMemo(() => getExpandId(id), [id]);
+  // styles
+  const iconOpacity = useMemo(() => (isBusy ? 0.5 : 1), [isBusy]);
+  const {
+    panelBg,
+    floatingColors: { busyColor },
+  } = themeStore.styles;
   bgOpacity ??= DEFAULT_PLUGIN_SETTINGS.bgOpacity;
   const bgOpacityHex = Math.round(bgOpacity * 255).toString(16);
-  const commonProps: BoxProps = {
-    p: "12px",
-    bg: `${panelBg}${bgOpacityHex}`,
-    position: "absolute",
-    // boxShadow: "2px 2px 4px rgba(0, 0, 0, 0.25)",
-    borderRadius: "4px",
-  };
+  const commonProps = useMemo<BoxProps>(
+    () => ({
+      p: "12px",
+      bg: `${isBusy ? busyColor : panelBg}${bgOpacityHex}`,
+      position: "absolute",
+      // boxShadow: "2px 2px 4px rgba(0, 0, 0, 0.25)",
+      borderRadius: "4px",
+    }),
+    [panelBg, busyColor, bgOpacityHex, isBusy],
+  );
+  const progressProps = useMemo<CircularProgressProps>(() => {
+    const size = Math.floor(Math.min(iconW, iconH) * 0.8);
+    return {
+      size: `${size}px`,
+      px: `${0.5 * (iconW - size)}px`,
+      py: `${0.5 * (iconH - size)}px`,
+    };
+  }, [iconW, iconH]);
+  const progressCaptionProps = useMemo<TextProps>(() => {
+    const p = 8;
+    const w = 100;
+    let top, left;
+    if (
+      ["left", "right"].includes(pivot) ||
+      (offsetY && ["lt", "rt", "lb", "rb"].includes(pivot))
+    ) {
+      top = "0px";
+      if (!offsetY && !["left", "right"].includes(pivot)) {
+        left = `${0.5 * (iconW - w)}px`;
+      } else {
+        if (["lt", "left", "lb"].includes(pivot)) {
+          left = `${-w - (offsetX ?? 0)}px`;
+        } else {
+          left = `${iconW + (offsetX ?? 0)}px`;
+        }
+      }
+    } else {
+      if (["lt", "top", "rt"].includes(pivot)) {
+        top = `${-32}px`;
+      } else {
+        top = `${iconH + p}px`;
+      }
+      left = `${0.5 * (iconW - w)}px`;
+    }
+    return { w: `${w}px`, top, left, position: "absolute" };
+  }, [iconW, pivot]);
   Object.keys(props).forEach((key) => {
     const commonV = commonProps[key as keyof BoxProps];
     (props as any)[key] ??= commonV;
@@ -154,16 +224,14 @@ const Floating = forwardRef(function (
       parsedExpandProps[key as keyof FlexProps] = value;
     }
   });
-  const [expand, setExpand] = useState(false);
-  const [transform, setTransform] = useState<string | undefined>(undefined);
-  const expandId = useMemo(() => getExpandId(id), [id]);
   // convert float to hex
   modalOpacity ??= DEFAULT_PLUGIN_SETTINGS.modalOpacity;
   const modalOpacityHex = Math.round(modalOpacity * 255).toString(16);
   const expandBg = useMemo(
-    () => (useModal ? `${panelBg}${modalOpacityHex}` : commonProps.bg),
+    () => `${panelBg}${useModal ? modalOpacityHex : bgOpacityHex}`,
     [useModal],
   );
+  // events
   useLayoutEffect(() => {
     const { dispose: disposeRender } = floatingRenderEvent.on(
       ({ id: incomingId, expand: incomingExpand }) => {
@@ -228,10 +296,40 @@ const Floating = forwardRef(function (
         }}
         opacity={isInvisible ? 0 : 1}
         visibility={isInvisible ? "hidden" : "visible"}
-        transition={VISIBILITY_TRANSITION}
+        transition={`${VISIBILITY_TRANSITION}, ${BG_TRANSITION}`}
         {...commonProps}
         {...props}>
-        <Image src={src} draggable={false} />
+        <Image
+          src={src}
+          draggable={false}
+          opacity={iconOpacity}
+          transition={VISIBILITY_TRANSITION}
+        />
+        {taskMessage && isBusy && (
+          <Box w={`${iconW}px`} h={`${iconH}px`} position="absolute" left="0px" top="0px">
+            {taskMessage.status === "pending" ? (
+              <CFPendingProgress
+                {...progressProps}
+                value={(taskMessage.pending / Math.max(taskMessage.total, 1)) * 100}
+              />
+            ) : (
+              <CFWorkingProgress
+                {...progressProps}
+                value={(taskMessage.data.progress ?? 0.0) * 100}
+              />
+            )}
+          </Box>
+        )}
+        {taskMessage && isBusy && (
+          <CFText {...progressCaptionProps}>
+            {translate(
+              taskMessage.status === "pending"
+                ? UI_Words["task-pending-caption"]
+                : UI_Words["task-working-caption"],
+              lang,
+            )}
+          </CFText>
+        )}
       </Box>
       {!noExpand && (
         <Portal containerRef={ref as any}>
