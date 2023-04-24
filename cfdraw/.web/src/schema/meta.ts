@@ -26,14 +26,14 @@ interface IUploadMetaData extends ICommonMetaData {
   url: string;
   isDrag: boolean;
 }
-export type IPythonFieldsResponse = { _duration?: number } & (
+export type IPythonResults = { _duration?: number } & (
   | { type: "text"; value: string[] }
   | { type: "image"; value: { w: number; h: number; url: string }[] }
 );
 export type IPythonFieldsMetaData = ICommonMetaData & {
   identifier: string;
   parameters: Dictionary<any>;
-  response: IPythonFieldsResponse;
+  response: IPythonResults;
 };
 
 export interface IMetaData {

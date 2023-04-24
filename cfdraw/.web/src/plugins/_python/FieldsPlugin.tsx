@@ -5,7 +5,7 @@ import { Flex, Spacer, useToast } from "@chakra-ui/react";
 
 import { langStore, translate } from "@carefree0910/business";
 
-import type { IPythonFieldsResponse } from "@/schema/meta";
+import type { IPythonResults } from "@/schema/meta";
 import type { IPythonFieldsPlugin, IPythonOnSocketMessage } from "@/schema/_python";
 import { UI_Words } from "@/lang/ui";
 import { Toast_Words } from "@/lang/toast";
@@ -29,7 +29,7 @@ const PythonFieldsPlugin = ({ pluginInfo, ...props }: IPythonFieldsPlugin) => {
   const currentMeta = useCurrentMeta(pluginInfo.node);
   const emitClose = useClosePanel(id);
 
-  const onMessage = useCallback<IPythonOnSocketMessage<IPythonFieldsResponse>>(
+  const onMessage = useCallback<IPythonOnSocketMessage<IPythonResults>>(
     async ({ hash, status, total, pending, data: { progress, intermediate, final } }) => {
       switch (status) {
         case "finished": {

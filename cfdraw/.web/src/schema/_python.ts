@@ -2,7 +2,7 @@ import type { TextareaProps } from "@chakra-ui/react";
 
 import type { Dictionary, INode, Lang, Matrix2DFields } from "@carefree0910/core";
 
-import type { IMeta, IPythonFieldsResponse } from "./meta";
+import type { IMeta } from "./meta";
 import type { IToast } from "./misc";
 import type { IPlugin, IPluginInfo } from "./plugins";
 import type { IDefinitions } from "./metaFields";
