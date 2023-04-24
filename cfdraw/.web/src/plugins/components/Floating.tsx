@@ -10,7 +10,7 @@ import {
   useSelecting,
 } from "@carefree0910/business";
 
-import type { IFloating, IPositionInfo } from "@/schema/plugins";
+import type { IFloating, IExpandPositionInfo } from "@/schema/plugins";
 import { Event } from "@/utils/event";
 import { DEFAULT_PLUGIN_SETTINGS, VISIBILITY_TRANSITION } from "@/utils/constants";
 import { themeStore } from "@/stores/theme";
@@ -31,7 +31,7 @@ export function getExpandPosition(
     follow,
     expandOffsetX,
     expandOffsetY,
-  }: { x: number; y: number } & IPositionInfo,
+  }: { x: number; y: number } & IExpandPositionInfo,
 ): Coordinate {
   if (isModal) {
     pivot = "center";

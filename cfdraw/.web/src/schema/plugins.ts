@@ -10,7 +10,7 @@ import type { IPythonFieldsPlugin, IPythonQAPlugin, IPythonTextAreaPlugin } from
 // general
 
 export type NodeConstraints = NodeType | "none" | "anyNode" | "singleNode" | "multiNode";
-export interface IPositionInfo {
+export interface IExpandPositionInfo {
   w: number;
   h: number;
   iconW: number;
@@ -20,7 +20,7 @@ export interface IPositionInfo {
   expandOffsetX: number;
   expandOffsetY: number;
 }
-export interface IRenderInfo extends IPositionInfo {
+export interface IRenderInfo extends IExpandPositionInfo {
   src?: string;
   bgOpacity?: number;
   renderFilter?: (info?: IResponse) => boolean;
