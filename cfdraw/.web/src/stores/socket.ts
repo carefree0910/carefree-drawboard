@@ -103,7 +103,7 @@ export function useWebSocket(opt?: IUseWebSocket) {
   const interval = opt?.interval ?? 1000;
   const baseURL = useAPI("_python").defaults.baseURL!;
   const socketURL = baseURL.replace("http", "ws").replace("https", "wss");
-  const socketEndpoint = pythonStore.globalSettings.socketEndpoint ?? "/ws";
+  const socketEndpoint = pythonStore.globalSettings?.socketEndpoint ?? "/ws";
 
   useEffect(() => {
     function _connect() {

@@ -15,7 +15,7 @@ import { getSocketHooks, pushSocketHook, runSocketHook, socketLog } from "@/stor
 
 // cannot use `useMemo` here
 export function useAPI<T extends APISources>(source: T): APIs[T] {
-  const timeout = pythonStore.globalSettings.timeout ?? 300000;
+  const timeout = pythonStore.globalSettings?.timeout ?? 300000;
   let baseURL = import.meta.env.VITE_CFDRAW_API_URL;
   if (!baseURL) {
     let backendPort = import.meta.env.VITE_CFDRAW_BE_PORT;

@@ -12,12 +12,12 @@ interface IGlobalSettings {
 }
 export interface IPythonStore {
   pluginSettings: IMakePlugin<AvailablePythonPlugins>[];
-  globalSettings: IGlobalSettings;
+  globalSettings?: IGlobalSettings;
 }
 class PythonStore extends ABCStore<IPythonStore> implements IPythonStore {
   hash: string = "";
   pluginSettings: IMakePlugin<AvailablePythonPlugins>[] = [];
-  globalSettings: IGlobalSettings = {};
+  globalSettings?: IGlobalSettings;
 
   constructor() {
     super();
@@ -41,7 +41,10 @@ export const updatePythonStore = (data: IPythonStore): boolean => {
   runInAction(() => {
     pythonStore.hash = incomingHash;
     pythonStore.pluginSettings = data.pluginSettings;
-    pythonStore.globalSettings = data.globalSettings;
+    // `globalSettings` should only be updated once.
+    if (!pythonStore.globalSettings) {
+      pythonStore.globalSettings = data.globalSettings;
+    }
   });
   return true;
 };
