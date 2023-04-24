@@ -12,16 +12,17 @@ import { Toast_Words } from "@/lang/toast";
 import { toast } from "@/utils/toast";
 import { titleCaseWord } from "@/utils/misc";
 import { removeSocketHook, socketLog } from "@/stores/socket";
+import { getPluginIds } from "@/stores/plugins";
 import { importMeta } from "@/actions/importMeta";
 import CFHeading from "@/components/CFHeading";
 import { drawboardPluginFactory } from "@/plugins/utils/factory";
 import { useClosePanel } from "../components/hooks";
-import { useCurrentMeta, useDefinitionsRequestDataFn, useFieldsPluginIds } from "./hooks";
+import { useCurrentMeta, useDefinitionsRequestDataFn } from "./hooks";
 import PythonPluginWithSubmit, { socketFinishedEvent } from "./PluginWithSubmit";
 import DefinitionFields from "./DefinitionFields";
 
 const PythonFieldsPlugin = ({ pluginInfo, ...props }: IPythonFieldsPlugin) => {
-  const { id, pureIdentifier } = useFieldsPluginIds(pluginInfo.identifier);
+  const { id, pureIdentifier } = getPluginIds(pluginInfo.identifier);
   const t = useToast();
   const lang = langStore.tgt;
   const definitions = pluginInfo.definitions;

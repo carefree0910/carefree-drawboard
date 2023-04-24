@@ -5,6 +5,7 @@ import { useSelecting } from "@carefree0910/business";
 
 import type { IPlugin } from "@/schema/plugins";
 import { IMeta, getMetaTrace } from "@/schema/meta";
+import { getPluginIds } from "@/stores/plugins";
 import { drawboardPluginFactory } from "./utils/factory";
 import Render from "./components/Render";
 
@@ -17,6 +18,7 @@ function getMetaRepresentation(meta: IMeta): string {
 }
 
 const MetaPlugin = ({ pluginInfo, ...others }: IPlugin) => {
+  const { id } = getPluginIds("meta");
   const info = useSelecting("raw");
   if (!info || info.type === "group" || info.type === "multiple") return null;
   const _meta = info.displayNode?.params.meta;
@@ -25,7 +27,7 @@ const MetaPlugin = ({ pluginInfo, ...others }: IPlugin) => {
   const history = getMetaTrace(meta).reverse().map(getMetaRepresentation).join(" -> ");
 
   return (
-    <Render {...others}>
+    <Render id={id} {...others}>
       <Textarea
         w="100%"
         h="100%"

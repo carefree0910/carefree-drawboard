@@ -6,10 +6,10 @@ import { getRandomHash } from "@carefree0910/core";
 import { langStore } from "@carefree0910/business";
 
 import type { IPythonTextAreaPlugin, IPythonOnSocketMessage } from "@/schema/_python";
+import { getPluginIds } from "@/stores/plugins";
 import { useSocketPython } from "@/hooks/usePython";
 import { drawboardPluginFactory } from "@/plugins/utils/factory";
 import Render from "@/plugins/components/Render";
-import { usePureIdentifier } from "./hooks";
 
 const PythonTextAreaPlugin = ({
   pluginInfo: { node, nodes, endpoint, identifier, updateInterval, noLoading, textAlign },
@@ -17,8 +17,7 @@ const PythonTextAreaPlugin = ({
 }: IPythonTextAreaPlugin) => {
   const t = useToast();
   const lang = langStore.tgt;
-  const pureIdentifier = usePureIdentifier(identifier);
-  const id = useMemo(() => `${pureIdentifier}_textArea_${getRandomHash()}`, [pureIdentifier]);
+  const id = getPluginIds(`textArea_${identifier}`);
   const hash = useMemo(() => getRandomHash().toString(), [id]);
   const [value, setValue] = useState("");
   const onMessage = useCallback<IPythonOnSocketMessage<{ text: string }>>(

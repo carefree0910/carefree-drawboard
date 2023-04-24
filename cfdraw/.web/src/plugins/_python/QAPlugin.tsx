@@ -1,20 +1,18 @@
-import { useCallback, useMemo, useState } from "react";
+import { useCallback, useState } from "react";
 import { observer } from "mobx-react-lite";
 import { Textarea } from "@chakra-ui/react";
 
-import { getRandomHash } from "@carefree0910/core";
 import { langStore, translate } from "@carefree0910/business";
 
 import type { IPythonOnSocketMessage, IPythonQAPlugin } from "@/schema/_python";
 import { UI_Words } from "@/lang/ui";
+import { getPluginIds } from "@/stores/plugins";
 import CFInput from "@/components/CFInput";
 import { drawboardPluginFactory } from "@/plugins/utils/factory";
-import { usePureIdentifier } from "./hooks";
 import PythonPluginWithSubmit from "./PluginWithSubmit";
 
 const PythonQAPlugin = ({ pluginInfo, ...props }: IPythonQAPlugin) => {
-  const pureIdentifier = usePureIdentifier(pluginInfo.identifier);
-  const id = useMemo(() => `${pureIdentifier}_QA_${getRandomHash()}`, []);
+  const { id } = getPluginIds(`QA_${pluginInfo.identifier}`);
   const [userInput, setUserInput] = useState("");
   const [serverText, setServerText] = useState(pluginInfo.initialText);
   const lang = langStore.tgt;

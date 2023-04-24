@@ -1,6 +1,8 @@
 // {identifier}.{hash}
 export function stripHashFromIdentifier(identifierWithHash: string): string {
-  return identifierWithHash.split(".").slice(0, -1).join(".");
+  return identifierWithHash.includes(".")
+    ? identifierWithHash.split(".").slice(0, -1).join(".")
+    : identifierWithHash;
 }
 
 export function isDate(time: Date | number) {
