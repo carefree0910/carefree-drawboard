@@ -50,8 +50,6 @@ class ISocketPlugin(IPlugin, metaclass=ABCMeta):
     def to_plugin_settings(self) -> Dict[str, Any]:
         d = self.settings.dict()
         plugin_info = d.pop("pluginInfo")
-        # `identifier` has hashed into `{identifier}.{hash}`
-        plugin_info["endpoint"] = f"/{self.identifier}"
         plugin_info["identifier"] = self.hash_identifier(self.identifier)
         plugin_type = f"_python.{self.type}"
         node_constraint = d.pop("nodeConstraint")

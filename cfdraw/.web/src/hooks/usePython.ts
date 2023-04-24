@@ -54,7 +54,7 @@ async function getPythonRequest({
   identifier,
   getExtraRequestData,
   opt,
-}: Omit<IUsePythonInfo, "endpoint" | "isInvisible"> & {
+}: Omit<IUsePythonInfo, "isInvisible"> & {
   opt: IExportBlob;
 }): Promise<Omit<IPythonSocketRequest, "hash">> {
   const exportBox = new INodes(nodes).bbox;
@@ -80,7 +80,6 @@ export function useSocketPython<R>({
   hash,
   node,
   nodes,
-  endpoint,
   identifier,
   isInvisible,
   updateInterval,
@@ -94,7 +93,6 @@ export function useSocketPython<R>({
     hash,
     node?.alias,
     nodes.map((n) => n.alias).join("_"),
-    endpoint,
     identifier,
     updateInterval,
     isInvisible,

@@ -23,7 +23,6 @@ function PythonPluginWithSubmit<R>({
   pluginInfo: {
     node,
     nodes,
-    endpoint,
     identifier,
     updateInterval,
     closeOnSubmit = true,
@@ -62,7 +61,6 @@ function PythonPluginWithSubmit<R>({
     hash,
     node,
     nodes,
-    endpoint,
     identifier,
     isInvisible: props.renderInfo.isInvisible ?? false,
     updateInterval,

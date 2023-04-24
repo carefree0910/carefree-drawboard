@@ -10,7 +10,6 @@ import type { IDefinitions } from "./metaFields";
 // general
 
 interface IPythonPluginInfo extends IPluginInfo {
-  endpoint: string;
   identifier: string;
   updateInterval?: number;
 }
