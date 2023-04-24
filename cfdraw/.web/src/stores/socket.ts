@@ -28,16 +28,19 @@ interface SocketHook<R> {
 
 export interface ISocketStore {
   socket?: WebSocket;
+  shouldTerminate: boolean;
   hooks: Bundle<SocketHook<any>>;
 }
 class SocketStore extends ABCStore<ISocketStore> implements ISocketStore {
   socket?: WebSocket;
+  shouldTerminate: boolean = false;
   hooks = new Bundle<SocketHook<any>>([]);
 
   constructor() {
     super();
     makeObservable(this, {
       socket: observable,
+      shouldTerminate: observable,
       hooks: observable,
     });
   }
@@ -60,6 +63,10 @@ class SocketStore extends ABCStore<ISocketStore> implements ISocketStore {
         hook.getMessage().then((data) => {
           if (data.hash !== hash) {
             Logger.warn("Internal error: hash mismatched.");
+            return;
+          }
+          if (this.shouldTerminate) {
+            Logger.warn("Should terminate socket connection in `send`.");
             return;
           }
           socketStore.socket!.send(JSON.stringify(data));
@@ -189,11 +196,13 @@ export function useWebSocket(opt?: IUseWebSocket) {
     let socket: WebSocket;
     let connected = false;
     let shouldTerminate = false;
+    socketStore.updateProperty("shouldTerminate", false);
     _connect();
 
     return () => {
       log("cleanup...");
       shouldTerminate = true;
+      socketStore.updateProperty("shouldTerminate", true);
       clearTimeout(timer);
       clearTimeout(newTimer);
       if (connected) socket?.close();
