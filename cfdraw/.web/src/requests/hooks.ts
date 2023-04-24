@@ -32,7 +32,7 @@ export function useAPI<T extends APISources>(source: T): APIs[T] {
 }
 
 /**
- * this function will integrate a simple but useful retry mechanism, so we only need to
+ * this function will try to inject a simple but useful retry mechanism, so we only need to
  * focus on the core logics in `onMessage` function.
  */
 function useOnSocketMessageWithRetry<R>(
@@ -42,11 +42,15 @@ function useOnSocketMessageWithRetry<R>(
 ): IPythonOnSocketMessage<R> {
   return useCallback(
     (message) => {
-      if (!isUndefined(retryInterval) && message.status === "exception") {
-        Logger.warn(`socket exception occurred: ${message.message}`);
-        return Promise.resolve({ newMessage: getMessage, newMessageInterval: retryInterval });
-      }
-      return onMessage(message);
+      return onMessage(message).then((res) => {
+        let { newMessage, newMessageInterval } = res ?? {};
+        if (!isUndefined(retryInterval) && message.status === "exception") {
+          Logger.warn(`socket exception occurred: ${message.message}`);
+          newMessage ??= getMessage;
+          newMessageInterval ??= retryInterval;
+        }
+        return { newMessage, newMessageInterval };
+      });
     },
     [getMessage, onMessage, retryInterval],
   );
