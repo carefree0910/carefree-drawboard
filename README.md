@@ -117,11 +117,11 @@ Cool!
 
 ### Will there be a Discord Community?
 
-Unfortunately I'm Chinese and I can hardly access to Discord. 🤣 Even if there are someone kindly enough to build one up for me, I can hardly connect to it so it will be impossible for me to stay tuned.
-
-If you are kind enough please use the **GitHub Discussions**, or maybe there are other Discord replacements? I don't know, help!!!
+Many thanks to [JSDu](https://github.com/JamesBonddu), who created a [Discord channel](https://discord.gg/UkfpFFmNd2) for my projects!!
 
 如果有热心观众对这个项目感兴趣并愿意帮忙建立一个中文社区，欢迎联系我，我会非常感激的！！
+
+**更新：** 热心观众（[JSDu](https://github.com/JamesBonddu)）出现啦！非常感谢！！！（猛戳[这里](https://discord.gg/UkfpFFmNd2)加入我们！）
 
 ### Why do you build this project?
 
