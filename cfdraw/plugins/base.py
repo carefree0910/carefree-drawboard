@@ -87,9 +87,9 @@ class ISocketPlugin(IPlugin, metaclass=ABCMeta):
         self,
         progress: float,
         intermediate: Optional[ISocketIntermediate] = None,
-    ) -> None:
+    ) -> bool:
         message = ISocketMessage.make_progress(self.task_hash, progress, intermediate)
-        offload_run(self.send_message(message))
+        return offload_run(self.send_message(message))
 
 
 class IInternalSocketPlugin(ISocketPlugin, metaclass=ABCMeta):

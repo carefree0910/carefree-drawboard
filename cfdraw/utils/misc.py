@@ -44,15 +44,20 @@ async def offload(future: Coroutine[Any, Any, TFutureResponse]) -> TFutureRespon
 
 
 # TODO : maybe there will be better solutions?
-def offload_run(future: Coroutine[Any, Any, None]) -> None:
+# Return True if the `future` is successfully executed
+def offload_run(future: Coroutine[Any, Any, None]) -> bool:
     def _run() -> None:
         try:
             loop = asyncio.new_event_loop()
             asyncio.set_event_loop(loop)
             loop.run_until_complete(future)
             loop.close()
+            event.set()
         except Exception as err:
             print_error(get_err_msg(err))
 
+    event = asyncio.Event()
     progress = threading.Thread(target=_run)
     progress.start()
+    progress.join()
+    return event.is_set()
