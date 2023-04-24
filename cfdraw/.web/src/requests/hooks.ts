@@ -45,7 +45,10 @@ function useOnSocketMessageWithRetry<R>(
       return onMessage(message).then((res) => {
         let { newMessage, newMessageInterval } = res ?? {};
         if (!isUndefined(retryInterval) && message.status === "exception") {
-          Logger.warn(`socket exception occurred: ${message.message}`);
+          Logger.warn(
+            `socket exception occurred: ${message.message}, ` +
+              `will retry after ${retryInterval}ms`,
+          );
           newMessage ??= getMessage;
           newMessageInterval ??= retryInterval;
         }
