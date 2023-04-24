@@ -3,6 +3,7 @@ import { observer } from "mobx-react-lite";
 import { CloseIcon } from "@chakra-ui/icons";
 import { Flex, Spacer, useToast } from "@chakra-ui/react";
 
+import { isUndefined } from "@carefree0910/core";
 import { langStore, translate } from "@carefree0910/business";
 
 import type { IPythonResults } from "@/schema/meta";
@@ -26,6 +27,7 @@ const PythonFieldsPlugin = ({ pluginInfo, ...props }: IPythonFieldsPlugin) => {
   const t = useToast();
   const lang = langStore.tgt;
   const definitions = pluginInfo.definitions;
+  const retryInterval = pluginInfo.retryInterval;
   const getExtraRequestData = useDefinitionsRequestDataFn(definitions);
   const currentMeta = useCurrentMeta(pluginInfo.node);
   const emitClose = useClosePanel(id);
@@ -74,10 +76,25 @@ const PythonFieldsPlugin = ({ pluginInfo, ...props }: IPythonFieldsPlugin) => {
           removeSocketHooks(hash);
           break;
         }
+        case "exception": {
+          removePluginMessage(id);
+          socketFinishedEvent.emit({ id });
+          toast(
+            t,
+            "error",
+            `${translate(Toast_Words["submit-task-error-message"], lang)} - ${message.message}`,
+          );
+          // remove the hook if retry is not needed
+          if (isUndefined(retryInterval)) {
+            socketLog(`> remove hook (${hash})`);
+            removeSocketHooks(hash);
+          }
+          break;
+        }
       }
       return {};
     },
-    [id, lang, pureIdentifier, currentMeta, getExtraRequestData],
+    [id, lang, pureIdentifier, currentMeta, retryInterval, getExtraRequestData],
   );
   const onSocketError = useCallback(
     async (err: any) => {
