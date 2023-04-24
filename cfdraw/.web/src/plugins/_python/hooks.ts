@@ -7,13 +7,13 @@ import type { IDefinitions } from "@/schema/metaFields";
 import { stripHashFromIdentifier } from "@/utils/misc";
 import { getMetaField } from "@/stores/meta";
 
-export function useIdentifierId(identifier: string): string {
+export function usePureIdentifier(identifier: string): string {
   return useMemo(() => stripHashFromIdentifier(identifier).replaceAll(".", "_"), [identifier]);
 }
-export function useFieldsPluginIds(identifier: string): { id: string; identifierId: string } {
-  const identifierId = useIdentifierId(identifier);
-  const id = useMemo(() => `${identifierId}_${getRandomHash()}`, [identifierId]);
-  return { id, identifierId };
+export function useFieldsPluginIds(identifier: string): { id: string; pureIdentifier: string } {
+  const pureIdentifier = usePureIdentifier(identifier);
+  const id = useMemo(() => `${pureIdentifier}_${getRandomHash()}`, [pureIdentifier]);
+  return { id, pureIdentifier };
 }
 export function useDefinitionsRequestDataFn(definitions: IDefinitions): () => Dictionary<any> {
   return useCallback(() => {

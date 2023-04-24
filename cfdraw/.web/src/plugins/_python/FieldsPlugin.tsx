@@ -21,7 +21,7 @@ import PythonPluginWithSubmit, { socketFinishedEvent } from "./PluginWithSubmit"
 import DefinitionFields from "./DefinitionFields";
 
 const PythonFieldsPlugin = ({ pluginInfo, ...props }: IPythonFieldsPlugin) => {
-  const { id, identifierId } = useFieldsPluginIds(pluginInfo.identifier);
+  const { id, pureIdentifier } = useFieldsPluginIds(pluginInfo.identifier);
   const t = useToast();
   const lang = langStore.tgt;
   const definitions = pluginInfo.definitions;
@@ -38,7 +38,7 @@ const PythonFieldsPlugin = ({ pluginInfo, ...props }: IPythonFieldsPlugin) => {
             toast(
               t,
               "success",
-              `${translate(Toast_Words["submit-task-finished-message"], lang)} (${identifierId})`,
+              `${translate(Toast_Words["submit-task-finished-message"], lang)} (${pureIdentifier})`,
             );
           } else {
             const { _duration, ...response } = final;
@@ -47,7 +47,7 @@ const PythonFieldsPlugin = ({ pluginInfo, ...props }: IPythonFieldsPlugin) => {
               lang,
               type: "python.fields",
               metaData: {
-                identifier: identifierId,
+                identifier: pureIdentifier,
                 parameters: getExtraRequestData(),
                 response,
                 duration: _duration,
@@ -61,7 +61,7 @@ const PythonFieldsPlugin = ({ pluginInfo, ...props }: IPythonFieldsPlugin) => {
       }
       return {};
     },
-    [id, lang, identifierId, currentMeta, getExtraRequestData],
+    [id, lang, pureIdentifier, currentMeta, getExtraRequestData],
   );
   const onSocketError = useCallback(
     async (err: any) => {
@@ -70,7 +70,7 @@ const PythonFieldsPlugin = ({ pluginInfo, ...props }: IPythonFieldsPlugin) => {
     [t, lang],
   );
 
-  const header = pluginInfo.header ?? titleCaseWord(identifierId);
+  const header = pluginInfo.header ?? titleCaseWord(pureIdentifier);
   return (
     <PythonPluginWithSubmit
       id={id}

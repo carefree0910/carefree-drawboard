@@ -9,12 +9,12 @@ import type { IPythonOnSocketMessage, IPythonQAPlugin } from "@/schema/_python";
 import { UI_Words } from "@/lang/ui";
 import CFInput from "@/components/CFInput";
 import { drawboardPluginFactory } from "@/plugins/utils/factory";
-import { useIdentifierId } from "./hooks";
+import { usePureIdentifier } from "./hooks";
 import PythonPluginWithSubmit from "./PluginWithSubmit";
 
 const PythonQAPlugin = ({ pluginInfo, ...props }: IPythonQAPlugin) => {
-  const identifierId = useIdentifierId(pluginInfo.identifier);
-  const id = useMemo(() => `${identifierId}_QA_${getRandomHash()}`, []);
+  const pureIdentifier = usePureIdentifier(pluginInfo.identifier);
+  const id = useMemo(() => `${pureIdentifier}_QA_${getRandomHash()}`, []);
   const [userInput, setUserInput] = useState("");
   const [serverText, setServerText] = useState(pluginInfo.initialText);
   const lang = langStore.tgt;

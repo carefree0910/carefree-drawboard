@@ -9,7 +9,7 @@ import type { IPythonTextAreaPlugin, IPythonOnSocketMessage } from "@/schema/_py
 import { useSocketPython } from "@/hooks/usePython";
 import { drawboardPluginFactory } from "@/plugins/utils/factory";
 import Render from "@/plugins/components/Render";
-import { useIdentifierId } from "./hooks";
+import { usePureIdentifier } from "./hooks";
 
 const PythonTextAreaPlugin = ({
   pluginInfo: { node, nodes, endpoint, identifier, updateInterval, noLoading, textAlign },
@@ -17,8 +17,8 @@ const PythonTextAreaPlugin = ({
 }: IPythonTextAreaPlugin) => {
   const t = useToast();
   const lang = langStore.tgt;
-  const identifierId = useIdentifierId(identifier);
-  const id = useMemo(() => `${identifierId}_textArea_${getRandomHash()}`, [identifierId]);
+  const pureIdentifier = usePureIdentifier(identifier);
+  const id = useMemo(() => `${pureIdentifier}_textArea_${getRandomHash()}`, [pureIdentifier]);
   const hash = useMemo(() => getRandomHash().toString(), [id]);
   const [value, setValue] = useState("");
   const onMessage = useCallback<IPythonOnSocketMessage<{ text: string }>>(
