@@ -1,6 +1,14 @@
+import asyncio
+
 from typing import Any
+from typing import TypeVar
 from typing import Callable
+from typing import Coroutine
 from cftool.misc import print_warning
+from concurrent.futures import ThreadPoolExecutor
+
+
+TFutureResponse = TypeVar("TFutureResponse")
 
 
 def deprecated(message: str) -> Callable[[type], type]:
@@ -17,3 +25,15 @@ def deprecated(message: str) -> Callable[[type], type]:
         return cls
 
     return _deprecated
+
+
+# TODO : maybe there will be better solutions?
+async def offload(future: Coroutine[Any, Any, TFutureResponse]) -> TFutureResponse:
+    loop = asyncio.get_event_loop()
+    with ThreadPoolExecutor() as executor:
+        return await loop.run_in_executor(
+            executor,
+            lambda new_loop, _future: new_loop.run_until_complete(_future),
+            asyncio.new_event_loop(),
+            future,
+        )

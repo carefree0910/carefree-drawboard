@@ -9,11 +9,11 @@ from fastapi import WebSocketDisconnect
 from cfdraw import constants
 from cfdraw.app.schema import IApp
 from cfdraw.app.schema import IRequestQueueData
+from cfdraw.utils.misc import offload
 from cfdraw.utils.server import get_err_msg
 from cfdraw.schema.plugins import ISocketRequest
 from cfdraw.schema.plugins import ISocketMessage
 from cfdraw.app.endpoints.base import IEndpoint
-from cfdraw.app.endpoints.queue import offload
 
 
 def add_websocket(app: IApp) -> None:
