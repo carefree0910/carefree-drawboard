@@ -65,7 +65,8 @@ export const getPluginHash = (id: string): string => {
   return pluginsStore.hashes[id];
 };
 // messages
-export const getPluginMessage = (id: string) => pluginsStore.messages[id];
+export const getPluginMessage = (id: string): IPluginsStore["messages"][string] | undefined =>
+  pluginsStore.messages[id];
 export const updatePluginMessage = (id: string, message: IPythonSocketMessage<IPythonResults>) => {
   const messages = shallowCopy(pluginsStore.messages);
   messages[id] = message;
