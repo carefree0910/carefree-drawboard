@@ -76,8 +76,6 @@ const PythonFieldsPlugin = ({ pluginInfo, ...props }: IPythonFieldsPlugin) => {
           break;
         }
         case "exception": {
-          removePluginMessage(id);
-          socketFinishedEvent.emit({ id });
           if (!noErrorToast) {
             toast(
               t,
@@ -85,8 +83,10 @@ const PythonFieldsPlugin = ({ pluginInfo, ...props }: IPythonFieldsPlugin) => {
               `${translate(Toast_Words["submit-task-error-message"], lang)} - ${message.message}`,
             );
           }
-          // remove the hook if retry is not needed
+          // cleanup if retry is not specified
           if (isUndefined(retryInterval)) {
+            socketFinishedEvent.emit({ id });
+            removePluginMessage(id);
             socketLog(`> remove hook (${hash})`);
             removeSocketHooks(hash);
           }
