@@ -9,7 +9,6 @@ import { useInitBoard } from "./hooks/useInitBoard";
 import { useFileDropper } from "./hooks/useFileDropper";
 import { useGridLines } from "./hooks/useGridLines";
 import { usePreventDefaults } from "./hooks/usePreventDefaults";
-import { useUndoRedo } from "./hooks/useUndoRedo";
 import { useSyncPython } from "./hooks/usePython";
 import BoardPanel from "./BoardPanel";
 
@@ -20,7 +19,6 @@ function App() {
   useInitBoard();
   useFileDropper(langStore.tgt);
   useGridLines();
-  useUndoRedo();
   usePreventDefaults();
 
   return (
