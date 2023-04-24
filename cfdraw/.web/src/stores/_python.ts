@@ -8,7 +8,7 @@ import type { AvailablePythonPlugins, IMakePlugin } from "@/schema/plugins";
 interface IGlobalSettings {
   timeout?: number;
   useStrictMode?: boolean;
-  sockenEndpoint?: string;
+  socketEndpoint?: string;
 }
 export interface IPythonStore {
   pluginSettings: IMakePlugin<AvailablePythonPlugins>[];
