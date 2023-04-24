@@ -5,6 +5,7 @@ from PIL import Image
 from typing import Any
 from typing import Dict
 from typing import List
+from typing import Optional
 
 from cfdraw import constants
 from cfdraw.utils import server
@@ -20,6 +21,8 @@ class ISocketPlugin(IPlugin, metaclass=ABCMeta):
     @abstractmethod
     async def process(self, data: ISocketRequest) -> Any:
         pass
+
+    # internal APIs
 
     @property
     def middlewares(self) -> List[IMiddleWare]:
@@ -73,6 +76,8 @@ class ISocketPlugin(IPlugin, metaclass=ABCMeta):
             props["offsetY"] = offset_y
         return dict(type=plugin_type, props=props)
 
+    # helper methods
+
     def filter(self, nodes: List[INodeData], target: SingleNodeType) -> List[INodeData]:
         return list(filter(lambda node: node.type == target, nodes))
 
@@ -84,6 +89,14 @@ class ISocketPlugin(IPlugin, metaclass=ABCMeta):
             return server.get_image(file)
         async with self.http_session.get(src) as res:
             return Image.open(BytesIO(await res.read()))
+
+    async def send_progress(
+        self,
+        progress: float,
+        intermediate: Optional[ISocketIntermediate] = None,
+    ) -> None:
+        message = ISocketMessage.make_progress(self.hash, progress, intermediate)
+        await self.send_text(message)
 
 
 class IInternalSocketPlugin(ISocketPlugin, metaclass=ABCMeta):
