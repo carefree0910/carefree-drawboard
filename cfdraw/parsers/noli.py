@@ -1,5 +1,7 @@
 import math
 
+import numpy as np
+
 from enum import Enum
 from typing import Any
 from typing import Dict
@@ -112,6 +114,10 @@ class Matrix2D(BaseModel):
             "w": w,
             "h": h,
         }
+
+    @property
+    def matrix(self) -> np.ndarray:
+        return np.array([[self.a, self.c, self.e], [self.b, self.d, self.f]])
 
 
 class SingleNodeType(str, Enum):
