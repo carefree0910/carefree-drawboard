@@ -52,6 +52,7 @@ export interface IPythonFieldsPlugin extends IPythonPlugin {
       header?: string;
       definitions: IDefinitions;
       numColumns?: number;
+      noErrorToast?: boolean;
     };
 }
 

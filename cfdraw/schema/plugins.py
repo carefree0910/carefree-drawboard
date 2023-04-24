@@ -366,6 +366,7 @@ class IFieldsPluginInfo(IPluginInfo):
         description="Field definitions",
     )
     numColumns: Optional[int] = Field(None, description="Number of columns")
+    noErrorToast: Optional[bool] = Field(None, description="Whether not to toast error")
 
 
 class ITextAreaPluginInfo(IPluginInfo):

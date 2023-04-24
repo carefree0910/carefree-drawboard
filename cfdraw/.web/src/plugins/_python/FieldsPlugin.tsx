@@ -26,8 +26,7 @@ const PythonFieldsPlugin = ({ pluginInfo, ...props }: IPythonFieldsPlugin) => {
   const { id, pureIdentifier } = getPluginIds(pluginInfo.identifier);
   const t = useToast();
   const lang = langStore.tgt;
-  const definitions = pluginInfo.definitions;
-  const retryInterval = pluginInfo.retryInterval;
+  const { definitions, retryInterval, noErrorToast } = pluginInfo;
   const getExtraRequestData = useDefinitionsRequestDataFn(definitions);
   const currentMeta = useCurrentMeta(pluginInfo.node);
   const emitClose = useClosePanel(id);
@@ -79,11 +78,13 @@ const PythonFieldsPlugin = ({ pluginInfo, ...props }: IPythonFieldsPlugin) => {
         case "exception": {
           removePluginMessage(id);
           socketFinishedEvent.emit({ id });
-          toast(
-            t,
-            "error",
-            `${translate(Toast_Words["submit-task-error-message"], lang)} - ${message.message}`,
-          );
+          if (!noErrorToast) {
+            toast(
+              t,
+              "error",
+              `${translate(Toast_Words["submit-task-error-message"], lang)} - ${message.message}`,
+            );
+          }
           // remove the hook if retry is not needed
           if (isUndefined(retryInterval)) {
             socketLog(`> remove hook (${hash})`);
@@ -94,7 +95,7 @@ const PythonFieldsPlugin = ({ pluginInfo, ...props }: IPythonFieldsPlugin) => {
       }
       return {};
     },
-    [id, lang, pureIdentifier, currentMeta, retryInterval, getExtraRequestData],
+    [id, lang, pureIdentifier, currentMeta, retryInterval, noErrorToast, getExtraRequestData],
   );
   const onSocketError = useCallback(
     async (err: any) => {

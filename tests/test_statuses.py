@@ -9,7 +9,12 @@ settings = IPluginSettings(
     nodeConstraint=NodeConstraints.IMAGE,
     pivot=PivotType.RT,
     follow=True,
-    pluginInfo=IFieldsPluginInfo(header="Bar", definitions={}, retryInterval=1000),
+    pluginInfo=IFieldsPluginInfo(
+        header="Bar",
+        definitions={},
+        retryInterval=1000,
+        noErrorToast=True,
+    ),
 )
 
 
