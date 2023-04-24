@@ -160,21 +160,24 @@ class QueuesInQueue(Generic[TItemData]):
         searched = False
         pending: List[Item[TItemData]] = []
         finished_searching = [False] * len(self._queues)
+
+        init = (self._cursor + len(self._queues) - 1) % len(self._queues)
+        cursor = init
         while not all(finished_searching):
-            for i, queue in enumerate(self._queues):
-                if finished_searching[i]:
-                    continue
+            if not finished_searching[cursor]:
+                queue = self._queues.get_index(cursor)
                 if layer >= len(queue.data):
-                    finished_searching[i] = True
-                    continue
-                item = queue.data.get_index(layer)
-                if item.key == item_key:
-                    searched = True
-                    break
-                pending.append(item)
-            if searched:
-                break
-            layer += 1
+                    finished_searching[cursor] = True
+                else:
+                    item = queue.data.get_index(layer)
+                    if item.key == item_key:
+                        searched = True
+                        break
+                    pending.append(item)
+            cursor = (cursor + 1) % len(self._queues)
+            if cursor == init:
+                layer += 1
+
         return pending if searched else None
 
 
