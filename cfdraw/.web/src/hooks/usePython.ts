@@ -78,6 +78,7 @@ export function useSocketPython<R>({
   nodes,
   identifier,
   isInvisible,
+  retryInterval,
   updateInterval,
   getExtraRequestData,
   onMessage,
@@ -90,6 +91,7 @@ export function useSocketPython<R>({
     node?.alias,
     nodes.map((n) => n.alias).join("_"),
     identifier,
+    retryInterval,
     updateInterval,
     isInvisible,
     getExtraRequestData,
@@ -114,6 +116,7 @@ export function useSocketPython<R>({
       getMessage,
       onMessage,
       onSocketError,
+      retryInterval,
       updateInterval,
     });
   }, [getMessage, onMessage, onSocketError]);

@@ -12,7 +12,7 @@ import { drawboardPluginFactory } from "@/plugins/utils/factory";
 import Render from "@/plugins/components/Render";
 
 const PythonTextAreaPlugin = ({
-  pluginInfo: { node, nodes, identifier, updateInterval, noLoading, textAlign },
+  pluginInfo: { node, nodes, identifier, retryInterval, updateInterval, noLoading, textAlign },
   ...props
 }: IPythonTextAreaPlugin) => {
   const t = useToast();
@@ -40,6 +40,7 @@ const PythonTextAreaPlugin = ({
     nodes,
     identifier,
     isInvisible: props.renderInfo.isInvisible ?? false,
+    retryInterval,
     updateInterval,
     onMessage,
   });

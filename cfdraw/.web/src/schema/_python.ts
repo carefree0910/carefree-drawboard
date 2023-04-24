@@ -9,9 +9,8 @@ import type { IDefinitions } from "./metaFields";
 
 // general
 
-interface IPythonPluginInfo extends IPluginInfo {
+interface IPythonPluginInfo extends IPluginInfo, IPythonSocketIntervals {
   identifier: string;
-  updateInterval?: number;
 }
 export interface IPythonPlugin extends IPlugin {
   pluginInfo: IPythonPluginInfo;
@@ -101,7 +100,13 @@ export type IPythonOnSocketMessage<R> = (data: IPythonSocketMessage<R>) => Promi
     }
   | undefined
 >;
-export interface IPythonSocketCallbacks<R> extends IPythonCallbacks {
+export interface IPythonSocketIntervals {
+  // if set, will retry in `retryInterval` ms when exception occurred
+  retryInterval?: number;
+  // if set, will re-send message every `updateInterval` ms
+  updateInterval?: number;
+}
+export interface IPythonSocketCallbacks<R> extends IPythonCallbacks, IPythonSocketIntervals {
   getMessage: () => Promise<IPythonSocketRequest>;
   onMessage: IPythonOnSocketMessage<R>;
   onSocketError?: (err: any) => void;

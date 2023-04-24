@@ -38,16 +38,17 @@ export function useAPI<T extends APISources>(source: T): APIs[T] {
 function useOnSocketMessageWithRetry<R>(
   getMessage: () => Promise<IPythonSocketRequest>,
   onMessage: IPythonOnSocketMessage<R>,
+  retryInterval?: number,
 ): IPythonOnSocketMessage<R> {
   return useCallback(
     (message) => {
-      if (message.status === "exception") {
+      if (!isUndefined(retryInterval) && message.status === "exception") {
         Logger.warn(`socket exception occurred: ${message.message}`);
-        return Promise.resolve({ newMessage: getMessage });
+        return Promise.resolve({ newMessage: getMessage, newMessageInterval: retryInterval });
       }
       return onMessage(message);
     },
-    [getMessage, onMessage],
+    [getMessage, onMessage, retryInterval],
   );
 }
 export function useWebSocketHook<R>({
@@ -57,20 +58,17 @@ export function useWebSocketHook<R>({
   onMessage,
   onSocketError,
   dependencies,
-  useRetry = true,
+  retryInterval,
   updateInterval,
   isInternal,
 }: IPythonSocketCallbacks<R> & {
   isInvisible: boolean;
   hash?: string;
   dependencies?: any[];
-  useRetry?: boolean;
-  updateInterval?: number;
   isInternal?: boolean;
 }) {
   const hash = useMemo(() => (isInvisible ? undefined : _hash), [isInvisible, _hash]);
-  const onMessageWithRetry = useOnSocketMessageWithRetry(getMessage, onMessage);
-  const chosenOnMessage = useRetry ? onMessageWithRetry : onMessage;
+  const onMessageWithRetry = useOnSocketMessageWithRetry(getMessage, onMessage, retryInterval);
 
   useEffect(() => {
     if (isUndefined(hash)) return;
@@ -78,7 +76,7 @@ export function useWebSocketHook<R>({
     pushSocketHook({
       key: hash,
       getMessage,
-      onMessage: chosenOnMessage,
+      onMessage: onMessageWithRetry,
       onSocketError,
       updateInterval,
       isInternal,
@@ -89,5 +87,5 @@ export function useWebSocketHook<R>({
         .join(", ")}`,
     );
     runSocketHook(hash);
-  }, [hash, isInternal, ...(dependencies ?? [])]);
+  }, [hash, onMessageWithRetry, onSocketError, isInternal, ...(dependencies ?? [])]);
 }

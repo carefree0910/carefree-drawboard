@@ -43,10 +43,15 @@ class PluginType(str, Enum):
 class IPluginInfo(BaseModel):
     """The common data used in `usePython` hook & each React component."""
 
-    updateInterval: int = Field(
-        0,
+    retryInterval: Optional[int] = Field(
+        None,
         ge=0,
-        description="If > 0, the plugin will be called every `updateInterval` ms",
+        description="If not None, the plugin will retry in `retryInterval` ms when exception occurred",
+    )
+    updateInterval: Optional[int] = Field(
+        None,
+        gt=0,
+        description="If not None, the plugin will be called every `updateInterval` ms",
     )
     closeOnSubmit: Optional[bool] = Field(
         None,
