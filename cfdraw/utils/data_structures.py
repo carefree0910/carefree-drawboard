@@ -111,7 +111,7 @@ class QueuesInQueue(Generic[TItemData]):
 
     @property
     def is_empty(self) -> bool:
-        return self._queues.is_empty
+        return self.num_items == 0
 
     @property
     def num_queues(self) -> int:
