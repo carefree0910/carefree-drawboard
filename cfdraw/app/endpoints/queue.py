@@ -20,7 +20,6 @@ from cfdraw.app.schema import IRequestQueueData
 
 
 DEBUG = False
-log: Any = print if DEBUG else lambda *args, **kwargs: None
 
 
 class RequestQueue(IRequestQueue):
@@ -34,10 +33,11 @@ class RequestQueue(IRequestQueue):
         self._queues.push(data.request.userId, Item(uid, data))
         hash = data.request.hash
         self._senders[uid] = hash, send_message
-        log("~" * 50)
-        log("> push.uid", uid)
-        log("> push.userId", data.request.userId)
-        log("> push.hash", hash)
+        if DEBUG:
+            print("~" * 50)
+            print("> push.uid", uid)
+            print("> push.userId", data.request.userId)
+            print("> push.hash", hash)
         return uid
 
     async def run(self) -> None:
@@ -52,7 +52,8 @@ class RequestQueue(IRequestQueue):
             plugin = request_item.data.plugin
             request = request_item.data.request
             self._busy_uid = uid
-            log(">>> run", uid)
+            if DEBUG:
+                print(">>> run", uid)
             try:
                 await self._broadcast_working(uid)
                 await offload(plugin(request))
@@ -64,7 +65,8 @@ class RequestQueue(IRequestQueue):
             self._senders.pop(uid, None)
             await self._broadcast_pending()
             await asyncio.sleep(0)
-            log(">>> cleanup", uid)
+            if DEBUG:
+                print(">>> cleanup", uid)
 
     async def wait(self, user_id: str, uid: str) -> None:
         # Maybe in some rare cases, the task completes so fast that
@@ -81,9 +83,10 @@ class RequestQueue(IRequestQueue):
         await self._broadcast_pending()
         asyncio.create_task(self.run())
         await request_item.data.event.wait()
-        log("=" * 50)
-        log("> finished", uid)
-        log("^" * 50)
+        if DEBUG:
+            print("=" * 50)
+            print("> finished", uid)
+            print("^" * 50)
 
     # broadcast
 
@@ -92,25 +95,26 @@ class RequestQueue(IRequestQueue):
             if uid == self._busy_uid:
                 continue
             pending = self._queues.get_pending(uid)
-            log("-" * 50)
-            log(">> uid", uid)
-            log(">> hash", hash)
-            log(
-                ">> queues\n\n",
-                "\n".join(
-                    [
-                        f"{queue_item.key} : "
-                        + ", ".join(
-                            [
-                                getattr(item.data.request, "hash", "None")
-                                for item in queue_item.data
-                            ]
-                        )
-                        for queue_item in self._queues
-                    ]
-                ),
-                "\n",
-            )
+            if DEBUG:
+                print("-" * 50)
+                print(">> uid", uid)
+                print(">> hash", hash)
+                print(
+                    ">> queues\n\n",
+                    "\n".join(
+                        [
+                            f"{queue_item.key} : "
+                            + ", ".join(
+                                [
+                                    getattr(item.data.request, "hash", "None")
+                                    for item in queue_item.data
+                                ]
+                            )
+                            for queue_item in self._queues
+                        ]
+                    ),
+                    "\n",
+                )
             try:
                 if pending is None:
                     await sender(
