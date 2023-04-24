@@ -3,7 +3,7 @@ import { runInAction } from "mobx";
 import type { AvailablePluginsAndPythonPlugins } from "@/schema/plugins";
 import { reactPluginSettings } from "@/_settings";
 import { usePythonPluginSettings } from "@/stores/_python";
-import { setPluginVisible, setPythonPluginVisible } from "@/stores/plugins";
+import { setPluginVisible, setPythonPluginVisible } from "@/stores/pluginVisible";
 import { floatingControlEvent } from "@/plugins/components/Floating";
 
 function setAllPlugins(visible: boolean, except?: AvailablePluginsAndPythonPlugins[]) {

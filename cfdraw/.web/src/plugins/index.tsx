@@ -2,7 +2,7 @@ import { Logger, shallowCopy } from "@carefree0910/core";
 import { useSelecting } from "@carefree0910/business";
 
 import type { AvailablePluginsAndPythonPlugins, IMakePlugin } from "@/schema/plugins";
-import { pluginIsVisible, pythonPluginIsVisible } from "@/stores/plugins";
+import { pluginIsVisible, pythonPluginIsVisible } from "@/stores/pluginVisible";
 import { drawboardPluginFactory } from "./utils/factory";
 import { getNodeFilter } from "./utils/renderFilters";
 

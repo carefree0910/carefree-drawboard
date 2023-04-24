@@ -24,7 +24,7 @@ import {
   pythonPluginIsVisible,
   setPythonPluginVisible,
   setPluginVisible,
-} from "@/stores/plugins";
+} from "@/stores/pluginVisible";
 import { hideAllPlugins, showAllPlugins } from "@/actions/managePlugins";
 import CFButton from "@/components/CFButton";
 import CFSelect from "@/components/CFSelect";
