@@ -27,11 +27,11 @@ class ISocketPlugin(IPlugin, metaclass=ABCMeta):
     @property
     def middlewares(self) -> List[IMiddleWare]:
         common_middlewares: List[IMiddleWare] = [
-            TextAreaMiddleWare(self.send_text),
-            FieldsMiddleWare(self.send_text),
-            TimerMiddleWare(self.send_text),
+            TextAreaMiddleWare(self.send_message),
+            FieldsMiddleWare(self.send_message),
+            TimerMiddleWare(self.send_message),
         ]
-        send_message_middleware = SendSocketMessageMiddleWare(self.send_text)
+        send_message_middleware = SendSocketMessageMiddleWare(self.send_message)
         return common_middlewares + [send_message_middleware]
 
     async def __call__(self, data: ISocketRequest) -> ISocketMessage:
@@ -96,7 +96,7 @@ class ISocketPlugin(IPlugin, metaclass=ABCMeta):
         intermediate: Optional[ISocketIntermediate] = None,
     ) -> None:
         message = ISocketMessage.make_progress(self.hash, progress, intermediate)
-        await self.send_text(message)
+        await self.send_message(message)
 
 
 class IInternalSocketPlugin(ISocketPlugin, metaclass=ABCMeta):

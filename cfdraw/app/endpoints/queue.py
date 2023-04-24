@@ -44,11 +44,11 @@ class RequestQueue(IRequestQueue):
         self._queues = QueuesInQueue[IRequestQueueData]()
         self._senders: Dict[str, Tuple[str, ISend]] = {}
 
-    def push(self, data: IRequestQueueData, send_text: ISend) -> str:
+    def push(self, data: IRequestQueueData, send_message: ISend) -> str:
         uid = random_hash()
         self._queues.push(data.request.userId, Item(uid, data))
         hash = data.request.hash
-        self._senders[uid] = hash, send_text
+        self._senders[uid] = hash, send_message
         log("~" * 50)
         log("> push.uid", uid)
         log("> push.userId", data.request.userId)

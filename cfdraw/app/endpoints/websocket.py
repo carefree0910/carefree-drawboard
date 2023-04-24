@@ -12,7 +12,6 @@ from cfdraw.app.schema import IRequestQueueData
 from cfdraw.utils.server import get_err_msg
 from cfdraw.schema.plugins import ISocketRequest
 from cfdraw.schema.plugins import ISocketMessage
-from cfdraw.plugins.base import ISocketPlugin
 from cfdraw.app.endpoints.base import IEndpoint
 
 
@@ -30,7 +29,7 @@ def add_websocket(app: IApp) -> None:
                 )
             )
 
-        async def send_text(data: ISocketMessage) -> None:
+        async def send_message(data: ISocketMessage) -> None:
             await websocket.send_text(json.dumps(data.dict()))
 
         await websocket.accept()
@@ -46,15 +45,15 @@ def add_websocket(app: IApp) -> None:
                     identifier = data.identifier.split(".", 1)[0]  # remove hash
                     target_plugin = app.plugins.make(identifier)
                 if target_plugin is not None:
-                    # `send_text` should be handled by the plugin itself, or by
+                    # `send_message` should be handled by the plugin itself, or by
                     # the `SendSocketMessageMiddleWare` which will provide a default handling
-                    target_plugin.send_text = send_text
+                    target_plugin.send_message = send_message
                     queue_data = IRequestQueueData(data, target_plugin, Event())
-                    uid = app.request_queue.push(queue_data, send_text)
+                    uid = app.request_queue.push(queue_data, send_message)
                     asyncio.create_task(app.request_queue.wait(data.userId, uid))
                 else:
                     plugin_str = "internal plugin" if data.isInternal else "plugin"
-                    await send_text(
+                    await send_message(
                         ISocketMessage.make_exception(
                             data.hash,
                             (

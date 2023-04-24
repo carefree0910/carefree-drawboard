@@ -24,7 +24,7 @@ from cfdraw.parsers.chakra import TextAlign
 
 
 TPluginModel = TypeVar("TPluginModel")
-ISendSocketText = Callable[["ISocketMessage"], Coroutine[Any, Any, None]]
+ISendSocketMessage = Callable[["ISocketMessage"], Coroutine[Any, Any, None]]
 
 
 class PluginType(str, Enum):
@@ -273,7 +273,7 @@ class IPlugin(ABC):
     hash: str
     identifier: str
     http_session: ClientSession
-    send_text: ISendSocketText
+    send_message: ISendSocketMessage
 
     @property
     @abstractmethod
@@ -300,7 +300,7 @@ class IPlugin(ABC):
 
 class IMiddleWare(ABC):
     hash: str
-    send_text: ISendSocketText
+    send_message: ISendSocketMessage
 
     # abstract
 
@@ -328,8 +328,8 @@ class IMiddleWare(ABC):
 
     # api
 
-    def __init__(self, send_text: ISendSocketText) -> None:
-        self.send_text = send_text
+    def __init__(self, send_message: ISendSocketMessage) -> None:
+        self.send_message = send_message
 
     async def __call__(self, plugin: IPlugin, response: Any) -> ISocketMessage:
         if plugin.type not in self.subscriptions:
@@ -388,7 +388,7 @@ class IHttpQAPluginInfo(IQAPluginInfo):
 
 
 __all__ = [
-    "ISendSocketText",
+    "ISendSocketMessage",
     "PluginType",
     # general
     "IPluginInfo",
