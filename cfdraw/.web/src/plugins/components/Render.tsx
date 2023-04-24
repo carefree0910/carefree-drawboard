@@ -26,18 +26,10 @@ import Floating, {
 
 let DEBUG_PREFIX: string | undefined;
 
-const Render = (({
-  id,
-  offsetX,
-  offsetY,
-  nodeConstraint,
-  renderInfo,
-  containerRef,
-  children,
-  ...props
-}: IRender) => {
+const Render = (({ id, nodeConstraint, renderInfo, containerRef, children, ...props }: IRender) => {
   const _id = useMemo(() => id ?? `plugin_${getRandomHash()}`, [id]);
-  let { w, h, iconW, iconH, pivot, follow, expandOffsetX, expandOffsetY } = renderInfo;
+  let { w, h, iconW, iconH, pivot, follow, offsetX, offsetY, expandOffsetX, expandOffsetY } =
+    renderInfo;
   iconW ??= DEFAULT_PLUGIN_SETTINGS.iconW;
   iconH ??= DEFAULT_PLUGIN_SETTINGS.iconH;
   pivot ??= DEFAULT_PLUGIN_SETTINGS.pivot as PivotType;

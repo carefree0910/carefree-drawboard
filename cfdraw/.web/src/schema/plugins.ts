@@ -22,6 +22,8 @@ export interface IExpandPositionInfo {
 }
 export interface IRenderInfo extends IExpandPositionInfo {
   src?: string;
+  offsetX?: number;
+  offsetY?: number;
   bgOpacity?: number;
   renderFilter?: (info?: IResponse) => boolean;
   useModal?: boolean;
@@ -37,8 +39,6 @@ export interface IFloating extends FlexProps {
 }
 export interface IRender extends Omit<IFloating, "id" | "renderInfo"> {
   id?: string;
-  offsetX?: number;
-  offsetY?: number;
   nodeConstraint: NodeConstraints;
   renderInfo: Partial<IRenderInfo> & { w: number; h: number };
   containerRef?: RefObject<HTMLDivElement>;

@@ -53,8 +53,6 @@ class ISocketPlugin(IPlugin, metaclass=ABCMeta):
         plugin_info["endpoint"] = f"/{self.identifier}"
         plugin_info["identifier"] = self.hash_identifier(self.identifier)
         plugin_type = f"_python.{self.type}"
-        offset_x = d.pop("offsetX")
-        offset_y = d.pop("offsetY")
         node_constraint = d.pop("nodeConstraint")
         chakra_props = {}
         for field in IChakra.__fields__:
@@ -70,10 +68,6 @@ class ISocketPlugin(IPlugin, metaclass=ABCMeta):
             renderInfo=d,
             **chakra_props,
         )
-        if offset_x is not None:
-            props["offsetX"] = offset_x
-        if offset_y is not None:
-            props["offsetY"] = offset_y
         return dict(type=plugin_type, props=props)
 
     # helper methods
