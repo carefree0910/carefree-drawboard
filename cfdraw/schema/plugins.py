@@ -1,6 +1,5 @@
 from abc import abstractmethod
 from abc import ABC
-from abc import ABCMeta
 from PIL import Image
 from enum import Enum
 from typing import Any
@@ -230,6 +229,22 @@ class ISocketMessage(BaseModel):
     data: ISocketResponse = Field(ISocketResponse(), description="Response data")
 
     @classmethod
+    def make_progress(
+        cls,
+        hash: str,
+        progress: float,
+        intermediate: Optional[ISocketIntermediate] = None,
+    ) -> "ISocketMessage":
+        return cls(
+            hash=hash,
+            status=SocketStatus.WORKING,
+            total=0,
+            pending=0,
+            message="",
+            data=ISocketResponse(progress=progress, intermediate=intermediate),
+        )
+
+    @classmethod
     def make_success(cls, hash: str, final: Dict[str, Any]) -> "ISocketMessage":
         return cls(
             hash=hash,
@@ -382,6 +397,8 @@ __all__ = [
     "INodeData",
     "ISocketRequest",
     "SocketStatus",
+    "ISocketIntermediate",
+    "ISocketResponse",
     "ISocketMessage",
     # plugin interface
     "IPlugin",
