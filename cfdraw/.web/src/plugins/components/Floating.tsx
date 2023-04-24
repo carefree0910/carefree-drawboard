@@ -141,7 +141,7 @@ const Floating = forwardRef(function (
     p: "12px",
     bg: `${panelBg}${bgOpacityHex}`,
     position: "absolute",
-    boxShadow: "2px 2px 4px rgba(0, 0, 0, 0.25)",
+    // boxShadow: "2px 2px 4px rgba(0, 0, 0, 0.25)",
     borderRadius: "4px",
   };
   Object.keys(props).forEach((key) => {
