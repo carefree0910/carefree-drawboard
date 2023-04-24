@@ -5,8 +5,11 @@ from typing import Any
 from typing import TypeVar
 from typing import Callable
 from typing import Coroutine
+from cftool.misc import print_error
 from cftool.misc import print_warning
 from concurrent.futures import ThreadPoolExecutor
+
+from cfdraw.utils.server import get_err_msg
 
 
 TFutureResponse = TypeVar("TFutureResponse")
@@ -43,10 +46,13 @@ async def offload(future: Coroutine[Any, Any, TFutureResponse]) -> TFutureRespon
 # TODO : maybe there will be better solutions?
 def offload_run(future: Coroutine[Any, Any, None]) -> None:
     def _run() -> None:
-        loop = asyncio.new_event_loop()
-        asyncio.set_event_loop(loop)
-        loop.run_until_complete(future)
-        loop.close()
+        try:
+            loop = asyncio.new_event_loop()
+            asyncio.set_event_loop(loop)
+            loop.run_until_complete(future)
+            loop.close()
+        except Exception as err:
+            print_error(get_err_msg(err))
 
     progress = threading.Thread(target=_run)
     progress.start()
