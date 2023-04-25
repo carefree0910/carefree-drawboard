@@ -144,7 +144,7 @@ class RequestQueue(IRequestQueue):
     async def _broadcast_working(self, uid: str) -> bool:
         sender_pack = self._senders.get(uid)
         if sender_pack is None:
-            return
+            return False
         hash, sender = sender_pack
         prefix = f"[broadcase_working] [{hash}]"
         success = True
@@ -168,7 +168,7 @@ class RequestQueue(IRequestQueue):
     async def _broadcast_exception(self, uid: str, message: str) -> bool:
         sender_pack = self._senders.get(uid)
         if sender_pack is None:
-            return
+            return False
         hash, sender = sender_pack
         prefix = f"[broadcase_exception] [{hash}]"
         success = True

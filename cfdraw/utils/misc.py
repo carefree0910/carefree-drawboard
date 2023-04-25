@@ -53,7 +53,7 @@ def offload_run(future: Coroutine[Any, Any, bool]) -> bool:
 
     """
 
-    def _run() -> bool:
+    def _run() -> None:
         try:
             loop = asyncio.new_event_loop()
             asyncio.set_event_loop(loop)
