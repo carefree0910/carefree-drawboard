@@ -13,7 +13,7 @@ This example implements two common Stable Diffusion plugins with `carefree-drawb
 This example requires the famous `diffusers` library, which can be installed by:
 
 ```bash
-pip install --upgrade diffusers[torch]
+pip install --upgrade transformers diffusers[torch]
 ```
 
 ## Run

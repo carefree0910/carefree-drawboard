@@ -18,7 +18,7 @@ This example implements the `StableDiffusionInpainting` plugin with `carefree-dr
 This example requires the famous `diffusers` library, which can be installed by:
 
 ```bash
-pip install --upgrade diffusers[torch]
+pip install --upgrade transformers diffusers[torch]
 ```
 
 ## Run

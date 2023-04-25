@@ -14,7 +14,7 @@ This example implements an `ImageCaptioning` plugin and a `StableDiffusion` plug
 This example requires the famous `diffusers` (and `transformers`) library, which can be installed by:
 
 ```bash
-pip install --upgrade diffusers[torch]
+pip install --upgrade transformers diffusers[torch]
 ```
 
 ## Run
