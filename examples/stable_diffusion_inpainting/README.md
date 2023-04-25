@@ -33,6 +33,12 @@ cfdraw run
 cfdraw run --module {name}
 ```
 
+For example, we provide an `advanced.py`, which utilized `send_progress` to show some nice progress bars on `carefree-drawboard` 🎨. To launch it, run:
+
+```bash
+cfdraw run --module advanced
+```
+
 ## Details
 
 1. We utilized `cache_resource` to avoid re-initializing models every hot-rerun.
