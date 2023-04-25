@@ -106,6 +106,9 @@ export const removeSocketHooks = (...hashes: string[]) => {
   });
   socketStore.updateProperty("hooks", hooks);
 };
+export const checkSocketHookExists = (key: string) => {
+  return socketStore.hooks.has(key);
+};
 
 const log = socketLog;
 interface IUseWebSocket {

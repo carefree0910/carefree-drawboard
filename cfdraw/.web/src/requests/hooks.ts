@@ -11,7 +11,13 @@ import type {
 } from "@/schema/_python";
 import { pythonStore } from "@/stores/_python";
 import { useInceptors } from "./interceptors";
-import { getSocketHooks, pushSocketHook, runSocketHook, socketLog } from "@/stores/socket";
+import {
+  checkSocketHookExists,
+  getSocketHooks,
+  pushSocketHook,
+  runSocketHook,
+  socketLog,
+} from "@/stores/socket";
 
 // cannot use `useMemo` here
 export function useAPI<T extends APISources>(source: T): APIs[T] {
@@ -79,6 +85,7 @@ export function useWebSocketHook<R>({
 
   useEffect(() => {
     if (isUndefined(hash)) return;
+    if (checkSocketHookExists(hash)) return;
     socketLog(`> add hook (${hash})`);
     pushSocketHook({
       key: hash,
