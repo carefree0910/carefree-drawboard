@@ -55,8 +55,8 @@ class RequestQueue(IRequestQueue):
                 print(">>> run", uid)
             try:
                 plugin.elapsed_times.start()
-                await self._broadcast_working(uid)
-                await offload(plugin(request))
+                if await self._broadcast_working(uid):
+                    await offload(plugin(request))
             except Exception as err:
                 await self._broadcast_exception(uid, get_err_msg(err))
             # cleanup
