@@ -54,7 +54,7 @@ def offload_run(future: Coroutine[Any, Any, None]) -> bool:
             loop.close()
             event.set()
         except Exception as err:
-            print_error(get_err_msg(err))
+            print_error(f"[offload_run] {get_err_msg(err)}")
 
     event = asyncio.Event()
     progress = threading.Thread(target=_run)

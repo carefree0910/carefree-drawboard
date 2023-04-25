@@ -115,14 +115,15 @@ class RequestQueue(IRequestQueue):
                     ),
                     "\n",
                 )
+            prefix = f"[broadcase_pending] [{hash}]"
             try:
                 if pending is None:
                     await sender(
                         ISocketMessage.make_exception(
                             hash,
                             message=(
-                                f"Internal error occurred: "
-                                f"cannot find pending request after submitted"
+                                f"{prefix} Internal error occurred: "
+                                "cannot find pending request after submitted"
                             ),
                         )
                     )
@@ -133,17 +134,18 @@ class RequestQueue(IRequestQueue):
                             status=SocketStatus.PENDING,
                             total=self._queues.num_items,
                             pending=len(pending),
-                            message=f"in queue: {', '.join([str(item.data) for item in pending])}",
+                            message=prefix,
                         )
                     )
             except Exception as err:
-                print_error(get_err_msg(err))
+                print_error(f"{prefix} {get_err_msg(err)}")
 
     async def _broadcast_working(self, uid: str) -> None:
         sender_pack = self._senders.get(uid)
         if sender_pack is None:
             return
         hash, sender = sender_pack
+        prefix = f"[broadcase_working] [{hash}]"
         try:
             await sender(
                 ISocketMessage(
@@ -151,21 +153,22 @@ class RequestQueue(IRequestQueue):
                     status=SocketStatus.WORKING,
                     total=0,
                     pending=0,
-                    message="",
+                    message=f"{prefix} working...",
                 )
             )
         except Exception as err:
-            print_error(get_err_msg(err))
+            print_error(f"{prefix} {get_err_msg(err)}")
 
     async def _broadcast_exception(self, uid: str, message: str) -> None:
         sender_pack = self._senders.get(uid)
         if sender_pack is None:
             return
         hash, sender = sender_pack
+        prefix = f"[broadcase_exception] [{hash}]"
         try:
-            await sender(ISocketMessage.make_exception(hash, message))
+            await sender(ISocketMessage.make_exception(hash, f"{prefix} {message}"))
         except Exception as err:
-            print_error(get_err_msg(err))
+            print_error(f"{prefix} {get_err_msg(err)}")
 
 
 __all__ = [
