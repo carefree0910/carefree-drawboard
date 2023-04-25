@@ -28,11 +28,11 @@ class ISocketPlugin(IPlugin, metaclass=ABCMeta):
     @property
     def middlewares(self) -> List[IMiddleWare]:
         common_middlewares: List[IMiddleWare] = [
-            TextAreaMiddleWare(self.send_message),
-            FieldsMiddleWare(self.send_message),
-            TimerMiddleWare(self.send_message),
+            TextAreaMiddleWare(self),
+            FieldsMiddleWare(self),
+            TimerMiddleWare(self),
         ]
-        send_message_middleware = SendSocketMessageMiddleWare(self.send_message)
+        send_message_middleware = SendSocketMessageMiddleWare(self)
         return common_middlewares + [send_message_middleware]
 
     async def __call__(self, data: ISocketRequest) -> ISocketMessage:
@@ -41,7 +41,7 @@ class ISocketPlugin(IPlugin, metaclass=ABCMeta):
             await middleware.before(data)
         response = await self.process(data)
         for middleware in middlewares:
-            response = await middleware(self, response)
+            response = await middleware(response)
         return response
 
     def hash_identifier(self, identifier: str) -> str:

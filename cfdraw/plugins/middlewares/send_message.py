@@ -20,7 +20,7 @@ class SendSocketMessageMiddleWare(IMiddleWare):
         return True
 
     async def process(self, response: ISocketMessage) -> ISocketMessage:
-        await self.send_message(response)
+        await self.plugin.send_message(response)
         return response
 
 

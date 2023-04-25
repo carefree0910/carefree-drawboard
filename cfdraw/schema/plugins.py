@@ -312,7 +312,7 @@ class IPlugin(ABC):
 
 class IMiddleWare(ABC):
     hash: str
-    send_message: ISendSocketMessage
+    plugin: IPlugin
 
     # abstract
 
@@ -340,11 +340,11 @@ class IMiddleWare(ABC):
 
     # api
 
-    def __init__(self, send_message: ISendSocketMessage) -> None:
-        self.send_message = send_message
+    def __init__(self, plugin: IPlugin) -> None:
+        self.plugin = plugin
 
-    async def __call__(self, plugin: IPlugin, response: Any) -> ISocketMessage:
-        if plugin.type not in self.subscriptions:
+    async def __call__(self, response: Any) -> ISocketMessage:
+        if self.plugin.type not in self.subscriptions:
             return response
         if isinstance(response, ISocketMessage) and not self.can_handle_message:
             return response
