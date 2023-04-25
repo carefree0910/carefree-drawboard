@@ -80,7 +80,7 @@ Check the [Wiki](https://github.com/carefree0910/carefree-drawboard/wiki) page f
 
 ## Status
 
-`carefree-drawboard` 🎨 is at a VERY early stage. It is launched in April 2023, and is not production ready (yet).
+`carefree-drawboard` 🎨 is at a VERY early stage (it is launched in April 2023), so although it could be production ready (see [here](https://github.com/carefree0910/carefree-drawboard/wiki/Production) for more details), it does not have many real world use cases (yet).
 
 But we will rapidly update this project and launch new features every week (or, even everyday), so ⭐ star and 👀 watch this repository to stay up to date!
 
