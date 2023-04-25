@@ -88,7 +88,7 @@ export const socketLog = (...args: any[]) => DEBUG && console.log(...args);
 export const getSocketHooks = () => socketStore.hooks;
 export const runSocketHook = (key: string) => socketStore.run(key);
 export const pushSocketHook = <R>(hook: SocketHook<R>) => {
-  waitUntil(() => !!socketStore.socket).then(() => {
+  return waitUntil(() => !!socketStore.socket).then(() => {
     // need to wait until socket is ready, to avoid hooks being pushed too early that
     // `runSocketHook` will be executed twice (one at `onopen`, other at `useWebSocketHook`)
     const hooks = socketStore.hooks.clone();
@@ -132,7 +132,6 @@ export function useWebSocket(opt?: IUseWebSocket) {
           socket.close();
           return;
         }
-        socketStore.updateProperty("socket", socket);
         socket.onmessage = ({ data }) => {
           const alive = () => connected && !shouldTerminate;
           if (!alive()) {
@@ -167,8 +166,10 @@ export function useWebSocket(opt?: IUseWebSocket) {
             });
           });
         };
-        // run existing hooks
+        // run existing hooks, mainly for hot reload
         socketStore.hooks.forEach(({ key }) => runSocketHook(key));
+        // tell the plugin that socket is ready
+        socketStore.updateProperty("socket", socket);
       };
       socket.onclose = (e) => {
         connected = false;

@@ -94,12 +94,13 @@ export function useWebSocketHook<R>({
       onSocketError,
       updateInterval,
       isInternal,
+    }).then(() => {
+      socketLog(
+        `> current hooks: ${getSocketHooks()
+          .map((h) => h.key)
+          .join(", ")}`,
+      );
+      runSocketHook(hash);
     });
-    socketLog(
-      `> current hooks: ${getSocketHooks()
-        .map((h) => h.key)
-        .join(", ")}`,
-    );
-    runSocketHook(hash);
   }, [hash, onMessageWithRetry, onSocketError, isInternal, ...(dependencies ?? [])]);
 }
