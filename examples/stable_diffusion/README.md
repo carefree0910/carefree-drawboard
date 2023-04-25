@@ -22,10 +22,16 @@ pip install --upgrade diffusers[torch]
 cfdraw run
 ```
 
-> We use `app` as the default entry name. If your script is named other than `app.py` (e.g. `{name}.py`), then run:
+We use `app` as the default entry name. If your script is named other than `app.py` (e.g. `{name}.py`), then run:
 
 ```bash
 cfdraw run --module {name}
+```
+
+For example, we provide an `advanced.py`, which utilized `send_progress` to show some nice progress bars on `carefree-drawboard` 🎨. To launch it, run:
+
+```bash
+cfdraw run --module advanced
 ```
 
 ## Details
