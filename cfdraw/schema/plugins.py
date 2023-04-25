@@ -26,7 +26,7 @@ from cfdraw.parsers.chakra import TextAlign
 
 
 TPluginModel = TypeVar("TPluginModel")
-ISendSocketMessage = Callable[["ISocketMessage"], Coroutine[Any, Any, None]]
+ISend = Callable[["ISocketMessage"], Coroutine[Any, Any, bool]]
 
 
 class PluginType(str, Enum):
@@ -315,7 +315,7 @@ class IPlugin(ABC):
     http_session: ClientSession
     # task specific
     task_hash: str
-    send_message: ISendSocketMessage
+    send_message: ISend
     elapsed_times: ElapsedTimes
 
     @property
@@ -432,7 +432,7 @@ class IHttpQAPluginInfo(IQAPluginInfo):
 
 
 __all__ = [
-    "ISendSocketMessage",
+    "ISend",
     "PluginType",
     # general
     "IPluginInfo",

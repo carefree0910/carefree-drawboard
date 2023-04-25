@@ -7,15 +7,15 @@ from cftool.misc import print_error
 from cftool.misc import random_hash
 from cftool.misc import print_warning
 
+from cfdraw.app.schema import IRequestQueue
+from cfdraw.app.schema import IRequestQueueData
 from cfdraw.utils.misc import offload
 from cfdraw.utils.server import get_err_msg
 from cfdraw.utils.data_structures import Item
 from cfdraw.utils.data_structures import QueuesInQueue
+from cfdraw.schema.plugins import ISend
 from cfdraw.schema.plugins import SocketStatus
 from cfdraw.schema.plugins import ISocketMessage
-from cfdraw.app.schema import ISend
-from cfdraw.app.schema import IRequestQueue
-from cfdraw.app.schema import IRequestQueueData
 
 
 DEBUG = False

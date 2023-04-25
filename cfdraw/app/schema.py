@@ -1,16 +1,13 @@
 from abc import abstractmethod
 from abc import ABC
-from typing import Any
-from typing import Callable
-from typing import Coroutine
 from aiohttp import ClientSession
 from asyncio import Event
 from fastapi import FastAPI
 
 from cfdraw.config import Config
+from cfdraw.schema.plugins import ISend
 from cfdraw.schema.plugins import IPlugin
 from cfdraw.schema.plugins import ISocketRequest
-from cfdraw.schema.plugins import ISocketMessage
 from cfdraw.plugins.factory import Plugins
 
 
@@ -24,9 +21,6 @@ class IRequestQueueData:
         return self.request.identifier.split(".")[0]
 
     __repr__ = __str__
-
-
-ISend = Callable[[ISocketMessage], Coroutine[Any, Any, None]]
 
 
 class IRequestQueue(ABC):
