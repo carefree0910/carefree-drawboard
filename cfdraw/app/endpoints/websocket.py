@@ -4,6 +4,8 @@ import logging
 
 from fastapi import WebSocket
 from fastapi import WebSocketDisconnect
+from cftool.misc import print_error
+from starlette.websockets import WebSocketState
 
 from cfdraw import constants
 from cfdraw.app.schema import IApp
@@ -30,8 +32,11 @@ def add_websocket(app: IApp) -> None:
                 )
             )
 
-        async def send_message(data: ISocketMessage) -> None:
+        async def send_message(data: ISocketMessage) -> bool:
+            if websocket.client_state == WebSocketState.DISCONNECTED:
+                return False
             await websocket.send_text(json.dumps(data.dict()))
+            return True
 
         await websocket.accept()
         while True:
@@ -60,15 +65,13 @@ def add_websocket(app: IApp) -> None:
                         asyncio.create_task(app.request_queue.wait(data.userId, uid))
                 else:
                     plugin_str = "internal plugin" if data.isInternal else "plugin"
-                    await send_message(
-                        ISocketMessage.make_exception(
-                            data.hash,
-                            (
-                                f"incoming message subscribed {plugin_str} '{identifier}', "
-                                "but it is not found"
-                            ),
-                        )
+                    message = (
+                        f"incoming message subscribed {plugin_str} '{identifier}', "
+                        "but it is not found"
                     )
+                    exception = ISocketMessage.make_exception(data.hash, message)
+                    if not await send_message(exception):
+                        print_error(f"[websocket.loop] {message}")
             except WebSocketDisconnect:
                 break
             except Exception as e:
