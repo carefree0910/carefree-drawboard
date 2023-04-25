@@ -36,7 +36,7 @@ const PythonFieldsPlugin = ({ pluginInfo, ...props }: IPythonFieldsPlugin) => {
       const {
         hash,
         status,
-        data: { final },
+        data: { final, elapsedTimes },
       } = message;
       switch (status) {
         case "pending": {
@@ -57,7 +57,6 @@ const PythonFieldsPlugin = ({ pluginInfo, ...props }: IPythonFieldsPlugin) => {
               `${translate(Toast_Words["submit-task-finished-message"], lang)} (${pureIdentifier})`,
             );
           } else {
-            const { _duration, ...response } = final;
             importMeta({
               t,
               lang,
@@ -65,8 +64,8 @@ const PythonFieldsPlugin = ({ pluginInfo, ...props }: IPythonFieldsPlugin) => {
               metaData: {
                 identifier: pureIdentifier,
                 parameters: getExtraRequestData(),
-                response,
-                duration: _duration,
+                response: final,
+                elapsedTimes,
                 from: currentMeta,
               },
             });

@@ -2,7 +2,7 @@ import type { TextareaProps } from "@chakra-ui/react";
 
 import type { Dictionary, INode, Lang, Matrix2DFields } from "@carefree0910/core";
 
-import type { IMeta } from "./meta";
+import type { IElapsedTimes, IMeta } from "./meta";
 import type { IToast } from "./misc";
 import type { IPlugin, IPluginInfo } from "./plugins";
 import type { IDefinitions } from "./metaFields";
@@ -122,6 +122,7 @@ export interface IPythonSocketResponse<R> {
   progress?: number; // progress of current task, should be within [0, 1]
   intermediate?: IPythonSocketIntermediate;
   final?: R;
+  elapsedTimes?: IElapsedTimes;
 }
 export interface IPythonSocketMessage<R> {
   hash: string;

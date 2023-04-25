@@ -1,3 +1,5 @@
+import time
+
 from abc import abstractmethod
 from abc import ABC
 from PIL import Image
@@ -130,6 +132,33 @@ Pivot of the plugin.
     pluginInfo: IPluginInfo = Field(IPluginInfo(), description="Plugin info")
 
 
+class ElapsedTimes(BaseModel):
+    createTime: Optional[float]
+    startTime: Optional[float]
+    endTime: Optional[float]
+    pending: Optional[float]
+    executing: Optional[float]
+    total: Optional[float]
+
+    def __init__(self, **data: Any):
+        super().__init__(**data)
+        self.createTime = time.time()
+
+    def start(self) -> None:
+        start = time.time()
+        self.startTime = start
+        if self.createTime is not None:
+            self.pending = start - self.createTime
+
+    def end(self) -> None:
+        end = time.time()
+        self.endTime = end
+        if self.startTime is not None:
+            self.executing = end - self.startTime
+        if self.createTime is not None:
+            self.total = end - self.createTime
+
+
 # web
 
 
@@ -226,6 +255,7 @@ class ISocketResponse(BaseModel):
         description="Intermediate responses, if any",
     )
     final: Optional[Dict[str, Any]] = Field(None, description="Final response, if any")
+    elapsedTimes: Optional[ElapsedTimes] = Field(None, description="Elapsed times.")
 
 
 class ISocketMessage(BaseModel):
@@ -286,6 +316,7 @@ class IPlugin(ABC):
     # task specific
     task_hash: str
     send_message: ISendSocketMessage
+    elapsed_times: ElapsedTimes
 
     @property
     @abstractmethod

@@ -44,7 +44,7 @@ const useSwitchBrushMode = (t: IToast, lang: Lang) => async (): Promise<void> =>
         node.active = true;
         node.params.meta = {
           type: "add.sketch.path",
-          data: { timestamp: Date.now() },
+          data: { elapsedTimes: { endTime: Date.now() } },
         } as IMeta<ICommonMetaData>;
       },
     });

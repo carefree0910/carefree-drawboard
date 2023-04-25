@@ -2,7 +2,6 @@ import json
 import asyncio
 import logging
 
-from asyncio import Event
 from fastapi import WebSocket
 from fastapi import WebSocketDisconnect
 
@@ -11,6 +10,7 @@ from cfdraw.app.schema import IApp
 from cfdraw.app.schema import IRequestQueueData
 from cfdraw.utils.misc import offload
 from cfdraw.utils.server import get_err_msg
+from cfdraw.schema.plugins import ElapsedTimes
 from cfdraw.schema.plugins import ISocketRequest
 from cfdraw.schema.plugins import ISocketMessage
 from cfdraw.app.endpoints.base import IEndpoint
@@ -50,10 +50,12 @@ def add_websocket(app: IApp) -> None:
                     # the `SendSocketMessageMiddleWare` which will provide a default handling
                     target_plugin.task_hash = data.hash
                     target_plugin.send_message = send_message
+                    target_plugin.elapsed_times = ElapsedTimes()
                     if data.isInternal:
+                        target_plugin.elapsed_times.start()
                         await offload(target_plugin(data))
                     else:
-                        queue_data = IRequestQueueData(data, target_plugin, Event())
+                        queue_data = IRequestQueueData(data, target_plugin)
                         uid = app.request_queue.push(queue_data, send_message)
                         asyncio.create_task(app.request_queue.wait(data.userId, uid))
                 else:

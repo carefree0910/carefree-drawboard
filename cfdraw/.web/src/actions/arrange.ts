@@ -212,7 +212,7 @@ export function getArrangements(
       origin = undefined;
     } else {
       origin = getOriginMeta(meta);
-      key = !origin ? defaultPrefix : origin.data.timestamp?.toString() ?? "";
+      key = !origin ? defaultPrefix : origin.data.elapsedTimes?.endTime?.toString() ?? "";
     }
     const packs = setDefault(packsGroupByKey, key, []);
     packs.push({
@@ -222,7 +222,7 @@ export function getArrangements(
       attachTo: attachToMapping[node.alias],
     });
     groupLatestTimestamps[key] = Math.max(
-      meta?.data?.timestamp ?? 0,
+      meta?.data?.elapsedTimes?.endTime ?? 0,
       groupLatestTimestamps[key] ?? 0,
     );
   });
@@ -237,7 +237,7 @@ export function getArrangements(
     const packs = packsGroupByKey[key];
     const sortedPacks = sortBy(
       packs,
-      packs.map(({ origin }) => origin?.data.timestamp ?? 0),
+      packs.map(({ origin }) => origin?.data.elapsedTimes?.endTime ?? 0),
     );
     sortedPacks.forEach((pack) => allSortedPacks.push(pack));
   });

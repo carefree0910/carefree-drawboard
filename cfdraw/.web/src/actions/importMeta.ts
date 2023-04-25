@@ -1,7 +1,7 @@
-import { Dictionary, RectangleShapeNode, getRandomHash, shallowCopy } from "@carefree0910/core";
+import { RectangleShapeNode, getRandomHash, shallowCopy } from "@carefree0910/core";
 import { BoardStore, translate, useAddNode } from "@carefree0910/business";
 
-import type { IMetaData, IPythonFieldsMetaData, MetaType } from "@/schema/meta";
+import type { IElapsedTimes, IMetaData, IPythonFieldsMetaData, MetaType } from "@/schema/meta";
 import type { IImportMeta } from "@/schema/meta";
 import { toast } from "@/utils/toast";
 import { Toast_Words } from "@/lang/toast";
@@ -13,14 +13,10 @@ import { getArrangements } from "./arrange";
 
 // consumers
 
-function updateTimestamps(alias: string, createTime?: number): void {
+function updateElapsedTimes(alias: string): void {
   const node = BoardStore.graph.getNode(alias);
   if (!node || node.type === "group" || !node.params.meta?.data) return;
-  const now = Date.now();
-  node.params.meta.data.timestamp = now;
-  if (createTime) {
-    node.params.meta.data.duration = now - createTime;
-  }
+  node.params.meta.data.elapsedTimes = { endTime: Date.now() };
   updateMeta(alias, node.params.meta);
 }
 
@@ -33,7 +29,7 @@ const consumers: Record<MetaType, (input: IImportMeta<any>) => void> = {
 function consumeUpload({ t, lang, type, metaData }: IImportMeta<"upload">): void {
   const success = async () => {
     toast(t, "success", translate(Toast_Words["upload-image-success-message"], lang));
-    updateTimestamps(newAlias);
+    updateElapsedTimes(newAlias);
   };
   const failed = async () => {
     toast(t, "error", translate(Toast_Words["upload-image-error-message"], lang));
@@ -56,7 +52,7 @@ function consumeAddText({ t, lang, type, metaData }: IImportMeta<"add.text">): v
 
   const success = async () => {
     toast(t, "success", translate(Toast_Words["add-text-success-message"], lang));
-    updateTimestamps(newAlias);
+    updateElapsedTimes(newAlias);
   };
   const failed = async () => {
     toast(t, "error", translate(Toast_Words["add-text-error-message"], lang));
@@ -104,7 +100,6 @@ function consumePythonFields({ t, lang, type, metaData }: IImportMeta<"python.fi
       const iMetaData = shallowCopy(metaData);
       iMetaData.response.value = metaData.response.value[i] as any;
       iMetaData.alias = newAlias;
-      iMetaData.timestamp = Date.now();
       packs.push({ data: getData(res), alias: newAlias, rectangle, metaData: iMetaData });
     });
     return packs;

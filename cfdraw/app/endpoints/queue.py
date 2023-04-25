@@ -1,6 +1,5 @@
 import asyncio
 
-from typing import Any
 from typing import Dict
 from typing import Tuple
 from typing import Optional
@@ -55,6 +54,7 @@ class RequestQueue(IRequestQueue):
             if DEBUG:
                 print(">>> run", uid)
             try:
+                plugin.elapsed_times.start()
                 await self._broadcast_working(uid)
                 await offload(plugin(request))
             except Exception as err:

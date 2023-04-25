@@ -2,14 +2,20 @@ import type { Dictionary, Lang } from "@carefree0910/core";
 
 import type { IToast } from "./misc";
 
+export interface IElapsedTimes {
+  createTime?: number;
+  startTime?: number;
+  endTime?: number;
+  duration?: number;
+}
+
 // general
 
 export const allMetaTypes = ["upload", "add.text", "add.sketch.path", "python.fields"] as const;
 export type MetaType = (typeof allMetaTypes)[number];
 export interface ICommonMetaData<T extends _IMetaData = _IMetaData> {
   alias?: string;
-  timestamp?: number;
-  duration?: number;
+  elapsedTimes?: IElapsedTimes;
   from?: IMeta<T>;
 }
 type _IMetaData = ICommonMetaData & Dictionary<any>;
@@ -26,10 +32,9 @@ interface IUploadMetaData extends ICommonMetaData {
   url: string;
   isDrag: boolean;
 }
-export type IPythonResults = { _duration?: number } & (
+export type IPythonResults =
   | { type: "text"; value: string[] }
-  | { type: "image"; value: { w: number; h: number; url: string }[] }
-);
+  | { type: "image"; value: { w: number; h: number; url: string }[] };
 export type IPythonFieldsMetaData = ICommonMetaData & {
   identifier: string;
   parameters: Dictionary<any>;

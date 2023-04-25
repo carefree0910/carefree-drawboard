@@ -6,7 +6,6 @@ from typing import Coroutine
 from aiohttp import ClientSession
 from asyncio import Event
 from fastapi import FastAPI
-from dataclasses import dataclass
 
 from cfdraw.config import Config
 from cfdraw.schema.plugins import IPlugin
@@ -15,11 +14,11 @@ from cfdraw.schema.plugins import ISocketMessage
 from cfdraw.plugins.factory import Plugins
 
 
-@dataclass
 class IRequestQueueData:
-    request: ISocketRequest
-    plugin: IPlugin
-    event: Event
+    def __init__(self, request: ISocketRequest, plugin: IPlugin):
+        self.request = request
+        self.plugin = plugin
+        self.event = Event()
 
     def __str__(self) -> str:
         return self.request.identifier.split(".")[0]
