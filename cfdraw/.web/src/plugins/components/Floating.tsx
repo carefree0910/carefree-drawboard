@@ -28,6 +28,7 @@ import { BG_TRANSITION, DEFAULT_PLUGIN_SETTINGS, VISIBILITY_TRANSITION } from "@
 import { UI_Words } from "@/lang/ui";
 import { themeStore } from "@/stores/theme";
 import { getPluginMessage } from "@/stores/plugins";
+import { isInteractingWithBoard } from "@/stores/pointerEvents";
 import CFText from "@/components/CFText";
 import { CFPendingProgress, CFWorkingProgress } from "@/components/CFCircularProgress";
 
@@ -154,6 +155,7 @@ const Floating = forwardRef(function (
   const lang = langStore.tgt;
   const taskMessage = getPluginMessage(id);
   const needRender = useIsReady() && (!renderFilter || renderFilter(useSelecting("raw")));
+  const interactingWithBoard = isInteractingWithBoard();
   const [expand, setExpand] = useState(false);
   const [transform, setTransform] = useState<string | undefined>();
   const isBusy = useMemo(
@@ -176,8 +178,9 @@ const Floating = forwardRef(function (
       position: "absolute",
       // boxShadow: "2px 2px 4px rgba(0, 0, 0, 0.25)",
       borderRadius: "4px",
+      pointerEvents: interactingWithBoard ? "none" : "auto",
     }),
-    [panelBg, busyColor, bgOpacityHex, isBusy],
+    [panelBg, busyColor, bgOpacityHex, isBusy, interactingWithBoard],
   );
   const progressProps = useMemo<CircularProgressProps>(() => {
     const size = Math.floor(Math.min(iconW, iconH) * 0.8);

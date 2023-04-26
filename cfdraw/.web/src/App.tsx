@@ -4,6 +4,7 @@ import { observer } from "mobx-react-lite";
 import { langStore } from "@carefree0910/business";
 
 import { useWebSocket } from "./stores/socket";
+import { usePointerEvents } from "./stores/pointerEvents";
 import { useUserInitialization } from "./stores/user";
 import { useInitBoard } from "./hooks/useInitBoard";
 import { useFileDropper } from "./hooks/useFileDropper";
@@ -20,6 +21,7 @@ function App() {
   useFileDropper(langStore.tgt);
   useGridLines();
   usePreventDefaults();
+  usePointerEvents();
 
   return (
     <Flex h="100vh" className="p-editor" direction="column" userSelect="none">
