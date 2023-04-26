@@ -9,6 +9,7 @@ import {
   Image,
   Portal,
   TextProps,
+  Tooltip,
 } from "@chakra-ui/react";
 
 import { Coordinate, Dictionary, isUndefined } from "@carefree0910/core";
@@ -134,7 +135,7 @@ const Floating = forwardRef(function (
       expandOffsetX,
       expandOffsetY,
       src,
-      offsetX,
+      tooltip,
       offsetY,
       bgOpacity,
       renderFilter,
@@ -283,72 +284,74 @@ const Floating = forwardRef(function (
 
   return (
     <>
-      <Box
-        as="button"
-        id={id}
-        w={`${iconW}px`}
-        h={`${iconH}px`}
-        onClick={() => {
-          const self = document.querySelector<HTMLDivElement>(`#${id}`);
-          if (self && self.dataset.x && self.dataset.y) {
-            let x = parseFloat(self.dataset.x);
-            let y = parseFloat(self.dataset.y);
-            ({ x, y } = getExpandPosition(useModal ?? false, {
-              x,
-              y,
-              w,
-              h,
-              iconW,
-              iconH,
-              pivot,
-              follow,
-              expandOffsetX,
-              expandOffsetY,
-            }));
-            setTransform(`matrix(1,0,0,1,${x},${y})`);
-          }
-          if (!noExpand) {
-            setExpand(!expand);
-          }
-          onFloatingButtonClick?.();
-        }}
-        opacity={isInvisible ? 0 : 1}
-        visibility={isInvisible ? "hidden" : "visible"}
-        transition={`${VISIBILITY_TRANSITION}, ${BG_TRANSITION}`}
-        {...commonProps}
-        {...props}>
-        <Image
-          src={src}
-          draggable={false}
-          opacity={iconOpacity}
-          transition={VISIBILITY_TRANSITION}
-        />
-        {taskMessage && isBusy && (
-          <Box w={`${iconW}px`} h={`${iconH}px`} position="absolute" left="0px" top="0px">
-            {taskMessage.status === "pending" ? (
-              <CFPendingProgress
-                {...progressProps}
-                value={(1.0 - taskMessage.pending / Math.max(taskMessage.total, 1)) * 100}
-              />
-            ) : (
-              <CFWorkingProgress
-                {...progressProps}
-                value={(taskMessage.data.progress ?? 0.0) * 100}
-              />
-            )}
-          </Box>
-        )}
-        {taskMessage && isBusy && (
-          <CFText {...progressCaptionProps}>
-            {translate(
-              taskMessage.status === "pending"
-                ? UI_Words["task-pending-caption"]
-                : UI_Words["task-working-caption"],
-              lang,
-            )}
-          </CFText>
-        )}
-      </Box>
+      <Tooltip label={tooltip} hasArrow>
+        <Box
+          as="button"
+          id={id}
+          w={`${iconW}px`}
+          h={`${iconH}px`}
+          onClick={() => {
+            const self = document.querySelector<HTMLDivElement>(`#${id}`);
+            if (self && self.dataset.x && self.dataset.y) {
+              let x = parseFloat(self.dataset.x);
+              let y = parseFloat(self.dataset.y);
+              ({ x, y } = getExpandPosition(useModal ?? false, {
+                x,
+                y,
+                w,
+                h,
+                iconW,
+                iconH,
+                pivot,
+                follow,
+                expandOffsetX,
+                expandOffsetY,
+              }));
+              setTransform(`matrix(1,0,0,1,${x},${y})`);
+            }
+            if (!noExpand) {
+              setExpand(!expand);
+            }
+            onFloatingButtonClick?.();
+          }}
+          opacity={isInvisible ? 0 : 1}
+          visibility={isInvisible ? "hidden" : "visible"}
+          transition={`${VISIBILITY_TRANSITION}, ${BG_TRANSITION}`}
+          {...commonProps}
+          {...props}>
+          <Image
+            src={src}
+            draggable={false}
+            opacity={iconOpacity}
+            transition={VISIBILITY_TRANSITION}
+          />
+          {taskMessage && isBusy && (
+            <Box w={`${iconW}px`} h={`${iconH}px`} position="absolute" left="0px" top="0px">
+              {taskMessage.status === "pending" ? (
+                <CFPendingProgress
+                  {...progressProps}
+                  value={(1.0 - taskMessage.pending / Math.max(taskMessage.total, 1)) * 100}
+                />
+              ) : (
+                <CFWorkingProgress
+                  {...progressProps}
+                  value={(taskMessage.data.progress ?? 0.0) * 100}
+                />
+              )}
+            </Box>
+          )}
+          {taskMessage && isBusy && (
+            <CFText {...progressCaptionProps}>
+              {translate(
+                taskMessage.status === "pending"
+                  ? UI_Words["task-pending-caption"]
+                  : UI_Words["task-working-caption"],
+                lang,
+              )}
+            </CFText>
+          )}
+        </Box>
+      </Tooltip>
       {!noExpand && (
         <Portal containerRef={ref as any}>
           <Flex

@@ -11,13 +11,14 @@ from PIL import Image
 from PIL import ImageFilter
 from cfdraw import *
 
-# This will perform a Gaussian blur on the image
+# This will apply Gaussian Blur to the image
 class Plugin(IFieldsPlugin):
     @property
     def settings(self) -> IPluginSettings:
         return IPluginSettings(
             w=300,
             h=180,
+            tooltip="Apply Gaussian Blur to the image",
             nodeConstraint=NodeConstraints.IMAGE,
             pivot=PivotType.RT,
             follow=True,

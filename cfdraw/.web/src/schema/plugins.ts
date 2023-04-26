@@ -22,6 +22,7 @@ export interface IExpandPositionInfo {
 }
 export interface IRenderInfo extends IExpandPositionInfo {
   src?: string;
+  tooltip?: string;
   offsetX?: number;
   offsetY?: number;
   bgOpacity?: number;

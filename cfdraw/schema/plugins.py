@@ -90,11 +90,19 @@ Spcify when the plugin will be shown.
 """,
     )
     # style fields
-    src: str = Field(
-        "",
+    src: Optional[str] = Field(
+        None,
         description="""
 The image url that will be shown for the plugin.
 > If not specified, we will use a default plugin-ish image.
+""",
+    )
+    tooltip: Optional[str] = Field(
+        None,
+        description="""
+The tooltip that will be shown for the plugin.
+> It is recommended to specify an informative tooltip, but it's also OK to leave it as `None`,
+in which case we will not show any tooltip for the plugin.
 """,
     )
     pivot: Optional[PivotType] = Field(
