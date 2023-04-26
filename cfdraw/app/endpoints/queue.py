@@ -30,13 +30,12 @@ class RequestQueue(IRequestQueue):
     def push(self, data: IRequestQueueData, send_message: ISend) -> str:
         uid = random_hash()
         self._queues.push(data.request.userId, Item(uid, data))
-        hash = data.request.hash
-        self._senders[uid] = hash, send_message
+        self._senders[uid] = data.request.hash, send_message
         if DEBUG:
             print("~" * 50)
             print("> push.uid", uid)
             print("> push.userId", data.request.userId)
-            print("> push.hash", hash)
+            print("> push.hash", data.request.hash)
         return uid
 
     async def run(self) -> None:
