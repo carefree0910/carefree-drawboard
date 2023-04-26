@@ -1,6 +1,8 @@
 # Stable Diffusion Inpainting
 
-[Demo Video](https://user-images.githubusercontent.com/15677328/232319706-d3f10faa-7222-4de6-9c41-0c1933a1a8b3.mp4)
+[Demo Video](https://user-images.githubusercontent.com/15677328/234514648-e026a25a-ea90-4fcd-b94e-55182be69f57.mp4)
+
+> The demo video has a nice progress bar when generating the new image, which requires to launch the `advanced.py`. See [Run](#Run) for more details.
 
 ---
 

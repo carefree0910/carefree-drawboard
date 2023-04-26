@@ -1,6 +1,8 @@
 # Image Captioning + Stable Diffusion
 
-[Demo Video](https://user-images.githubusercontent.com/15677328/232086732-11edc95e-60fe-4216-85fa-5569fe8b6b19.mp4)
+[Demo Video](https://user-images.githubusercontent.com/15677328/234509709-9ad90735-4da3-4962-b2ed-b1449f8bd7cc.mp4)
+
+> The demo video has a nice progress bar when generating the new image, which requires to launch the `advanced.py`. See [Run](#Run) for more details.
 
 ---
 

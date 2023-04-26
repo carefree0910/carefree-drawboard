@@ -1,6 +1,8 @@
 # Stable Diffusion ControlNet
 
-[Demo Video](https://user-images.githubusercontent.com/15677328/232323445-13751027-1292-47a8-b082-254cdd1b2e2e.mp4)
+[Demo Video](https://user-images.githubusercontent.com/15677328/234506769-4211f62b-3152-47c3-b3d6-8f0010ceb36d.mp4)
+
+> The demo video has a nice progress bar when generating the new image, which requires to launch the `advanced.py`. See [Run](#Run) for more details.
 
 ---
 
@@ -8,7 +10,7 @@ This example implements the `StableDiffusionControlNet` plugin (along with a `Ca
 1. Drag/Upload an image to the drawboard 🎨.
 2. Click the `Canny` plugin at the `rt` corner of the selecting `ImageNode` (it is the bottom-most one), the annotation should be generated in no time.
 3. Click the `StableDiffusionControlNet` plugin at the `rt` corner of the selected annotation `ImageNode`.
-5. Fill in some parameters, submit, wait, and see the result.
+4. Fill in some parameters, submit, wait, and see the result.
 
 > * You may notice that the `ControlNet` plugin poped up no matter what `ImageNode` you are selecting. This is as expected because `ControlNet` can indeed accept any image as input. 😉
 > * See [Details](#Details) for more details!
