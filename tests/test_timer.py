@@ -12,6 +12,7 @@ class TimerPlugin(ITextAreaPlugin):
             h=70,
             nodeConstraint=NodeConstraints.NONE,
             src="https://ailab-huawei-cdn.nolibox.com/upload/images/63c07ca52b2b42ef943bcf04c8e78878.png",
+            tooltip="Show the current time, will update every second",
             pivot=PivotType.TOP,
             pluginInfo=ITextAreaPluginInfo(
                 updateInterval=1000,

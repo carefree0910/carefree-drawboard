@@ -9,6 +9,7 @@ class ShowUrlPlugin(ITextAreaPlugin):
             h=100,
             nodeConstraint=NodeConstraints.IMAGE,
             src="https://ailab-huawei-cdn.nolibox.com/upload/images/effd9650ce934b239242c6122b701514.png",
+            tooltip="Show the URL of the image",
             follow=True,
             pivot=PivotType.RT,
         )

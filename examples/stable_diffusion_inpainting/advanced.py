@@ -43,6 +43,7 @@ class InpaintingPlugin(IFieldsPlugin):
             h=400,
             nodeConstraint=NodeConstraints.MULTI_NODE,
             src="https://ailab-huawei-cdn.nolibox.com/upload/images/65f383ac60df4334905299aaa6f0b3d1.png",
+            tooltip="Stable Diffusion Inpainting",
             pivot=PivotType.RT,
             follow=True,
             useModal=True,

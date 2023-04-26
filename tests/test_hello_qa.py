@@ -9,6 +9,7 @@ class HelloQAPlugin(IQAPlugin):
             h=200,
             nodeConstraint=NodeConstraints.NONE,
             src="https://ailab-huawei-cdn.nolibox.com/upload/images/de36770b26144a2c9c25f229e98167c8.png",
+            tooltip="Hello!",
             pivot=PivotType.CENTER,
             pluginInfo=IQAPluginInfo(
                 initialText="Hello, world!",

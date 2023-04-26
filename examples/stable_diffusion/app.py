@@ -61,6 +61,7 @@ class TextToImagePlugin(IFieldsPlugin):
             h=400,
             nodeConstraint=NodeConstraints.NONE,
             src="https://ailab-huawei-cdn.nolibox.com/upload/images/53a458da3f88422aaaca79f85a9a769a.png",
+            tooltip="Text to Image",
             pivot=PivotType.RIGHT,
             follow=False,
             # Since there are quite a few parameters, we use Modal to display them
@@ -85,6 +86,7 @@ class ImageToImagePlugin(IFieldsPlugin):
             h=400,
             nodeConstraint=NodeConstraints.IMAGE,
             src="https://ailab-huawei-cdn.nolibox.com/upload/images/65f383ac60df4334905299aaa6f0b3d1.png",
+            tooltip="Image to Image",
             pivot=PivotType.RT,
             follow=True,
             useModal=True,
