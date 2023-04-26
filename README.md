@@ -146,4 +146,5 @@ My final goal is to make `carefree-drawboard` 🎨 a platform which can be used 
 - [pynecone](https://github.com/pynecone-io/pynecone), which inspires me a lot.
 - [Stable Diffusion](https://github.com/CompVis/stable-diffusion), the foundation of various image generation methods.
 - [Diffusers](https://github.com/huggingface/diffusers), the adopted library for the [Stable Diffusion](https://github.com/carefree0910/carefree-drawboard/tree/dev/examples/stable_diffusion) example.
+- [@liujs1](https://github.com/liujs1), who provides me the nice looking icons.
 - And You! Thank you for watching!
