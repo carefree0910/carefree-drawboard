@@ -5,8 +5,8 @@ import { getRandomHash } from "@carefree0910/core";
 import { useSafeExecute, useSelecting } from "@carefree0910/business";
 
 import type { IPlugin } from "@/schema/plugins";
-import { drawboardPluginFactory } from "./utils/factory";
-import Render from "./components/Render";
+import { drawboardPluginFactory } from "../utils/factory";
+import Render from "../components/Render";
 
 const DeletePlugin = ({ pluginInfo, ...props }: IPlugin) => {
   const id = useMemo(() => `delete_${getRandomHash()}`, []);

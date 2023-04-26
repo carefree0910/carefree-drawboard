@@ -18,17 +18,17 @@ import type { IPlugin } from "@/schema/plugins";
 import { toast } from "@/utils/toast";
 import { Brush_Words } from "@/lang/brush";
 import { Toast_Words } from "@/lang/toast";
-import { VisibleManager, uiStore } from "@/stores/ui";
 import { themeStore } from "@/stores/theme";
+import { VisibleManager, uiStore } from "@/stores/ui";
 import { hideAllPlugins } from "@/actions/managePlugins";
-import { drawboardPluginFactory } from "./utils/factory";
-import Render from "./components/Render";
 import CFButton from "@/components/CFButton";
 import CFSlider from "@/components/CFSlider";
 import CFSwitch from "@/components/CFSwitch";
 import CFDivider from "@/components/CFDivider";
 import CFHeading from "@/components/CFHeading";
-import { floatingControlEvent } from "./components/Floating";
+import { drawboardPluginFactory } from "../utils/factory";
+import { floatingControlEvent } from "../components/Floating";
+import Render from "../components/Render";
 
 const useSwitchBrushMode = (t: IToast, lang: Lang) => async (): Promise<void> => {
   const { defaultBrushStyles } = themeStore.styles;

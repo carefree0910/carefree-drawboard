@@ -6,12 +6,12 @@ import { getRandomHash, isUndefined } from "@carefree0910/core";
 import { langStore, translate, useEditText } from "@carefree0910/business";
 
 import type { IPlugin } from "@/schema/plugins";
-import Render from "./components/Render";
-import { drawboardPluginFactory } from "./utils/factory";
+import { NodeEditor_Words } from "@/lang/nodeEditor";
 import CFSlider from "@/components/CFSlider";
 import CFDivider from "@/components/CFDivider";
 import CFHeading from "@/components/CFHeading";
-import { NodeEditor_Words } from "@/lang/nodeEditor";
+import { drawboardPluginFactory } from "../utils/factory";
+import Render from "../components/Render";
 
 const TextEditorPlugin = ({ pluginInfo: { node }, ...props }: IPlugin) => {
   const id = useMemo(() => `textEditor_${getRandomHash()}`, []);

@@ -6,8 +6,8 @@ import { safeRedo, safeUndo, useUndoRedoSteps } from "@carefree0910/business";
 
 import type { IPlugin } from "@/schema/plugins";
 import { setPluginVisible } from "@/stores/pluginVisible";
-import { drawboardPluginFactory } from "./utils/factory";
-import Render from "./components/Render";
+import { drawboardPluginFactory } from "../utils/factory";
+import Render from "../components/Render";
 
 const UndoPlugin = ({ pluginInfo, ...props }: IPlugin) => {
   const id = useMemo(() => `undo_${getRandomHash()}`, []);

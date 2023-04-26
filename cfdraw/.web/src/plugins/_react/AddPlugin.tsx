@@ -16,10 +16,10 @@ import CFButton from "@/components/CFButton";
 import CFDivider from "@/components/CFDivider";
 import CFHeading from "@/components/CFHeading";
 import CFImageUploader from "@/components/CFImageUploader";
-import { drawboardPluginFactory } from "./utils/factory";
-import { floatingEvent } from "./components/Floating";
-import Render from "./components/Render";
-import { useClosePanel } from "./components/hooks";
+import { drawboardPluginFactory } from "../utils/factory";
+import { floatingEvent } from "../components/Floating";
+import Render from "../components/Render";
+import { useClosePanel } from "../components/hooks";
 
 const AddPlugin = ({ pluginInfo, ...props }: IPlugin) => {
   const id = useMemo(() => `add_${getRandomHash()}`, []);

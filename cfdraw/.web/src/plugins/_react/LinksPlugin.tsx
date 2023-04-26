@@ -4,8 +4,8 @@ import { observer } from "mobx-react-lite";
 import { getRandomHash } from "@carefree0910/core";
 
 import type { IPlugin } from "@/schema/plugins";
-import { drawboardPluginFactory } from "./utils/factory";
-import { Link } from "./components/Link";
+import { drawboardPluginFactory } from "../utils/factory";
+import { Link } from "../components/Link";
 
 const WikiPlugin = (props: IPlugin) => {
   const id = useMemo(() => `wikiLink_${getRandomHash()}`, []);

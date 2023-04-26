@@ -31,8 +31,8 @@ import CFSelect from "@/components/CFSelect";
 import CFSlider from "@/components/CFSlider";
 import CFDivider from "@/components/CFDivider";
 import CFHeading from "@/components/CFHeading";
-import { drawboardPluginFactory } from "./utils/factory";
-import Render from "./components/Render";
+import { drawboardPluginFactory } from "../utils/factory";
+import Render from "../components/Render";
 
 const SettingsPlugin = ({ pluginInfo, ...props }: IPlugin) => {
   const id = useMemo(() => `settings_${getRandomHash()}`, []);

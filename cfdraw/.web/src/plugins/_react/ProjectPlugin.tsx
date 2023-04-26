@@ -24,10 +24,10 @@ import CFButton from "@/components/CFButton";
 import CFDivider from "@/components/CFDivider";
 import CFHeading from "@/components/CFHeading";
 import { CFSrollableSelect } from "@/components/CFSelect";
-import { drawboardPluginFactory } from "./utils/factory";
-import Render from "./components/Render";
-import { floatingEvent, floatingRenderEvent } from "./components/Floating";
-import { useClosePanel } from "./components/hooks";
+import { drawboardPluginFactory } from "../utils/factory";
+import { floatingEvent, floatingRenderEvent } from "../components/Floating";
+import { useClosePanel } from "../components/hooks";
+import Render from "../components/Render";
 
 type IImportLocal = ILoadedProject | INodePack[];
 const ProjectPlugin = ({ pluginInfo, ...props }: IPlugin) => {

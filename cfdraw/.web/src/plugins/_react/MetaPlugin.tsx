@@ -6,8 +6,8 @@ import { useSelecting } from "@carefree0910/business";
 import type { IPlugin } from "@/schema/plugins";
 import { IMeta, getMetaTrace } from "@/schema/meta";
 import { getPluginIds } from "@/stores/plugins";
-import { drawboardPluginFactory } from "./utils/factory";
-import Render from "./components/Render";
+import { drawboardPluginFactory } from "../utils/factory";
+import Render from "../components/Render";
 
 function getMetaRepresentation(meta: IMeta): string {
   const { type, data } = meta;

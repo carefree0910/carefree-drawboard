@@ -15,9 +15,9 @@ import CFText from "@/components/CFText";
 import CFButton from "@/components/CFButton";
 import CFDivider from "@/components/CFDivider";
 import CFHeading from "@/components/CFHeading";
-import { drawboardPluginFactory } from "./utils/factory";
-import Render from "./components/Render";
-import { useClosePanel } from "./components/hooks";
+import { drawboardPluginFactory } from "../utils/factory";
+import Render from "../components/Render";
+import { useClosePanel } from "../components/hooks";
 
 const DownloadPlugin = ({ pluginInfo, ...props }: IPlugin) => {
   const id = useMemo(() => `download_${getRandomHash()}`, []);
