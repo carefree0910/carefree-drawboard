@@ -171,7 +171,7 @@ const Floating = forwardRef(function (
   const bgOpacityHex = Math.round(bgOpacity * 255).toString(16);
   const commonProps = useMemo<BoxProps>(
     () => ({
-      p: "12px",
+      p: "8px",
       bg: `${isBusy ? busyColor : panelBg}${bgOpacityHex}`,
       position: "absolute",
       // boxShadow: "2px 2px 4px rgba(0, 0, 0, 0.25)",
@@ -321,6 +321,8 @@ const Floating = forwardRef(function (
           {...props}>
           <Image
             src={src}
+            w="100%"
+            h="100%"
             draggable={false}
             opacity={iconOpacity}
             transition={VISIBILITY_TRANSITION}

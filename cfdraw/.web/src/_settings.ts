@@ -2,28 +2,14 @@ import type { AvailablePlugins, IMakePlugin } from "@/schema/plugins";
 
 export const reactPluginSettings: IMakePlugin<AvailablePlugins>[] = [
   {
-    type: "meta",
-    props: {
-      nodeConstraint: "singleNode",
-      renderInfo: {
-        w: 400,
-        h: 400,
-        offsetY: 48,
-        src: "https://ailab-huawei-cdn.nolibox.com/upload/images/0ec1b08f9c3e4ef4813ecb80bebf3b42.png",
-        pivot: "rt",
-        follow: true,
-      },
-      pluginInfo: {},
-    },
-  },
-  {
     type: "settings",
     props: {
       nodeConstraint: "none",
       renderInfo: {
         w: 300,
         h: 400,
-        src: "https://ailab-huawei-cdn.nolibox.com/upload/images/49223052f17f4f249c56ba00f43b3043.png",
+        src: "https://user-images.githubusercontent.com/15677328/234536549-87e94432-9f25-490f-8dee-7ed166bcbeed.svg",
+        tooltip: "Settings",
         pivot: "rt",
         follow: false,
       },
@@ -38,7 +24,8 @@ export const reactPluginSettings: IMakePlugin<AvailablePlugins>[] = [
         w: 300,
         h: 400,
         offsetY: 64,
-        src: "https://ailab-huawei-cdn.nolibox.com/upload/images/255c1c20b5754815b759969218f8a87c.png",
+        src: "https://user-images.githubusercontent.com/15677328/234536679-103c6d6a-f882-4a99-baaf-02f71fefeea5.svg",
+        tooltip: "Project Management",
         pivot: "rt",
         follow: false,
       },
@@ -48,13 +35,13 @@ export const reactPluginSettings: IMakePlugin<AvailablePlugins>[] = [
   {
     type: "add",
     props: {
-      p: "14px",
       nodeConstraint: "none",
       renderInfo: {
         w: 300,
         h: 225,
         offsetY: 120,
-        src: "https://ailab-huawei-cdn.nolibox.com/upload/images/81a82eca03224bc2bb8de65c08f2f48a.png",
+        src: "https://user-images.githubusercontent.com/15677328/234536800-4e2d9090-8958-4da9-8600-1e708f86759a.svg",
+        tooltip: "Add new stuff",
         pivot: "rt",
         follow: false,
       },
@@ -62,31 +49,31 @@ export const reactPluginSettings: IMakePlugin<AvailablePlugins>[] = [
     },
   },
   {
-    type: "arrange",
+    type: "brush",
     props: {
-      nodeConstraint: "multiNode",
+      nodeConstraint: "none",
       renderInfo: {
-        w: 0,
-        h: 0,
-        offsetY: 48,
-        src: "https://ailab-huawei-cdn.nolibox.com/upload/images/7fcc3fb8a25248b0a1f2ca68b0c975f4.png",
+        w: 300,
+        h: 220,
+        offsetY: 176,
+        src: "https://user-images.githubusercontent.com/15677328/234537027-20b3ea26-a6d0-4e07-8186-e2649917a893.svg",
+        tooltip: "Enter Sketch Mode",
         pivot: "rt",
-        follow: true,
+        follow: false,
       },
       pluginInfo: {},
-      noExpand: true,
     },
   },
   {
     type: "undo",
     props: {
-      p: "14px",
       nodeConstraint: "none",
       renderInfo: {
         w: 0,
         h: 0,
         offsetX: -28,
-        src: "https://ailab-huawei-cdn.nolibox.com/upload/images/069122c037d34d97ba10157438af131b.png",
+        src: "https://user-images.githubusercontent.com/15677328/234537508-b7ef4494-f2db-438b-b7cb-2f8d04833cb0.svg",
+        tooltip: "Undo",
         pivot: "top",
       },
       pluginInfo: {},
@@ -96,17 +83,32 @@ export const reactPluginSettings: IMakePlugin<AvailablePlugins>[] = [
   {
     type: "redo",
     props: {
-      p: "14px",
       nodeConstraint: "none",
       renderInfo: {
         w: 0,
         h: 0,
         offsetX: 28,
-        src: "https://ailab-huawei-cdn.nolibox.com/upload/images/4c0b2343838344fdb574520006aa83c9.png",
+        src: "https://user-images.githubusercontent.com/15677328/234537560-552bc9bc-b0dc-45a5-af77-f14a2f2dbf80.svg",
+        tooltip: "Redo",
         pivot: "top",
       },
       pluginInfo: {},
       noExpand: true,
+    },
+  },
+  {
+    type: "meta",
+    props: {
+      nodeConstraint: "singleNode",
+      renderInfo: {
+        w: 400,
+        h: 400,
+        offsetY: 48,
+        src: "https://user-images.githubusercontent.com/15677328/234533823-12d27a77-155a-4743-a0af-1fc5b86014fd.svg",
+        pivot: "rt",
+        follow: true,
+      },
+      pluginInfo: {},
     },
   },
   {
@@ -117,7 +119,7 @@ export const reactPluginSettings: IMakePlugin<AvailablePlugins>[] = [
         w: 240,
         h: 230,
         offsetY: -48,
-        src: "https://ailab-huawei-cdn.nolibox.com/upload/images/d871d80a875146fa8aabc09fbbdef47e.png",
+        src: "https://user-images.githubusercontent.com/15677328/234537900-4f52af0b-3be0-4a9a-b70b-ec28198323f0.svg",
         pivot: "rb",
         follow: true,
       },
@@ -132,7 +134,7 @@ export const reactPluginSettings: IMakePlugin<AvailablePlugins>[] = [
         w: 0,
         h: 0,
         offsetY: -48,
-        src: "https://ailab-huawei-cdn.nolibox.com/upload/images/384b2261faa748e6b57e14e697e19520.png",
+        src: "https://user-images.githubusercontent.com/15677328/234538170-7374b2a1-edac-45c5-9615-96adf310a4c4.svg",
         pivot: "lb",
         follow: true,
       },
@@ -143,12 +145,12 @@ export const reactPluginSettings: IMakePlugin<AvailablePlugins>[] = [
   {
     type: "textEditor",
     props: {
-      p: "13px",
       nodeConstraint: "text",
       renderInfo: {
         w: 300,
         h: 400,
-        src: "https://ailab-huawei-cdn.nolibox.com/upload/images/06dc5af9d77944c8ae06d1ae1124b6a2.png",
+        src: "https://user-images.githubusercontent.com/15677328/234545067-1da07d56-9d53-4fbb-83cc-395ff953b4c6.svg",
+        tooltip: "Text Editor",
         pivot: "right",
         follow: true,
       },
@@ -158,12 +160,12 @@ export const reactPluginSettings: IMakePlugin<AvailablePlugins>[] = [
   {
     type: "groupEditor",
     props: {
-      // p: "13px",
       nodeConstraint: "group",
       renderInfo: {
         w: 0,
         h: 0,
-        src: "https://ailab-huawei-cdn.nolibox.com/upload/images/b767f4a99956498a922470174a2051df.png",
+        src: "https://user-images.githubusercontent.com/15677328/234545700-0d33471a-b43b-47af-a371-b2b3b8a98794.svg",
+        tooltip: "Ungroup the Nodes",
         pivot: "rt",
         follow: true,
       },
@@ -174,12 +176,12 @@ export const reactPluginSettings: IMakePlugin<AvailablePlugins>[] = [
   {
     type: "multiEditor",
     props: {
-      // p: "13px",
       nodeConstraint: "multiNode",
       renderInfo: {
         w: 0,
         h: 0,
-        src: "https://ailab-huawei-cdn.nolibox.com/upload/images/669c405bee944a9a91fc4aa68f858cc3.png",
+        src: "https://user-images.githubusercontent.com/15677328/234545875-ff953782-7a18-4e0a-997c-37522fcbd2fd.svg",
+        tooltip: "Group the Nodes",
         pivot: "rt",
         follow: true,
       },
@@ -188,21 +190,20 @@ export const reactPluginSettings: IMakePlugin<AvailablePlugins>[] = [
     },
   },
   {
-    type: "brush",
+    type: "arrange",
     props: {
-      p: "0px",
-      pl: "10px",
-      pr: "7px",
-      nodeConstraint: "none",
+      nodeConstraint: "multiNode",
       renderInfo: {
-        w: 300,
-        h: 220,
-        offsetY: 176,
-        src: "https://ailab-huawei-cdn.nolibox.com/upload/static/brush.svg",
+        w: 0,
+        h: 0,
+        offsetY: 48,
+        src: "https://user-images.githubusercontent.com/15677328/234545341-870f888e-0dfc-4d8e-a79b-fcb9ddbe0977.svg",
+        tooltip: "Auto Arrange",
         pivot: "rt",
-        follow: false,
+        follow: true,
       },
       pluginInfo: {},
+      noExpand: true,
     },
   },
   {
@@ -212,7 +213,24 @@ export const reactPluginSettings: IMakePlugin<AvailablePlugins>[] = [
       renderInfo: {
         w: 0,
         h: 0,
-        src: "https://ailab-huawei-cdn.nolibox.com/upload/images/7ca6f41cad574f35ab117d6cfbe53be4.png",
+        src: "https://user-images.githubusercontent.com/15677328/234538371-88891a34-1b30-4c2b-bd2e-a80e2030210d.svg",
+        tooltip: "Wiki",
+        pivot: "rb",
+      },
+      pluginInfo: {},
+      noExpand: true,
+    },
+  },
+  {
+    type: "github",
+    props: {
+      nodeConstraint: "none",
+      renderInfo: {
+        w: 0,
+        h: 0,
+        offsetX: -61,
+        src: "https://user-images.githubusercontent.com/15677328/234538604-3017a411-e5f1-4564-8bc0-5090e973d86b.svg",
+        tooltip: "Github",
         pivot: "rb",
       },
       pluginInfo: {},
@@ -227,22 +245,8 @@ export const reactPluginSettings: IMakePlugin<AvailablePlugins>[] = [
         w: 0,
         h: 0,
         offsetX: -120,
-        src: "https://ailab-huawei-cdn.nolibox.com/upload/images/7ff42ebb21664a9abb55331463951126.png",
-        pivot: "rb",
-      },
-      pluginInfo: {},
-      noExpand: true,
-    },
-  },
-  {
-    type: "github",
-    props: {
-      nodeConstraint: "none",
-      renderInfo: {
-        w: 0,
-        h: 0,
-        offsetX: -64,
-        src: "https://ailab-huawei-cdn.nolibox.com/upload/images/4fb8d24d515744f6ac6836b3ba12a649.png",
+        src: "https://user-images.githubusercontent.com/15677328/234538781-b59b514f-99be-4ca2-859d-601f024cd7e0.svg",
+        tooltip: "Email",
         pivot: "rb",
       },
       pluginInfo: {},

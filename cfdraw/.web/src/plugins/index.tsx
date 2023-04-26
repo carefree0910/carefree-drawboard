@@ -47,7 +47,7 @@ export function makePlugin<T extends AvailablePluginsAndPythonPlugins>({
   const updatedPluginInfo = { ...pluginInfo, node, nodes };
   if (!renderInfo.src)
     renderInfo.src =
-      "https://ailab-huawei-cdn.nolibox.com/upload/images/7eb5a38f422049948dc8655123f2d96a.png";
+      "https://user-images.githubusercontent.com/15677328/234536140-233d5f2d-b6fc-407b-b6df-59b5f37e0bcf.svg";
   if (drawboardPluginFactory.checkIsPython(type)) {
     renderInfo.isInvisible = !pythonPluginIsVisible((updatedPluginInfo as any).identifier);
   } else {
