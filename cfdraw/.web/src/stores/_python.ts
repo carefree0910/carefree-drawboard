@@ -5,7 +5,7 @@ import { ABCStore } from "@carefree0910/business";
 
 import type { AvailablePythonPlugins, IMakePlugin } from "@/schema/plugins";
 import { ThemeType, ThemeStyles, allThemes } from "./theme";
-import { initStore } from "./init";
+import { getDefaultBoardOptions, initStore } from "./init";
 import { ISettingsStore, settingsStore } from "./settings";
 
 interface IGlobalSettings {
@@ -58,7 +58,6 @@ export const updatePythonStore = (data: IPythonStore): boolean => {
     }
     // `boardSettings` should only be updated once.
     if (!pythonStore.boardSettings) {
-      pythonStore.boardSettings = data.boardSettings;
       //// Update theme styles
       Object.entries(data.boardSettings?.styles ?? {}).forEach(([key, value]) => {
         if (value) {
@@ -68,15 +67,18 @@ export const updatePythonStore = (data: IPythonStore): boolean => {
           };
         }
       });
-      //// Update board options
+      //// Update board options, notice that this should always come after 'Update
+      //// theme styles', because `getDefaultBoardOptions` depends on theme styles.
       initStore.boardOptions = {
-        ...initStore.boardOptions,
+        ...getDefaultBoardOptions(),
         ...data.boardSettings?.boardOptions,
       };
       //// Update misc settings
       if (data.boardSettings?.miscSettings) {
         settingsStore.updateProperty(data.boardSettings.miscSettings);
       }
+      //// setup property
+      pythonStore.boardSettings = data.boardSettings;
     }
   });
   return true;

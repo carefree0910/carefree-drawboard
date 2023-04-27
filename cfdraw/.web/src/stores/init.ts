@@ -21,28 +21,10 @@ export interface IInitStore {
 }
 class InitStore extends ABCStore<IInitStore> implements IInitStore {
   working: boolean = false;
-  boardOptions: Partial<IBoardOptions>;
+  boardOptions: Partial<IBoardOptions> = {};
 
   constructor() {
     super();
-    this.boardOptions = {
-      autoResize: true,
-      internalPlugins: [GUIDELINE_SYSTEM_PLUGIN_NAME].concat(allInternalPlugins),
-      excludedPlugins: new Set([
-        CROP_MANAGER_PLUGIN_NAME,
-        FRAME_EDITOR_PLUGIN_NAME,
-        FOCUS_PLUGIN_NAME,
-        WATERMARK_PLUGIN_NAME,
-        GUIDELINE_PLUGIN_NAME,
-        MAGNET_PLUGIN_NAME,
-      ]),
-      useGlobalClipboard: false, // TODO : test `true`
-      backgroundColor: themeStore.styles.boardBg,
-      fitContainerOptions: {
-        targetFields: undefined,
-      },
-      bgMode: false, // TODO : test `true`
-    };
     makeObservable(this, {
       working: observable,
       boardOptions: observable,
@@ -55,3 +37,21 @@ class InitStore extends ABCStore<IInitStore> implements IInitStore {
 }
 
 export const initStore = new InitStore();
+export const getDefaultBoardOptions = () => ({
+  autoResize: true,
+  internalPlugins: [GUIDELINE_SYSTEM_PLUGIN_NAME].concat(allInternalPlugins),
+  excludedPlugins: new Set([
+    CROP_MANAGER_PLUGIN_NAME,
+    FRAME_EDITOR_PLUGIN_NAME,
+    FOCUS_PLUGIN_NAME,
+    WATERMARK_PLUGIN_NAME,
+    GUIDELINE_PLUGIN_NAME,
+    MAGNET_PLUGIN_NAME,
+  ]),
+  useGlobalClipboard: false, // TODO : test `true`
+  backgroundColor: themeStore.styles.boardBg,
+  fitContainerOptions: {
+    targetFields: undefined,
+  },
+  bgMode: false, // TODO : test `true`
+});
