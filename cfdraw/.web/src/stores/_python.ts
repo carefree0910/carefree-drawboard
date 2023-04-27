@@ -6,6 +6,7 @@ import { ABCStore } from "@carefree0910/business";
 import type { AvailablePythonPlugins, IMakePlugin } from "@/schema/plugins";
 import { ThemeType, ThemeStyles, allThemes } from "./theme";
 import { initStore } from "./init";
+import { ISettingsStore, settingsStore } from "./settings";
 
 interface IGlobalSettings {
   timeout?: number;
@@ -20,12 +21,14 @@ export interface IPythonStore {
   pluginSettings: IMakePlugin<AvailablePythonPlugins>[];
   globalSettings?: IGlobalSettings;
   boardSettings?: IBoardSettings;
+  miscSettings?: ISettingsStore;
 }
 class PythonStore extends ABCStore<IPythonStore> implements IPythonStore {
   hash: string = "";
   pluginSettings: IMakePlugin<AvailablePythonPlugins>[] = [];
   globalSettings?: IGlobalSettings;
   boardSettings?: IBoardSettings;
+  miscSettings?: ISettingsStore;
 
   constructor() {
     super();
@@ -34,6 +37,7 @@ class PythonStore extends ABCStore<IPythonStore> implements IPythonStore {
       pluginSettings: observable,
       globalSettings: observable,
       boardSettings: observable,
+      miscSettings: observable,
     });
   }
 
@@ -71,6 +75,11 @@ export const updatePythonStore = (data: IPythonStore): boolean => {
         ...initStore.boardOptions,
         ...data.boardSettings?.boardOptions,
       };
+    }
+    // `miscSettings` should only be updated once.
+    if (!pythonStore.miscSettings) {
+      pythonStore.miscSettings = data.miscSettings;
+      settingsStore.updateProperty(data.miscSettings ?? {});
     }
   });
   return true;

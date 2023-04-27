@@ -21,6 +21,7 @@ class SyncSocketPlugin(IInternalSocketPlugin):
                     sockenEndpoint=str(constants.Endpoint.WEBSOCKET),
                 ),
                 boardSettings=dict(),
+                miscSettings=dict(),
             ),
         )
 
