@@ -1,8 +1,8 @@
 import { observer } from "mobx-react-lite";
-import { Button, ButtonProps, Tooltip } from "@chakra-ui/react";
+import { Button, ButtonProps } from "@chakra-ui/react";
 
 import { themeStore } from "@/stores/theme";
-import { langStore, translate } from "@carefree0910/business";
+import CFTooltip from "./CFTooltip";
 
 function CFButton(props: ButtonProps) {
   const { textColor } = themeStore.styles;
@@ -15,9 +15,9 @@ interface ICFButtonWithBusyProps extends ButtonProps {
 }
 export function CFButtonWithBusyTooltip({ busy, tooltip, ...others }: ICFButtonWithBusyProps) {
   return (
-    <Tooltip label={busy ? translate(tooltip, langStore.tgt) : ""} hasArrow shouldWrapChildren>
+    <CFTooltip label={busy ? tooltip : undefined} hasArrow shouldWrapChildren>
       <CFButton w="100%" isDisabled={busy} {...others} />
-    </Tooltip>
+    </CFTooltip>
   );
 }
 

@@ -9,7 +9,6 @@ import {
   Image,
   Portal,
   TextProps,
-  Tooltip,
 } from "@chakra-ui/react";
 
 import { Coordinate, Dictionary, isUndefined } from "@carefree0910/core";
@@ -30,6 +29,7 @@ import { themeStore } from "@/stores/theme";
 import { getPluginMessage } from "@/stores/plugins";
 import { isInteractingWithBoard } from "@/stores/pointerEvents";
 import CFText from "@/components/CFText";
+import CFTooltip from "@/components/CFTooltip";
 import { CFPendingProgress, CFWorkingProgress } from "@/components/CFCircularProgress";
 
 export function getExpandId(id: string): string {
@@ -287,7 +287,7 @@ const Floating = forwardRef(function (
 
   return (
     <>
-      <Tooltip label={tooltip ? translate(tooltip, lang) : ""} hasArrow>
+      <CFTooltip label={tooltip} hasArrow>
         <Box
           as="button"
           id={id}
@@ -356,7 +356,7 @@ const Floating = forwardRef(function (
             </CFText>
           )}
         </Box>
-      </Tooltip>
+      </CFTooltip>
       {!noExpand && (
         <Portal containerRef={ref as any}>
           <Flex
