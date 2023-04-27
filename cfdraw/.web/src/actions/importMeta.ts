@@ -70,7 +70,7 @@ function consumeAddText({ lang, type, metaData }: IImportMeta<"add.text">): void
 function consumeAddSketchPath(): void {
   throw Error("Add sketch path by `importMeta` is not supported yet.");
 }
-function consumePythonFields({ lang, type, metaData }: IImportMeta<"python.fields">): void {
+function consumePythonFields({ type, metaData }: IImportMeta<"python.fields">): void {
   const success = async () => {
     toastWord("success", Toast_Words["generate-image-success-message"]);
   };
@@ -149,10 +149,7 @@ function consumePythonFields({ lang, type, metaData }: IImportMeta<"python.field
 
 // import api
 
-export function importMeta<T extends MetaType>({
-  lang,
-  type,
-  metaData,
-}: Omit<IImportMeta<T>, "metaData"> & { metaData?: IMetaData[T] }): void {
+export function importMeta<T extends MetaType>({ lang, type, metaData }: IImportMeta<T>): void {
+  metaData.lang = lang;
   consumers[type]({ lang, type, metaData });
 }

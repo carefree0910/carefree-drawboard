@@ -12,6 +12,7 @@ export interface IElapsedTimes {
 export const allMetaTypes = ["upload", "add.text", "add.sketch.path", "python.fields"] as const;
 export type MetaType = (typeof allMetaTypes)[number];
 export interface ICommonMetaData<T extends _IMetaData = _IMetaData> {
+  lang?: Lang;
   alias?: string;
   elapsedTimes?: IElapsedTimes;
   from?: IMeta<T>;
