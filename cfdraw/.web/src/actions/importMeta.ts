@@ -11,7 +11,7 @@ import { addNewText } from "./addText";
 import { addNewImage, getNewRectangle, INewRectangle, NewImageInfo } from "./addImage";
 import { getArrangements } from "./arrange";
 
-// consumers
+// helper functions
 
 function updateElapsedTimes(alias: string): void {
   const node = BoardStore.graph.getNode(alias);
@@ -19,6 +19,16 @@ function updateElapsedTimes(alias: string): void {
   node.params.meta.data.elapsedTimes = { endTime: Date.now() };
   updateMeta(alias, node.params.meta);
 }
+
+function getWHFromContent(content: string, fontSize: number): { w: number; h: number } {
+  const numChars = content.length;
+  const ratio = Math.sqrt(0.75 * numChars);
+  const h = Math.ceil(fontSize * ratio);
+  const w = h * 2;
+  return { w, h };
+}
+
+// consumers
 
 const consumers: Record<MetaType, (input: IImportMeta<any>) => void> = {
   upload: consumeUpload,
@@ -125,13 +135,7 @@ function consumePythonFields({ type, metaData }: IImportMeta<"python.fields">): 
     const fontSize = 48;
     const packs = gatherPacks(
       metaData.response.value,
-      (content) => {
-        const numChars = content.length;
-        const ratio = Math.sqrt(0.5 * numChars);
-        const h = Math.ceil(fontSize * ratio);
-        const w = h * 2;
-        return { autoFit: true, wh: { w, h } };
-      },
+      (content) => ({ autoFit: true, wh: getWHFromContent(content, fontSize) }),
       (content) => ({ content }),
     );
     const targets = getArrangements(packs.map(({ rectangle }) => rectangle)).targets;
