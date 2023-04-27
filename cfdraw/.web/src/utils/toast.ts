@@ -10,17 +10,14 @@ import { settingsStore } from "@/stores/settings";
 
 export interface IToastStore {
   timer: any;
-  shouldTerminate: boolean;
 }
 class ToastStore extends ABCStore<IToastStore> implements IToastStore {
   timer: any;
-  shouldTerminate: boolean = false;
 
   constructor() {
     super();
     makeObservable(this, {
       timer: observable,
-      shouldTerminate: observable,
     });
   }
 
@@ -38,10 +35,6 @@ export function toast(
   opt?: { duration?: number; timeout?: number; useToastOptions?: UseToastOptions },
 ): void {
   const _toast = () => {
-    if (toastStore.shouldTerminate) {
-      toastStore.updateProperty("shouldTerminate", false);
-      return;
-    }
     toastFn({
       position: "top",
       title: message,
@@ -68,8 +61,7 @@ export function toast(
   if (!isUndefined(timeout)) {
     toastStore.updateProperty("timer", setTimeout(_toast, timeout));
   } else {
-    _toast();
     clearTimeout(toastStore.timer);
-    toastStore.updateProperty("shouldTerminate", true);
+    _toast();
   }
 }
