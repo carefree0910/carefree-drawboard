@@ -1,5 +1,5 @@
 import { RectangleShapeNode, getRandomHash, shallowCopy } from "@carefree0910/core";
-import { BoardStore, useAddNode } from "@carefree0910/business";
+import { BoardStore, useAddNode, useDefaultTextContent } from "@carefree0910/business";
 
 import type { IMetaData, IPythonFieldsMetaData, MetaType } from "@/schema/meta";
 import type { IImportMeta } from "@/schema/meta";
@@ -69,12 +69,19 @@ function consumeAddText({ lang, type, metaData }: IImportMeta<"add.text">): void
   };
   const { addText } = useAddNode({ success, failed });
   metaData.alias = newAlias;
+  const content = useDefaultTextContent(lang);
+  const fontSize = 64;
+  const { w, h } = getWHFromContent(content, fontSize);
   addText({ trace: true })({
     alias: newAlias,
     initColor: textColor,
     lang,
     autoFit: true,
     meta: { type, data: metaData },
+    content,
+    fontSize,
+    w,
+    h,
   });
 }
 function consumeAddSketchPath(): void {
