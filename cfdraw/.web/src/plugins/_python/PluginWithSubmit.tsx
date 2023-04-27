@@ -85,7 +85,7 @@ function PythonPluginWithSubmit<R>({
       <CFDivider />
       <CFButtonWithBusyTooltip
         busy={busy}
-        tooltip={translate(Toast_Words["submit-task-busy-message"], lang)}
+        tooltip={Toast_Words["submit-task-busy-message"]}
         onClick={onClick}>
         {buttonText}
       </CFButtonWithBusyTooltip>

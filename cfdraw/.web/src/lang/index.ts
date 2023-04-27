@@ -5,6 +5,7 @@ import { uiLangRecords } from "./ui";
 import { addLangRecords } from "./add";
 import { brushLangRecords } from "./brush";
 import { toastLangRecords } from "./toast";
+import { tooltipLangRecords } from "./tooltip";
 import { pluginsLangRecords } from "./plugins";
 import { downloadLangRecords } from "./download";
 import { projectsLangRecords } from "./projects";
@@ -14,6 +15,7 @@ import { nodeEditorLangRecords } from "./nodeEditor";
 const initLangDirs = [
   uiLangRecords,
   toastLangRecords,
+  tooltipLangRecords,
   pluginsLangRecords,
   settingsLangRecords,
   projectsLangRecords,

@@ -1,0 +1,50 @@
+import type { Lang } from "@carefree0910/core";
+
+export enum Tooltip_Words {
+  "settings-tooltip" = "settings-tooltip",
+  "project-management-tooltip" = "project-management-tooltip",
+  "add-new-stuff-tooltip" = "add-new-stuff-tooltip",
+  "enter-sketch-mode-tooltip" = "enter-sketch-mode-tooltip",
+  "undo-tooltip" = "undo-tooltip",
+  "redo-tooltip" = "redo-tooltip",
+  "text-editor-tooltip" = "text-editor-tooltip",
+  "ungroup-the-nodes-tooltip" = "ungroup-the-nodes-tooltip",
+  "group-the-nodes-tooltip" = "group-the-nodes-tooltip",
+  "auto-arrange-tooltip" = "auto-arrange-tooltip",
+  "wiki-tooltip" = "wiki-tooltip",
+  "github-tooltip" = "github-tooltip",
+  "email-tooltip" = "email-tooltip",
+}
+
+export const tooltipLangRecords: Record<Lang, Record<Tooltip_Words, string>> = {
+  zh: {
+    [Tooltip_Words["settings-tooltip"]]: "设置",
+    [Tooltip_Words["project-management-tooltip"]]: "项目管理",
+    [Tooltip_Words["add-new-stuff-tooltip"]]: "添加新的元素",
+    [Tooltip_Words["enter-sketch-mode-tooltip"]]: "进入涂鸦模式",
+    [Tooltip_Words["undo-tooltip"]]: "撤销",
+    [Tooltip_Words["redo-tooltip"]]: "重做",
+    [Tooltip_Words["text-editor-tooltip"]]: "文本编辑器",
+    [Tooltip_Words["ungroup-the-nodes-tooltip"]]: "解组",
+    [Tooltip_Words["group-the-nodes-tooltip"]]: "打组",
+    [Tooltip_Words["auto-arrange-tooltip"]]: "自动排列",
+    [Tooltip_Words["wiki-tooltip"]]: "Wiki",
+    [Tooltip_Words["github-tooltip"]]: "Github",
+    [Tooltip_Words["email-tooltip"]]: "Email",
+  },
+  en: {
+    [Tooltip_Words["settings-tooltip"]]: "Settings",
+    [Tooltip_Words["project-management-tooltip"]]: "Project Management",
+    [Tooltip_Words["add-new-stuff-tooltip"]]: "Add new stuff",
+    [Tooltip_Words["enter-sketch-mode-tooltip"]]: "Enter Sketch Mode",
+    [Tooltip_Words["undo-tooltip"]]: "Undo",
+    [Tooltip_Words["redo-tooltip"]]: "Redo",
+    [Tooltip_Words["text-editor-tooltip"]]: "Text Editor",
+    [Tooltip_Words["ungroup-the-nodes-tooltip"]]: "Ungroup the Nodes",
+    [Tooltip_Words["group-the-nodes-tooltip"]]: "Group the Nodes",
+    [Tooltip_Words["auto-arrange-tooltip"]]: "Auto Arrange",
+    [Tooltip_Words["wiki-tooltip"]]: "Wiki",
+    [Tooltip_Words["github-tooltip"]]: "Github",
+    [Tooltip_Words["email-tooltip"]]: "Email",
+  },
+};

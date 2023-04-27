@@ -287,7 +287,7 @@ const Floating = forwardRef(function (
 
   return (
     <>
-      <Tooltip label={tooltip} hasArrow>
+      <Tooltip label={tooltip ? translate(tooltip, lang) : ""} hasArrow>
         <Box
           as="button"
           id={id}
