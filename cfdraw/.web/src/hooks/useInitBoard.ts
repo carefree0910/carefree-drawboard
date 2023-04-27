@@ -11,6 +11,7 @@ import {
   Logger,
   Matrix2DFields,
   allInternalPlugins,
+  waitUntil,
 } from "@carefree0910/core";
 import { SVGUnitTest } from "@carefree0910/svg";
 import { NoliNativeBoard } from "@carefree0910/native";
@@ -25,6 +26,7 @@ import {
 import { BOARD_CONTAINER_ID, IS_PROD } from "@/utils/constants";
 import { initStore } from "@/stores/init";
 import { themeStore } from "@/stores/theme";
+import { pythonStore } from "@/stores/_python";
 
 export function useInitBoard(): void {
   async function _initialize(): Promise<void> {
@@ -108,8 +110,11 @@ export function useInitBoard(): void {
   }
 
   useEffect(() => {
+    Logger.isDebug = !IS_PROD;
     if (!useIsReady()) {
-      _initialize();
+      waitUntil(() => !!pythonStore.boardSettings).then(() => {
+        _initialize();
+      });
     }
   }, []);
 }

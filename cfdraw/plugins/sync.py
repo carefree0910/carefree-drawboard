@@ -20,6 +20,7 @@ class SyncSocketPlugin(IInternalSocketPlugin):
                     useStrictMode=config.use_react_strict_mode,
                     sockenEndpoint=str(constants.Endpoint.WEBSOCKET),
                 ),
+                boardSettings=dict(),
             ),
         )
 
