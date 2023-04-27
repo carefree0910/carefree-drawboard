@@ -10,7 +10,7 @@ import type { IPythonResults } from "@/schema/meta";
 import type { IPythonFieldsPlugin, IPythonOnSocketMessage } from "@/schema/_python";
 import { UI_Words } from "@/lang/ui";
 import { Toast_Words } from "@/lang/toast";
-import { toast } from "@/utils/toast";
+import { toastWord } from "@/utils/toast";
 import { titleCaseWord } from "@/utils/misc";
 import { removeSocketHooks, socketLog } from "@/stores/socket";
 import { getPluginIds, removePluginMessage, updatePluginMessage } from "@/stores/plugins";
@@ -50,10 +50,9 @@ const PythonFieldsPlugin = ({ pluginInfo, ...props }: IPythonFieldsPlugin) => {
           removePluginMessage(id);
           socketFinishedEvent.emit({ id });
           if (!final) {
-            toast(
-              "success",
-              `${translate(Toast_Words["submit-task-finished-message"], lang)} (${pureIdentifier})`,
-            );
+            toastWord("success", Toast_Words["submit-task-finished-message"], {
+              appendix: ` (${pureIdentifier})`,
+            });
           } else {
             importMeta({
               lang,
@@ -73,10 +72,9 @@ const PythonFieldsPlugin = ({ pluginInfo, ...props }: IPythonFieldsPlugin) => {
         }
         case "exception": {
           if (!noErrorToast) {
-            toast(
-              "error",
-              `${translate(Toast_Words["submit-task-error-message"], lang)} - ${message.message}`,
-            );
+            toastWord("error", Toast_Words["submit-task-error-message"], {
+              appendix: ` - ${message.message}`,
+            });
           }
           // cleanup if retry is not specified
           if (isUndefined(retryInterval)) {
@@ -94,7 +92,7 @@ const PythonFieldsPlugin = ({ pluginInfo, ...props }: IPythonFieldsPlugin) => {
   );
   const onSocketError = useCallback(
     async (err: any) => {
-      toast("error", `${translate(Toast_Words["submit-task-error-message"], lang)} - ${err}`);
+      toastWord("error", Toast_Words["submit-task-error-message"], { appendix: ` - ${err}` });
     },
     [lang],
   );

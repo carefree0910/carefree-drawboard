@@ -8,17 +8,16 @@ import {
   INode,
   INodes,
   INodeType,
-  Lang,
   Matrix2DFields,
   range,
   runGroupContext,
   setDefault,
   sortBy,
 } from "@carefree0910/core";
-import { BoardStore, translate } from "@carefree0910/business";
+import { BoardStore } from "@carefree0910/business";
 
 import { checkMeta, getOriginMeta, IMeta } from "@/schema/meta";
-import { toast } from "@/utils/toast";
+import { toastWord } from "@/utils/toast";
 import { Toast_Words } from "@/lang/toast";
 
 const schedules = {
@@ -113,7 +112,6 @@ function arrangeWith(packs: ArrangePack[], commonW: number, padding: number): vo
   });
 }
 async function animateArrangement(
-  lang: Lang,
   original: INode[],
   targets: INode[],
   numFrame: number,
@@ -121,7 +119,7 @@ async function animateArrangement(
   schedule: ScheduleType,
 ): Promise<void> {
   if (original.every((node, i) => node.bbox.closeTo(targets[i].bbox, { atol: 0.1, rtol: 0.1 }))) {
-    toast("info", translate(Toast_Words["auto-arrange-no-need-message"], lang));
+    toastWord("info", Toast_Words["auto-arrange-no-need-message"]);
     return;
   }
 
@@ -264,21 +262,21 @@ export function getArrangements(
   return { original, targets };
 }
 export async function autoArrange(
-  lang: Lang,
   nodes: INode[],
   opt?: Partial<AutoArrangeOptions>,
 ): Promise<void> {
   const { original, targets } = getArrangements(nodes, opt);
   const { numFrame, trace, schedule } = getDefaultArrangeOptions(opt);
-  animateArrangement(lang, original, targets, numFrame, trace, schedule);
+  animateArrangement(original, targets, numFrame, trace, schedule);
 }
-export function onArrange(
-  lang: Lang,
-  { type, nodes }: { type: "none" | "multiple"; nodes: INodeType[] },
-): void {
-  autoArrange(
-    lang,
-    type === "none" ? BoardStore.graph.rootNodes.filter((node) => !node.noSave) : nodes,
-    { fitContainer: type === "none" },
-  );
+export function onArrange({
+  type,
+  nodes,
+}: {
+  type: "none" | "multiple";
+  nodes: INodeType[];
+}): void {
+  autoArrange(type === "none" ? BoardStore.graph.rootNodes.filter((node) => !node.noSave) : nodes, {
+    fitContainer: type === "none",
+  });
 }

@@ -1,13 +1,12 @@
-import { INodePack, Lang, Matrix2D, Matrix2DFields, safeCall } from "@carefree0910/core";
+import { INodePack, Matrix2D, Matrix2DFields, safeCall } from "@carefree0910/core";
 import {
   BoardStore,
   safeClearExecuterStack,
-  translate,
   useGlobalTransform,
   useSafeExecute,
 } from "@carefree0910/business";
 
-import { toast } from "@/utils/toast";
+import { toastWord } from "@/utils/toast";
 import { Toast_Words } from "@/lang/toast";
 import { Requests } from "@/requests/actions";
 import {
@@ -30,14 +29,13 @@ export function useCurrentFullProject(): IFullProject {
 }
 
 export async function saveProject(
-  lang: Lang,
   onSuccess: () => Promise<void>,
   noToast?: boolean,
 ): Promise<void> {
   updateCurrentProjectUpdateTime();
   const fullProject = useCurrentFullProject();
   if (!noToast) {
-    toast("info", translate(Toast_Words["uploading-project-message"], lang));
+    toastWord("info", Toast_Words["uploading-project-message"]);
   }
 
   return safeCall(
@@ -47,10 +45,9 @@ export async function saveProject(
         message: string;
       }>("_python", "/save_project", fullProject);
       if (!res.success) {
-        toast(
-          "warning",
-          `${translate(Toast_Words["save-project-error-message"], lang)} - ${res.message}`,
-        );
+        toastWord("warning", Toast_Words["save-project-error-message"], {
+          appendix: ` - ${res.message}`,
+        });
         throw Error;
       }
     },
@@ -80,11 +77,10 @@ function replaceProjectWith(
   })({ json: JSON.stringify(res.graphInfo), apiInfos: {}, noFit: true });
 }
 export async function loadProject(
-  lang: Lang,
   uid: string,
   onSuccess: (res: ILoadedProject) => Promise<void>,
 ): Promise<void> {
-  toast("info", translate(Toast_Words["loading-project-message"], lang));
+  toastWord("info", Toast_Words["loading-project-message"]);
 
   return safeCall(
     async () =>
@@ -98,13 +94,12 @@ export async function loadProject(
   );
 }
 export function loadLocalProject(
-  lang: Lang,
   res: ILoadedProject,
   onSuccess: (res: ILoadedProject) => Promise<void>,
   noToast?: boolean,
 ): void {
   if (!noToast) {
-    toast("info", translate(Toast_Words["loading-project-message"], lang));
+    toastWord("info", Toast_Words["loading-project-message"]);
   }
   replaceProjectWith(res, onSuccess);
 }

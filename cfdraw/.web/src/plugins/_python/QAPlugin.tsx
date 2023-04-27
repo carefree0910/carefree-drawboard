@@ -44,7 +44,7 @@ const PythonQAPlugin = ({ pluginInfo, ...props }: IPythonQAPlugin) => {
         mt="16px"
         value={userInput}
         onChange={(event) => setUserInput(event.target.value)}
-        placeholder={translate(UI_Words["qa-field-placeholder"], langStore.tgt)}
+        placeholder={translate(UI_Words["qa-field-placeholder"], lang)}
       />
     </PythonPluginWithSubmit>
   );

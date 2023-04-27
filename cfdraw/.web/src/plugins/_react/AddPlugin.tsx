@@ -6,7 +6,7 @@ import { getRandomHash, identityMatrix2DFields } from "@carefree0910/core";
 import { langStore, translate } from "@carefree0910/business";
 
 import type { IPlugin } from "@/schema/plugins";
-import { toast } from "@/utils/toast";
+import { toastWord } from "@/utils/toast";
 import { Add_Words } from "@/lang/add";
 import { Toast_Words } from "@/lang/toast";
 import { importMeta } from "@/actions/importMeta";
@@ -27,16 +27,14 @@ const AddPlugin = ({ pluginInfo, ...props }: IPlugin) => {
 
   const closePanel = useClosePanel(id);
   const onNewProject = () => {
-    toast("info", translate(Toast_Words["adding-project-message"], lang));
+    toastWord("info", Toast_Words["adding-project-message"]);
     saveProject(
-      lang,
       async () =>
         loadLocalProject(
-          lang,
           { graphInfo: [], globalTransform: identityMatrix2DFields, ...getNewProject() },
           async () => {
             floatingEvent.emit({ type: "newProject", data: {} });
-            toast("success", translate(Toast_Words["add-project-success-message"], lang));
+            toastWord("success", Toast_Words["add-project-success-message"]);
             closePanel();
           },
           true,

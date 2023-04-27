@@ -1,7 +1,6 @@
-import { Lang, safeCall } from "@carefree0910/core";
-import { translate } from "@carefree0910/business";
+import { safeCall } from "@carefree0910/core";
 
-import { toast } from "@/utils/toast";
+import { toastWord } from "@/utils/toast";
 import { Toast_Words } from "@/lang/toast";
 import { Requests } from "@/requests/actions";
 
@@ -16,7 +15,6 @@ interface IUploadImageResponseData {
 }
 
 export async function uploadImage(
-  lang: Lang,
   blob: Blob,
   { failed }: UploadImageOptions,
 ): Promise<IUploadImageResponseData | void> {
@@ -28,10 +26,9 @@ export async function uploadImage(
         data: IUploadImageResponseData;
       }>("_python", "/upload_image", { key: "image", blob });
       if (!res.success) {
-        toast(
-          "warning",
-          `${translate(Toast_Words["upload-image-error-message"], lang)} - ${res.message}`,
-        );
+        toastWord("warning", Toast_Words["upload-image-error-message"], {
+          appendix: ` - ${res.message}`,
+        });
         throw Error;
       }
       return res.data;

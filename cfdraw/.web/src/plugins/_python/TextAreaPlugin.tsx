@@ -3,7 +3,6 @@ import { observer } from "mobx-react-lite";
 import { Textarea } from "@chakra-ui/react";
 
 import { getRandomHash } from "@carefree0910/core";
-import { langStore } from "@carefree0910/business";
 
 import type { IPythonTextAreaPlugin, IPythonOnSocketMessage } from "@/schema/_python";
 import { getPluginIds } from "@/stores/plugins";
@@ -15,7 +14,6 @@ const PythonTextAreaPlugin = ({
   pluginInfo: { node, nodes, identifier, retryInterval, updateInterval, noLoading, textAlign },
   ...props
 }: IPythonTextAreaPlugin) => {
-  const lang = langStore.tgt;
   const id = getPluginIds(`textArea_${identifier}`);
   const hash = useMemo(() => getRandomHash().toString(), [id]);
   const [value, setValue] = useState("");
@@ -32,7 +30,6 @@ const PythonTextAreaPlugin = ({
   );
 
   useSocketPython({
-    lang,
     hash,
     node,
     nodes,

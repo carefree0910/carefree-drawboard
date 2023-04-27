@@ -1,27 +1,27 @@
 import { useEffect } from "react";
 
-import { FileDropper, FileDropperResponse, Lang } from "@carefree0910/core";
-import { translate, useIsReady } from "@carefree0910/business";
+import { FileDropper, FileDropperResponse } from "@carefree0910/core";
+import { langStore, useIsReady } from "@carefree0910/business";
 
-import { toast } from "@/utils/toast";
+import { toastWord } from "@/utils/toast";
 import { Toast_Words } from "@/lang/toast";
 import { BOARD_CONTAINER_ID } from "@/utils/constants";
 import { setDropping, hooksStore } from "@/stores/hooks";
 import { uploadImage } from "@/actions/uploadImage";
 import { importMeta } from "@/actions/importMeta";
 
-export function useFileDropper(lang: Lang): void {
+export function useFileDropper(): void {
   function onDrop(): void {
     setDropping(true);
     setTimeout(() => {
       if (hooksStore.dropping) {
-        toast("info", translate(Toast_Words["dropping-message"], lang));
+        toastWord("info", Toast_Words["dropping-message"]);
       }
     }, dropPatience);
   }
 
   async function failed(): Promise<void> {
-    toast("error", translate(Toast_Words["upload-image-error-message"], lang));
+    toastWord("error", Toast_Words["upload-image-error-message"]);
   }
 
   type UploadResponse = { success: boolean; reason: "none" | "unknown" | "type" | "upload" };
@@ -33,12 +33,12 @@ export function useFileDropper(lang: Lang): void {
     }
 
     const file = new File([source], `image.${type}`, { type });
-    const uploadRes = await uploadImage(lang, file, { failed: async () => void 0 });
+    const uploadRes = await uploadImage(file, { failed: async () => void 0 });
     if (!uploadRes) {
       return { success: false, reason: "upload" };
     }
     importMeta({
-      lang,
+      lang: langStore.tgt,
       type: "upload",
       metaData: { ...uploadRes, isDrag: true },
     });
@@ -47,10 +47,10 @@ export function useFileDropper(lang: Lang): void {
   async function onSuccess(resList: FileDropperResponse[]): Promise<void> {
     setDropping(false);
     if (resList.length === 0) return;
-    toast("info", translate(Toast_Words["uploading-image-message"], lang));
+    toastWord("info", Toast_Words["uploading-image-message"]);
     const uploadResList = await Promise.all(resList.map((res) => onSuccessOne(res)));
     if (uploadResList.some((res) => res.reason === "type")) {
-      toast("error", translate(Toast_Words["strange-image-error-message"], lang));
+      toastWord("error", Toast_Words["strange-image-error-message"]);
     }
     if (uploadResList.some((res) => res.reason === "upload")) {
       failed();
@@ -64,7 +64,7 @@ export function useFileDropper(lang: Lang): void {
     if (resList.length === 0) return;
     resList.forEach((res) => {
       if (res.reason) {
-        toast("error", translate(res.reason, lang));
+        toastWord("error", res.reason);
       }
     });
   }
@@ -84,5 +84,5 @@ export function useFileDropper(lang: Lang): void {
     return () => {
       dropper.destroy();
     };
-  }, [useIsReady(), lang]);
+  }, [useIsReady()]);
 }

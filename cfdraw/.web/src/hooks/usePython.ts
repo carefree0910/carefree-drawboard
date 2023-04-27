@@ -1,5 +1,6 @@
 import { useCallback } from "react";
 
+import type { ExportBlobOptions } from "@carefree0910/svg";
 import { BBox, INode, INodes, Logger } from "@carefree0910/core";
 
 import type { IMeta } from "@/schema/meta";
@@ -15,9 +16,9 @@ import { debugStore } from "@/stores/debug";
 import { IPythonStore, updatePythonStore } from "@/stores/_python";
 import { useWebSocketHook } from "@/requests/hooks";
 import { uploadImage } from "@/actions/uploadImage";
-import { Exporter, IExportBlob } from "@/actions/export";
+import { Exporter } from "@/actions/export";
 
-type IGetNodeData = IExportBlob & { exportBox: BBox };
+type IGetNodeData = ExportBlobOptions & { exportBox: BBox };
 async function getNodeData(node: INode | null, opt: IGetNodeData): Promise<INodeData> {
   if (!node) return {};
   const { x, y } = node.position;
@@ -34,7 +35,7 @@ async function getNodeData(node: INode | null, opt: IGetNodeData): Promise<INode
     src = await Exporter.exportBlob([node], opt)
       .then((blob) => {
         if (!blob) throw Error("export blob for `PathNode` failed");
-        return uploadImage(opt.lang, blob, { failed: async () => void 0 });
+        return uploadImage(blob, { failed: async () => void 0 });
       })
       .then((res) => {
         if (!res) throw Error("upload image for `PathNode` failed");
@@ -55,7 +56,7 @@ async function getPythonRequest({
   getExtraRequestData,
   opt,
 }: Omit<IUsePythonInfo, "isInvisible"> & {
-  opt: IExportBlob;
+  opt: ExportBlobOptions;
 }): Promise<Omit<IPythonSocketRequest, "hash">> {
   const exportBox = new INodes(nodes).bbox;
   const getNodeDataOpt: IGetNodeData = { exportBox, ...opt };
@@ -71,7 +72,6 @@ async function getPythonRequest({
 }
 
 export function useSocketPython<R>({
-  lang,
   hash,
   node,
   nodes,
@@ -84,7 +84,6 @@ export function useSocketPython<R>({
   onSocketError,
 }: IUseSocketPython<R>) {
   const deps = [
-    lang,
     hash,
     node?.alias,
     nodes.map((n) => n.alias).join("_"),
@@ -102,7 +101,7 @@ export function useSocketPython<R>({
         nodes,
         identifier,
         getExtraRequestData,
-        opt: { lang },
+        opt: {},
       }).then((req) => ({ hash: hash!, ...req })),
     [deps],
   );

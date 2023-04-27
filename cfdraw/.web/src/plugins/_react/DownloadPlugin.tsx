@@ -46,7 +46,7 @@ const DownloadPlugin = ({ pluginInfo, ...props }: IPlugin) => {
     );
   const closePanel = useClosePanel(id);
   const onDownload = () => {
-    downloadNodes(lang, nodes, format, keepOriginal);
+    downloadNodes(nodes, format, keepOriginal);
     closePanel();
   };
 

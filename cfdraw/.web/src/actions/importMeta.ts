@@ -1,9 +1,9 @@
 import { RectangleShapeNode, getRandomHash, shallowCopy } from "@carefree0910/core";
-import { BoardStore, translate, useAddNode } from "@carefree0910/business";
+import { BoardStore, useAddNode } from "@carefree0910/business";
 
-import type { IElapsedTimes, IMetaData, IPythonFieldsMetaData, MetaType } from "@/schema/meta";
+import type { IMetaData, IPythonFieldsMetaData, MetaType } from "@/schema/meta";
 import type { IImportMeta } from "@/schema/meta";
-import { toast } from "@/utils/toast";
+import { toastWord } from "@/utils/toast";
 import { Toast_Words } from "@/lang/toast";
 import { themeStore } from "@/stores/theme";
 import { updateMeta } from "./update";
@@ -26,13 +26,13 @@ const consumers: Record<MetaType, (input: IImportMeta<any>) => void> = {
   "add.sketch.path": consumeAddSketchPath,
   "python.fields": consumePythonFields,
 };
-function consumeUpload({ lang, type, metaData }: IImportMeta<"upload">): void {
+function consumeUpload({ type, metaData }: IImportMeta<"upload">): void {
   const success = async () => {
-    toast("success", translate(Toast_Words["upload-image-success-message"], lang));
+    toastWord("success", Toast_Words["upload-image-success-message"]);
     updateElapsedTimes(newAlias);
   };
   const failed = async () => {
-    toast("error", translate(Toast_Words["upload-image-error-message"], lang));
+    toastWord("error", Toast_Words["upload-image-error-message"]);
   };
   const { w, h, url, isDrag } = metaData;
   const prefix = isDrag ? "drag-" : "";
@@ -51,11 +51,11 @@ function consumeAddText({ lang, type, metaData }: IImportMeta<"add.text">): void
   const { textColor } = themeStore.styles;
 
   const success = async () => {
-    toast("success", translate(Toast_Words["add-text-success-message"], lang));
+    toastWord("success", Toast_Words["add-text-success-message"]);
     updateElapsedTimes(newAlias);
   };
   const failed = async () => {
-    toast("error", translate(Toast_Words["add-text-error-message"], lang));
+    toastWord("error", Toast_Words["add-text-error-message"]);
   };
   const { addText } = useAddNode({ success, failed });
   metaData.alias = newAlias;
@@ -72,13 +72,12 @@ function consumeAddSketchPath(): void {
 }
 function consumePythonFields({ lang, type, metaData }: IImportMeta<"python.fields">): void {
   const success = async () => {
-    toast("success", translate(Toast_Words["generate-image-success-message"], lang));
+    toastWord("success", Toast_Words["generate-image-success-message"]);
   };
   const failed = async (err: any) => {
-    toast(
-      "error",
-      `${translate(Toast_Words["post-python-http-fields-plugin-error-message"], lang)} (${err})`,
-    );
+    toastWord("error", Toast_Words["post-python-http-fields-plugin-error-message"], {
+      appendix: ` (${err})`,
+    });
   };
   const getNewAlias = () => `${type}.${metaData.identifier}.${getRandomHash()}`;
   interface IPack<R> {

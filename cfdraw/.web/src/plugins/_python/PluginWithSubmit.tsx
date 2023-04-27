@@ -54,7 +54,6 @@ function PythonPluginWithSubmit<R>({
   }, [id, lang, closeOnSubmit, toastOnSubmit, toastMessageOnSubmit, busy]);
 
   useSocketPython<R>({
-    lang,
     hash,
     node,
     nodes,

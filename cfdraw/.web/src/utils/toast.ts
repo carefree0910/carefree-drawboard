@@ -3,7 +3,7 @@ import { makeObservable, observable } from "mobx";
 import { createStandaloneToast, UseToastOptions } from "@chakra-ui/toast";
 
 import { isUndefined } from "@carefree0910/core";
-import { ABCStore } from "@carefree0910/business";
+import { ABCStore, langStore, translate } from "@carefree0910/business";
 
 import { settingsStore } from "@/stores/settings";
 
@@ -28,10 +28,15 @@ class ToastStore extends ABCStore<IToastStore> implements IToastStore {
 const { toast: toastFn } = createStandaloneToast();
 export const toastStore = new ToastStore();
 
+interface IToastOptions {
+  duration?: number;
+  timeout?: number;
+  useToastOptions?: UseToastOptions;
+}
 export function toast(
   status: UseToastOptions["status"],
   message: ReactNode,
-  opt?: { duration?: number; timeout?: number; useToastOptions?: UseToastOptions },
+  opt?: IToastOptions,
 ): void {
   const _toast = () => {
     toastFn({
@@ -63,4 +68,15 @@ export function toast(
     clearTimeout(toastStore.timer);
     _toast();
   }
+}
+export function toastWord(
+  status: UseToastOptions["status"],
+  word: string,
+  opt?: IToastOptions & { appendix?: string },
+): void {
+  let message = translate(word, langStore.tgt);
+  if (opt?.appendix) {
+    message += opt.appendix;
+  }
+  toast(status, message, opt);
 }

@@ -1,7 +1,5 @@
 import { observer } from "mobx-react-lite";
 
-import { langStore } from "@carefree0910/business";
-
 import type { IField } from "@/schema/plugins";
 import type { ITextField } from "@/schema/metaFields";
 import { getMetaField, setMetaField } from "@/stores/meta";
@@ -17,7 +15,7 @@ function TextField({ field, definition }: TextFieldProps) {
         setMetaField(field, event.target.value);
         definition.props?.onChange?.(event);
       }}
-      placeholder={definition.placeholder ?? getPlaceholder(field, langStore.tgt)}
+      placeholder={definition.placeholder ?? getPlaceholder(field)}
       {...definition.props}
     />
   );

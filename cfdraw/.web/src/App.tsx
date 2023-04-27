@@ -1,8 +1,6 @@
 import { Flex } from "@chakra-ui/react";
 import { observer } from "mobx-react-lite";
 
-import { langStore } from "@carefree0910/business";
-
 import { useWebSocket } from "./stores/socket";
 import { usePointerEvents } from "./stores/pointerEvents";
 import { useUserInitialization } from "./stores/user";
@@ -18,7 +16,7 @@ function App() {
   useUserInitialization();
   useSyncPython();
   useInitBoard();
-  useFileDropper(langStore.tgt);
+  useFileDropper();
   useGridLines();
   usePreventDefaults();
   usePointerEvents();

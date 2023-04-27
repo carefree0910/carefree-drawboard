@@ -1,9 +1,8 @@
-import { INode, ISingleNode, Lang, toJsonBlob } from "@carefree0910/core";
+import { INode, ISingleNode, toJsonBlob } from "@carefree0910/core";
 import { ExportBlobOptions, exportBlob, exportNodes } from "@carefree0910/svg";
-import { translate } from "@carefree0910/business";
 
 import type { DownloadFormat, ImageFormat } from "@/schema/misc";
-import { toast } from "@/utils/toast";
+import { toastWord } from "@/utils/toast";
 import { Toast_Words } from "@/lang/toast";
 import { Requests } from "@/requests/actions";
 import { uploadImage } from "./uploadImage";
@@ -14,21 +13,15 @@ function fetchImage(data: { url: string; jpeg: boolean }): Promise<Blob> {
   return Requests.postJson<Blob>("_python", "/fetch_image", data, "blob");
 }
 
-export type IExportBlob = ExportBlobOptions & { lang: Lang };
 export class Exporter {
-  static async exportBlob(
-    nodes: ISingleNode[],
-    { lang, ...others }: IExportBlob,
-  ): Promise<Blob | void> {
+  static async exportBlob(nodes: ISingleNode[], opt: ExportBlobOptions): Promise<Blob | void> {
     return exportBlob(nodes, {
-      failedCallback: async () =>
-        toast("error", translate(Toast_Words["export-blob-error-message"], lang)),
-      ...others,
+      failedCallback: async () => toastWord("error", Toast_Words["export-blob-error-message"]),
+      ...opt,
     });
   }
 
   static async exportOne(
-    lang: Lang,
     node: INode,
     format: ImageFormat,
     exportOriginalSize: boolean,
@@ -41,17 +34,16 @@ export class Exporter {
     const targetNodes = node.type === "group" ? node.allChildrenNodes : [node];
     if (isImage(format)) {
       const blob = await Exporter.exportBlob(targetNodes, {
-        lang,
         exportOptions: { exportBox: bounding },
       });
       if (!blob || format !== "JPG") return blob;
-      const res = await uploadImage(lang, blob, { failed: async () => void 0 });
+      const res = await uploadImage(blob, { failed: async () => void 0 });
       if (!res) return;
       return fetchImage({ url: res.url, jpeg: true });
     }
     const res = await exportNodes(targetNodes, { exportBox: bounding });
     if (!res) {
-      toast("error", translate(Toast_Words["export-blob-error-message"], lang));
+      toastWord("error", Toast_Words["export-blob-error-message"]);
       return;
     }
     return toJsonBlob(res.svg.svg());

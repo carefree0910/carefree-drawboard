@@ -7,7 +7,7 @@ import { Dictionary, Graph, INodePack, getRandomHash } from "@carefree0910/core"
 import { langStore, translate, useSafeExecute } from "@carefree0910/business";
 
 import type { IPlugin } from "@/schema/plugins";
-import { toast } from "@/utils/toast";
+import { toastWord } from "@/utils/toast";
 import { Toast_Words } from "@/lang/toast";
 import { Projects_Words } from "@/lang/projects";
 import { setCurrentProjectName, useCurrentProject } from "@/stores/projects";
@@ -84,30 +84,30 @@ const ProjectPlugin = ({ pluginInfo, ...props }: IPlugin) => {
     closePanel();
   }
   function onSaveProject() {
-    saveProject(lang, async () => {
-      toast("success", translate(Toast_Words["save-project-success-message"], lang));
+    saveProject(async () => {
+      toastWord("success", Toast_Words["save-project-success-message"]);
       updateUids();
       closePanel();
     });
   }
   async function onLoadProjectSuccess(res: ILoadedProject) {
     updateProjectStates(res.uid, res.name);
-    toast("success", translate(Toast_Words["load-project-success-message"], lang));
+    toastWord("success", Toast_Words["load-project-success-message"]);
     closePanel();
   }
   function onLoadProject() {
     if (!selectedUid) {
-      toast("warning", translate(Toast_Words["please-select-project-message"], lang));
+      toastWord("warning", Toast_Words["please-select-project-message"]);
       return;
     }
-    loadProject(lang, selectedUid, onLoadProjectSuccess);
+    loadProject(selectedUid, onLoadProjectSuccess);
   }
   function onDownloadProject(): void {
-    downloadCurrentFullProject(lang);
+    downloadCurrentFullProject();
     closePanel();
   }
   function onImportLocalProject(res: IImportLocal) {
-    toast("info", translate(Toast_Words["importing-local-project-message"], lang));
+    toastWord("info", Toast_Words["importing-local-project-message"]);
     if ((res as ILoadedProject).uid) {
       res = (res as ILoadedProject).graphInfo;
     }
@@ -116,11 +116,10 @@ const ProjectPlugin = ({ pluginInfo, ...props }: IPlugin) => {
       .toJson();
     useSafeExecute("addGraph", null, true, {
       success: async () => {
-        toast("success", translate(Toast_Words["import-local-project-success-message"], lang));
+        toastWord("success", Toast_Words["import-local-project-success-message"]);
         closePanel();
       },
-      failed: async () =>
-        toast("error", translate(Toast_Words["import-local-project-error-message"], lang)),
+      failed: async () => toastWord("error", Toast_Words["import-local-project-error-message"]),
     })({ json });
   }
 

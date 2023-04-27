@@ -1,7 +1,6 @@
 import { observer } from "mobx-react-lite";
 
 import { isUndefined } from "@carefree0910/core";
-import { langStore } from "@carefree0910/business";
 
 import type { IField } from "@/schema/plugins";
 import type { INumberField } from "@/schema/metaFields";
@@ -15,7 +14,6 @@ function NumberField({ field, definition }: NumberFieldProps) {
   if (isUndefined(definition.min) || isUndefined(definition.max)) {
     return <TextField field={field} definition={{ type: "text", props: definition.props }} />;
   }
-  const lang = langStore.tgt;
   if (isUndefined(getMetaField(field))) setMetaField(field, definition.default);
   let step = definition.step;
   if (!isUndefined(step) && definition.isInt) step = Math.round(step);
@@ -27,7 +25,7 @@ function NumberField({ field, definition }: NumberFieldProps) {
       value={getMetaField(field) as number}
       onSliderChange={(value) => setMetaField(field, value)}
       scale={definition.scale}
-      label={definition.label ?? getLabel(field, lang)}
+      label={definition.label ?? getLabel(field)}
       precision={definition.isInt ? 0 : definition.precision}
       {...definition.props}
     />

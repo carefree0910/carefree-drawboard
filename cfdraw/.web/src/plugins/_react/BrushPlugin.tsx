@@ -2,7 +2,7 @@ import { useEffect, useMemo } from "react";
 import { observer } from "mobx-react-lite";
 import { runInAction } from "mobx";
 
-import { IPathOptions, Lang, getRandomHash } from "@carefree0910/core";
+import { IPathOptions, getRandomHash } from "@carefree0910/core";
 import {
   BoardStore,
   langStore,
@@ -13,7 +13,7 @@ import {
 
 import type { ICommonMetaData, IMeta } from "@/schema/meta";
 import type { IPlugin } from "@/schema/plugins";
-import { toast } from "@/utils/toast";
+import { toastWord } from "@/utils/toast";
 import { Brush_Words } from "@/lang/brush";
 import { Toast_Words } from "@/lang/toast";
 import { themeStore } from "@/stores/theme";
@@ -28,17 +28,17 @@ import { drawboardPluginFactory } from "../utils/factory";
 import { floatingControlEvent } from "../components/Floating";
 import Render from "../components/Render";
 
-const useSwitchBrushMode = (lang: Lang) => async (): Promise<void> => {
+const useSwitchBrushMode = () => async (): Promise<void> => {
   const { defaultBrushStyles } = themeStore.styles;
   const previousInBrushMode = toolbarStore.inBrushMode;
   // handle drawboard
   if (!previousInBrushMode) {
-    toast("success", translate(Toast_Words["enter-brush-mode-message"], lang));
+    toastWord("success", Toast_Words["enter-brush-mode-message"]);
     toolbarStore.switchBrushMode(defaultBrushStyles);
   } else {
     toolbarStore.switchBrushMode({
       nodeCallback: (node) => {
-        toast("success", translate(Toast_Words["exit-brush-mode-message"], lang));
+        toastWord("success", Toast_Words["exit-brush-mode-message"]);
         node.active = true;
         node.params.meta = {
           type: "add.sketch.path",
@@ -61,19 +61,13 @@ const useSwitchBrushMode = (lang: Lang) => async (): Promise<void> => {
   });
 };
 
-function SingleBrushEditor({
-  lang,
-  pathIndex,
-  options,
-}: {
-  lang: Lang;
-  pathIndex: number;
-  options: IPathOptions;
-}) {
+function SingleBrushEditor({ pathIndex, options }: { pathIndex: number; options: IPathOptions }) {
   const brushManager = BoardStore.board.brushPluginNullable;
   if (!brushManager) {
     return null;
   }
+
+  const lang = langStore.tgt;
   const { fill, stroke, width, linecap } = options;
 
   const setOpt = (opt: Partial<IPathOptions>) => {
@@ -110,7 +104,7 @@ const BrushPlugin = ({ pluginInfo, ...props }: IPlugin) => {
   const lang = langStore.tgt;
   const options = toolbarStore.allBrushOptions;
   const inBrushMode = toolbarStore.inBrushMode;
-  const switchBrushMode = useSwitchBrushMode(lang);
+  const switchBrushMode = useSwitchBrushMode();
   const optionsList = !options ? [] : Array.isArray(options) ? options : [options];
 
   useEffect(() => {
@@ -124,7 +118,7 @@ const BrushPlugin = ({ pluginInfo, ...props }: IPlugin) => {
       <CFHeading>{translate(Brush_Words["brush-plugin-header"], lang)}</CFHeading>
       <CFDivider />
       {optionsList.map((opt, i) => (
-        <SingleBrushEditor key={`brush-${i}`} lang={lang} pathIndex={i} options={opt} />
+        <SingleBrushEditor key={`brush-${i}`} pathIndex={i} options={opt} />
       ))}
       <CFDivider my="16px" />
       <CFButton
