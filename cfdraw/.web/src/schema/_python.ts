@@ -4,7 +4,7 @@ import type { Dictionary, INode, Matrix2DFields } from "@carefree0910/core";
 
 import type { IElapsedTimes, IMeta } from "./meta";
 import type { IPlugin, IPluginInfo } from "./plugins";
-import type { IDefinitions } from "./metaFields";
+import type { IDefinitions } from "./fields";
 
 // general
 

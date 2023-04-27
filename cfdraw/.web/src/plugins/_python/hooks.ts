@@ -3,7 +3,7 @@ import { useCallback, useMemo } from "react";
 import { Dictionary, INode } from "@carefree0910/core";
 
 import type { IMeta } from "@/schema/meta";
-import type { IDefinitions } from "@/schema/metaFields";
+import type { IDefinitions } from "@/schema/fields";
 import { getMetaField } from "@/stores/meta";
 
 export function useDefinitionsRequestDataFn(definitions: IDefinitions): () => Dictionary<any> {

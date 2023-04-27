@@ -1,6 +1,6 @@
 import { isUndefined } from "@carefree0910/core";
 
-import type { IDefinitions } from "@/schema/metaFields";
+import type { IDefinitions } from "@/schema/fields";
 import TextField from "./TextField";
 import NumberField from "./NumberField";
 import SelectField from "./SelectField";

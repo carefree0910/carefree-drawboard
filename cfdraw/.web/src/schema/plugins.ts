@@ -4,7 +4,7 @@ import type { FlexProps } from "@chakra-ui/react";
 import type { INode, NodeType, PivotType } from "@carefree0910/core";
 import type { IResponse } from "@carefree0910/business";
 
-import type { IFieldDefinition, _IFieldDefinition } from "./metaFields";
+import type { IFieldDefinition, _IFieldDefinition } from "./fields";
 import type { IPythonFieldsPlugin, IPythonQAPlugin, IPythonTextAreaPlugin } from "./_python";
 
 // general

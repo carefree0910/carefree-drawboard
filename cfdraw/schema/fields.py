@@ -9,7 +9,7 @@ from pydantic import Field
 from pydantic import BaseModel
 
 
-""" This file should be identical to `src/schema/metaFields.ts` """
+""" This file should be identical to `src/schema/fields.ts` """
 
 
 class FieldType(str, Enum):

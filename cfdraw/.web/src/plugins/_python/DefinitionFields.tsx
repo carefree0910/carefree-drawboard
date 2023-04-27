@@ -1,7 +1,7 @@
 import { Flex } from "@chakra-ui/react";
 import { observer } from "mobx-react-lite";
 
-import type { IDefinitions } from "@/schema/metaFields";
+import type { IDefinitions } from "@/schema/fields";
 import { useDefinitions } from "../components/Fields";
 
 interface IDefinitionFields {

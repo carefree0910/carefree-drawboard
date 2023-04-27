@@ -1,7 +1,7 @@
 import { observer } from "mobx-react-lite";
 
 import type { IField } from "@/schema/plugins";
-import type { ISelectField } from "@/schema/metaFields";
+import type { ISelectField } from "@/schema/fields";
 import { getMetaField, setMetaField } from "@/stores/meta";
 import { CFSrollableSelect } from "@/components/CFSelect";
 

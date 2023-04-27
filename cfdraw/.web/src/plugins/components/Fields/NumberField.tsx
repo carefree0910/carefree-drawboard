@@ -3,7 +3,7 @@ import { observer } from "mobx-react-lite";
 import { isUndefined } from "@carefree0910/core";
 
 import type { IField } from "@/schema/plugins";
-import type { INumberField } from "@/schema/metaFields";
+import type { INumberField } from "@/schema/fields";
 import { getMetaField, setMetaField } from "@/stores/meta";
 import CFSlider from "@/components/CFSlider";
 import TextField from "./TextField";
