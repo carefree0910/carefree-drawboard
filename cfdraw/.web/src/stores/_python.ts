@@ -57,10 +57,8 @@ export const updatePythonStore = (data: IPythonStore): boolean => {
     // `boardSettings` should only be updated once.
     if (!pythonStore.boardSettings) {
       pythonStore.boardSettings = data.boardSettings;
-    }
-    //// Update theme styles
-    if (data.boardSettings?.styles) {
-      Object.entries(data.boardSettings.styles).forEach(([key, value]) => {
+      //// Update theme styles
+      Object.entries(data.boardSettings?.styles ?? {}).forEach(([key, value]) => {
         if (value) {
           allThemes[key as ThemeType] = {
             ...allThemes[key as ThemeType],
@@ -68,12 +66,10 @@ export const updatePythonStore = (data: IPythonStore): boolean => {
           };
         }
       });
-    }
-    //// Update board options
-    if (data.boardSettings?.boardOptions) {
+      //// Update board options
       initStore.boardOptions = {
         ...initStore.boardOptions,
-        ...data.boardSettings.boardOptions,
+        ...data.boardSettings?.boardOptions,
       };
     }
   });
