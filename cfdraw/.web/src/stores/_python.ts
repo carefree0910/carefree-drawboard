@@ -1,6 +1,6 @@
 import { makeObservable, observable, runInAction } from "mobx";
 
-import { getHash } from "@carefree0910/core";
+import { IBoardOptions, getHash } from "@carefree0910/core";
 import { ABCStore } from "@carefree0910/business";
 
 import type { AvailablePythonPlugins, IMakePlugin } from "@/schema/plugins";
@@ -14,6 +14,7 @@ interface IGlobalSettings {
 }
 interface IBoardSettings {
   styles?: Record<ThemeType, Partial<ThemeStyles>>;
+  boardOptions?: Partial<IBoardOptions>;
 }
 export interface IPythonStore {
   pluginSettings: IMakePlugin<AvailablePythonPlugins>[];
@@ -67,6 +68,13 @@ export const updatePythonStore = (data: IPythonStore): boolean => {
           };
         }
       });
+    }
+    //// Update board options
+    if (data.boardSettings?.boardOptions) {
+      initStore.boardOptions = {
+        ...initStore.boardOptions,
+        ...data.boardSettings.boardOptions,
+      };
     }
   });
   return true;

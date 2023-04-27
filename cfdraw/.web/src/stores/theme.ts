@@ -3,8 +3,8 @@ import { computed, makeObservable, observable } from "mobx";
 import type { IPathOptions } from "@carefree0910/core";
 import { ABCStore } from "@carefree0910/business";
 
-type ThemeType = "light" | "dark";
-type ThemeStyles = {
+export type ThemeType = "light" | "dark";
+export type ThemeStyles = {
   // bg color of the infinite drawboard
   boardBg: string;
   // bg color of various panels (button, floating, expand, etc.)
