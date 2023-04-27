@@ -16,19 +16,18 @@ interface IGlobalSettings {
 interface IBoardSettings {
   styles?: Record<ThemeType, Partial<ThemeStyles>>;
   boardOptions?: Partial<IBoardOptions>;
+  miscSettings?: ISettingsStore;
 }
 export interface IPythonStore {
   pluginSettings: IMakePlugin<AvailablePythonPlugins>[];
   globalSettings?: IGlobalSettings;
   boardSettings?: IBoardSettings;
-  miscSettings?: ISettingsStore;
 }
 class PythonStore extends ABCStore<IPythonStore> implements IPythonStore {
   hash: string = "";
   pluginSettings: IMakePlugin<AvailablePythonPlugins>[] = [];
   globalSettings?: IGlobalSettings;
   boardSettings?: IBoardSettings;
-  miscSettings?: ISettingsStore;
 
   constructor() {
     super();
@@ -37,7 +36,6 @@ class PythonStore extends ABCStore<IPythonStore> implements IPythonStore {
       pluginSettings: observable,
       globalSettings: observable,
       boardSettings: observable,
-      miscSettings: observable,
     });
   }
 
@@ -75,11 +73,10 @@ export const updatePythonStore = (data: IPythonStore): boolean => {
         ...initStore.boardOptions,
         ...data.boardSettings?.boardOptions,
       };
-    }
-    // `miscSettings` should only be updated once.
-    if (!pythonStore.miscSettings) {
-      pythonStore.miscSettings = data.miscSettings;
-      settingsStore.updateProperty(data.miscSettings ?? {});
+      //// Update misc settings
+      if (data.boardSettings?.miscSettings) {
+        settingsStore.updateProperty(data.boardSettings.miscSettings);
+      }
     }
   });
   return true;
