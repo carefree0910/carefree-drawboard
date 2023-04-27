@@ -1,11 +1,10 @@
 import { ReactNode } from "react";
 import { makeObservable, observable } from "mobx";
-import { UseToastOptions } from "@chakra-ui/toast";
+import { createStandaloneToast, UseToastOptions } from "@chakra-ui/toast";
 
 import { isUndefined } from "@carefree0910/core";
 import { ABCStore } from "@carefree0910/business";
 
-import type { IToast } from "@/schema/misc";
 import { settingsStore } from "@/stores/settings";
 
 export interface IToastStore {
@@ -26,10 +25,10 @@ class ToastStore extends ABCStore<IToastStore> implements IToastStore {
   }
 }
 
+const { toast: toastFn } = createStandaloneToast();
 export const toastStore = new ToastStore();
 
 export function toast(
-  toastFn: IToast,
   status: UseToastOptions["status"],
   message: ReactNode,
   opt?: { duration?: number; timeout?: number; useToastOptions?: UseToastOptions },

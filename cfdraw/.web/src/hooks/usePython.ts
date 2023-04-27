@@ -34,7 +34,7 @@ async function getNodeData(node: INode | null, opt: IGetNodeData): Promise<INode
     src = await Exporter.exportBlob([node], opt)
       .then((blob) => {
         if (!blob) throw Error("export blob for `PathNode` failed");
-        return uploadImage(opt.t, opt.lang, blob, { failed: async () => void 0 });
+        return uploadImage(opt.lang, blob, { failed: async () => void 0 });
       })
       .then((res) => {
         if (!res) throw Error("upload image for `PathNode` failed");
@@ -71,7 +71,6 @@ async function getPythonRequest({
 }
 
 export function useSocketPython<R>({
-  t,
   lang,
   hash,
   node,
@@ -85,7 +84,6 @@ export function useSocketPython<R>({
   onSocketError,
 }: IUseSocketPython<R>) {
   const deps = [
-    t,
     lang,
     hash,
     node?.alias,
@@ -104,7 +102,7 @@ export function useSocketPython<R>({
         nodes,
         identifier,
         getExtraRequestData,
-        opt: { t, lang },
+        opt: { lang },
       }).then((req) => ({ hash: hash!, ...req })),
     [deps],
   );

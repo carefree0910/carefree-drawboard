@@ -1,6 +1,6 @@
 import { useMemo, useState } from "react";
 import { observer } from "mobx-react-lite";
-import { Flex, Spacer, useToast } from "@chakra-ui/react";
+import { Flex, Spacer } from "@chakra-ui/react";
 
 import { getRandomHash } from "@carefree0910/core";
 import { langStore, translate, useSelecting } from "@carefree0910/business";
@@ -21,7 +21,6 @@ import { useClosePanel } from "../components/hooks";
 
 const DownloadPlugin = ({ pluginInfo, ...props }: IPlugin) => {
   const id = useMemo(() => `download_${getRandomHash()}`, []);
-  const t = useToast();
   const lang = langStore.tgt;
   const { type, nodes } = useSelecting("raw");
   const { w, h, imgWH } = useSelecting("basic")({ fixed: 0 }) ?? {};
@@ -47,7 +46,7 @@ const DownloadPlugin = ({ pluginInfo, ...props }: IPlugin) => {
     );
   const closePanel = useClosePanel(id);
   const onDownload = () => {
-    downloadNodes(t, lang, nodes, format, keepOriginal);
+    downloadNodes(lang, nodes, format, keepOriginal);
     closePanel();
   };
 

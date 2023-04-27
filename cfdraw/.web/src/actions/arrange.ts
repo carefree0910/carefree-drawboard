@@ -17,7 +17,6 @@ import {
 } from "@carefree0910/core";
 import { BoardStore, translate } from "@carefree0910/business";
 
-import type { IToast } from "@/schema/misc";
 import { checkMeta, getOriginMeta, IMeta } from "@/schema/meta";
 import { toast } from "@/utils/toast";
 import { Toast_Words } from "@/lang/toast";
@@ -114,7 +113,6 @@ function arrangeWith(packs: ArrangePack[], commonW: number, padding: number): vo
   });
 }
 async function animateArrangement(
-  t: IToast,
   lang: Lang,
   original: INode[],
   targets: INode[],
@@ -123,7 +121,7 @@ async function animateArrangement(
   schedule: ScheduleType,
 ): Promise<void> {
   if (original.every((node, i) => node.bbox.closeTo(targets[i].bbox, { atol: 0.1, rtol: 0.1 }))) {
-    toast(t, "info", translate(Toast_Words["auto-arrange-no-need-message"], lang));
+    toast("info", translate(Toast_Words["auto-arrange-no-need-message"], lang));
     return;
   }
 
@@ -266,22 +264,19 @@ export function getArrangements(
   return { original, targets };
 }
 export async function autoArrange(
-  t: IToast,
   lang: Lang,
   nodes: INode[],
   opt?: Partial<AutoArrangeOptions>,
 ): Promise<void> {
   const { original, targets } = getArrangements(nodes, opt);
   const { numFrame, trace, schedule } = getDefaultArrangeOptions(opt);
-  animateArrangement(t, lang, original, targets, numFrame, trace, schedule);
+  animateArrangement(lang, original, targets, numFrame, trace, schedule);
 }
 export function onArrange(
-  t: IToast,
   lang: Lang,
   { type, nodes }: { type: "none" | "multiple"; nodes: INodeType[] },
 ): void {
   autoArrange(
-    t,
     lang,
     type === "none" ? BoardStore.graph.rootNodes.filter((node) => !node.noSave) : nodes,
     { fitContainer: type === "none" },

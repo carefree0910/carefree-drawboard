@@ -1,7 +1,7 @@
 import { useCallback } from "react";
 import { observer } from "mobx-react-lite";
 import { CloseIcon } from "@chakra-ui/icons";
-import { Flex, Spacer, useToast } from "@chakra-ui/react";
+import { Flex, Spacer } from "@chakra-ui/react";
 
 import { isUndefined } from "@carefree0910/core";
 import { langStore, translate } from "@carefree0910/business";
@@ -24,7 +24,6 @@ import DefinitionFields from "./DefinitionFields";
 
 const PythonFieldsPlugin = ({ pluginInfo, ...props }: IPythonFieldsPlugin) => {
   const { id, pureIdentifier } = getPluginIds(pluginInfo.identifier);
-  const t = useToast();
   const lang = langStore.tgt;
   const { definitions, retryInterval, noErrorToast } = pluginInfo;
   const getExtraRequestData = useDefinitionsRequestDataFn(definitions);
@@ -52,13 +51,11 @@ const PythonFieldsPlugin = ({ pluginInfo, ...props }: IPythonFieldsPlugin) => {
           socketFinishedEvent.emit({ id });
           if (!final) {
             toast(
-              t,
               "success",
               `${translate(Toast_Words["submit-task-finished-message"], lang)} (${pureIdentifier})`,
             );
           } else {
             importMeta({
-              t,
               lang,
               type: "python.fields",
               metaData: {
@@ -77,7 +74,6 @@ const PythonFieldsPlugin = ({ pluginInfo, ...props }: IPythonFieldsPlugin) => {
         case "exception": {
           if (!noErrorToast) {
             toast(
-              t,
               "error",
               `${translate(Toast_Words["submit-task-error-message"], lang)} - ${message.message}`,
             );
@@ -98,9 +94,9 @@ const PythonFieldsPlugin = ({ pluginInfo, ...props }: IPythonFieldsPlugin) => {
   );
   const onSocketError = useCallback(
     async (err: any) => {
-      toast(t, "error", `${translate(Toast_Words["submit-task-error-message"], lang)} - ${err}`);
+      toast("error", `${translate(Toast_Words["submit-task-error-message"], lang)} - ${err}`);
     },
-    [t, lang],
+    [lang],
   );
 
   const header = pluginInfo.header ?? titleCaseWord(pureIdentifier);

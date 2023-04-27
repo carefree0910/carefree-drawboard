@@ -1,6 +1,5 @@
 import { useEffect, useMemo } from "react";
 import { observer } from "mobx-react-lite";
-import { useToast } from "@chakra-ui/react";
 import { runInAction } from "mobx";
 
 import { IPathOptions, Lang, getRandomHash } from "@carefree0910/core";
@@ -12,7 +11,6 @@ import {
   updateBrushOptions,
 } from "@carefree0910/business";
 
-import type { IToast } from "@/schema/misc";
 import type { ICommonMetaData, IMeta } from "@/schema/meta";
 import type { IPlugin } from "@/schema/plugins";
 import { toast } from "@/utils/toast";
@@ -30,17 +28,17 @@ import { drawboardPluginFactory } from "../utils/factory";
 import { floatingControlEvent } from "../components/Floating";
 import Render from "../components/Render";
 
-const useSwitchBrushMode = (t: IToast, lang: Lang) => async (): Promise<void> => {
+const useSwitchBrushMode = (lang: Lang) => async (): Promise<void> => {
   const { defaultBrushStyles } = themeStore.styles;
   const previousInBrushMode = toolbarStore.inBrushMode;
   // handle drawboard
   if (!previousInBrushMode) {
-    toast(t, "success", translate(Toast_Words["enter-brush-mode-message"], lang));
+    toast("success", translate(Toast_Words["enter-brush-mode-message"], lang));
     toolbarStore.switchBrushMode(defaultBrushStyles);
   } else {
     toolbarStore.switchBrushMode({
       nodeCallback: (node) => {
-        toast(t, "success", translate(Toast_Words["exit-brush-mode-message"], lang));
+        toast("success", translate(Toast_Words["exit-brush-mode-message"], lang));
         node.active = true;
         node.params.meta = {
           type: "add.sketch.path",
@@ -109,11 +107,10 @@ function SingleBrushEditor({
 
 const BrushPlugin = ({ pluginInfo, ...props }: IPlugin) => {
   const id = useMemo(() => `brush_${getRandomHash()}`, []);
-  const t = useToast();
   const lang = langStore.tgt;
   const options = toolbarStore.allBrushOptions;
   const inBrushMode = toolbarStore.inBrushMode;
-  const switchBrushMode = useSwitchBrushMode(t, lang);
+  const switchBrushMode = useSwitchBrushMode(lang);
   const optionsList = !options ? [] : Array.isArray(options) ? options : [options];
 
   useEffect(() => {

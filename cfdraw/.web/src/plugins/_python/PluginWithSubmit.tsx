@@ -1,6 +1,5 @@
 import { useCallback, useEffect, useState } from "react";
 import { observer } from "mobx-react-lite";
-import { useToast } from "@chakra-ui/react";
 
 import { langStore, translate } from "@carefree0910/business";
 
@@ -36,7 +35,6 @@ function PythonPluginWithSubmit<R>({
   children,
   ...props
 }: IPythonSocketPluginWithSubmit<R>) {
-  const t = useToast();
   const lang = langStore.tgt;
   const [hash, setHash] = useState<string | undefined>(undefined);
   const [busy, setBusy] = useState(false);
@@ -51,12 +49,11 @@ function PythonPluginWithSubmit<R>({
     }
     if (toastOnSubmit) {
       toastMessageOnSubmit ??= translate(Toast_Words["submit-task-success-message"], lang);
-      toast(t, "info", toastMessageOnSubmit);
+      toast("info", toastMessageOnSubmit);
     }
-  }, [id, t, lang, closeOnSubmit, toastOnSubmit, toastMessageOnSubmit, busy]);
+  }, [id, lang, closeOnSubmit, toastOnSubmit, toastMessageOnSubmit, busy]);
 
   useSocketPython<R>({
-    t,
     lang,
     hash,
     node,

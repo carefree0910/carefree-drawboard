@@ -3,33 +3,32 @@ import JSZip from "jszip";
 import { Graph, INode, Lang, download, toJsonBlob } from "@carefree0910/core";
 import { translate } from "@carefree0910/business";
 
-import type { DownloadFormat, IToast } from "@/schema/misc";
+import type { DownloadFormat } from "@/schema/misc";
 import { toast } from "@/utils/toast";
 import { Toast_Words } from "@/lang/toast";
 import { useCurrentFullProject } from "./manageProjects";
 import { Exporter } from "./export";
 
-export function downloadCurrentFullProject(t: IToast, lang: Lang): void {
+export function downloadCurrentFullProject(lang: Lang): void {
   const fullProject = useCurrentFullProject();
-  toast(t, "info", translate(Toast_Words["downloading-project-message"], lang));
+  toast("info", translate(Toast_Words["downloading-project-message"], lang));
   const blob = toJsonBlob(fullProject);
   download(blob, `${fullProject.name}.cfdraw`);
 }
 
 export async function downloadNodes(
-  t: IToast,
   lang: Lang,
   nodes: INode[],
   format: DownloadFormat,
   exportOriginalSize: boolean,
 ): Promise<void> {
-  toast(t, "info", translate(Toast_Words["downloading-nodes-message"], lang));
+  toast("info", translate(Toast_Words["downloading-nodes-message"], lang));
   if (format === "NOLI") {
     const graph = Graph.fromNodes(nodes);
     await download(toJsonBlob(graph.toJsonInfo()), "exported.noli");
   } else {
     const blobs = await Promise.all(
-      nodes.map((node) => Exporter.exportOne(t, lang, node, format, exportOriginalSize)),
+      nodes.map((node) => Exporter.exportOne(lang, node, format, exportOriginalSize)),
     );
     const valid = blobs
       .map((blob, i) => ({ blob, node: nodes[i] }))

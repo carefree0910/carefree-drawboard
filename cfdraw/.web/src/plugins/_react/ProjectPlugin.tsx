@@ -1,7 +1,7 @@
 import Upload from "rc-upload";
 import { observer } from "mobx-react-lite";
 import { useMemo, useState, useEffect, useCallback } from "react";
-import { Flex, useToast } from "@chakra-ui/react";
+import { Flex } from "@chakra-ui/react";
 
 import { Dictionary, Graph, INodePack, getRandomHash } from "@carefree0910/core";
 import { langStore, translate, useSafeExecute } from "@carefree0910/business";
@@ -32,7 +32,6 @@ import Render from "../components/Render";
 type IImportLocal = ILoadedProject | INodePack[];
 const ProjectPlugin = ({ pluginInfo, ...props }: IPlugin) => {
   const id = useMemo(() => `project_${getRandomHash()}`, []);
-  const t = useToast();
   const lang = langStore.tgt;
   const { uid, name } = useCurrentProject();
   const [selectedUid, setSelectedUid] = useState("");
@@ -85,30 +84,30 @@ const ProjectPlugin = ({ pluginInfo, ...props }: IPlugin) => {
     closePanel();
   }
   function onSaveProject() {
-    saveProject(t, lang, async () => {
-      toast(t, "success", translate(Toast_Words["save-project-success-message"], lang));
+    saveProject(lang, async () => {
+      toast("success", translate(Toast_Words["save-project-success-message"], lang));
       updateUids();
       closePanel();
     });
   }
   async function onLoadProjectSuccess(res: ILoadedProject) {
     updateProjectStates(res.uid, res.name);
-    toast(t, "success", translate(Toast_Words["load-project-success-message"], lang));
+    toast("success", translate(Toast_Words["load-project-success-message"], lang));
     closePanel();
   }
   function onLoadProject() {
     if (!selectedUid) {
-      toast(t, "warning", translate(Toast_Words["please-select-project-message"], lang));
+      toast("warning", translate(Toast_Words["please-select-project-message"], lang));
       return;
     }
-    loadProject(t, lang, selectedUid, onLoadProjectSuccess);
+    loadProject(lang, selectedUid, onLoadProjectSuccess);
   }
   function onDownloadProject(): void {
-    downloadCurrentFullProject(t, lang);
+    downloadCurrentFullProject(lang);
     closePanel();
   }
   function onImportLocalProject(res: IImportLocal) {
-    toast(t, "info", translate(Toast_Words["importing-local-project-message"], lang));
+    toast("info", translate(Toast_Words["importing-local-project-message"], lang));
     if ((res as ILoadedProject).uid) {
       res = (res as ILoadedProject).graphInfo;
     }
@@ -117,11 +116,11 @@ const ProjectPlugin = ({ pluginInfo, ...props }: IPlugin) => {
       .toJson();
     useSafeExecute("addGraph", null, true, {
       success: async () => {
-        toast(t, "success", translate(Toast_Words["import-local-project-success-message"], lang));
+        toast("success", translate(Toast_Words["import-local-project-success-message"], lang));
         closePanel();
       },
       failed: async () =>
-        toast(t, "error", translate(Toast_Words["import-local-project-error-message"], lang)),
+        toast("error", translate(Toast_Words["import-local-project-error-message"], lang)),
     })({ json });
   }
 

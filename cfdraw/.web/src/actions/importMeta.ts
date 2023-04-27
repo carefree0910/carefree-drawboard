@@ -26,13 +26,13 @@ const consumers: Record<MetaType, (input: IImportMeta<any>) => void> = {
   "add.sketch.path": consumeAddSketchPath,
   "python.fields": consumePythonFields,
 };
-function consumeUpload({ t, lang, type, metaData }: IImportMeta<"upload">): void {
+function consumeUpload({ lang, type, metaData }: IImportMeta<"upload">): void {
   const success = async () => {
-    toast(t, "success", translate(Toast_Words["upload-image-success-message"], lang));
+    toast("success", translate(Toast_Words["upload-image-success-message"], lang));
     updateElapsedTimes(newAlias);
   };
   const failed = async () => {
-    toast(t, "error", translate(Toast_Words["upload-image-error-message"], lang));
+    toast("error", translate(Toast_Words["upload-image-error-message"], lang));
   };
   const { w, h, url, isDrag } = metaData;
   const prefix = isDrag ? "drag-" : "";
@@ -46,16 +46,16 @@ function consumeUpload({ t, lang, type, metaData }: IImportMeta<"upload">): void
     noSelect: false,
   });
 }
-function consumeAddText({ t, lang, type, metaData }: IImportMeta<"add.text">): void {
+function consumeAddText({ lang, type, metaData }: IImportMeta<"add.text">): void {
   const newAlias = `add.text.${getRandomHash()}`;
   const { textColor } = themeStore.styles;
 
   const success = async () => {
-    toast(t, "success", translate(Toast_Words["add-text-success-message"], lang));
+    toast("success", translate(Toast_Words["add-text-success-message"], lang));
     updateElapsedTimes(newAlias);
   };
   const failed = async () => {
-    toast(t, "error", translate(Toast_Words["add-text-error-message"], lang));
+    toast("error", translate(Toast_Words["add-text-error-message"], lang));
   };
   const { addText } = useAddNode({ success, failed });
   metaData.alias = newAlias;
@@ -70,13 +70,12 @@ function consumeAddText({ t, lang, type, metaData }: IImportMeta<"add.text">): v
 function consumeAddSketchPath(): void {
   throw Error("Add sketch path by `importMeta` is not supported yet.");
 }
-function consumePythonFields({ t, lang, type, metaData }: IImportMeta<"python.fields">): void {
+function consumePythonFields({ lang, type, metaData }: IImportMeta<"python.fields">): void {
   const success = async () => {
-    toast(t, "success", translate(Toast_Words["generate-image-success-message"], lang));
+    toast("success", translate(Toast_Words["generate-image-success-message"], lang));
   };
   const failed = async (err: any) => {
     toast(
-      t,
       "error",
       `${translate(Toast_Words["post-python-http-fields-plugin-error-message"], lang)} (${err})`,
     );
@@ -152,10 +151,9 @@ function consumePythonFields({ t, lang, type, metaData }: IImportMeta<"python.fi
 // import api
 
 export function importMeta<T extends MetaType>({
-  t,
   lang,
   type,
   metaData,
 }: Omit<IImportMeta<T>, "metaData"> & { metaData?: IMetaData[T] }): void {
-  consumers[type]({ t, lang, type, metaData });
+  consumers[type]({ lang, type, metaData });
 }

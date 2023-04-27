@@ -7,7 +7,6 @@ import {
   useSafeExecute,
 } from "@carefree0910/business";
 
-import type { IToast } from "@/schema/misc";
 import { toast } from "@/utils/toast";
 import { Toast_Words } from "@/lang/toast";
 import { Requests } from "@/requests/actions";
@@ -31,7 +30,6 @@ export function useCurrentFullProject(): IFullProject {
 }
 
 export async function saveProject(
-  t: IToast,
   lang: Lang,
   onSuccess: () => Promise<void>,
   noToast?: boolean,
@@ -39,7 +37,7 @@ export async function saveProject(
   updateCurrentProjectUpdateTime();
   const fullProject = useCurrentFullProject();
   if (!noToast) {
-    toast(t, "info", translate(Toast_Words["uploading-project-message"], lang));
+    toast("info", translate(Toast_Words["uploading-project-message"], lang));
   }
 
   return safeCall(
@@ -50,7 +48,6 @@ export async function saveProject(
       }>("_python", "/save_project", fullProject);
       if (!res.success) {
         toast(
-          t,
           "warning",
           `${translate(Toast_Words["save-project-error-message"], lang)} - ${res.message}`,
         );
@@ -83,12 +80,11 @@ function replaceProjectWith(
   })({ json: JSON.stringify(res.graphInfo), apiInfos: {}, noFit: true });
 }
 export async function loadProject(
-  t: IToast,
   lang: Lang,
   uid: string,
   onSuccess: (res: ILoadedProject) => Promise<void>,
 ): Promise<void> {
-  toast(t, "info", translate(Toast_Words["loading-project-message"], lang));
+  toast("info", translate(Toast_Words["loading-project-message"], lang));
 
   return safeCall(
     async () =>
@@ -102,14 +98,13 @@ export async function loadProject(
   );
 }
 export function loadLocalProject(
-  t: IToast,
   lang: Lang,
   res: ILoadedProject,
   onSuccess: (res: ILoadedProject) => Promise<void>,
   noToast?: boolean,
 ): void {
   if (!noToast) {
-    toast(t, "info", translate(Toast_Words["loading-project-message"], lang));
+    toast("info", translate(Toast_Words["loading-project-message"], lang));
   }
   replaceProjectWith(res, onSuccess);
 }

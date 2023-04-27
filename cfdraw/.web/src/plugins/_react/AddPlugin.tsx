@@ -1,6 +1,6 @@
 import { useMemo } from "react";
 import { observer } from "mobx-react-lite";
-import { Flex, useToast } from "@chakra-ui/react";
+import { Flex } from "@chakra-ui/react";
 
 import { getRandomHash, identityMatrix2DFields } from "@carefree0910/core";
 import { langStore, translate } from "@carefree0910/business";
@@ -23,23 +23,20 @@ import { useClosePanel } from "../components/hooks";
 
 const AddPlugin = ({ pluginInfo, ...props }: IPlugin) => {
   const id = useMemo(() => `add_${getRandomHash()}`, []);
-  const t = useToast();
   const lang = langStore.tgt;
 
   const closePanel = useClosePanel(id);
   const onNewProject = () => {
-    toast(t, "info", translate(Toast_Words["adding-project-message"], lang));
+    toast("info", translate(Toast_Words["adding-project-message"], lang));
     saveProject(
-      t,
       lang,
       async () =>
         loadLocalProject(
-          t,
           lang,
           { graphInfo: [], globalTransform: identityMatrix2DFields, ...getNewProject() },
           async () => {
             floatingEvent.emit({ type: "newProject", data: {} });
-            toast(t, "success", translate(Toast_Words["add-project-success-message"], lang));
+            toast("success", translate(Toast_Words["add-project-success-message"], lang));
             closePanel();
           },
           true,
@@ -65,7 +62,7 @@ const AddPlugin = ({ pluginInfo, ...props }: IPlugin) => {
           w="100%"
           mt="12px"
           onClick={() => {
-            importMeta({ t, lang, type: "add.text", metaData: {} });
+            importMeta({ lang, type: "add.text", metaData: {} });
             closePanel();
           }}>
           {translate(Add_Words["add-text-button"], lang)}

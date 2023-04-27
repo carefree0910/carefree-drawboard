@@ -1,7 +1,5 @@
 import type { Dictionary, Lang } from "@carefree0910/core";
 
-import type { IToast } from "./misc";
-
 export interface IElapsedTimes {
   createTime?: number;
   startTime?: number;
@@ -49,7 +47,6 @@ export interface IMetaData {
 }
 
 export interface IImportMeta<T extends MetaType> {
-  t: IToast;
   lang: Lang;
   type: T;
   metaData: IMetaData[T];

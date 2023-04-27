@@ -3,7 +3,6 @@ import type { TextareaProps } from "@chakra-ui/react";
 import type { Dictionary, INode, Lang, Matrix2DFields } from "@carefree0910/core";
 
 import type { IElapsedTimes, IMeta } from "./meta";
-import type { IToast } from "./misc";
 import type { IPlugin, IPluginInfo } from "./plugins";
 import type { IDefinitions } from "./metaFields";
 
@@ -135,7 +134,6 @@ export interface IPythonSocketMessage<R> {
 export interface IUseSocketPython<R>
   extends IUsePythonInfo,
     Omit<IPythonSocketCallbacks<R>, "getMessage"> {
-  t: IToast;
   lang: Lang;
   hash?: string;
 }

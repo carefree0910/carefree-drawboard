@@ -1,5 +1,4 @@
 import { useEffect } from "react";
-import { useToast } from "@chakra-ui/toast";
 
 import { FileDropper, FileDropperResponse, Lang } from "@carefree0910/core";
 import { translate, useIsReady } from "@carefree0910/business";
@@ -16,13 +15,13 @@ export function useFileDropper(lang: Lang): void {
     setDropping(true);
     setTimeout(() => {
       if (hooksStore.dropping) {
-        toast(t, "info", translate(Toast_Words["dropping-message"], lang));
+        toast("info", translate(Toast_Words["dropping-message"], lang));
       }
     }, dropPatience);
   }
 
   async function failed(): Promise<void> {
-    toast(t, "error", translate(Toast_Words["upload-image-error-message"], lang));
+    toast("error", translate(Toast_Words["upload-image-error-message"], lang));
   }
 
   type UploadResponse = { success: boolean; reason: "none" | "unknown" | "type" | "upload" };
@@ -34,14 +33,11 @@ export function useFileDropper(lang: Lang): void {
     }
 
     const file = new File([source], `image.${type}`, { type });
-    const uploadRes = await uploadImage(t, lang, file, {
-      failed: async () => void 0,
-    });
+    const uploadRes = await uploadImage(lang, file, { failed: async () => void 0 });
     if (!uploadRes) {
       return { success: false, reason: "upload" };
     }
     importMeta({
-      t,
       lang,
       type: "upload",
       metaData: { ...uploadRes, isDrag: true },
@@ -51,10 +47,10 @@ export function useFileDropper(lang: Lang): void {
   async function onSuccess(resList: FileDropperResponse[]): Promise<void> {
     setDropping(false);
     if (resList.length === 0) return;
-    toast(t, "info", translate(Toast_Words["uploading-image-message"], lang));
+    toast("info", translate(Toast_Words["uploading-image-message"], lang));
     const uploadResList = await Promise.all(resList.map((res) => onSuccessOne(res)));
     if (uploadResList.some((res) => res.reason === "type")) {
-      toast(t, "error", translate(Toast_Words["strange-image-error-message"], lang));
+      toast("error", translate(Toast_Words["strange-image-error-message"], lang));
     }
     if (uploadResList.some((res) => res.reason === "upload")) {
       failed();
@@ -68,12 +64,11 @@ export function useFileDropper(lang: Lang): void {
     if (resList.length === 0) return;
     resList.forEach((res) => {
       if (res.reason) {
-        toast(t, "error", translate(res.reason, lang));
+        toast("error", translate(res.reason, lang));
       }
     });
   }
 
-  const t = useToast();
   const dropPatience = 500;
 
   useEffect(() => {

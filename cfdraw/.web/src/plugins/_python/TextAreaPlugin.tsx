@@ -1,6 +1,6 @@
 import { useCallback, useMemo, useState } from "react";
 import { observer } from "mobx-react-lite";
-import { Textarea, useToast } from "@chakra-ui/react";
+import { Textarea } from "@chakra-ui/react";
 
 import { getRandomHash } from "@carefree0910/core";
 import { langStore } from "@carefree0910/business";
@@ -15,7 +15,6 @@ const PythonTextAreaPlugin = ({
   pluginInfo: { node, nodes, identifier, retryInterval, updateInterval, noLoading, textAlign },
   ...props
 }: IPythonTextAreaPlugin) => {
-  const t = useToast();
   const lang = langStore.tgt;
   const id = getPluginIds(`textArea_${identifier}`);
   const hash = useMemo(() => getRandomHash().toString(), [id]);
@@ -33,7 +32,6 @@ const PythonTextAreaPlugin = ({
   );
 
   useSocketPython({
-    t,
     lang,
     hash,
     node,
