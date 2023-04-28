@@ -100,9 +100,7 @@ const updateSettings = (data: ISettingsStore): boolean => {
       };
       //// Update global settings
       const globalSettings = data.boardSettings.globalSettings ?? {};
-      if (globalSettings.defaultLang) {
-        langStore.tgt = globalSettings.defaultLang;
-      }
+      langStore.tgt = globalSettings.defaultLang ?? "en";
       globalSettings.defaultInfoTimeout ??= 300;
       data.boardSettings.globalSettings = globalSettings;
       //// setup property. Once `boardSettings` is set, drawboard will start rendering.
