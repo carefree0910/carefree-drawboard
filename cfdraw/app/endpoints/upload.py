@@ -2,9 +2,11 @@ from io import BytesIO
 from PIL import Image
 from typing import Optional
 from fastapi import File
+from fastapi import Form
 from fastapi import Response
 from fastapi import UploadFile
 from pydantic import BaseModel
+from PIL.PngImagePlugin import PngInfo
 
 from cfdraw import constants
 from cfdraw.utils import server
@@ -34,11 +36,16 @@ class FetchImageModel(BaseModel):
 
 def add_upload_image(app: IApp) -> None:
     @app.api.post("/upload_image", responses=get_responses(UploadImageResponse))
-    def upload_image(image: UploadFile = File(...)) -> UploadImageResponse:
+    def upload_image(
+        image: UploadFile = File(),
+        userId: str = Form(),
+    ) -> UploadImageResponse:
         try:
             contents = image.file.read()
             loaded_image = Image.open(BytesIO(contents))
-            res = server.upload_image(loaded_image)
+            meta = PngInfo()
+            meta.add_text("userId", userId)
+            res = server.upload_image(loaded_image, meta)
         except Exception as err:
             err_msg = get_err_msg(err)
             return UploadImageResponse(success=False, message=err_msg, data=None)

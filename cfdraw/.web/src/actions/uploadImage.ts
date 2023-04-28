@@ -3,6 +3,7 @@ import { safeCall } from "@carefree0910/core";
 import { toastWord } from "@/utils/toast";
 import { Toast_Words } from "@/lang/toast";
 import { Requests } from "@/requests/actions";
+import { userStore } from "@/stores/user";
 
 type UploadImageOptions = {
   failed: (e: any) => Promise<void>;
@@ -24,7 +25,7 @@ export async function uploadImage(
         success: boolean;
         message: string;
         data: IUploadImageResponseData;
-      }>("_python", "/upload_image", { image: blob });
+      }>("_python", "/upload_image", { image: blob, userId: userStore.userId });
       if (!res.success) {
         toastWord("warning", Toast_Words["upload-image-error-message"], {
           appendix: ` - ${res.message}`,
