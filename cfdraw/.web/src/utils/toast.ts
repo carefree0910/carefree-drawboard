@@ -59,7 +59,7 @@ export function toast(
 
   let { duration, timeout, useToastOptions } = opt ?? {};
   if (status === "info" && isUndefined(timeout)) {
-    timeout = settingsStore.boardSettings?.miscSettings?.defaultInfoTimeout;
+    timeout = settingsStore.boardSettings?.globalSettings?.defaultInfoTimeout;
   }
   if (!isUndefined(timeout)) {
     toastStore.updateProperty("timer", setTimeout(_toast, timeout));

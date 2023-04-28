@@ -19,14 +19,14 @@ interface IInternalSettings {
   useStrictMode?: boolean;
   socketEndpoint?: string;
 }
-interface IMiscSettings {
+interface IGlobalSettings {
   defaultLang: Lang;
   defaultInfoTimeout: number;
 }
 interface IBoardSettings {
   styles?: Record<ThemeType, Partial<ThemeStyles>>;
   boardOptions?: Partial<IBoardOptions>;
-  miscSettings?: Partial<IMiscSettings>;
+  globalSettings?: Partial<IGlobalSettings>;
 }
 export interface ISettingsStore {
   pluginSettings: IMakePlugin<AvailablePythonPlugins>[];
@@ -92,13 +92,13 @@ export const updateSettings = (data: ISettingsStore): boolean => {
         bgMode: false, // TODO : test `true`
         ...data.boardSettings.boardOptions,
       };
-      //// Update misc settings
-      const miscSettings = data.boardSettings.miscSettings ?? {};
-      if (miscSettings.defaultLang) {
-        langStore.tgt = miscSettings.defaultLang;
+      //// Update global settings
+      const globalSettings = data.boardSettings.globalSettings ?? {};
+      if (globalSettings.defaultLang) {
+        langStore.tgt = globalSettings.defaultLang;
       }
-      miscSettings.defaultInfoTimeout ??= 300;
-      data.boardSettings.miscSettings = miscSettings;
+      globalSettings.defaultInfoTimeout ??= 300;
+      data.boardSettings.globalSettings = globalSettings;
       //// setup property. Once `boardSettings` is set, drawboard will start rendering.
       settingsStore.boardSettings = data.boardSettings;
     }
