@@ -9,6 +9,7 @@ import {
 import { toastWord } from "@/utils/toast";
 import { Toast_Words } from "@/lang/toast";
 import { Requests } from "@/requests/actions";
+import { userStore } from "@/stores/user";
 import {
   IProjectsStore,
   updateCurrentProject,
@@ -17,15 +18,17 @@ import {
 } from "@/stores/projects";
 
 export interface IFullProject extends IProjectsStore {
+  userId: string;
   graphInfo: INodePack[];
   globalTransform: Matrix2DFields;
 }
 
 export function useCurrentFullProject(): IFullProject {
   const data = useCurrentProject();
+  const userId = userStore.userId;
   const graphInfo = BoardStore.graph.toJsonInfo();
   const globalTransform = useGlobalTransform().globalTransform.fields;
-  return { ...data, graphInfo, globalTransform };
+  return { ...data, userId, graphInfo, globalTransform };
 }
 
 export async function saveProject(
@@ -80,9 +83,10 @@ export async function loadProject(
 
   return safeCall(
     async () =>
-      Requests.get<IFullProject>("_python", `/get_project/${uid}`).then((res) =>
-        replaceProjectWith(res, onSuccess),
-      ),
+      Requests.get<IFullProject>(
+        "_python",
+        `/get_project/?userId=${userStore.userId}&uid=${uid}`,
+      ).then((res) => replaceProjectWith(res, onSuccess)),
     {
       success: async () => void 0,
       failed: async () => void 0,
@@ -105,8 +109,12 @@ interface IProjectItem {
   name: string;
 }
 export async function fetchAllProjects(): Promise<IProjectItem[] | undefined> {
-  return safeCall(async () => Requests.get<IProjectItem[]>("_python", "/all_projects"), {
-    success: async () => void 0,
-    failed: async () => void 0,
-  });
+  return safeCall(
+    async () =>
+      Requests.get<IProjectItem[]>("_python", `/all_projects/?userId=${userStore.userId}`),
+    {
+      success: async () => void 0,
+      failed: async () => void 0,
+    },
+  );
 }

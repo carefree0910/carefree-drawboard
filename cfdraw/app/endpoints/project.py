@@ -28,6 +28,7 @@ class ProjectMeta(BaseModel):
 
 
 class ProjectModel(ProjectMeta):
+    userId: str
     graphInfo: List[Any]
     globalTransform: noli.Matrix2D
 
@@ -37,8 +38,8 @@ class SaveProjectResponse(BaseModel):
     message: str
 
 
-def maintain_meta(app: IApp) -> None:
-    upload_project_folder = app.config.upload_project_folder
+def maintain_meta(app: IApp, userId: str) -> None:
+    upload_project_folder = app.config.upload_project_folder / userId
     if not upload_project_folder.exists():
         upload_project_folder.mkdir(parents=True)
     existing_projects = [
@@ -74,10 +75,17 @@ def maintain_meta(app: IApp) -> None:
         json.dump(project_meta, f)
 
 
+def maintain_all_meta(app: IApp) -> None:
+    for userId in app.config.upload_project_folder.iterdir():
+        user_folder = app.config.upload_project_folder / userId
+        if user_folder.is_dir():
+            maintain_meta(app, userId)
+
+
 def add_project_managements(app: IApp) -> None:
     @app.api.post("/save_project", responses=get_responses(SaveProjectResponse))
     def save_project(data: ProjectModel) -> SaveProjectResponse:
-        upload_project_folder = app.config.upload_project_folder
+        upload_project_folder = app.config.upload_project_folder / data.userId
         if not upload_project_folder.exists():
             upload_project_folder.mkdir(parents=True)
         try:
@@ -87,7 +95,7 @@ def add_project_managements(app: IApp) -> None:
             # maintain meta
             meta_path = upload_project_folder / constants.PROJECT_META_FILE
             if not meta_path.is_file():
-                maintain_meta(app)
+                maintain_meta(app, data.userId)
             else:
                 with open(meta_path, "r") as f:
                     meta = json.load(f)
@@ -104,14 +112,12 @@ def add_project_managements(app: IApp) -> None:
             return SaveProjectResponse(success=False, message=err_msg)
         return SaveProjectResponse(success=True, message="")
 
-    @app.api.get(
-        f"/get_project/{{uid:path}}",
-        responses=get_responses(ProjectModel),
-    )
-    async def fetch_project(uid: str) -> ProjectModel:  # type: ignore
+    @app.api.get(f"/get_project/", responses=get_responses(ProjectModel))
+    async def fetch_project(userId: str, uid: str) -> ProjectModel:  # type: ignore
         try:
+            upload_project_folder = app.config.upload_project_folder / userId
             file = f"{uid}{suffix}"
-            with open(app.config.upload_project_folder / file, "r") as f:
+            with open(upload_project_folder / file, "r") as f:
                 d = json.load(f)
             # replace url if needed
             graph = noli.parse_graph(d["graphInfo"])
@@ -132,14 +138,14 @@ def add_project_managements(app: IApp) -> None:
         except Exception as err:
             raise_err(err)
 
-    @app.api.get(f"/all_projects")
-    async def fetch_all_projects() -> List[ProjectMeta]:
-        upload_project_folder = app.config.upload_project_folder
+    @app.api.get(f"/all_projects/")
+    async def fetch_all_projects(userId: str) -> List[ProjectMeta]:
+        upload_project_folder = app.config.upload_project_folder / userId
         if not upload_project_folder.exists():
             return []
         meta_path = upload_project_folder / constants.PROJECT_META_FILE
         if not meta_path.is_file():
-            maintain_meta(app)
+            maintain_meta(app, userId)
         with open(meta_path, "r") as f:
             meta = json.load(f)
         s = sorted([(v["updateTime"], k) for k, v in meta.items()], reverse=True)
@@ -151,7 +157,7 @@ class ProjectEndpoint(IEndpoint):
         add_project_managements(self.app)
 
     async def on_startup(self) -> None:
-        maintain_meta(self.app)
+        maintain_all_meta(self.app)
 
 
 __all__ = [
