@@ -14,6 +14,11 @@ from pydantic import BaseModel
 from dataclasses import dataclass
 
 
+class Lang(str, Enum):
+    ZH = "zh"
+    EN = "en"
+
+
 class PivotType(str, Enum):
     LT = "lt"
     TOP = "top"
@@ -262,6 +267,7 @@ def parse_graph(render_info_list: List[Dict[str, Any]]) -> Graph:
 
 
 __all__ = [
+    "Lang",
     "PivotType",
     "SingleNodeType",
     "GroupType",
