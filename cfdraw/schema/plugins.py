@@ -43,6 +43,30 @@ class PluginType(str, Enum):
     _INTERNAL = "_internal"
 
 
+class ReactPluginType(str, Enum):
+    """
+    These types should align with the `allAvailablePlugins` locates at
+    `cfdraw/.web/src/schema/plugins.ts`
+    """
+
+    META = "meta"
+    SETTINGS = "settings"
+    PROJECT = "project"
+    ADD = "add"
+    ARRANGE = "arrange"
+    UNDO = "undo"
+    REDO = "redo"
+    DOWNLOAD = "download"
+    DELETE = "delete"
+    WIKI = "wiki"
+    GITHUB = "github"
+    EMAIL = "email"
+    TEXT_EDITOR = "textEditor"
+    GROUP_EDITOR = "groupEditor"
+    MULTI_EDITOR = "multiEditor"
+    BRUSH = "brush"
+
+
 # general
 
 
