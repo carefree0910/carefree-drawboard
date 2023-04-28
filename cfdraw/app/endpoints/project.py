@@ -76,10 +76,9 @@ def maintain_meta(app: IApp, userId: str) -> None:
 
 
 def maintain_all_meta(app: IApp) -> None:
-    for userId in app.config.upload_project_folder.iterdir():
-        user_folder = app.config.upload_project_folder / userId
+    for user_folder in app.config.upload_project_folder.iterdir():
         if user_folder.is_dir():
-            maintain_meta(app, userId)
+            maintain_meta(app, user_folder.name)
 
 
 def add_project_managements(app: IApp) -> None:
