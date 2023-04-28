@@ -9,6 +9,7 @@ import {
   WATERMARK_PLUGIN_NAME,
   allInternalPlugins,
   getHash,
+  sleep,
 } from "@carefree0910/core";
 import { langStore } from "@carefree0910/business";
 
@@ -18,6 +19,7 @@ import { userStore } from "@/stores/user";
 import { debugStore } from "@/stores/debug";
 import { ISettingsStore, settingsStore } from "@/stores/settings";
 import { useWebSocketHook } from "@/requests/hooks";
+import { authEvent } from "@/components/CFAuth";
 
 export function useIsSetup(): boolean {
   return !!userStore.userId && !!settingsStore.boardSettings;
@@ -31,16 +33,30 @@ export function useSetup(): void {
 
 //// prepare user information
 
+// generate pseudo user id and postMessage.
+// also pretend that the user id may need a few seconds to be fetched.
+const postPseduoUserId = async (): Promise<void> => {
+  await sleep(debugStore.pseduoWaitingTime);
+  const USER_ID_KEY = "CFDRAW_USER_ID";
+  let userId = localStorage.getItem(USER_ID_KEY);
+  if (!userId) {
+    userId = getRandomHash().toString();
+    localStorage.setItem(USER_ID_KEY, userId);
+  }
+  window.postMessage({ userId }, `http://localhost:${import.meta.env.VITE_CFDRAW_FE_PORT}`);
+};
+
 const useUserInitialization = () => {
   useEffect(() => {
-    const USER_ID_KEY = "CFDRAW_USER_ID";
-    let userId = localStorage.getItem(USER_ID_KEY);
-    if (!userId) {
-      userId = getRandomHash().toString();
-      localStorage.setItem(USER_ID_KEY, userId);
+    const { dispose } = authEvent.on(({ userId }) => {
+      Logger.debug(`user id: ${userId}`);
+      userStore.updateProperty("userId", userId);
+    });
+    if (debugStore.postPseduoUserId) {
+      postPseduoUserId();
     }
-    Logger.debug(`user id: ${userId}`);
-    userStore.updateProperty("userId", userId);
+
+    return dispose;
   }, []);
 };
 

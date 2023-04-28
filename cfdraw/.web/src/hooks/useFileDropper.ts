@@ -9,6 +9,7 @@ import { BOARD_CONTAINER_ID } from "@/utils/constants";
 import { setDropping, hooksStore } from "@/stores/hooks";
 import { uploadImage } from "@/actions/uploadImage";
 import { importMeta } from "@/actions/importMeta";
+import { useIsSetup } from "./useSetup";
 
 export function useFileDropper(): void {
   function onDrop(): void {
@@ -70,8 +71,12 @@ export function useFileDropper(): void {
   }
 
   const dropPatience = 500;
+  const isReady = useIsReady();
+  const isSetup = useIsSetup();
 
   useEffect(() => {
+    if (!isReady || !isSetup) return;
+
     const dropper = new FileDropper({
       onDrop,
       onSuccess,
@@ -84,5 +89,5 @@ export function useFileDropper(): void {
     return () => {
       dropper.destroy();
     };
-  }, [useIsReady()]);
+  }, [isReady, isSetup]);
 }
