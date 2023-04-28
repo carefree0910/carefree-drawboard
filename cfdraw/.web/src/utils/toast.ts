@@ -4,8 +4,7 @@ import { createStandaloneToast, UseToastOptions } from "@chakra-ui/toast";
 
 import { isUndefined } from "@carefree0910/core";
 import { ABCStore, langStore, translate } from "@carefree0910/business";
-
-import { settingsStore } from "@/stores/settings";
+import { pythonStore } from "@/stores/_python";
 
 export interface IToastStore {
   timer: any;
@@ -60,7 +59,7 @@ export function toast(
 
   let { duration, timeout, useToastOptions } = opt ?? {};
   if (status === "info" && isUndefined(timeout)) {
-    timeout = settingsStore.defaultInfoTimeout;
+    timeout = pythonStore.boardSettings?.miscSettings?.defaultInfoTimeout;
   }
   if (!isUndefined(timeout)) {
     toastStore.updateProperty("timer", setTimeout(_toast, timeout));

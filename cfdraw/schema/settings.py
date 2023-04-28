@@ -13,7 +13,7 @@ class BoardOptions(BaseModel):
 
 
 class MiscSettings(BaseModel):
-    """This should align with `ISettingsStore` locates at `cfdraw/.web/src/stores/settings.ts`"""
+    """This should align with `IMiscSettings` locates at `cfdraw/.web/src/stores/_python.ts`"""
 
     defaultLang: Optional[noli.Lang] = Field(None, description="default language")
     defaultInfoTimeout: Optional[int] = Field(None, description="default info timeout")

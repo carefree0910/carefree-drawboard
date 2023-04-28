@@ -1,22 +1,32 @@
 import { makeObservable, observable, runInAction } from "mobx";
 
-import { IBoardOptions, getHash } from "@carefree0910/core";
-import { ABCStore } from "@carefree0910/business";
+import {
+  FOCUS_PLUGIN_NAME,
+  GUIDELINE_SYSTEM_PLUGIN_NAME,
+  IBoardOptions,
+  Lang,
+  WATERMARK_PLUGIN_NAME,
+  allInternalPlugins,
+  getHash,
+} from "@carefree0910/core";
+import { ABCStore, langStore } from "@carefree0910/business";
 
 import type { AvailablePythonPlugins, IMakePlugin } from "@/schema/plugins";
-import { ThemeType, ThemeStyles, allThemes } from "./theme";
-import { getDefaultBoardOptions, initStore } from "./init";
-import { ISettingsStore, updateSettings } from "./settings";
+import { ThemeType, ThemeStyles, allThemes, themeStore } from "./theme";
 
 interface IGlobalSettings {
   timeout?: number;
   useStrictMode?: boolean;
   socketEndpoint?: string;
 }
+interface IMiscSettings {
+  defaultLang: Lang;
+  defaultInfoTimeout: number;
+}
 interface IBoardSettings {
   styles?: Record<ThemeType, Partial<ThemeStyles>>;
   boardOptions?: Partial<IBoardOptions>;
-  miscSettings?: Partial<ISettingsStore>;
+  miscSettings?: Partial<IMiscSettings>;
 }
 export interface IPythonStore {
   pluginSettings: IMakePlugin<AvailablePythonPlugins>[];
@@ -58,8 +68,9 @@ export const updatePythonStore = (data: IPythonStore): boolean => {
     }
     // `boardSettings` should only be updated once.
     if (!pythonStore.boardSettings) {
+      if (!data.boardSettings) return;
       //// Update theme styles
-      Object.entries(data.boardSettings?.styles ?? {}).forEach(([key, value]) => {
+      Object.entries(data.boardSettings.styles ?? {}).forEach(([key, value]) => {
         if (value) {
           allThemes[key as ThemeType] = {
             ...allThemes[key as ThemeType],
@@ -68,16 +79,27 @@ export const updatePythonStore = (data: IPythonStore): boolean => {
         }
       });
       //// Update board options, notice that this should always come after 'Update
-      //// theme styles', because `getDefaultBoardOptions` depends on theme styles.
-      initStore.boardOptions = {
-        ...getDefaultBoardOptions(),
-        ...data.boardSettings?.boardOptions,
+      //// theme styles', because it uses `themeStore.styles.boardBg`.
+      data.boardSettings.boardOptions = {
+        autoResize: true,
+        internalPlugins: [GUIDELINE_SYSTEM_PLUGIN_NAME].concat(allInternalPlugins),
+        excludedPlugins: new Set([FOCUS_PLUGIN_NAME, WATERMARK_PLUGIN_NAME]),
+        useGlobalClipboard: false, // TODO : test `true`
+        backgroundColor: themeStore.styles.boardBg,
+        fitContainerOptions: {
+          targetFields: undefined,
+        },
+        bgMode: false, // TODO : test `true`
+        ...data.boardSettings.boardOptions,
       };
       //// Update misc settings
-      if (data.boardSettings?.miscSettings) {
-        updateSettings(data.boardSettings.miscSettings);
+      const miscSettings = data.boardSettings.miscSettings ?? {};
+      if (miscSettings.defaultLang) {
+        langStore.tgt = miscSettings.defaultLang;
       }
-      //// setup property. Once `boardSettings` is updated, drawboard will start rendering.
+      miscSettings.defaultInfoTimeout ??= 300;
+      data.boardSettings.miscSettings = miscSettings;
+      //// setup property. Once `boardSettings` is set, drawboard will start rendering.
       pythonStore.boardSettings = data.boardSettings;
     }
   });

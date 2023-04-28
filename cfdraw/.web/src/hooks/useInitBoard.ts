@@ -1,4 +1,5 @@
 import { useEffect } from "react";
+import { makeObservable, observable } from "mobx";
 
 import { Logger, UnitTest, waitUntil } from "@carefree0910/core";
 import { NoliNativeBoard } from "@carefree0910/native";
@@ -8,11 +9,30 @@ import {
   useFlags,
   useBoardStore,
   useIsReady,
+  ABCStore,
 } from "@carefree0910/business";
 
 import { BOARD_CONTAINER_ID, IS_PROD } from "@/utils/constants";
-import { initStore } from "@/stores/init";
 import { pythonStore } from "@/stores/_python";
+
+interface IInitStore {
+  working: boolean;
+}
+class InitStore extends ABCStore<IInitStore> implements IInitStore {
+  working: boolean = false;
+
+  constructor() {
+    super();
+    makeObservable(this, {
+      working: observable,
+    });
+  }
+
+  get info(): IInitStore {
+    return this;
+  }
+}
+const initStore = new InitStore();
 
 export function useInitBoard(): void {
   async function _initialize(): Promise<void> {
@@ -20,7 +40,11 @@ export function useInitBoard(): void {
     initStore.updateProperty("working", true);
 
     // setup unittest to help initialization
-    const unittest = new UnitTest(NoliNativeBoard, BOARD_CONTAINER_ID, initStore.boardOptions);
+    const unittest = new UnitTest(
+      NoliNativeBoard,
+      BOARD_CONTAINER_ID,
+      pythonStore.boardSettings?.boardOptions,
+    );
 
     // render
     await unittest.renderEmpty(1, !IS_PROD);
