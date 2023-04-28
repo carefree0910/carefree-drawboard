@@ -17,12 +17,12 @@ import type { IPythonOnSocketMessage, IPythonSocketRequest } from "@/schema/_pyt
 import { ThemeType, allThemes, themeStore } from "@/stores/theme";
 import { userStore } from "@/stores/user";
 import { debugStore } from "@/stores/debug";
-import { ISettingsStore, settingsStore } from "@/stores/settings";
+import { ISettingsStore, settingsStore, useSettingsSynced } from "@/stores/settings";
 import { useWebSocketHook } from "@/requests/hooks";
 import { authEvent, useAuth } from "./useAuth";
 
 export function useIsSetup(): boolean {
-  return !!userStore.userId && !!settingsStore.boardSettings;
+  return !!userStore.userId && useSettingsSynced();
 }
 export function useSetup(): void {
   useAuth();

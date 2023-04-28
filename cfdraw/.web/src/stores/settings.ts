@@ -48,3 +48,4 @@ class SettingsStore extends ABCStore<ISettingsStore> implements ISettingsStore {
 
 export const settingsStore = new SettingsStore();
 export const usePythonPluginSettings = () => settingsStore.pluginSettings;
+export const useSettingsSynced = () => !!settingsStore.boardSettings;
