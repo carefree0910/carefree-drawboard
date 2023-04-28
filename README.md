@@ -2,13 +2,11 @@
 
 ![Stable Diffusion](examples/assets/stable-diffusion.png)
 
-> This is the screenshot I used for the [Stable Diffusion](https://github.com/carefree0910/carefree-drawboard/tree/dev/examples/stable_diffusion) example and I don't know what should be the proper banner, help!
-
 <div align="center">
 
 <br>
 
-#### **✨ Build performant, Infinite Drawboard based web apps in pure Python.**
+**✨ Build performant, Infinite Drawboard based web apps in pure Python.**
 
 <br>
 
