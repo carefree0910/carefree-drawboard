@@ -1,5 +1,6 @@
 from io import BytesIO
 from PIL import Image
+from typing import Union
 from typing import Optional
 from fastapi import File
 from fastapi import Form
@@ -43,10 +44,15 @@ class ImageUploader:
     """
 
     @staticmethod
-    async def upload_image(contents: bytes, meta: PngInfo) -> ImageDataModel:
-        loaded_image = Image.open(BytesIO(contents))
-        res = save_image(loaded_image, meta)
-        return ImageDataModel(**res)
+    async def upload_image(
+        contents: Union[bytes, Image.Image],
+        meta: PngInfo,
+    ) -> ImageDataModel:
+        if isinstance(contents, Image.Image):
+            image = contents
+        else:
+            image = Image.open(BytesIO(contents))
+        return ImageDataModel(**save_image(image, meta))
 
     @staticmethod
     async def fetch_image(data: FetchImageModel) -> Response:
