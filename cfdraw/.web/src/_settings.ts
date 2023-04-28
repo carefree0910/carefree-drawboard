@@ -1,5 +1,7 @@
 import type { AvailablePlugins, IMakePlugin } from "@/schema/plugins";
 
+import { settingsStore } from "./stores/settings";
+
 export const reactPluginSettings: IMakePlugin<AvailablePlugins>[] = [
   {
     type: "settings",
@@ -254,3 +256,7 @@ export const reactPluginSettings: IMakePlugin<AvailablePlugins>[] = [
     },
   },
 ];
+export function useReactPluginSettings() {
+  const exclude = settingsStore.boardSettings?.globalSettings?.excludeReactPlugins;
+  return reactPluginSettings.filter(({ type }) => !exclude?.includes(type));
+}

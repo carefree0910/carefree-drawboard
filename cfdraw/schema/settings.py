@@ -1,10 +1,12 @@
 from typing import Any
 from typing import Dict
+from typing import List
 from typing import Optional
 from pydantic import Field
 from pydantic import BaseModel
 
 from cfdraw.parsers import noli
+from cfdraw.schema.plugins import ReactPluginType
 
 
 class BoardOptions(BaseModel):
@@ -17,6 +19,10 @@ class GlobalSettings(BaseModel):
 
     defaultLang: Optional[noli.Lang] = Field(None, description="default language")
     defaultInfoTimeout: Optional[int] = Field(None, description="default info timeout")
+    excludeReactPlugins: Optional[List[ReactPluginType]] = Field(
+        None,
+        description="react plugins to exclude",
+    )
 
 
 class BoardSettings(BaseModel):

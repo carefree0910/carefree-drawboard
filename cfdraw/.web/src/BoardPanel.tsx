@@ -4,10 +4,10 @@ import { Box, Flex } from "@chakra-ui/react";
 
 import { useIsReady } from "@carefree0910/business";
 
-import { reactPluginSettings } from "@/_settings";
+import { useReactPluginSettings } from "@/_settings";
+import { BOARD_CONTAINER_ID } from "@/utils/constants";
 import { themeStore } from "@/stores/theme";
 import { settingsStore, usePythonPluginSettings } from "@/stores/settings";
-import { BOARD_CONTAINER_ID } from "@/utils/constants";
 import { makePlugin } from "@/plugins";
 
 function BoardPanel() {
@@ -23,7 +23,7 @@ function BoardPanel() {
           <Box id={BOARD_CONTAINER_ID} visibility={isReady ? "visible" : "hidden"}></Box>
         </Box>
         <Wrapper>
-          {reactPluginSettings.map((settings) =>
+          {useReactPluginSettings().map((settings) =>
             makePlugin({ key: settings.type, containerRef: ref, ...settings }),
           )}
           {usePythonPluginSettings().map((settings) =>

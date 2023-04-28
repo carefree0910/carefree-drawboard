@@ -470,6 +470,7 @@ class IHttpQAPluginInfo(IQAPluginInfo):
 __all__ = [
     "ISend",
     "PluginType",
+    "ReactPluginType",
     # general
     "IPluginInfo",
     "IPluginSettings",
