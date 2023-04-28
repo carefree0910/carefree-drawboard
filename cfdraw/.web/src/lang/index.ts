@@ -26,7 +26,6 @@ const initLangDirs = [
 ];
 
 export function initializeLang(): void {
-  langStore.updateProperty("tgt", "en");
   const collected = new Set();
   let anyDuplicate = false;
   for (const lang of Object.keys(langDescriptions) as Lang[]) {

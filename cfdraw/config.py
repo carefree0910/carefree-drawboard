@@ -7,6 +7,7 @@ from dataclasses import dataclass
 
 from cfdraw import constants
 from cfdraw.utils.cache import cache_resource
+from cfdraw.schema.settings import BoardSettings
 
 
 @dataclass
@@ -22,6 +23,8 @@ class Config:
     upload_root: str = str(constants.UPLOAD_ROOT)
     # misc
     use_react_strict_mode: bool = False
+    # board
+    board_settings: BoardSettings = BoardSettings()
 
     @property
     def prod(self) -> bool:

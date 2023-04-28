@@ -6,7 +6,7 @@ import { ABCStore } from "@carefree0910/business";
 import type { AvailablePythonPlugins, IMakePlugin } from "@/schema/plugins";
 import { ThemeType, ThemeStyles, allThemes } from "./theme";
 import { getDefaultBoardOptions, initStore } from "./init";
-import { ISettingsStore, settingsStore } from "./settings";
+import { ISettingsStore, updateSettings } from "./settings";
 
 interface IGlobalSettings {
   timeout?: number;
@@ -16,7 +16,7 @@ interface IGlobalSettings {
 interface IBoardSettings {
   styles?: Record<ThemeType, Partial<ThemeStyles>>;
   boardOptions?: Partial<IBoardOptions>;
-  miscSettings?: ISettingsStore;
+  miscSettings?: Partial<ISettingsStore>;
 }
 export interface IPythonStore {
   pluginSettings: IMakePlugin<AvailablePythonPlugins>[];
@@ -75,9 +75,9 @@ export const updatePythonStore = (data: IPythonStore): boolean => {
       };
       //// Update misc settings
       if (data.boardSettings?.miscSettings) {
-        settingsStore.updateProperty(data.boardSettings.miscSettings);
+        updateSettings(data.boardSettings.miscSettings);
       }
-      //// setup property
+      //// setup property. Once `boardSettings` is updated, drawboard will start rendering.
       pythonStore.boardSettings = data.boardSettings;
     }
   });
