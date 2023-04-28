@@ -1,7 +1,5 @@
-from typing import Any
 from typing import List
 from typing import Union
-from typing import Coroutine
 from PIL.Image import Image
 from PIL.PngImagePlugin import PngInfo
 
@@ -17,7 +15,7 @@ class FieldsMiddleWare(IMiddleWare):
     def subscriptions(self) -> List[PluginType]:
         return [PluginType.FIELDS]
 
-    async def before(self, request: ISocketRequest) -> Coroutine[Any, Any, None]:
+    async def before(self, request: ISocketRequest) -> None:
         await super().before(request)
         self.request = request
 
