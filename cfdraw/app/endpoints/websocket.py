@@ -11,7 +11,7 @@ from cfdraw import constants
 from cfdraw.app.schema import IApp
 from cfdraw.app.schema import IRequestQueueData
 from cfdraw.utils.misc import offload
-from cfdraw.utils.server import get_err_msg
+from cfdraw.utils.misc import get_err_msg
 from cfdraw.schema.plugins import ElapsedTimes
 from cfdraw.schema.plugins import ISocketRequest
 from cfdraw.schema.plugins import ISocketMessage

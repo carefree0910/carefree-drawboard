@@ -9,7 +9,7 @@ from pydantic import BaseModel
 from cfdraw import constants
 from cfdraw.utils import server
 from cfdraw.app.schema import IApp
-from cfdraw.utils.server import get_err_msg
+from cfdraw.utils.misc import get_err_msg
 from cfdraw.utils.server import get_responses
 from cfdraw.utils.server import get_image_response_kwargs
 from cfdraw.app.endpoints.base import IEndpoint

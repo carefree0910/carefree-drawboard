@@ -1,4 +1,3 @@
-import sys
 import socket
 import logging
 
@@ -19,6 +18,7 @@ from cftool.misc import random_hash
 
 from cfdraw import constants
 from cfdraw.config import get_config
+from cfdraw.utils.misc import get_err_msg
 
 
 class RuntimeError(BaseModel):
@@ -66,10 +66,6 @@ Bytes of the output image.
         response_class=Response(content=b""),
         response_description=description,
     )
-
-
-def get_err_msg(err: Exception) -> str:
-    return " | ".join(map(repr, sys.exc_info()[:2] + (str(err),)))
 
 
 def raise_err(err: Exception) -> None:

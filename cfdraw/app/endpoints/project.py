@@ -11,8 +11,8 @@ from cftool.misc import print_warning
 from cfdraw import constants
 from cfdraw.parsers import noli
 from cfdraw.app.schema import IApp
+from cfdraw.utils.misc import get_err_msg
 from cfdraw.utils.server import raise_err
-from cfdraw.utils.server import get_err_msg
 from cfdraw.utils.server import get_responses
 from cfdraw.app.endpoints.base import IEndpoint
 

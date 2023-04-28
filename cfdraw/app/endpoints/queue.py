@@ -10,7 +10,7 @@ from cftool.misc import print_warning
 from cfdraw.app.schema import IRequestQueue
 from cfdraw.app.schema import IRequestQueueData
 from cfdraw.utils.misc import offload
-from cfdraw.utils.server import get_err_msg
+from cfdraw.utils.misc import get_err_msg
 from cfdraw.utils.data_structures import Item
 from cfdraw.utils.data_structures import QueuesInQueue
 from cfdraw.schema.plugins import ISend
