@@ -9,10 +9,11 @@ from pydantic import BaseModel
 from PIL.PngImagePlugin import PngInfo
 
 from cfdraw import constants
-from cfdraw.utils import server
 from cfdraw.app.schema import IApp
 from cfdraw.utils.misc import get_err_msg
+from cfdraw.utils.server import save_image
 from cfdraw.utils.server import get_responses
+from cfdraw.utils.server import get_image_response
 from cfdraw.utils.server import get_image_response_kwargs
 from cfdraw.app.endpoints.base import IEndpoint
 
@@ -44,13 +45,13 @@ class ImageUploader:
     @staticmethod
     async def upload_image(contents: bytes, meta: PngInfo) -> ImageDataModel:
         loaded_image = Image.open(BytesIO(contents))
-        res = server.upload_image(loaded_image, meta)
+        res = save_image(loaded_image, meta)
         return ImageDataModel(**res)
 
     @staticmethod
     async def fetch_image(data: FetchImageModel) -> Response:
         file = data.url.split(constants.UPLOAD_IMAGE_FOLDER_NAME)[1][1:]  # remove '/'
-        return server.get_image_response(file, data.jpeg)
+        return get_image_response(file, data.jpeg)
 
 
 def add_upload_image(app: IApp) -> None:
@@ -80,7 +81,7 @@ def add_upload_image(app: IApp) -> None:
         **get_image_response_kwargs(),
     )
     async def get_image(file: str, jpeg: bool = False) -> Response:
-        return server.get_image_response(file, jpeg)
+        return get_image_response(file, jpeg)
 
 
 class UploadEndpoint(IEndpoint):

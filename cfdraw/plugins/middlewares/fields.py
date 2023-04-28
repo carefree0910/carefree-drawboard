@@ -3,7 +3,7 @@ from typing import Union
 from PIL.Image import Image
 from PIL.PngImagePlugin import PngInfo
 
-from cfdraw.utils.server import upload_image
+from cfdraw.utils.server import save_image
 from cfdraw.schema.plugins import PluginType
 from cfdraw.schema.plugins import IMiddleWare
 from cfdraw.schema.plugins import ISocketMessage
@@ -29,7 +29,7 @@ class FieldsMiddleWare(IMiddleWare):
             return self.make_success(dict(type="text", value=response))
         meta = PngInfo()
         meta.add_text("request", self.request.json())
-        urls = [upload_image(image, meta) for image in response]
+        urls = [save_image(image, meta) for image in response]
         return self.make_success(dict(type="image", value=urls))
 
 

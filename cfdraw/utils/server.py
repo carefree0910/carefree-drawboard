@@ -74,7 +74,7 @@ def raise_err(err: Exception) -> None:
     raise HTTPException(status_code=constants.ERR_CODE, detail=get_err_msg(err))
 
 
-def upload_image(image: Image.Image, meta: Optional[PngInfo] = None) -> Dict[str, Any]:
+def save_image(image: Image.Image, meta: Optional[PngInfo] = None) -> Dict[str, Any]:
     w, h = image.size
     config = get_config()
     path = config.upload_image_folder / f"{random_hash()}.png"
