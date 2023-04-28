@@ -35,6 +35,12 @@ class FetchImageModel(BaseModel):
 
 
 class ImageUploader:
+    """
+    Modify this class if you need to customize image handling processes.
+    * `upload_image`: save an image with given `contents`, will be better if `meta` can be stored.
+    * `fetch_image`: fetch an image based on `url` and `jpeg` flag.
+    """
+
     @staticmethod
     def upload_image(contents: bytes, meta: PngInfo) -> ImageDataModel:
         loaded_image = Image.open(BytesIO(contents))
