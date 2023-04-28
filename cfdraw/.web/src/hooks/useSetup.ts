@@ -33,7 +33,14 @@ export function useSetup(): void {
 
 const useUserInitialization = () => {
   useEffect(() => {
-    userStore.updateProperty("userId", getRandomHash().toString());
+    const USER_ID_KEY = "CFDRAW_USER_ID";
+    let userId = localStorage.getItem(USER_ID_KEY);
+    if (!userId) {
+      userId = getRandomHash().toString();
+      localStorage.setItem(USER_ID_KEY, userId);
+    }
+    Logger.debug(`user id: ${userId}`);
+    userStore.updateProperty("userId", userId);
   }, []);
 };
 
