@@ -46,7 +46,7 @@ register_plugin("blur")(Plugin)
 """
 
 CONFIG_TEMPLATE = f"""
-from cfdraw.config import Config
+from cfdraw import *
 
 {constants.DEFAULT_CONFIG_ENTRY} = Config(
     # This tells us to use `cwd` to store stuffs (projects, creations, etc.)
