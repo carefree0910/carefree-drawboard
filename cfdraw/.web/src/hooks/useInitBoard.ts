@@ -14,6 +14,7 @@ import {
 
 import { BOARD_CONTAINER_ID, IS_PROD } from "@/utils/constants";
 import { settingsStore } from "@/stores/settings";
+import { useIsSetup } from "./useSetup";
 
 interface IInitStore {
   working: boolean;
@@ -96,7 +97,7 @@ export function useInitBoard(): void {
   useEffect(() => {
     Logger.isDebug = !IS_PROD;
     if (!useIsReady()) {
-      waitUntil(() => !!settingsStore.boardSettings).then(() => {
+      waitUntil(useIsSetup).then(() => {
         _initialize();
       });
     }

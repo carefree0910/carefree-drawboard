@@ -1,7 +1,5 @@
-import { useEffect } from "react";
 import { makeObservable, observable } from "mobx";
 
-import { getRandomHash } from "@carefree0910/core";
 import { ABCStore } from "@carefree0910/business";
 
 import { debugStore } from "./debug";
@@ -28,8 +26,3 @@ class UserStore extends ABCStore<IUserStore> implements IUserStore {
 }
 
 export const userStore = new UserStore();
-export const useUserInitialization = () => {
-  useEffect(() => {
-    userStore.updateProperty("userId", getRandomHash().toString());
-  }, []);
-};
