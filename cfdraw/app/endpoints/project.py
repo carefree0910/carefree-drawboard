@@ -43,9 +43,9 @@ def maintain_meta(app: IApp, userId: str) -> None:
     if not upload_project_folder.exists():
         upload_project_folder.mkdir(parents=True)
     existing_projects = [
-        file.absolute()
-        for file in upload_project_folder.iterdir()
-        if file.is_file() and file.suffix == suffix
+        path.absolute()
+        for path in upload_project_folder.iterdir()
+        if path.is_file() and path.suffix == suffix
     ]
     meta_path = upload_project_folder / constants.PROJECT_META_FILE
     checked = False
