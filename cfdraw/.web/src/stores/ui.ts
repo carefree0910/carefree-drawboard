@@ -11,7 +11,7 @@ import {
   setPluginVisible,
   setPythonPluginVisible,
 } from "./pluginVisible";
-import { usePythonPluginSettings } from "./_python";
+import { usePythonPluginSettings } from "./settings";
 
 export interface IUIStore {
   disablePluginSettings: boolean;

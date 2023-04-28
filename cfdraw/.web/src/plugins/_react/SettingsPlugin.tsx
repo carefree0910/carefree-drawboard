@@ -18,7 +18,7 @@ import { Plugins_Words } from "@/lang/plugins";
 import { Settings_Words } from "@/lang/settings";
 import { stripHashFromIdentifier } from "@/utils/misc";
 import { uiStore } from "@/stores/ui";
-import { usePythonPluginSettings } from "@/stores/_python";
+import { usePythonPluginSettings } from "@/stores/settings";
 import {
   pluginIsVisible,
   pythonPluginIsVisible,

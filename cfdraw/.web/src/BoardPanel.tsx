@@ -6,7 +6,7 @@ import { useIsReady } from "@carefree0910/business";
 
 import { reactPluginSettings } from "@/_settings";
 import { themeStore } from "@/stores/theme";
-import { pythonStore, usePythonPluginSettings } from "@/stores/_python";
+import { settingsStore, usePythonPluginSettings } from "@/stores/settings";
 import { BOARD_CONTAINER_ID } from "@/utils/constants";
 import { makePlugin } from "@/plugins";
 
@@ -14,7 +14,7 @@ function BoardPanel() {
   const ref = useRef(null);
   const isReady = useIsReady();
   const { boardBg } = themeStore.styles;
-  const Wrapper = pythonStore.globalSettings?.useStrictMode ? React.StrictMode : React.Fragment;
+  const Wrapper = settingsStore.globalSettings?.useStrictMode ? React.StrictMode : React.Fragment;
 
   return (
     <>

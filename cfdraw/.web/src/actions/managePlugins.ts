@@ -2,7 +2,7 @@ import { runInAction } from "mobx";
 
 import type { AvailablePluginsAndPythonPlugins } from "@/schema/plugins";
 import { reactPluginSettings } from "@/_settings";
-import { usePythonPluginSettings } from "@/stores/_python";
+import { usePythonPluginSettings } from "@/stores/settings";
 import { setPluginVisible, setPythonPluginVisible } from "@/stores/pluginVisible";
 import { floatingControlEvent } from "@/plugins/components/Floating";
 

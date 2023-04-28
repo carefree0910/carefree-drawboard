@@ -13,7 +13,7 @@ import type {
 } from "@/schema/_python";
 import { userStore } from "@/stores/user";
 import { debugStore } from "@/stores/debug";
-import { IPythonStore, updatePythonStore } from "@/stores/_python";
+import { ISettingsStore, updateSettings } from "@/stores/settings";
 import { useWebSocketHook } from "@/requests/hooks";
 import { uploadImage } from "@/actions/uploadImage";
 import { Exporter } from "@/actions/export";
@@ -136,7 +136,7 @@ export function useSyncPython() {
       }),
     [],
   );
-  const onMessage = useCallback<IPythonOnSocketMessage<IPythonStore>>(
+  const onMessage = useCallback<IPythonOnSocketMessage<ISettingsStore>>(
     async ({ status, total, pending, message, data: { progress, final } }) => {
       if (status !== "finished") {
         if (status === "pending") {
@@ -153,7 +153,7 @@ export function useSyncPython() {
           Logger.warn("sync data not found");
           return { newMessage: getMessage };
         }
-        if (updatePythonStore(final)) {
+        if (updateSettings(final)) {
           Logger.log(`sync successfully: ${JSON.stringify(final)}, rerendering`);
         }
         return debugStore.pollSync ? { newMessage: getMessage } : {};
@@ -162,7 +162,7 @@ export function useSyncPython() {
     [],
   );
 
-  useWebSocketHook<IPythonStore>({
+  useWebSocketHook<ISettingsStore>({
     isInvisible: false,
     hash,
     getMessage,

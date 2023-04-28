@@ -13,7 +13,7 @@ import {
 } from "@carefree0910/business";
 
 import { BOARD_CONTAINER_ID, IS_PROD } from "@/utils/constants";
-import { pythonStore } from "@/stores/_python";
+import { settingsStore } from "@/stores/settings";
 
 interface IInitStore {
   working: boolean;
@@ -43,7 +43,7 @@ export function useInitBoard(): void {
     const unittest = new UnitTest(
       NoliNativeBoard,
       BOARD_CONTAINER_ID,
-      pythonStore.boardSettings?.boardOptions,
+      settingsStore.boardSettings?.boardOptions,
     );
 
     // render
@@ -96,7 +96,7 @@ export function useInitBoard(): void {
   useEffect(() => {
     Logger.isDebug = !IS_PROD;
     if (!useIsReady()) {
-      waitUntil(() => !!pythonStore.boardSettings).then(() => {
+      waitUntil(() => !!settingsStore.boardSettings).then(() => {
         _initialize();
       });
     }

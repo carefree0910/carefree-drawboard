@@ -28,12 +28,12 @@ interface IBoardSettings {
   boardOptions?: Partial<IBoardOptions>;
   miscSettings?: Partial<IMiscSettings>;
 }
-export interface IPythonStore {
+export interface ISettingsStore {
   pluginSettings: IMakePlugin<AvailablePythonPlugins>[];
   globalSettings?: IGlobalSettings;
   boardSettings?: IBoardSettings;
 }
-class PythonStore extends ABCStore<IPythonStore> implements IPythonStore {
+class SettingsStore extends ABCStore<ISettingsStore> implements ISettingsStore {
   hash: string = "";
   pluginSettings: IMakePlugin<AvailablePythonPlugins>[] = [];
   globalSettings?: IGlobalSettings;
@@ -49,25 +49,25 @@ class PythonStore extends ABCStore<IPythonStore> implements IPythonStore {
     });
   }
 
-  get info(): IPythonStore {
+  get info(): ISettingsStore {
     return this;
   }
 }
 
-export const pythonStore = new PythonStore();
-export const usePythonPluginSettings = () => pythonStore.pluginSettings;
-export const updatePythonStore = (data: IPythonStore): boolean => {
+export const settingsStore = new SettingsStore();
+export const usePythonPluginSettings = () => settingsStore.pluginSettings;
+export const updateSettings = (data: ISettingsStore): boolean => {
   const incomingHash = getHash(JSON.stringify(data)).toString();
-  if (pythonStore.hash === incomingHash) return false;
+  if (settingsStore.hash === incomingHash) return false;
   runInAction(() => {
-    pythonStore.hash = incomingHash;
-    pythonStore.pluginSettings = data.pluginSettings;
+    settingsStore.hash = incomingHash;
+    settingsStore.pluginSettings = data.pluginSettings;
     // `globalSettings` should only be updated once.
-    if (!pythonStore.globalSettings) {
-      pythonStore.globalSettings = data.globalSettings;
+    if (!settingsStore.globalSettings) {
+      settingsStore.globalSettings = data.globalSettings;
     }
     // `boardSettings` should only be updated once.
-    if (!pythonStore.boardSettings) {
+    if (!settingsStore.boardSettings) {
       if (!data.boardSettings) return;
       //// Update theme styles
       Object.entries(data.boardSettings.styles ?? {}).forEach(([key, value]) => {
@@ -100,7 +100,7 @@ export const updatePythonStore = (data: IPythonStore): boolean => {
       miscSettings.defaultInfoTimeout ??= 300;
       data.boardSettings.miscSettings = miscSettings;
       //// setup property. Once `boardSettings` is set, drawboard will start rendering.
-      pythonStore.boardSettings = data.boardSettings;
+      settingsStore.boardSettings = data.boardSettings;
     }
   });
   return true;
