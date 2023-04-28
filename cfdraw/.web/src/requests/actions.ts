@@ -1,5 +1,7 @@
 import type { ResponseType } from "axios";
 
+import type { Dictionary } from "@carefree0910/core";
+
 import type { APISources } from "@/schema/requests";
 import { useAPI } from "./hooks";
 
@@ -24,13 +26,15 @@ export class Requests {
       .then((res) => res.data);
   }
 
-  static postBlob<R = unknown, T extends APISources = APISources>(
+  static postForm<R = unknown, T extends APISources = APISources>(
     source: T,
     endpoint: string,
-    { key, blob }: { key: string; blob: Blob },
+    data: Dictionary<string | Blob>,
   ): Promise<R> {
     const formData = new FormData();
-    formData.append(key, blob);
+    for (const [key, value] of Object.entries(data)) {
+      formData.append(key, value);
+    }
     return useAPI(source)
       .postForm(endpoint, formData)
       .then((res) => res.data);

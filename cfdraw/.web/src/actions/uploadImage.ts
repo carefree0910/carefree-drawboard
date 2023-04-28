@@ -20,11 +20,11 @@ export async function uploadImage(
 ): Promise<IUploadImageResponseData | void> {
   return safeCall(
     async () => {
-      const res = await Requests.postBlob<{
+      const res = await Requests.postForm<{
         success: boolean;
         message: string;
         data: IUploadImageResponseData;
-      }>("_python", "/upload_image", { key: "image", blob });
+      }>("_python", "/upload_image", { image: blob });
       if (!res.success) {
         toastWord("warning", Toast_Words["upload-image-error-message"], {
           appendix: ` - ${res.message}`,
