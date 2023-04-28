@@ -16,7 +16,7 @@ import {
   useCurrentProject,
 } from "@/stores/projects";
 
-interface IFullProject extends IProjectsStore {
+export interface IFullProject extends IProjectsStore {
   graphInfo: INodePack[];
   globalTransform: Matrix2DFields;
 }
@@ -58,13 +58,9 @@ export async function saveProject(
   );
 }
 
-export interface ILoadedProject extends IProjectsStore {
-  graphInfo: INodePack[];
-  globalTransform: Matrix2DFields;
-}
 function replaceProjectWith(
-  res: ILoadedProject,
-  onSuccess: (res: ILoadedProject) => Promise<void>,
+  res: IFullProject,
+  onSuccess: (res: IFullProject) => Promise<void>,
 ): void {
   useSafeExecute("replaceGraph", null, false, {
     success: async () => {
@@ -78,13 +74,13 @@ function replaceProjectWith(
 }
 export async function loadProject(
   uid: string,
-  onSuccess: (res: ILoadedProject) => Promise<void>,
+  onSuccess: (res: IFullProject) => Promise<void>,
 ): Promise<void> {
   toastWord("info", Toast_Words["loading-project-message"]);
 
   return safeCall(
     async () =>
-      Requests.get<ILoadedProject>("_python", `/get_project/${uid}`).then((res) =>
+      Requests.get<IFullProject>("_python", `/get_project/${uid}`).then((res) =>
         replaceProjectWith(res, onSuccess),
       ),
     {
@@ -94,8 +90,8 @@ export async function loadProject(
   );
 }
 export function loadLocalProject(
-  res: ILoadedProject,
-  onSuccess: (res: ILoadedProject) => Promise<void>,
+  res: IFullProject,
+  onSuccess: (res: IFullProject) => Promise<void>,
   noToast?: boolean,
 ): void {
   if (!noToast) {

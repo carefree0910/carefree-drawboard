@@ -11,12 +11,7 @@ import { toastWord } from "@/utils/toast";
 import { Toast_Words } from "@/lang/toast";
 import { Projects_Words } from "@/lang/projects";
 import { setCurrentProjectName, useCurrentProject } from "@/stores/projects";
-import {
-  ILoadedProject,
-  fetchAllProjects,
-  loadProject,
-  saveProject,
-} from "@/actions/manageProjects";
+import { IFullProject, fetchAllProjects, loadProject, saveProject } from "@/actions/manageProjects";
 import { downloadCurrentFullProject } from "@/actions/download";
 import CFText from "@/components/CFText";
 import CFInput from "@/components/CFInput";
@@ -29,7 +24,7 @@ import { floatingEvent, floatingRenderEvent } from "../components/Floating";
 import { useClosePanel } from "../components/hooks";
 import Render from "../components/Render";
 
-type IImportLocal = ILoadedProject | INodePack[];
+type IImportLocal = IFullProject | INodePack[];
 const ProjectPlugin = ({ pluginInfo, ...props }: IPlugin) => {
   const id = useMemo(() => `project_${getRandomHash()}`, []);
   const lang = langStore.tgt;
@@ -90,7 +85,7 @@ const ProjectPlugin = ({ pluginInfo, ...props }: IPlugin) => {
       closePanel();
     });
   }
-  async function onLoadProjectSuccess(res: ILoadedProject) {
+  async function onLoadProjectSuccess(res: IFullProject) {
     updateProjectStates(res.uid, res.name);
     toastWord("success", Toast_Words["load-project-success-message"]);
     closePanel();
@@ -108,8 +103,8 @@ const ProjectPlugin = ({ pluginInfo, ...props }: IPlugin) => {
   }
   function onImportLocalProject(res: IImportLocal) {
     toastWord("info", Toast_Words["importing-local-project-message"]);
-    if ((res as ILoadedProject).uid) {
-      res = (res as ILoadedProject).graphInfo;
+    if ((res as IFullProject).uid) {
+      res = (res as IFullProject).graphInfo;
     }
     const json = Graph.fromJsonInfo(res as INodePack[])
       .clone()
