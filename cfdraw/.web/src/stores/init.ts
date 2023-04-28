@@ -1,13 +1,9 @@
 import { makeObservable, observable } from "mobx";
 
 import {
-  CROP_MANAGER_PLUGIN_NAME,
   FOCUS_PLUGIN_NAME,
-  FRAME_EDITOR_PLUGIN_NAME,
-  GUIDELINE_PLUGIN_NAME,
   GUIDELINE_SYSTEM_PLUGIN_NAME,
   IBoardOptions,
-  MAGNET_PLUGIN_NAME,
   WATERMARK_PLUGIN_NAME,
   allInternalPlugins,
 } from "@carefree0910/core";
@@ -40,14 +36,7 @@ export const initStore = new InitStore();
 export const getDefaultBoardOptions = () => ({
   autoResize: true,
   internalPlugins: [GUIDELINE_SYSTEM_PLUGIN_NAME].concat(allInternalPlugins),
-  excludedPlugins: new Set([
-    CROP_MANAGER_PLUGIN_NAME,
-    FRAME_EDITOR_PLUGIN_NAME,
-    FOCUS_PLUGIN_NAME,
-    WATERMARK_PLUGIN_NAME,
-    GUIDELINE_PLUGIN_NAME,
-    MAGNET_PLUGIN_NAME,
-  ]),
+  excludedPlugins: new Set([FOCUS_PLUGIN_NAME, WATERMARK_PLUGIN_NAME]),
   useGlobalClipboard: false, // TODO : test `true`
   backgroundColor: themeStore.styles.boardBg,
   fitContainerOptions: {

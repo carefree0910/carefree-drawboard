@@ -23,7 +23,7 @@ export function useInitBoard(): void {
     const unittest = new UnitTest(NoliNativeBoard, BOARD_CONTAINER_ID, initStore.boardOptions);
 
     // render
-    await unittest.renderEmpty(1, false, !IS_PROD);
+    await unittest.renderEmpty(1, !IS_PROD);
 
     // setup options
     const storeOptions: BoardStoresOptions = {
