@@ -51,7 +51,6 @@ class ISocketPlugin(IPlugin, metaclass=ABCMeta):
         d = self.settings.dict()
         plugin_info = d.pop("pluginInfo")
         plugin_info["identifier"] = self.hash_identifier(self.identifier)
-        plugin_type = f"_python.{self.type}"
         node_constraint = d.pop("nodeConstraint")
         chakra_props = {}
         for field in IChakra.__fields__:
@@ -67,7 +66,7 @@ class ISocketPlugin(IPlugin, metaclass=ABCMeta):
             renderInfo=d,
             **chakra_props,
         )
-        return dict(type=plugin_type, props=props)
+        return dict(type=self.type, props=props)
 
     # helper methods
 

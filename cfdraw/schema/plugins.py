@@ -30,11 +30,15 @@ ISend = Callable[["ISocketMessage"], Coroutine[Any, Any, bool]]
 
 
 class PluginType(str, Enum):
-    # These types should align with the `allAvailablePythonPlugins` locates at
-    # `cfdraw/.web/src/schema/plugins.ts` (without the `_python.` prefix)
-    TEXT_AREA = "textArea"
-    QA = "QA"
-    FIELDS = "fields"
+    """
+    These types should align with the `allAvailablePythonPlugins` locates at
+    `cfdraw/.web/src/schema/plugins.ts`
+    """
+
+    TEXT_AREA = "_python.textArea"
+    QA = "_python.QA"
+    FIELDS = "_python.fields"
+
     # this type of plugins will not be rendered on the drawboard 🎨
     _INTERNAL = "_internal"
 
