@@ -82,6 +82,7 @@ export const updateSettings = (data: ISettingsStore): boolean => {
       //// theme styles', because it uses `themeStore.styles.boardBg`.
       data.boardSettings.boardOptions = {
         autoResize: true,
+        useDynamicScale: false,
         internalPlugins: [GUIDELINE_SYSTEM_PLUGIN_NAME].concat(allInternalPlugins),
         excludedPlugins: new Set([FOCUS_PLUGIN_NAME, WATERMARK_PLUGIN_NAME]),
         useGlobalClipboard: false, // TODO : test `true`
