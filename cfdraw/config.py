@@ -21,10 +21,10 @@ class Config:
     backend_hosting_url: Optional[str] = None  # this must be provided for hosting
     # upload
     upload_root: str = str(constants.UPLOAD_ROOT)
-    # misc
-    use_react_strict_mode: bool = False
     # board
     board_settings: BoardSettings = BoardSettings()
+    # misc
+    use_react_strict_mode: bool = False
 
     @property
     def prod(self) -> bool:
