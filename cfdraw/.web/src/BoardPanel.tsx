@@ -14,7 +14,7 @@ function BoardPanel() {
   const ref = useRef(null);
   const isReady = useIsReady();
   const { boardBg } = themeStore.styles;
-  const Wrapper = settingsStore.globalSettings?.useStrictMode ? React.StrictMode : React.Fragment;
+  const Wrapper = settingsStore.internalSettings?.useStrictMode ? React.StrictMode : React.Fragment;
 
   return (
     <>

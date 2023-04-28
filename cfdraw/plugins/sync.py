@@ -16,7 +16,7 @@ class SyncSocketPlugin(IInternalSocketPlugin):
                     plugin_type().to_plugin_settings()
                     for plugin_type in PluginFactory.plugins.values()
                 ],
-                globalSettings=dict(
+                internalSettings=dict(
                     useStrictMode=config.use_react_strict_mode,
                     sockenEndpoint=str(constants.Endpoint.WEBSOCKET),
                 ),

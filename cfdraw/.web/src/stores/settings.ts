@@ -14,7 +14,7 @@ import { ABCStore, langStore } from "@carefree0910/business";
 import type { AvailablePythonPlugins, IMakePlugin } from "@/schema/plugins";
 import { ThemeType, ThemeStyles, allThemes, themeStore } from "./theme";
 
-interface IGlobalSettings {
+interface IInternalSettings {
   timeout?: number;
   useStrictMode?: boolean;
   socketEndpoint?: string;
@@ -30,21 +30,21 @@ interface IBoardSettings {
 }
 export interface ISettingsStore {
   pluginSettings: IMakePlugin<AvailablePythonPlugins>[];
-  globalSettings?: IGlobalSettings;
+  internalSettings?: IInternalSettings;
   boardSettings?: IBoardSettings;
 }
 class SettingsStore extends ABCStore<ISettingsStore> implements ISettingsStore {
   hash: string = "";
   pluginSettings: IMakePlugin<AvailablePythonPlugins>[] = [];
-  globalSettings?: IGlobalSettings;
   boardSettings?: IBoardSettings;
+  internalSettings?: IInternalSettings;
 
   constructor() {
     super();
     makeObservable(this, {
       hash: observable,
       pluginSettings: observable,
-      globalSettings: observable,
+      internalSettings: observable,
       boardSettings: observable,
     });
   }
@@ -62,9 +62,9 @@ export const updateSettings = (data: ISettingsStore): boolean => {
   runInAction(() => {
     settingsStore.hash = incomingHash;
     settingsStore.pluginSettings = data.pluginSettings;
-    // `globalSettings` should only be updated once.
-    if (!settingsStore.globalSettings) {
-      settingsStore.globalSettings = data.globalSettings;
+    // `internalSettings` should only be updated once.
+    if (!settingsStore.internalSettings) {
+      settingsStore.internalSettings = data.internalSettings;
     }
     // `boardSettings` should only be updated once.
     if (!settingsStore.boardSettings) {

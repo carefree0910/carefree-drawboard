@@ -21,7 +21,7 @@ import {
 
 // cannot use `useMemo` here
 export function useAPI<T extends APISources>(source: T): APIs[T] {
-  const timeout = settingsStore.globalSettings?.timeout ?? 300000;
+  const timeout = settingsStore.internalSettings?.timeout ?? 300000;
   let baseURL = import.meta.env.VITE_CFDRAW_API_URL;
   if (!baseURL) {
     let backendPort = import.meta.env.VITE_CFDRAW_BE_PORT;
