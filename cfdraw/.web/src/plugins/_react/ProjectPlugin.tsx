@@ -103,8 +103,8 @@ const ProjectPlugin = ({ pluginInfo, ...props }: IPlugin) => {
   }
   function onImportLocalProject(res: IImportLocal) {
     toastWord("info", Toast_Words["importing-local-project-message"]);
-    if ((res as IFullProject).uid) {
-      res = (res as IFullProject).graphInfo;
+    if (!Array.isArray(res)) {
+      res = res.graphInfo;
     }
     const json = Graph.fromJsonInfo(res as INodePack[])
       .clone()
