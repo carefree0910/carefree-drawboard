@@ -12,6 +12,7 @@ from typing import Optional
 from fastapi import Response
 from fastapi import HTTPException
 from pydantic import BaseModel
+from PIL.PngImagePlugin import PngInfo
 from cftool.cv import to_rgb
 from cftool.cv import np_to_bytes
 from cftool.misc import random_hash
@@ -73,11 +74,11 @@ def raise_err(err: Exception) -> None:
     raise HTTPException(status_code=constants.ERR_CODE, detail=get_err_msg(err))
 
 
-def upload_image(image: Image.Image) -> Dict[str, Any]:
+def upload_image(image: Image.Image, meta: Optional[PngInfo] = None) -> Dict[str, Any]:
     w, h = image.size
     config = get_config()
     path = config.upload_image_folder / f"{random_hash()}.png"
-    image.save(path)
+    image.save(path, pnginfo=meta)
     url = f"{config.api_url}/{path.relative_to(config.upload_root_path).as_posix()}"
     return dict(w=w, h=h, url=url)
 
