@@ -19,12 +19,13 @@ import { userStore } from "@/stores/user";
 import { debugStore } from "@/stores/debug";
 import { ISettingsStore, settingsStore } from "@/stores/settings";
 import { useWebSocketHook } from "@/requests/hooks";
-import { authEvent } from "@/components/CFAuth";
+import { authEvent, useAuth } from "./useAuth";
 
 export function useIsSetup(): boolean {
   return !!userStore.userId && !!settingsStore.boardSettings;
 }
 export function useSetup(): void {
+  useAuth();
   useUserInitialization();
   useSyncPython();
 }
@@ -33,8 +34,8 @@ export function useSetup(): void {
 
 //// prepare user information
 
-// generate pseudo user id and postMessage.
-// also pretend that the user id may need a few seconds to be fetched.
+//// generate pseudo user id and postMessage.
+//// also pretend that the user id may need a few seconds to be fetched.
 const postPseduoUserId = async (): Promise<void> => {
   await sleep(debugStore.pseduoWaitingTime);
   const USER_ID_KEY = "CFDRAW_USER_ID";

@@ -1,4 +1,4 @@
-import React, { useEffect, useState, PropsWithChildren, ReactElement } from "react";
+import { useEffect } from "react";
 
 import { Logger } from "@carefree0910/core";
 
@@ -16,17 +16,8 @@ function isAllowedOrigin(origin: string): boolean {
   return allowedOriginRegexList.some((regex) => regex.test(origin));
 }
 
-interface ICFAuthGuard {
-  loadingPage?: ReactElement;
-}
-
 export const authEvent = new Event<Message>();
-export const CFAuthGuard: React.FC<PropsWithChildren<ICFAuthGuard>> = ({
-  loadingPage,
-  children,
-}) => {
-  const [accepted, setAccepted] = useState(false);
-
+export const useAuth = () => {
   useEffect(() => {
     const onMessage = (e: MessageEvent<Partial<Message>>) => {
       if (!isAllowedOrigin(e.origin)) {
@@ -34,7 +25,6 @@ export const CFAuthGuard: React.FC<PropsWithChildren<ICFAuthGuard>> = ({
         return;
       }
       if (e.data.userId) {
-        setAccepted(true);
         authEvent.emit({ userId: e.data.userId });
       }
     };
@@ -45,6 +35,4 @@ export const CFAuthGuard: React.FC<PropsWithChildren<ICFAuthGuard>> = ({
       window.removeEventListener("message", onMessage);
     };
   }, []);
-
-  return <>{accepted ? children : loadingPage}</>;
 };
