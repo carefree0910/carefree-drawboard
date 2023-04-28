@@ -48,6 +48,12 @@ class ImageUploader:
         contents: Union[bytes, Image.Image],
         meta: PngInfo,
     ) -> ImageDataModel:
+        """
+        When this method is used in the:
+        * `upload_image` endpoint, `contents` will be a `bytes` object.
+        * `FieldsMiddleWare`, `contents` will be an `Image.Image` object.
+        """
+
         if isinstance(contents, Image.Image):
             image = contents
         else:
