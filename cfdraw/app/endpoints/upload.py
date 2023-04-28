@@ -34,6 +34,19 @@ class FetchImageModel(BaseModel):
     jpeg: bool
 
 
+class ImageUploader:
+    @staticmethod
+    def upload_image(contents: bytes, meta: PngInfo) -> ImageDataModel:
+        loaded_image = Image.open(BytesIO(contents))
+        res = server.upload_image(loaded_image, meta)
+        return ImageDataModel(**res)
+
+    @staticmethod
+    def fetch_image(data: FetchImageModel) -> Response:
+        file = data.url.split(constants.UPLOAD_IMAGE_FOLDER_NAME)[1][1:]  # remove '/'
+        return server.get_image_response(file, data.jpeg)
+
+
 def add_upload_image(app: IApp) -> None:
     @app.api.post("/upload_image", responses=get_responses(UploadImageResponse))
     def upload_image(
@@ -42,25 +55,19 @@ def add_upload_image(app: IApp) -> None:
     ) -> UploadImageResponse:
         try:
             contents = image.file.read()
-            loaded_image = Image.open(BytesIO(contents))
             meta = PngInfo()
             meta.add_text("userId", userId)
-            res = server.upload_image(loaded_image, meta)
+            data = ImageUploader.upload_image(contents, meta)
         except Exception as err:
             err_msg = get_err_msg(err)
             return UploadImageResponse(success=False, message=err_msg, data=None)
         finally:
             image.file.close()
-        return UploadImageResponse(
-            success=True,
-            message="",
-            data=ImageDataModel(**res),
-        )
+        return UploadImageResponse(success=True, message="", data=data)
 
     @app.api.post("/fetch_image", **get_image_response_kwargs())
     async def fetch_image(data: FetchImageModel) -> Response:
-        file = data.url.split(constants.UPLOAD_IMAGE_FOLDER_NAME)[1][1:]  # remove '/'
-        return server.get_image_response(file, data.jpeg)
+        return ImageUploader.fetch_image(data)
 
     @app.api.get(
         f"/{constants.UPLOAD_IMAGE_FOLDER_NAME}/{{file}}/",
