@@ -1,13 +1,15 @@
+import asyncio
+
 from typing import List
 from typing import Union
 from PIL.Image import Image
 from PIL.PngImagePlugin import PngInfo
 
-from cfdraw.utils.server import save_image
 from cfdraw.schema.plugins import PluginType
 from cfdraw.schema.plugins import IMiddleWare
 from cfdraw.schema.plugins import ISocketMessage
 from cfdraw.schema.plugins import ISocketRequest
+from cfdraw.app.endpoints.upload import ImageUploader
 
 
 class FieldsMiddleWare(IMiddleWare):
@@ -29,7 +31,8 @@ class FieldsMiddleWare(IMiddleWare):
             return self.make_success(dict(type="text", value=response))
         meta = PngInfo()
         meta.add_text("request", self.request.json())
-        urls = [save_image(image, meta) for image in response]
+        futures = [ImageUploader.upload_image(image, meta) for image in response]
+        urls = [data.dict() for data in await asyncio.gather(*futures)]
         return self.make_success(dict(type="image", value=urls))
 
 
