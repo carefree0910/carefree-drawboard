@@ -11,7 +11,7 @@ import { toastWord } from "@/utils/toast";
 import { Toast_Words } from "@/lang/toast";
 import { Projects_Words } from "@/lang/projects";
 import { setCurrentProjectName, useCurrentProject } from "@/stores/projects";
-import { IFullProject, fetchAllProjects, loadProject, saveProject } from "@/actions/manageProjects";
+import { IProject, fetchAllProjects, loadProject, saveProject } from "@/actions/manageProjects";
 import { downloadCurrentFullProject } from "@/actions/download";
 import CFText from "@/components/CFText";
 import CFInput from "@/components/CFInput";
@@ -24,7 +24,7 @@ import { floatingEvent, floatingRenderEvent } from "../components/Floating";
 import { useClosePanel } from "../components/hooks";
 import Render from "../components/Render";
 
-type IImportLocal = IFullProject | INodePack[];
+type IImportLocal = IProject | INodePack[];
 const ProjectPlugin = ({ pluginInfo, ...props }: IPlugin) => {
   const id = useMemo(() => `project_${getRandomHash()}`, []);
   const lang = langStore.tgt;
@@ -85,7 +85,7 @@ const ProjectPlugin = ({ pluginInfo, ...props }: IPlugin) => {
       closePanel();
     });
   }
-  async function onLoadProjectSuccess(res: IFullProject) {
+  async function onLoadProjectSuccess(res: IProject) {
     updateProjectStates(res.uid, res.name);
     toastWord("success", Toast_Words["load-project-success-message"]);
     closePanel();

@@ -5,14 +5,14 @@ import { Graph, INode, download, toJsonBlob } from "@carefree0910/core";
 import type { DownloadFormat } from "@/schema/misc";
 import { toastWord } from "@/utils/toast";
 import { Toast_Words } from "@/lang/toast";
-import { useCurrentFullProject } from "./manageProjects";
+import { useCurrentProjectWithUserId } from "./manageProjects";
 import { Exporter } from "./export";
 
 export function downloadCurrentFullProject(): void {
-  const fullProject = useCurrentFullProject();
+  const projectWithUserId = useCurrentProjectWithUserId();
   toastWord("info", Toast_Words["downloading-project-message"]);
-  const blob = toJsonBlob(fullProject);
-  download(blob, `${fullProject.name}.cfdraw`);
+  const blob = toJsonBlob(projectWithUserId);
+  download(blob, `${projectWithUserId.name}.cfdraw`);
 }
 
 export async function downloadNodes(

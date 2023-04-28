@@ -17,13 +17,12 @@ import {
   useCurrentProject,
 } from "@/stores/projects";
 
-export interface IFullProject extends IProjectsStore {
-  userId: string;
+export interface IProject extends IProjectsStore {
   graphInfo: INodePack[];
   globalTransform: Matrix2DFields;
 }
 
-export function useCurrentFullProject(): IFullProject {
+export function useCurrentProjectWithUserId(): IProject & { userId: string } {
   const data = useCurrentProject();
   const userId = userStore.userId;
   const graphInfo = BoardStore.graph.toJsonInfo();
@@ -36,7 +35,7 @@ export async function saveProject(
   noToast?: boolean,
 ): Promise<void> {
   updateCurrentProjectUpdateTime();
-  const fullProject = useCurrentFullProject();
+  const projectWithUserId = useCurrentProjectWithUserId();
   if (!noToast) {
     toastWord("info", Toast_Words["uploading-project-message"]);
   }
@@ -46,7 +45,7 @@ export async function saveProject(
       const res = await Requests.postJson<{
         success: boolean;
         message: string;
-      }>("_python", "/save_project", fullProject);
+      }>("_python", "/save_project", projectWithUserId);
       if (!res.success) {
         toastWord("warning", Toast_Words["save-project-error-message"], {
           appendix: ` - ${res.message}`,
@@ -61,10 +60,7 @@ export async function saveProject(
   );
 }
 
-function replaceProjectWith(
-  res: IFullProject,
-  onSuccess: (res: IFullProject) => Promise<void>,
-): void {
+function replaceProjectWith(res: IProject, onSuccess: (res: IProject) => Promise<void>): void {
   useSafeExecute("replaceGraph", null, false, {
     success: async () => {
       BoardStore.api.setGlobalTransform(new Matrix2D(res.globalTransform));
@@ -77,16 +73,15 @@ function replaceProjectWith(
 }
 export async function loadProject(
   uid: string,
-  onSuccess: (res: IFullProject) => Promise<void>,
+  onSuccess: (res: IProject) => Promise<void>,
 ): Promise<void> {
   toastWord("info", Toast_Words["loading-project-message"]);
 
   return safeCall(
     async () =>
-      Requests.get<IFullProject>(
-        "_python",
-        `/get_project/?userId=${userStore.userId}&uid=${uid}`,
-      ).then((res) => replaceProjectWith(res, onSuccess)),
+      Requests.get<IProject>("_python", `/get_project/?userId=${userStore.userId}&uid=${uid}`).then(
+        (res) => replaceProjectWith(res, onSuccess),
+      ),
     {
       success: async () => void 0,
       failed: async () => void 0,
@@ -94,8 +89,8 @@ export async function loadProject(
   );
 }
 export function loadLocalProject(
-  res: IFullProject,
-  onSuccess: (res: IFullProject) => Promise<void>,
+  res: IProject,
+  onSuccess: (res: IProject) => Promise<void>,
   noToast?: boolean,
 ): void {
   if (!noToast) {
