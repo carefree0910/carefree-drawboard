@@ -180,7 +180,9 @@ class INode(BaseModel):
     nodes: Optional[List["INode"]]  # only for group
 
     def dict(self, **kwargs: Any) -> Dict[str, Any]:
-        return dict(className=type2class_name[self.type], info=super().dict(**kwargs))
+        d = super().dict(**kwargs)
+        d.pop("type")
+        return dict(className=type2class_name[self.type], info=d)
 
 
 class Graph(BaseModel):
