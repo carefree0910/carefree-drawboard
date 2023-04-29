@@ -1,4 +1,10 @@
-import { INodePack, Matrix2D, Matrix2DFields, safeCall } from "@carefree0910/core";
+import {
+  INodePack,
+  Matrix2D,
+  Matrix2DFields,
+  identityMatrix2DFields,
+  safeCall,
+} from "@carefree0910/core";
 import {
   BoardStore,
   safeClearExecuterStack,
@@ -12,6 +18,7 @@ import { Requests } from "@/requests/actions";
 import { userStore } from "@/stores/user";
 import {
   IProjectsStore,
+  getNewProject,
   updateCurrentProject,
   updateCurrentProjectUpdateTime,
   useCurrentProject,
@@ -23,6 +30,10 @@ export interface IProject extends IProjectsStore {
 }
 interface IProjectWithUserId extends IProject {
   userId: string;
+}
+
+export function getNewFullProject(): IProject {
+  return { graphInfo: [], globalTransform: identityMatrix2DFields, ...getNewProject() };
 }
 
 export function useCurrentProjectWithUserId(): IProjectWithUserId {

@@ -2,7 +2,7 @@ import { useMemo } from "react";
 import { observer } from "mobx-react-lite";
 import { Flex } from "@chakra-ui/react";
 
-import { getRandomHash, identityMatrix2DFields } from "@carefree0910/core";
+import { getRandomHash } from "@carefree0910/core";
 import { langStore, translate } from "@carefree0910/business";
 
 import type { IPlugin } from "@/schema/plugins";
@@ -10,8 +10,7 @@ import { toastWord } from "@/utils/toast";
 import { Add_Words } from "@/lang/add";
 import { Toast_Words } from "@/lang/toast";
 import { importMeta } from "@/actions/importMeta";
-import { loadLocalProject, saveCurrentProject } from "@/actions/manageProjects";
-import { getNewProject } from "@/stores/projects";
+import { getNewFullProject, loadLocalProject, saveCurrentProject } from "@/actions/manageProjects";
 import CFButton from "@/components/CFButton";
 import CFDivider from "@/components/CFDivider";
 import CFHeading from "@/components/CFHeading";
@@ -31,7 +30,7 @@ const AddPlugin = ({ pluginInfo, ...props }: IPlugin) => {
     saveCurrentProject(
       async () =>
         loadLocalProject(
-          { graphInfo: [], globalTransform: identityMatrix2DFields, ...getNewProject() },
+          getNewFullProject(),
           async () => {
             floatingEvent.emit({ type: "newProject", data: {} });
             toastWord("success", Toast_Words["add-project-success-message"]);
