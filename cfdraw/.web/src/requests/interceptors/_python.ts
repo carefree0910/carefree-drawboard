@@ -5,7 +5,7 @@ import type { Interceptors } from "@/schema/requests";
 export const _pythonInceptors: Interceptors = {
   beforeRequest: (config) => {
     if (Logger.isDebug) {
-      Logger.debug(`send to Python: ${JSON.stringify(config.data)} (${config.url})`);
+      Logger.debug(`[${config.url}] send to Python: ${JSON.stringify(config.data)}`);
     }
     config.headers["ngrok-skip-browser-warning"] = "";
     return config;
