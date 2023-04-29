@@ -33,12 +33,11 @@ export function useCurrentProjectWithUserId(): IProjectWithUserId {
   return { ...data, userId, graphInfo, globalTransform };
 }
 
-export async function saveCurrentProject(
+export async function saveProject(
+  projectWithUserId: IProjectWithUserId,
   onSuccess: () => Promise<void>,
   noToast?: boolean,
 ): Promise<void> {
-  updateCurrentProjectUpdateTime();
-  const projectWithUserId = useCurrentProjectWithUserId();
   if (!noToast) {
     toastWord("info", Toast_Words["uploading-project-message"]);
   }
@@ -61,6 +60,14 @@ export async function saveCurrentProject(
       failed: async () => void 0,
     },
   );
+}
+export async function saveCurrentProject(
+  onSuccess: () => Promise<void>,
+  noToast?: boolean,
+): Promise<void> {
+  updateCurrentProjectUpdateTime();
+  const projectWithUserId = useCurrentProjectWithUserId();
+  return saveProject(projectWithUserId, onSuccess, noToast);
 }
 
 function replaceCurrentProjectWith(
