@@ -95,6 +95,10 @@ const ProjectPlugin = ({ pluginInfo, ...props }: IPlugin) => {
       toastWord("warning", Toast_Words["please-select-project-message"]);
       return;
     }
+    if (selectedUid === uid) {
+      toastWord("info", Toast_Words["already-selected-project-message"]);
+      return;
+    }
     loadProject(selectedUid, onLoadProjectSuccess);
   }
   function onDownloadProject(): void {
