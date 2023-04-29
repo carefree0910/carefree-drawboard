@@ -135,14 +135,21 @@ export function getAllProjectInfo(): Promise<IProjectsStore[] | undefined> {
 }
 
 export const AUTO_SAVE_PREFIX = "auto-save-";
+export function getAutoSaveProjectInfo(): Promise<IProjectsStore | undefined> {
+  if (!userStore.userId) {
+    throw Error("`userId` should be ready before calling `getAutoSaveProject`");
+  }
+  return getAllProjectInfo().then((projects) =>
+    (projects ?? []).find(({ uid }) => uid.startsWith(AUTO_SAVE_PREFIX)),
+  );
+}
 export function getAutoSaveProject(): Promise<IProject> {
   const userId = userStore.userId;
   if (!userId) {
     throw Error("`userId` should be ready before calling `getAutoSaveProject`");
   }
-  return getAllProjectInfo().then((projects) => {
-    const existingInfo = (projects ?? []).find(({ uid }) => uid.startsWith(AUTO_SAVE_PREFIX));
-    if (existingInfo) return getProject(existingInfo.uid);
+  return getAutoSaveProjectInfo().then((info) => {
+    if (info) return getProject(info.uid);
     const autoSaveProject = { userId, ...getNewProject() };
     autoSaveProject.uid = `${AUTO_SAVE_PREFIX}${autoSaveProject.uid}`;
     autoSaveProject.name = "Auto Save";
