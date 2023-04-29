@@ -10,12 +10,15 @@ import type { IPlugin } from "@/schema/plugins";
 import { toastWord } from "@/utils/toast";
 import { Toast_Words } from "@/lang/toast";
 import { Projects_Words } from "@/lang/projects";
+import { userStore } from "@/stores/user";
 import { setCurrentProjectName, useCurrentProject } from "@/stores/projects";
 import {
   IProject,
   fetchAllProjects,
+  getNewProject,
   loadProject,
   saveCurrentProject,
+  saveProject,
 } from "@/actions/manageProjects";
 import { downloadCurrentFullProject } from "@/actions/download";
 import CFText from "@/components/CFText";
@@ -29,10 +32,12 @@ import { floatingEvent, floatingRenderEvent } from "../components/Floating";
 import { useClosePanel } from "../components/hooks";
 import Render from "../components/Render";
 
+const AUTO_SAVE_PREFIX = "auto-save-";
 type IImportLocal = IProject | INodePack[];
 const ProjectPlugin = ({ pluginInfo, ...props }: IPlugin) => {
   const id = useMemo(() => `project_${getRandomHash()}`, []);
   const lang = langStore.tgt;
+  const userId = userStore.userId;
   const { uid, name } = useCurrentProject();
   const [selectedUid, setSelectedUid] = useState("");
   const [userInputName, setUserInputName] = useState(name);
@@ -40,17 +45,33 @@ const ProjectPlugin = ({ pluginInfo, ...props }: IPlugin) => {
   const allProjectUids = useMemo(() => Object.keys(allProjects ?? {}), [allProjects]);
 
   const updateUids = useCallback(() => {
-    fetchAllProjects().then((projects) => {
-      projects ??= [];
-      const uid2name = projects.reduce((acc, { uid, name }) => {
-        acc[uid] = name;
-        return acc;
-      }, {} as Dictionary<string>);
-      setAllProjects(uid2name);
-      if (!!uid2name[uid]) {
-        setSelectedUid(uid);
-      }
-    });
+    fetchAllProjects()
+      .then((projects) => {
+        projects ??= [];
+        const uid2name = projects.reduce((acc, { uid, name }) => {
+          acc[uid] = name;
+          return acc;
+        }, {} as Dictionary<string>);
+        return { uid2name };
+      })
+      .then(({ uid2name }) => {
+        if (!Object.keys(uid2name).some((uid) => uid.startsWith(AUTO_SAVE_PREFIX))) {
+          const autoSaveProject = getNewProject();
+          autoSaveProject.uid = `${AUTO_SAVE_PREFIX}${autoSaveProject.uid}`;
+          autoSaveProject.name = "Auto Save";
+          return saveProject({ userId, ...autoSaveProject }, async () => void 0).then(() => {
+            uid2name[autoSaveProject.uid] = autoSaveProject.name;
+            return { uid2name };
+          });
+        }
+        return { uid2name };
+      })
+      .then(({ uid2name }) => {
+        setAllProjects(uid2name);
+        if (!!uid2name[uid]) {
+          setSelectedUid(uid);
+        }
+      });
   }, []);
 
   useEffect(() => {
