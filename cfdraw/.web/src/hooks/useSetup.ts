@@ -57,7 +57,6 @@ const postPseduoUserId = async (): Promise<void> => {
   }
   window.postMessage({ userId }, `http://localhost:${import.meta.env.VITE_CFDRAW_FE_PORT}`);
 };
-
 const useUserInitialization = () => {
   useEffect(() => {
     const { dispose } = authEvent.on(({ userId }) => {
@@ -202,7 +201,6 @@ function useSyncPython() {
 }
 
 //// auto save project periodically
-
 function useAutoSaveEvery(second: number) {
   const userId = userStore.userId;
   const timer = useRef<NodeJS.Timeout | null>(null);
