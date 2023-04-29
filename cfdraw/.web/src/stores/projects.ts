@@ -32,11 +32,14 @@ class ProjectsStore extends ABCStore<IPartialProjectsStore> implements IPartialP
 }
 
 const projectsStore = new ProjectsStore();
+export function getTimeString(time: number): string {
+  return formatTime(time, "YYYY-MM-DD HH:mm").slice(2);
+}
 export const getNewProjectInfo = (): IProjectsStore => {
   const time = new Date().getTime();
   return {
     uid: uuidv4(),
-    name: `Project ${formatTime(time, "YYYY-MM-DD HH:mm").slice(2)}`,
+    name: `Project ${getTimeString(time)}`,
     createTime: time / 1000,
     updateTime: time / 1000,
   };
