@@ -1,9 +1,10 @@
+import { v4 as uuidv4 } from "uuid";
 import Upload from "rc-upload";
 import { observer } from "mobx-react-lite";
 import { useMemo, useState, useEffect, useCallback } from "react";
 import { Flex } from "@chakra-ui/react";
 
-import { Dictionary, Graph, INodePack, getRandomHash } from "@carefree0910/core";
+import { Dictionary, Graph, INodePack, getRandomHash, shallowCopy } from "@carefree0910/core";
 import { langStore, translate, useSafeExecute } from "@carefree0910/business";
 
 import type { IPlugin } from "@/schema/plugins";
@@ -11,11 +12,18 @@ import { toastWord } from "@/utils/toast";
 import { Toast_Words } from "@/lang/toast";
 import { Projects_Words } from "@/lang/projects";
 import { userStore } from "@/stores/user";
-import { setCurrentProjectName, useCurrentProject } from "@/stores/projects";
 import {
+  IProjectsStore,
+  getTimeString,
+  setCurrentProjectName,
+  updateCurrentProject,
+  useCurrentProject,
+} from "@/stores/projects";
+import {
+  AUTO_SAVE_PREFIX,
   IProject,
   fetchAllProjects,
-  getNewProject,
+  getProject,
   loadProject,
   saveCurrentProject,
   saveProject,
@@ -32,8 +40,8 @@ import { floatingEvent, floatingRenderEvent } from "../components/Floating";
 import { useClosePanel } from "../components/hooks";
 import Render from "../components/Render";
 
-const AUTO_SAVE_PREFIX = "auto-save-";
 type IImportLocal = IProject | INodePack[];
+
 const ProjectPlugin = ({ pluginInfo, ...props }: IPlugin) => {
   const id = useMemo(() => `project_${getRandomHash()}`, []);
   const lang = langStore.tgt;
@@ -43,42 +51,41 @@ const ProjectPlugin = ({ pluginInfo, ...props }: IPlugin) => {
   const [userInputName, setUserInputName] = useState(name);
   const [allProjects, setAllProjects] = useState<Dictionary<string> | undefined>();
   const allProjectUids = useMemo(() => Object.keys(allProjects ?? {}), [allProjects]);
+  const getLoadUid = useCallback(() => {
+    if (!selectedUid.startsWith(AUTO_SAVE_PREFIX)) return Promise.resolve(selectedUid);
+    // should create a new project when loading auto save project
+    return getProject(selectedUid).then((autoSaveProject) => {
+      const newProject = shallowCopy(autoSaveProject);
+      const time = Date.now();
+      newProject.uid = uuidv4();
+      newProject.name = `From Auto Save ${getTimeString(time)}`;
+      newProject.createTime = newProject.updateTime = time;
+      return saveProject({ userId, ...newProject }, async () => void 0, true).then(() => {
+        updateCurrentProject(newProject);
+        updateProjectStates(newProject);
+        return newProject.uid;
+      });
+    });
+  }, [userId, selectedUid]);
 
   const updateUids = useCallback(() => {
-    fetchAllProjects()
-      .then((projects) => {
-        projects ??= [];
-        const uid2name = projects.reduce((acc, { uid, name }) => {
-          acc[uid] = name;
-          return acc;
-        }, {} as Dictionary<string>);
-        return { uid2name };
-      })
-      .then(({ uid2name }) => {
-        if (!Object.keys(uid2name).some((uid) => uid.startsWith(AUTO_SAVE_PREFIX))) {
-          const autoSaveProject = getNewProject();
-          autoSaveProject.uid = `${AUTO_SAVE_PREFIX}${autoSaveProject.uid}`;
-          autoSaveProject.name = "Auto Save";
-          return saveProject({ userId, ...autoSaveProject }, async () => void 0).then(() => {
-            uid2name[autoSaveProject.uid] = autoSaveProject.name;
-            return { uid2name };
-          });
-        }
-        return { uid2name };
-      })
-      .then(({ uid2name }) => {
-        setAllProjects(uid2name);
-        if (!!uid2name[uid]) {
-          setSelectedUid(uid);
-        }
-      });
+    fetchAllProjects().then((projects) => {
+      projects ??= [];
+      const uid2name = projects.reduce((acc, { uid, name }) => {
+        acc[uid] = name;
+        return acc;
+      }, {} as Dictionary<string>);
+      setAllProjects(uid2name);
+      if (!!uid2name[uid]) {
+        setSelectedUid(uid);
+      }
+    });
   }, []);
 
   useEffect(() => {
     const { dispose: floatingDispose } = floatingEvent.on(({ type }) => {
       if (type === "newProject") {
-        const { uid, name } = useCurrentProject();
-        updateProjectStates(uid, name);
+        updateProjectStates(useCurrentProject());
       }
     });
     const { dispose: floatingRenderDispose } = floatingRenderEvent.on(
@@ -94,7 +101,7 @@ const ProjectPlugin = ({ pluginInfo, ...props }: IPlugin) => {
   }, [id]);
 
   const closePanel = useClosePanel(id);
-  function updateProjectStates(uid: string, name: string) {
+  function updateProjectStates({ uid, name }: IProjectsStore) {
     setSelectedUid(uid);
     setUserInputName(name);
   }
@@ -112,7 +119,7 @@ const ProjectPlugin = ({ pluginInfo, ...props }: IPlugin) => {
     });
   }
   async function onLoadProjectSuccess(project: IProject) {
-    updateProjectStates(project.uid, project.name);
+    updateProjectStates(project);
     toastWord("success", Toast_Words["load-project-success-message"]);
     closePanel();
   }
@@ -125,7 +132,7 @@ const ProjectPlugin = ({ pluginInfo, ...props }: IPlugin) => {
       toastWord("info", Toast_Words["already-selected-project-message"]);
       return;
     }
-    loadProject(selectedUid, onLoadProjectSuccess);
+    getLoadUid().then((uid) => loadProject(uid, onLoadProjectSuccess));
   }
   function onDownloadProject(): void {
     downloadCurrentFullProject();

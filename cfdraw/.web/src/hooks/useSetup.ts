@@ -18,6 +18,7 @@ import { ThemeType, allThemes, themeStore } from "@/stores/theme";
 import { userStore } from "@/stores/user";
 import { debugStore } from "@/stores/debug";
 import { ISettingsStore, settingsStore, useSettingsSynced } from "@/stores/settings";
+import { getAutoSaveProject } from "@/actions/manageProjects";
 import { useWebSocketHook } from "@/requests/hooks";
 import { authEvent, useAuth } from "./useAuth";
 
@@ -28,6 +29,7 @@ export function useSetup(): void {
   useAuth();
   useUserInitialization();
   useSyncPython();
+  useAutoSave();
 }
 
 // helper functions
@@ -160,4 +162,14 @@ function useSyncPython() {
     onMessage,
     isInternal: true,
   });
+}
+
+//// initialize auto save project
+function useAutoSave() {
+  const userId = userStore.userId;
+
+  useEffect(() => {
+    if (!userId) return;
+    getAutoSaveProject();
+  }, [userId]);
 }

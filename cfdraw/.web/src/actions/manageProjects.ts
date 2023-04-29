@@ -137,3 +137,19 @@ export async function fetchAllProjects(): Promise<IProjectItem[] | undefined> {
     },
   );
 }
+
+export const AUTO_SAVE_PREFIX = "auto-save-";
+export function getAutoSaveProject(): Promise<IProject> {
+  const userId = userStore.userId;
+  if (!userId) {
+    throw Error("`userId` should be ready before calling `getAutoSaveProject`");
+  }
+  return fetchAllProjects().then((projects) => {
+    const existingItem = (projects ?? []).find(({ uid }) => uid.startsWith(AUTO_SAVE_PREFIX));
+    if (existingItem) return getProject(existingItem.uid);
+    const autoSaveProject = { userId, ...getNewProject() };
+    autoSaveProject.uid = `${AUTO_SAVE_PREFIX}${autoSaveProject.uid}`;
+    autoSaveProject.name = "Auto Save";
+    return saveProject(autoSaveProject, async () => void 0, true).then(() => autoSaveProject);
+  });
+}
