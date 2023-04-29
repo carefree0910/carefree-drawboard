@@ -118,21 +118,24 @@ def add_project_managements(app: IApp) -> None:
             file = f"{uid}{suffix}"
             with open(upload_project_folder / file, "r") as f:
                 d = json.load(f)
-            # replace url if needed
-            graph = noli.parse_graph(d["graphInfo"])
-            for node in graph.all_single_nodes:
-                if node.type == noli.SingleNodeType.IMAGE:
-                    if node.renderParams is None:
-                        raise ValueError("`ImageNode` should have `renderParams`")
-                    src = node.renderParams.src
-                    # TODO: this kind of transformation should be included in the
-                    # migration stage, not runtime stage. Will be fixed in the future
-                    if src and isinstance(src, str) and src.startswith("http://"):
-                        pivot = constants.UPLOAD_IMAGE_FOLDER_NAME
-                        _, path = src.split(pivot)
-                        api_url = app.config.api_url
-                        node.renderParams.src = api_url + "/" + pivot + path
-            d["graphInfo"] = graph.dict()["root_nodes"]
+
+            # TODO: this kind of transformation should be included in the
+            # migration stage, not runtime stage. Will be fixed in the future
+
+            # # replace url if needed
+            # graph = noli.parse_graph(d["graphInfo"])
+            # for node in graph.all_single_nodes:
+            #     if node.type == noli.SingleNodeType.IMAGE:
+            #         if node.renderParams is None:
+            #             raise ValueError("`ImageNode` should have `renderParams`")
+            #         src = node.renderParams.src
+            #         if src and isinstance(src, str) and src.startswith("http://"):
+            #             pivot = constants.UPLOAD_IMAGE_FOLDER_NAME
+            #             _, path = src.split(pivot)
+            #             api_url = app.config.api_url
+            #             node.renderParams.src = api_url + "/" + pivot + path
+            # d["graphInfo"] = graph.dict()["root_nodes"]
+
             return ProjectModel(**d)
         except Exception as err:
             raise_err(err)
