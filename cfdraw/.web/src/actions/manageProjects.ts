@@ -44,7 +44,7 @@ export function useCurrentProjectWithUserId(): IProjectWithUserId {
   return { ...info, userId, graphInfo, globalTransform };
 }
 
-export async function saveProject(
+export function saveProject(
   projectWithUserId: IProjectWithUserId,
   onSuccess: () => Promise<void>,
   noToast?: boolean,
@@ -72,7 +72,7 @@ export async function saveProject(
     },
   );
 }
-export async function saveCurrentProject(
+export function saveCurrentProject(
   onSuccess: () => Promise<void>,
   noToast?: boolean,
 ): Promise<void> {
@@ -95,10 +95,10 @@ function replaceCurrentProjectWith(
     failed: async () => void 0,
   })({ json: JSON.stringify(project.graphInfo), apiInfos: {}, noFit: true });
 }
-export async function getProject(uid: string): Promise<IProject> {
+export function getProject(uid: string): Promise<IProject> {
   return Requests.get<IProject>("_python", `/get_project/?userId=${userStore.userId}&uid=${uid}`);
 }
-export async function loadProject(
+export function loadProject(
   uid: string,
   onSuccess: (project: IProject) => Promise<void>,
 ): Promise<void> {
@@ -127,7 +127,7 @@ interface IProjectItem {
   uid: string;
   name: string;
 }
-export async function fetchAllProjectItems(): Promise<IProjectItem[] | undefined> {
+export function fetchAllProjectItems(): Promise<IProjectItem[] | undefined> {
   return safeCall(
     async () =>
       Requests.get<IProjectItem[]>("_python", `/all_projects/?userId=${userStore.userId}`),
