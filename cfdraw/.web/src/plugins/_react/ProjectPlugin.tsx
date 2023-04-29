@@ -16,13 +16,13 @@ import {
   IProjectsStore,
   getTimeString,
   setCurrentProjectName,
-  updateCurrentProject,
-  useCurrentProject,
+  updateCurrentProjectInfo,
+  useCurrentProjectInfo,
 } from "@/stores/projects";
 import {
   AUTO_SAVE_PREFIX,
   IProject,
-  fetchAllProjects,
+  fetchAllProjectItems,
   getProject,
   loadProject,
   saveCurrentProject,
@@ -46,11 +46,11 @@ const ProjectPlugin = ({ pluginInfo, ...props }: IPlugin) => {
   const id = useMemo(() => `project_${getRandomHash()}`, []);
   const lang = langStore.tgt;
   const userId = userStore.userId;
-  const { uid, name } = useCurrentProject();
+  const { uid, name } = useCurrentProjectInfo();
   const [selectedUid, setSelectedUid] = useState("");
   const [userInputName, setUserInputName] = useState(name);
-  const [allProjects, setAllProjects] = useState<Dictionary<string> | undefined>();
-  const allProjectUids = useMemo(() => Object.keys(allProjects ?? {}), [allProjects]);
+  const [allUid2Name, setAllUid2Name] = useState<Dictionary<string> | undefined>();
+  const allProjectUids = useMemo(() => Object.keys(allUid2Name ?? {}), [allUid2Name]);
   const getLoadUid = useCallback(() => {
     if (!selectedUid.startsWith(AUTO_SAVE_PREFIX)) return Promise.resolve(selectedUid);
     // should create a new project when loading auto save project
@@ -61,7 +61,7 @@ const ProjectPlugin = ({ pluginInfo, ...props }: IPlugin) => {
       newProject.name = `From Auto Save ${getTimeString(time)}`;
       newProject.createTime = newProject.updateTime = time;
       return saveProject({ userId, ...newProject }, async () => void 0, true).then(() => {
-        updateCurrentProject(newProject);
+        updateCurrentProjectInfo(newProject);
         updateProjectStates(newProject);
         return newProject.uid;
       });
@@ -69,13 +69,13 @@ const ProjectPlugin = ({ pluginInfo, ...props }: IPlugin) => {
   }, [userId, selectedUid]);
 
   const updateUids = useCallback(() => {
-    fetchAllProjects().then((projects) => {
+    fetchAllProjectItems().then((projects) => {
       projects ??= [];
       const uid2name = projects.reduce((acc, { uid, name }) => {
         acc[uid] = name;
         return acc;
       }, {} as Dictionary<string>);
-      setAllProjects(uid2name);
+      setAllUid2Name(uid2name);
       if (!!uid2name[uid]) {
         setSelectedUid(uid);
       }
@@ -85,7 +85,7 @@ const ProjectPlugin = ({ pluginInfo, ...props }: IPlugin) => {
   useEffect(() => {
     const { dispose: floatingDispose } = floatingEvent.on(({ type }) => {
       if (type === "newProject") {
-        updateProjectStates(useCurrentProject());
+        updateProjectStates(useCurrentProjectInfo());
       }
     });
     const { dispose: floatingRenderDispose } = floatingRenderEvent.on(
@@ -165,13 +165,13 @@ const ProjectPlugin = ({ pluginInfo, ...props }: IPlugin) => {
           {translate(Projects_Words["save-project"], lang)}
         </CFButton>
         <CFDivider />
-        {allProjects ? (
+        {allUid2Name ? (
           allProjectUids.length > 0 ? (
             <CFSrollableSelect
               value={selectedUid}
               options={allProjectUids}
               onOptionClick={(uid) => setSelectedUid(uid)}
-              optionConverter={(uid) => allProjects[uid]}
+              optionConverter={(uid) => allUid2Name[uid]}
             />
           ) : (
             <CFText>{translate(Projects_Words["no-projects-available"], lang)}</CFText>

@@ -19,9 +19,9 @@ import { userStore } from "@/stores/user";
 import {
   IProjectsStore,
   getNewProjectInfo,
-  updateCurrentProject,
+  updateCurrentProjectInfo,
   updateCurrentProjectUpdateTime,
-  useCurrentProject,
+  useCurrentProjectInfo,
 } from "@/stores/projects";
 
 export interface IProject extends IProjectsStore {
@@ -37,11 +37,11 @@ export function getNewProject(): IProject {
 }
 
 export function useCurrentProjectWithUserId(): IProjectWithUserId {
-  const data = useCurrentProject();
+  const info = useCurrentProjectInfo();
   const userId = userStore.userId;
   const graphInfo = BoardStore.graph.toJsonInfo();
   const globalTransform = useGlobalTransform().globalTransform.fields;
-  return { ...data, userId, graphInfo, globalTransform };
+  return { ...info, userId, graphInfo, globalTransform };
 }
 
 export async function saveProject(
@@ -89,7 +89,7 @@ function replaceCurrentProjectWith(
     success: async () => {
       BoardStore.api.setGlobalTransform(new Matrix2D(project.globalTransform));
       safeClearExecuterStack();
-      updateCurrentProject(project);
+      updateCurrentProjectInfo(project);
       onSuccess(project);
     },
     failed: async () => void 0,
@@ -127,7 +127,7 @@ interface IProjectItem {
   uid: string;
   name: string;
 }
-export async function fetchAllProjects(): Promise<IProjectItem[] | undefined> {
+export async function fetchAllProjectItems(): Promise<IProjectItem[] | undefined> {
   return safeCall(
     async () =>
       Requests.get<IProjectItem[]>("_python", `/all_projects/?userId=${userStore.userId}`),
@@ -144,7 +144,7 @@ export function getAutoSaveProject(): Promise<IProject> {
   if (!userId) {
     throw Error("`userId` should be ready before calling `getAutoSaveProject`");
   }
-  return fetchAllProjects().then((projects) => {
+  return fetchAllProjectItems().then((projects) => {
     const existingItem = (projects ?? []).find(({ uid }) => uid.startsWith(AUTO_SAVE_PREFIX));
     if (existingItem) return getProject(existingItem.uid);
     const autoSaveProject = { userId, ...getNewProject() };

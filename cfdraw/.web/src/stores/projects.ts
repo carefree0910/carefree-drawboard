@@ -45,7 +45,7 @@ export const getNewProjectInfo = (): IProjectsStore => {
   };
 };
 export const setCurrentProjectName = (name: string) => projectsStore.updateProperty("name", name);
-export const useCurrentProject = (): IProjectsStore => {
+export const useCurrentProjectInfo = (): IProjectsStore => {
   if (!projectsStore.uid) {
     projectsStore.updateProperty(getNewProjectInfo());
   }
@@ -58,4 +58,5 @@ export const useCurrentProject = (): IProjectsStore => {
 };
 export const updateCurrentProjectUpdateTime = () =>
   projectsStore.updateProperty("updateTime", new Date().getTime() / 1000);
-export const updateCurrentProject = (data: IProjectsStore) => projectsStore.updateProperty(data);
+export const updateCurrentProjectInfo = (data: IProjectsStore) =>
+  projectsStore.updateProperty(data);
