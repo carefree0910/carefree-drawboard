@@ -1,4 +1,4 @@
-import { useCallback, useEffect } from "react";
+import { useCallback, useEffect, useRef } from "react";
 import { runInAction } from "mobx";
 
 import {
@@ -18,7 +18,11 @@ import { ThemeType, allThemes, themeStore } from "@/stores/theme";
 import { userStore } from "@/stores/user";
 import { debugStore } from "@/stores/debug";
 import { ISettingsStore, settingsStore, useSettingsSynced } from "@/stores/settings";
-import { getAutoSaveProject } from "@/actions/manageProjects";
+import {
+  getAutoSaveProject,
+  saveProject,
+  useCurrentProjectWithUserId,
+} from "@/actions/manageProjects";
 import { useWebSocketHook } from "@/requests/hooks";
 import { authEvent, useAuth } from "./useAuth";
 
@@ -30,6 +34,7 @@ export function useSetup(): void {
   useUserInitialization();
   useSyncPython();
   useAutoSave();
+  useAutoSaveEvery(60);
 }
 
 // helper functions
@@ -67,7 +72,7 @@ const useUserInitialization = () => {
 const updateSettings = (data: ISettingsStore): boolean => {
   const incomingHash = getHash(JSON.stringify(data)).toString();
   if (settingsStore.hash === incomingHash) return false;
-  runInAction(() => {
+  runInAction(async () => {
     settingsStore.hash = incomingHash;
     settingsStore.pluginSettings = data.pluginSettings;
     // `internalSettings` should only be updated once.
@@ -171,5 +176,60 @@ function useAutoSave() {
   useEffect(() => {
     if (!userId) return;
     getAutoSaveProject();
+  }, [userId]);
+}
+
+//// auto save project periodically
+
+function useAutoSaveEvery(second: number) {
+  const userId = userStore.userId;
+  const timer = useRef<NodeJS.Timeout | null>(null);
+  const updateTimer = (timerId: NodeJS.Timeout) => {
+    timer.current = timerId;
+  };
+  const clearTimer = useCallback(() => {
+    if (timer.current) {
+      Logger.debug(`stop useAutoSaveEvery >>>> clearTimer timer.current: ${timer.current}`);
+      clearTimeout(timer.current);
+      timer.current = null;
+    }
+  }, []);
+  const setTimer = useCallback(() => {
+    clearTimer();
+    if (userId) {
+      Logger.debug("restart useAutoSaveEvery");
+      autoSavetEvery(second);
+    }
+  }, [userId]);
+  const autoSavetEvery = useCallback(
+    (second: number) => {
+      Logger.debug("period saving");
+      const timerId = setTimeout(() => {
+        getAutoSaveProject()
+          .then((project) => {
+            const current = useCurrentProjectWithUserId();
+            project.graphInfo = current.graphInfo;
+            project.globalTransform = current.globalTransform;
+            project.updateTime = Date.now();
+            return saveProject({ userId: current.userId, ...project }, async () => void 0, true);
+          })
+          .then(() => {
+            autoSavetEvery(second);
+          })
+          .catch((err) => {
+            console.error("error occurred in autoSavetEvery: ", err);
+            autoSavetEvery(second);
+          });
+      }, second * 1000);
+      updateTimer(timerId);
+    },
+    [userId],
+  );
+
+  useEffect(() => {
+    setTimer();
+    return () => {
+      clearTimer();
+    };
   }, [userId]);
 }
