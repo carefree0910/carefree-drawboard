@@ -56,7 +56,8 @@ export const useCurrentProjectInfo = (): IProjectsStore => {
     updateTime: projectsStore.updateTime!,
   };
 };
+export const getNewUpdateTime = () => new Date().getTime() / 1000;
 export const updateCurrentProjectUpdateTime = () =>
-  projectsStore.updateProperty("updateTime", new Date().getTime() / 1000);
+  projectsStore.updateProperty("updateTime", getNewUpdateTime());
 export const updateCurrentProjectInfo = (data: IProjectsStore) =>
   projectsStore.updateProperty(data);
