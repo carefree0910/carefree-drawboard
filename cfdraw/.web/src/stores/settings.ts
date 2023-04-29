@@ -4,6 +4,7 @@ import { IBoardOptions, Lang } from "@carefree0910/core";
 import { ABCStore } from "@carefree0910/business";
 
 import type { AvailablePlugins, AvailablePythonPlugins, IMakePlugin } from "@/schema/plugins";
+import type { IProject } from "@/actions/manageProjects";
 import { ThemeType, ThemeStyles } from "./theme";
 
 interface IInternalSettings {
@@ -20,6 +21,7 @@ interface IBoardSettings {
   styles?: Record<ThemeType, Partial<ThemeStyles>>;
   boardOptions?: Partial<IBoardOptions>;
   globalSettings?: IGlobalSettings;
+  initialProject?: IProject;
 }
 export interface ISettingsStore {
   pluginSettings: IMakePlugin<AvailablePythonPlugins>[];

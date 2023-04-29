@@ -1,7 +1,7 @@
 import { useEffect } from "react";
 import { makeObservable, observable } from "mobx";
 
-import { Logger, UnitTest, waitUntil } from "@carefree0910/core";
+import { Graph, Logger, UnitTest, shallowCopy, waitUntil } from "@carefree0910/core";
 import { NoliNativeBoard } from "@carefree0910/native";
 import {
   BoardStore,
@@ -48,7 +48,17 @@ export function useInitBoard(): void {
     );
 
     // render
-    await unittest.renderEmpty(1, !IS_PROD);
+    const onEvents = !IS_PROD;
+    const initial = settingsStore.boardSettings?.initialProject;
+    if (!initial) {
+      await unittest.renderEmpty(1, onEvents);
+    } else {
+      await unittest.renderGraph(
+        Graph.fromJsonInfo(shallowCopy(initial.graphInfo)),
+        undefined,
+        onEvents,
+      );
+    }
 
     // setup options
     const storeOptions: BoardStoresOptions = {

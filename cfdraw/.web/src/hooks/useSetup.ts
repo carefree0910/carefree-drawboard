@@ -20,7 +20,10 @@ import { debugStore } from "@/stores/debug";
 import { getNewUpdateTime } from "@/stores/projects";
 import { ISettingsStore, settingsStore, useSettingsSynced } from "@/stores/settings";
 import {
+  IProject,
+  getAllProjectInfo,
   getAutoSaveProject,
+  getProject,
   saveProject,
   useCurrentProjectWithUserId,
 } from "@/actions/manageProjects";
@@ -34,7 +37,6 @@ export function useSetup(): void {
   useAuth();
   useUserInitialization();
   useSyncPython();
-  useAutoSave();
   useAutoSaveEvery(60);
 }
 
@@ -113,7 +115,34 @@ const updateSettings = (data: ISettingsStore): boolean => {
       globalSettings.defaultInfoTimeout ??= 300;
       data.boardSettings.globalSettings = globalSettings;
       //// setup property. Once `boardSettings` is set, drawboard will start rendering.
-      settingsStore.boardSettings = data.boardSettings;
+      const setup = () => (settingsStore.boardSettings = data.boardSettings);
+      //// inject latest project ////
+      const autoSaveProject = await getAutoSaveProject();
+      const allProjectInfo = await getAllProjectInfo();
+      const updateInitialProject = (project: IProject) => {
+        if (data.boardSettings && data.boardSettings.boardOptions) {
+          data.boardSettings!.initialProject = project;
+          data.boardSettings.boardOptions.fitContainerOptions ??= {};
+          data.boardSettings.boardOptions.fitContainerOptions.targetFields =
+            project.globalTransform;
+        }
+      };
+      if (!allProjectInfo || allProjectInfo.length === 0) {
+        runInAction(() => setup());
+      } else if (allProjectInfo.length === 1) {
+        runInAction(() => {
+          updateInitialProject(autoSaveProject);
+          setup();
+        });
+      } else {
+        const latestProject = allProjectInfo.sort((a, b) => b.updateTime - a.updateTime)[0];
+        getProject(latestProject.uid).then((project) => {
+          runInAction(() => {
+            updateInitialProject(project);
+            setup();
+          });
+        });
+      }
     }
   });
   return true;
@@ -122,6 +151,7 @@ const updateSettings = (data: ISettingsStore): boolean => {
 //// sync from python
 function useSyncPython() {
   const hash = "0";
+  const userId = userStore.userId;
   const getMessage = useCallback(
     (): Promise<IPythonSocketRequest> =>
       Promise.resolve({
@@ -163,21 +193,11 @@ function useSyncPython() {
 
   useWebSocketHook<ISettingsStore>({
     isInvisible: false,
-    hash,
+    hash: !!userId ? hash : undefined,
     getMessage,
     onMessage,
     isInternal: true,
   });
-}
-
-//// initialize auto save project
-function useAutoSave() {
-  const userId = userStore.userId;
-
-  useEffect(() => {
-    if (!userId) return;
-    getAutoSaveProject();
-  }, [userId]);
 }
 
 //// auto save project periodically
@@ -204,7 +224,6 @@ function useAutoSaveEvery(second: number) {
   }, [userId]);
   const autoSavetEvery = useCallback(
     (second: number) => {
-      Logger.debug("period saving");
       const timerId = setTimeout(() => {
         getAutoSaveProject()
           .then((project) => {
@@ -212,6 +231,7 @@ function useAutoSaveEvery(second: number) {
             project.graphInfo = current.graphInfo;
             project.globalTransform = current.globalTransform;
             project.updateTime = getNewUpdateTime();
+            Logger.debug("period saving");
             return saveProject({ userId: current.userId, ...project }, async () => void 0, true);
           })
           .then(() => {
