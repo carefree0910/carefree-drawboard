@@ -4,7 +4,7 @@ import { Box, Center, Flex, Spacer } from "@chakra-ui/react";
 
 import { useIsReady } from "@carefree0910/business";
 
-import { VISIBILITY_TRANSITION } from "@/utils/constants";
+import { makeVisiblilityTransition } from "@/utils/constants";
 import { useSettingsSynced } from "@/stores/settings";
 import { themeStore } from "@/stores/theme";
 import loadingPage from "@/assets/loading-page.json";
@@ -37,7 +37,7 @@ const CFLoading: React.FC<PropsWithChildren> = ({ children }) => {
           alignContent="center"
           opacity={isReady ? 0 : 1}
           visibility={isReady ? "hidden" : "visible"}
-          transition={VISIBILITY_TRANSITION}>
+          transition={makeVisiblilityTransition(0.5)}>
           <Spacer />
           <Center>
             <Box id={id} />
