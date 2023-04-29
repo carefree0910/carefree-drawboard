@@ -90,8 +90,8 @@ const ProjectPlugin = ({ pluginInfo, ...props }: IPlugin) => {
       closePanel();
     });
   }
-  async function onLoadProjectSuccess(res: IProject) {
-    updateProjectStates(res.uid, res.name);
+  async function onLoadProjectSuccess(project: IProject) {
+    updateProjectStates(project.uid, project.name);
     toastWord("success", Toast_Words["load-project-success-message"]);
     closePanel();
   }
@@ -110,12 +110,12 @@ const ProjectPlugin = ({ pluginInfo, ...props }: IPlugin) => {
     downloadCurrentFullProject();
     closePanel();
   }
-  function onImportLocalProject(res: IImportLocal) {
+  function onImportLocalProject(data: IImportLocal) {
     toastWord("info", Toast_Words["importing-local-project-message"]);
-    if (!Array.isArray(res)) {
-      res = res.graphInfo;
+    if (!Array.isArray(data)) {
+      data = data.graphInfo;
     }
-    const json = Graph.fromJsonInfo(res as INodePack[])
+    const json = Graph.fromJsonInfo(data as INodePack[])
       .clone()
       .toJson();
     useSafeExecute("addGraph", null, true, {

@@ -61,22 +61,22 @@ export async function saveCurrentProject(
 }
 
 function replaceCurrentProjectWith(
-  res: IProject,
-  onSuccess: (res: IProject) => Promise<void>,
+  project: IProject,
+  onSuccess: (project: IProject) => Promise<void>,
 ): void {
   useSafeExecute("replaceGraph", null, false, {
     success: async () => {
-      BoardStore.api.setGlobalTransform(new Matrix2D(res.globalTransform));
+      BoardStore.api.setGlobalTransform(new Matrix2D(project.globalTransform));
       safeClearExecuterStack();
-      updateCurrentProject(res);
-      onSuccess(res);
+      updateCurrentProject(project);
+      onSuccess(project);
     },
     failed: async () => void 0,
-  })({ json: JSON.stringify(res.graphInfo), apiInfos: {}, noFit: true });
+  })({ json: JSON.stringify(project.graphInfo), apiInfos: {}, noFit: true });
 }
 export async function loadProject(
   uid: string,
-  onSuccess: (res: IProject) => Promise<void>,
+  onSuccess: (project: IProject) => Promise<void>,
 ): Promise<void> {
   toastWord("info", Toast_Words["loading-project-message"]);
 
@@ -92,14 +92,14 @@ export async function loadProject(
   );
 }
 export function loadLocalProject(
-  res: IProject,
-  onSuccess: (res: IProject) => Promise<void>,
+  project: IProject,
+  onSuccess: (project: IProject) => Promise<void>,
   noToast?: boolean,
 ): void {
   if (!noToast) {
     toastWord("info", Toast_Words["loading-project-message"]);
   }
-  replaceCurrentProjectWith(res, onSuccess);
+  replaceCurrentProjectWith(project, onSuccess);
 }
 
 interface IProjectItem {
