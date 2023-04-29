@@ -23,6 +23,7 @@ import {
   IProject,
   getAllProjectInfo,
   getAutoSaveProject,
+  getAutoSaveProjectInfo,
   getProject,
   saveProject,
   useCurrentProjectWithUserId,
@@ -225,14 +226,15 @@ function useAutoSaveEvery(second: number) {
   const autoSavetEvery = useCallback(
     (second: number) => {
       const timerId = setTimeout(() => {
-        getAutoSaveProject()
-          .then((project) => {
-            const current = useCurrentProjectWithUserId();
-            project.graphInfo = current.graphInfo;
-            project.globalTransform = current.globalTransform;
+        getAutoSaveProjectInfo()
+          .then((info) => {
+            if (!info) throw new Error("no Auto Save project found");
+            const project = useCurrentProjectWithUserId();
+            project.uid = info.uid;
+            project.name = info.name;
             project.updateTime = getNewUpdateTime();
             Logger.debug("period saving");
-            return saveProject({ userId: current.userId, ...project }, async () => void 0, true);
+            return saveProject(project, async () => void 0, true);
           })
           .then(() => {
             autoSavetEvery(second);
