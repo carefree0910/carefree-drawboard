@@ -10,7 +10,7 @@ import { toastWord } from "@/utils/toast";
 import { Add_Words } from "@/lang/add";
 import { Toast_Words } from "@/lang/toast";
 import { importMeta } from "@/actions/importMeta";
-import { getNewFullProject, loadLocalProject, saveCurrentProject } from "@/actions/manageProjects";
+import { getNewProject, loadLocalProject, saveCurrentProject } from "@/actions/manageProjects";
 import CFButton from "@/components/CFButton";
 import CFDivider from "@/components/CFDivider";
 import CFHeading from "@/components/CFHeading";
@@ -30,7 +30,7 @@ const AddPlugin = ({ pluginInfo, ...props }: IPlugin) => {
     saveCurrentProject(
       async () =>
         loadLocalProject(
-          getNewFullProject(),
+          getNewProject(),
           async () => {
             floatingEvent.emit({ type: "newProject", data: {} });
             toastWord("success", Toast_Words["add-project-success-message"]);

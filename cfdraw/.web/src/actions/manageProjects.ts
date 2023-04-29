@@ -32,7 +32,7 @@ interface IProjectWithUserId extends IProject {
   userId: string;
 }
 
-export function getNewFullProject(): IProject {
+export function getNewProject(): IProject {
   return { graphInfo: [], globalTransform: identityMatrix2DFields, ...getNewProjectInfo() };
 }
 
