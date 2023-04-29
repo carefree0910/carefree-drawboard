@@ -123,14 +123,10 @@ export function loadLocalProject(
   replaceCurrentProjectWith(project, onSuccess);
 }
 
-interface IProjectItem {
-  uid: string;
-  name: string;
-}
-export function fetchAllProjectItems(): Promise<IProjectItem[] | undefined> {
+export function getAllProjectInfo(): Promise<IProjectsStore[] | undefined> {
   return safeCall(
     async () =>
-      Requests.get<IProjectItem[]>("_python", `/all_projects/?userId=${userStore.userId}`),
+      Requests.get<IProjectsStore[]>("_python", `/all_projects/?userId=${userStore.userId}`),
     {
       success: async () => void 0,
       failed: async () => void 0,
@@ -144,9 +140,9 @@ export function getAutoSaveProject(): Promise<IProject> {
   if (!userId) {
     throw Error("`userId` should be ready before calling `getAutoSaveProject`");
   }
-  return fetchAllProjectItems().then((projects) => {
-    const existingItem = (projects ?? []).find(({ uid }) => uid.startsWith(AUTO_SAVE_PREFIX));
-    if (existingItem) return getProject(existingItem.uid);
+  return getAllProjectInfo().then((projects) => {
+    const existingInfo = (projects ?? []).find(({ uid }) => uid.startsWith(AUTO_SAVE_PREFIX));
+    if (existingInfo) return getProject(existingInfo.uid);
     const autoSaveProject = { userId, ...getNewProject() };
     autoSaveProject.uid = `${AUTO_SAVE_PREFIX}${autoSaveProject.uid}`;
     autoSaveProject.name = "Auto Save";

@@ -24,7 +24,7 @@ import {
   AUTO_SAVE_PREFIX,
   IProject,
   deleteProject,
-  fetchAllProjectItems,
+  getAllProjectInfo,
   getProject,
   loadProject,
   saveCurrentProject,
@@ -75,7 +75,7 @@ const ProjectPlugin = ({ pluginInfo, ...props }: IPlugin) => {
   }, [userId, selectedUid]);
 
   const updateUids = useCallback(() => {
-    fetchAllProjectItems().then((projects) => {
+    getAllProjectInfo().then((projects) => {
       projects ??= [];
       const uid2name = projects.reduce((acc, { uid, name }) => {
         acc[uid] = name;
