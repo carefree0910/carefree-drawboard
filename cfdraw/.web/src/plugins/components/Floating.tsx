@@ -1,5 +1,5 @@
 import { observer } from "mobx-react-lite";
-import { useState, useMemo, useLayoutEffect, forwardRef } from "react";
+import { useState, useMemo, useLayoutEffect, forwardRef, useCallback } from "react";
 import {
   Box,
   BoxProps,
@@ -117,9 +117,13 @@ export interface IFloatingControlEvent {
   ignoreId?: boolean;
   forceCheckIds?: string[];
 }
+export interface IFloatingIconLoadedEvent {
+  id: string;
+}
 export const floatingEvent = new Event<IFloatingEvent>();
 export const floatingRenderEvent = new Event<IFloatingRenderEvent>();
 export const floatingControlEvent = new Event<IFloatingControlEvent>();
+export const floatingIconLoadedEvent = new Event<IFloatingIconLoadedEvent>();
 
 const Floating = forwardRef(function (
   {
@@ -254,6 +258,9 @@ const Floating = forwardRef(function (
     [useModal],
   );
   // events
+  const emitIconLoaded = useCallback(() => {
+    floatingIconLoadedEvent.emit({ id });
+  }, [id]);
   useLayoutEffect(() => {
     const { dispose: disposeRender } = floatingRenderEvent.on(
       ({ id: incomingId, expand: incomingExpand }) => {
@@ -329,6 +336,7 @@ const Floating = forwardRef(function (
             draggable={false}
             opacity={iconOpacity}
             transition={VISIBILITY_TRANSITION}
+            onLoad={emitIconLoaded}
           />
           {taskMessage && isBusy && (
             <Box w={`${iconW}px`} h={`${iconH}px`} position="absolute" left="0px" top="0px">

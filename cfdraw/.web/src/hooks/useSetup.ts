@@ -1,5 +1,5 @@
 import { useCallback, useEffect, useRef } from "react";
-import { runInAction } from "mobx";
+import { computed, makeObservable, observable, runInAction } from "mobx";
 
 import {
   FOCUS_PLUGIN_NAME,
@@ -11,7 +11,7 @@ import {
   getHash,
   sleep,
 } from "@carefree0910/core";
-import { langStore } from "@carefree0910/business";
+import { ABCStore, langStore } from "@carefree0910/business";
 
 import type { IPythonOnSocketMessage, IPythonSocketRequest } from "@/schema/_python";
 import { ThemeType, allThemes, themeStore } from "@/stores/theme";
@@ -30,16 +30,48 @@ import {
 } from "@/actions/manageProjects";
 import { useWebSocketHook } from "@/requests/hooks";
 import { authEvent, useAuth } from "./useAuth";
+import { floatingIconLoadedEvent } from "@/plugins/components/Floating";
+import { useReactPluginSettings } from "@/_settings";
 
 export function useIsSetup(): boolean {
   return !!userStore.userId && useSettingsSynced();
+}
+export function useIsAllReady(): boolean {
+  return useIsSetup() && setupStore.isReady;
 }
 export function useSetup(): void {
   useAuth();
   useUserInitialization();
   useSyncPython();
   useAutoSaveEvery(60);
+  useCheckIconLoaded();
 }
+
+// helper store
+
+interface ISetupStore {
+  iconLoaded: boolean;
+}
+class SetupStore extends ABCStore<ISetupStore> implements ISetupStore {
+  iconLoaded: boolean = false;
+
+  constructor() {
+    super();
+    makeObservable(this, {
+      iconLoaded: observable,
+      isReady: computed,
+    });
+  }
+
+  get info(): ISetupStore {
+    return this;
+  }
+
+  get isReady(): boolean {
+    return this.iconLoaded;
+  }
+}
+const setupStore = new SetupStore();
 
 // helper functions
 
@@ -253,4 +285,31 @@ function useAutoSaveEvery(second: number) {
       clearTimer();
     };
   }, [userId]);
+}
+
+//// check whether all icons of react plugins have loaded
+function useCheckIconLoaded() {
+  const loaded = useRef<string[]>([]);
+  const reactPlugins = useReactPluginSettings();
+
+  useEffect(() => {
+    const { dispose } = floatingIconLoadedEvent.on(({ id }) => {
+      loaded.current.push(id);
+      if (
+        reactPlugins.every(
+          ({
+            type,
+            props: {
+              renderInfo: { follow },
+            },
+          }) => follow || loaded.current.some((id) => id.startsWith(type)),
+        )
+      ) {
+        Logger.debug(`all icons loaded: ${loaded.current.join(", ")}}`);
+        setupStore.updateProperty("iconLoaded", true);
+        dispose();
+      }
+    });
+    return dispose;
+  }, [reactPlugins]);
 }

@@ -1,17 +1,19 @@
 import lottie from "lottie-web";
 import React, { PropsWithChildren, useEffect } from "react";
+import { observer } from "mobx-react-lite";
 import { Box, Center, Flex, Spacer } from "@chakra-ui/react";
 
 import { useIsReady } from "@carefree0910/business";
 
+import loadingPage from "@/assets/loading-page.json";
 import { makeVisiblilityTransition } from "@/utils/constants";
 import { useSettingsSynced } from "@/stores/settings";
 import { themeStore } from "@/stores/theme";
-import loadingPage from "@/assets/loading-page.json";
+import { useIsAllReady } from "@/hooks/useSetup";
 
 const CFLoading: React.FC<PropsWithChildren> = ({ children }) => {
   const id = "loading-animation";
-  const isReady = useIsReady();
+  const isReady = useIsReady() && useIsAllReady();
   const isSynced = useSettingsSynced();
   const { boardBg } = themeStore.styles;
 
@@ -26,7 +28,7 @@ const CFLoading: React.FC<PropsWithChildren> = ({ children }) => {
   return (
     <>
       {children}
-      {useSettingsSynced() && (
+      {isSynced && (
         <Flex
           w="100%"
           h="100%"
@@ -49,4 +51,4 @@ const CFLoading: React.FC<PropsWithChildren> = ({ children }) => {
   );
 };
 
-export default CFLoading;
+export default observer(CFLoading);
