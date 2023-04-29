@@ -17,6 +17,7 @@ import type { IPythonOnSocketMessage, IPythonSocketRequest } from "@/schema/_pyt
 import { ThemeType, allThemes, themeStore } from "@/stores/theme";
 import { userStore } from "@/stores/user";
 import { debugStore } from "@/stores/debug";
+import { getNewUpdateTime } from "@/stores/projects";
 import { ISettingsStore, settingsStore, useSettingsSynced } from "@/stores/settings";
 import {
   getAutoSaveProject,
@@ -210,7 +211,7 @@ function useAutoSaveEvery(second: number) {
             const current = useCurrentProjectWithUserId();
             project.graphInfo = current.graphInfo;
             project.globalTransform = current.globalTransform;
-            project.updateTime = Date.now();
+            project.updateTime = getNewUpdateTime();
             return saveProject({ userId: current.userId, ...project }, async () => void 0, true);
           })
           .then(() => {

@@ -1,10 +1,9 @@
-import { v4 as uuidv4 } from "uuid";
 import Upload from "rc-upload";
 import { observer } from "mobx-react-lite";
 import { useMemo, useState, useEffect, useCallback } from "react";
 import { Box, Flex, Image } from "@chakra-ui/react";
 
-import { Dictionary, Graph, INodePack, getRandomHash, shallowCopy } from "@carefree0910/core";
+import { Dictionary, Graph, INodePack, getRandomHash } from "@carefree0910/core";
 import { langStore, translate, useSafeExecute } from "@carefree0910/business";
 
 import type { IPlugin } from "@/schema/plugins";
@@ -15,6 +14,7 @@ import { Projects_Words } from "@/lang/projects";
 import { userStore } from "@/stores/user";
 import {
   IProjectsStore,
+  getNewProjectInfo,
   getTimeString,
   setCurrentProjectName,
   updateCurrentProjectInfo,
@@ -61,12 +61,13 @@ const ProjectPlugin = ({ pluginInfo, ...props }: IPlugin) => {
     if (!isSelectingAutoSave) return Promise.resolve(selectedUid);
     // should create a new project when loading auto save project
     return getProject(selectedUid).then((autoSaveProject) => {
-      const newProject = shallowCopy(autoSaveProject);
-      const time = Date.now();
-      newProject.uid = uuidv4();
-      newProject.name = `From Auto Save ${getTimeString(time)}`;
-      newProject.createTime = newProject.updateTime = time;
-      return saveProject({ userId, ...newProject }, async () => void 0, true).then(() => {
+      const newProject = getNewProjectInfo();
+      newProject.name = `From Auto Save ${getTimeString(Date.now())}`;
+      return saveProject(
+        { userId, ...autoSaveProject, ...newProject },
+        async () => void 0,
+        true,
+      ).then(() => {
         updateCurrentProjectInfo(newProject);
         updateProjectStates(newProject);
         return newProject.uid;
