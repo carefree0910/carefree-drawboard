@@ -95,6 +95,9 @@ function replaceCurrentProjectWith(
     failed: async () => void 0,
   })({ json: JSON.stringify(project.graphInfo), apiInfos: {}, noFit: true });
 }
+export async function getProject(uid: string): Promise<IProject> {
+  return Requests.get<IProject>("_python", `/get_project/?userId=${userStore.userId}&uid=${uid}`);
+}
 export async function loadProject(
   uid: string,
   onSuccess: (project: IProject) => Promise<void>,
@@ -102,10 +105,7 @@ export async function loadProject(
   toastWord("info", Toast_Words["loading-project-message"]);
 
   return safeCall(
-    async () =>
-      Requests.get<IProject>("_python", `/get_project/?userId=${userStore.userId}&uid=${uid}`).then(
-        (res) => replaceCurrentProjectWith(res, onSuccess),
-      ),
+    async () => getProject(uid).then((res) => replaceCurrentProjectWith(res, onSuccess)),
     {
       success: async () => void 0,
       failed: async () => void 0,
