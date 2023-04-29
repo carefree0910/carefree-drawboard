@@ -21,8 +21,11 @@ export interface IProject extends IProjectsStore {
   graphInfo: INodePack[];
   globalTransform: Matrix2DFields;
 }
+interface IProjectWithUserId extends IProject {
+  userId: string;
+}
 
-export function useCurrentProjectWithUserId(): IProject & { userId: string } {
+export function useCurrentProjectWithUserId(): IProjectWithUserId {
   const data = useCurrentProject();
   const userId = userStore.userId;
   const graphInfo = BoardStore.graph.toJsonInfo();
