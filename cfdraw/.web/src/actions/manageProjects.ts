@@ -18,7 +18,7 @@ import { Requests } from "@/requests/actions";
 import { userStore } from "@/stores/user";
 import {
   IProjectsStore,
-  getNewProject,
+  getNewProjectInfo,
   updateCurrentProject,
   updateCurrentProjectUpdateTime,
   useCurrentProject,
@@ -33,7 +33,7 @@ interface IProjectWithUserId extends IProject {
 }
 
 export function getNewFullProject(): IProject {
-  return { graphInfo: [], globalTransform: identityMatrix2DFields, ...getNewProject() };
+  return { graphInfo: [], globalTransform: identityMatrix2DFields, ...getNewProjectInfo() };
 }
 
 export function useCurrentProjectWithUserId(): IProjectWithUserId {
