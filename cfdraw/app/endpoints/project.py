@@ -111,7 +111,7 @@ def add_project_managements(app: IApp) -> None:
             return SaveProjectResponse(success=False, message=err_msg)
         return SaveProjectResponse(success=True, message="")
 
-    @app.api.get(f"/get_project/", responses=get_responses(ProjectModel))
+    @app.api.get("/get_project/", responses=get_responses(ProjectModel))
     async def fetch_project(userId: str, uid: str) -> ProjectModel:  # type: ignore
         try:
             upload_project_folder = app.config.upload_project_folder / userId
@@ -137,7 +137,7 @@ def add_project_managements(app: IApp) -> None:
         except Exception as err:
             raise_err(err)
 
-    @app.api.get(f"/all_projects/")
+    @app.api.get("/all_projects/")
     async def fetch_all_projects(userId: str) -> List[ProjectMeta]:
         upload_project_folder = app.config.upload_project_folder / userId
         if not upload_project_folder.exists():
@@ -149,6 +149,27 @@ def add_project_managements(app: IApp) -> None:
             meta = json.load(f)
         s = sorted([(v["updateTime"], k) for k, v in meta.items()], reverse=True)
         return [ProjectMeta(**meta[k]) for _, k in s]
+
+    @app.api.delete("/projects/")
+    async def delete_project(userId: str, uid: str) -> None:
+        upload_project_folder = app.config.upload_project_folder / userId
+        if not upload_project_folder.exists():
+            return
+        file = f"{uid}{suffix}"
+        path = upload_project_folder / file
+        if path.is_file():
+            path.unlink()
+        # maintain meta
+        meta_path = upload_project_folder / constants.PROJECT_META_FILE
+        if not meta_path.is_file():
+            maintain_meta(app, userId)
+        else:
+            with open(meta_path, "r") as f:
+                meta = json.load(f)
+            if uid in meta:
+                meta.pop(uid)
+                with open(meta_path, "w") as f:
+                    json.dump(meta, f)
 
 
 class ProjectEndpoint(IEndpoint):

@@ -153,3 +153,7 @@ export function getAutoSaveProject(): Promise<IProject> {
     return saveProject(autoSaveProject, async () => void 0, true).then(() => autoSaveProject);
   });
 }
+
+export function deleteProject(uid: string): Promise<void> {
+  return Requests.delete("_python", `/projects/?userId=${userStore.userId}&uid=${uid}`);
+}

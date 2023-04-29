@@ -2,12 +2,13 @@ import { v4 as uuidv4 } from "uuid";
 import Upload from "rc-upload";
 import { observer } from "mobx-react-lite";
 import { useMemo, useState, useEffect, useCallback } from "react";
-import { Flex } from "@chakra-ui/react";
+import { Box, Flex, Image } from "@chakra-ui/react";
 
 import { Dictionary, Graph, INodePack, getRandomHash, shallowCopy } from "@carefree0910/core";
 import { langStore, translate, useSafeExecute } from "@carefree0910/business";
 
 import type { IPlugin } from "@/schema/plugins";
+import DeleteIcon from "@/assets/icons/delete.svg";
 import { toastWord } from "@/utils/toast";
 import { Toast_Words } from "@/lang/toast";
 import { Projects_Words } from "@/lang/projects";
@@ -22,6 +23,7 @@ import {
 import {
   AUTO_SAVE_PREFIX,
   IProject,
+  deleteProject,
   fetchAllProjectItems,
   getProject,
   loadProject,
@@ -51,8 +53,12 @@ const ProjectPlugin = ({ pluginInfo, ...props }: IPlugin) => {
   const [userInputName, setUserInputName] = useState(name);
   const [allUid2Name, setAllUid2Name] = useState<Dictionary<string> | undefined>();
   const allProjectUids = useMemo(() => Object.keys(allUid2Name ?? {}), [allUid2Name]);
+  const isSelectingAutoSave = useMemo(
+    () => selectedUid.startsWith(AUTO_SAVE_PREFIX),
+    [selectedUid],
+  );
   const getLoadUid = useCallback(() => {
-    if (!selectedUid.startsWith(AUTO_SAVE_PREFIX)) return Promise.resolve(selectedUid);
+    if (!isSelectingAutoSave) return Promise.resolve(selectedUid);
     // should create a new project when loading auto save project
     return getProject(selectedUid).then((autoSaveProject) => {
       const newProject = shallowCopy(autoSaveProject);
@@ -154,6 +160,20 @@ const ProjectPlugin = ({ pluginInfo, ...props }: IPlugin) => {
       failed: async () => toastWord("error", Toast_Words["import-local-project-error-message"]),
     })({ json });
   }
+  function onDeleteProject() {
+    if (!selectedUid) {
+      toastWord("warning", Toast_Words["please-select-project-to-delete-message"]);
+      return;
+    }
+    if (isSelectingAutoSave) {
+      toastWord("warning", Toast_Words["cannot-delete-auto-save-project-message"]);
+      return;
+    }
+    deleteProject(selectedUid).then(() => {
+      toastWord("success", Toast_Words["delete-project-success-message"]);
+      updateUids();
+    });
+  }
 
   return (
     <Render id={id} {...props}>
@@ -167,12 +187,18 @@ const ProjectPlugin = ({ pluginInfo, ...props }: IPlugin) => {
         <CFDivider />
         {allUid2Name ? (
           allProjectUids.length > 0 ? (
-            <CFSrollableSelect
-              value={selectedUid}
-              options={allProjectUids}
-              onOptionClick={(uid) => setSelectedUid(uid)}
-              optionConverter={(uid) => allUid2Name[uid]}
-            />
+            <Flex w="100%">
+              <CFSrollableSelect
+                flex={1}
+                value={selectedUid}
+                options={allProjectUids}
+                onOptionClick={(uid) => setSelectedUid(uid)}
+                optionConverter={(uid) => allUid2Name[uid]}
+              />
+              <Box as="button" w="32px" h="100%" p="4px" mx="4px" onClick={onDeleteProject}>
+                <Image src={DeleteIcon} />
+              </Box>
+            </Flex>
           ) : (
             <CFText>{translate(Projects_Words["no-projects-available"], lang)}</CFText>
           )

@@ -39,4 +39,8 @@ export class Requests {
       .postForm(endpoint, formData)
       .then((res) => res.data);
   }
+
+  static delete<T extends APISources = APISources>(source: T, endpoint: string): Promise<void> {
+    return useAPI(source).delete(endpoint);
+  }
 }
