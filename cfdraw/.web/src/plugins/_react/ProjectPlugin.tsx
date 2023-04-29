@@ -3,7 +3,7 @@ import { observer } from "mobx-react-lite";
 import { useMemo, useState, useEffect, useCallback } from "react";
 import { Box, Flex, Image } from "@chakra-ui/react";
 
-import { Dictionary, Graph, INodePack, getRandomHash } from "@carefree0910/core";
+import { Dictionary, Graph, INodePack, Logger, getRandomHash } from "@carefree0910/core";
 import { langStore, translate, useSafeExecute } from "@carefree0910/business";
 
 import type { IPlugin } from "@/schema/plugins";
@@ -76,17 +76,22 @@ const ProjectPlugin = ({ pluginInfo, ...props }: IPlugin) => {
   }, [userId, selectedUid]);
 
   const updateUids = useCallback(() => {
-    getAllProjectInfo().then((projects) => {
-      projects ??= [];
-      const uid2name = projects.reduce((acc, { uid, name }) => {
-        acc[uid] = name;
-        return acc;
-      }, {} as Dictionary<string>);
-      setAllUid2Name(uid2name);
-      if (!!uid2name[uid]) {
-        setSelectedUid(uid);
-      }
-    });
+    getAllProjectInfo()
+      .then((projects) => {
+        projects ??= [];
+        const uid2name = projects.reduce((acc, { uid, name }) => {
+          acc[uid] = name;
+          return acc;
+        }, {} as Dictionary<string>);
+        setAllUid2Name(uid2name);
+        if (!!uid2name[uid]) {
+          setSelectedUid(uid);
+        }
+      })
+      .catch((err) => {
+        Logger.warn(`[ProjectPlugin] updateUids failed: ${err}, retrying...`);
+        setTimeout(updateUids, 1000);
+      });
   }, []);
 
   useEffect(() => {
@@ -139,7 +144,11 @@ const ProjectPlugin = ({ pluginInfo, ...props }: IPlugin) => {
       toastWord("info", Toast_Words["already-selected-project-message"]);
       return;
     }
-    getLoadUid().then((uid) => loadProject(uid, onLoadProjectSuccess));
+    getLoadUid()
+      .then((uid) => loadProject(uid, onLoadProjectSuccess))
+      .catch((err) =>
+        toastWord("error", Toast_Words["load-project-error-message"], { appendix: ` - ${err}` }),
+      );
   }
   function onDownloadProject(): void {
     downloadCurrentFullProject();
@@ -170,10 +179,14 @@ const ProjectPlugin = ({ pluginInfo, ...props }: IPlugin) => {
       toastWord("warning", Toast_Words["cannot-delete-auto-save-project-message"]);
       return;
     }
-    deleteProject(selectedUid).then(() => {
-      toastWord("success", Toast_Words["delete-project-success-message"]);
-      updateUids();
-    });
+    deleteProject(selectedUid)
+      .then(() => {
+        toastWord("success", Toast_Words["delete-project-success-message"]);
+        updateUids();
+      })
+      .catch((err) =>
+        toastWord("error", Toast_Words["delete-project-error-message"], { appendix: ` - ${err}` }),
+      );
   }
 
   return (
