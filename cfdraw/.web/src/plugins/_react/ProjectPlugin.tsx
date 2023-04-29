@@ -11,7 +11,12 @@ import { toastWord } from "@/utils/toast";
 import { Toast_Words } from "@/lang/toast";
 import { Projects_Words } from "@/lang/projects";
 import { setCurrentProjectName, useCurrentProject } from "@/stores/projects";
-import { IProject, fetchAllProjects, loadProject, saveProject } from "@/actions/manageProjects";
+import {
+  IProject,
+  fetchAllProjects,
+  loadProject,
+  saveCurrentProject,
+} from "@/actions/manageProjects";
 import { downloadCurrentFullProject } from "@/actions/download";
 import CFText from "@/components/CFText";
 import CFInput from "@/components/CFInput";
@@ -79,7 +84,7 @@ const ProjectPlugin = ({ pluginInfo, ...props }: IPlugin) => {
     closePanel();
   }
   function onSaveProject() {
-    saveProject(async () => {
+    saveCurrentProject(async () => {
       toastWord("success", Toast_Words["save-project-success-message"]);
       updateUids();
       closePanel();

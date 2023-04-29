@@ -10,7 +10,7 @@ import { toastWord } from "@/utils/toast";
 import { Add_Words } from "@/lang/add";
 import { Toast_Words } from "@/lang/toast";
 import { importMeta } from "@/actions/importMeta";
-import { loadLocalProject, saveProject } from "@/actions/manageProjects";
+import { loadLocalProject, saveCurrentProject } from "@/actions/manageProjects";
 import { getNewProject } from "@/stores/projects";
 import CFButton from "@/components/CFButton";
 import CFDivider from "@/components/CFDivider";
@@ -28,7 +28,7 @@ const AddPlugin = ({ pluginInfo, ...props }: IPlugin) => {
   const closePanel = useClosePanel(id);
   const onNewProject = () => {
     toastWord("info", Toast_Words["adding-project-message"]);
-    saveProject(
+    saveCurrentProject(
       async () =>
         loadLocalProject(
           { graphInfo: [], globalTransform: identityMatrix2DFields, ...getNewProject() },

@@ -30,7 +30,7 @@ export function useCurrentProjectWithUserId(): IProject & { userId: string } {
   return { ...data, userId, graphInfo, globalTransform };
 }
 
-export async function saveProject(
+export async function saveCurrentProject(
   onSuccess: () => Promise<void>,
   noToast?: boolean,
 ): Promise<void> {
@@ -60,7 +60,10 @@ export async function saveProject(
   );
 }
 
-function replaceProjectWith(res: IProject, onSuccess: (res: IProject) => Promise<void>): void {
+function replaceCurrentProjectWith(
+  res: IProject,
+  onSuccess: (res: IProject) => Promise<void>,
+): void {
   useSafeExecute("replaceGraph", null, false, {
     success: async () => {
       BoardStore.api.setGlobalTransform(new Matrix2D(res.globalTransform));
@@ -80,7 +83,7 @@ export async function loadProject(
   return safeCall(
     async () =>
       Requests.get<IProject>("_python", `/get_project/?userId=${userStore.userId}&uid=${uid}`).then(
-        (res) => replaceProjectWith(res, onSuccess),
+        (res) => replaceCurrentProjectWith(res, onSuccess),
       ),
     {
       success: async () => void 0,
@@ -96,7 +99,7 @@ export function loadLocalProject(
   if (!noToast) {
     toastWord("info", Toast_Words["loading-project-message"]);
   }
-  replaceProjectWith(res, onSuccess);
+  replaceCurrentProjectWith(res, onSuccess);
 }
 
 interface IProjectItem {
