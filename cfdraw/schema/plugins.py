@@ -104,8 +104,8 @@ class IPluginInfo(BaseModel):
 
 class IPluginSettings(IChakra):
     # required fields
-    w: int = Field(..., gt=0, description="Width of the expanded plugin")
-    h: int = Field(..., gt=0, description="Height of the expanded plugin")
+    w: int = Field(..., gt=0, description="Width of the expanded plugin")  # type: ignore
+    h: int = Field(..., gt=0, description="Height of the expanded plugin")  # type: ignore
     nodeConstraint: NodeConstraints = Field(
         ...,
         description="""
