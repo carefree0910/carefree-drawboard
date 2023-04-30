@@ -4,7 +4,6 @@ import {
   SliderFilledTrack,
   SliderThumb,
   Flex,
-  Text,
   FlexProps,
 } from "@chakra-ui/react";
 import { observer } from "mobx-react-lite";
@@ -12,6 +11,7 @@ import { useUnmount } from "ahooks";
 import React, { ReactElement, useCallback, useEffect, useState } from "react";
 
 import { themeStore } from "@/stores/theme";
+import { CFCaption } from "./CFText";
 import CFInput from "./CFInput";
 
 export interface ICFSlider extends FlexProps {
@@ -21,7 +21,7 @@ export interface ICFSlider extends FlexProps {
   value: number;
   step?: number;
   scale?: "linear" | "logarithmic";
-  label?: string | ReactElement;
+  label?: string;
   onSliderChange(value: number): void;
   precision?: number;
 }
@@ -128,11 +128,7 @@ const CFSlider: React.FC<ICFSlider> = ({
 
   return (
     <Flex className={className} align="center" color={textColor} {...props}>
-      {label && (
-        <Text minW="20%" align="center" fontSize="14px" flexShrink={0}>
-          {label}
-        </Text>
-      )}
+      <CFCaption label={label} />
       <Slider
         focusThumbOnChange={!iptFocused}
         flex={1}

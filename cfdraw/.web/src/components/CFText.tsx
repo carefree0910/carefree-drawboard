@@ -8,5 +8,16 @@ function CFText(props: TextProps) {
 
   return <Text color={textColor} {...props}></Text>;
 }
+export const CFCaption = observer(({ label, ...props }: TextProps & { label?: string }) => {
+  return (
+    <>
+      {label && (
+        <CFText minW="20%" align="center" fontSize="14px" flexShrink={0} {...props}>
+          {label}
+        </CFText>
+      )}
+    </>
+  );
+});
 
 export default observer(CFText);
