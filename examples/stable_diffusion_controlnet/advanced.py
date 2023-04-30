@@ -81,7 +81,7 @@ class ControlNetPlugin(IFieldsPlugin):
             w=600,
             h=400,
             nodeConstraint=NodeConstraints.IMAGE,
-            src="https://user-images.githubusercontent.com/15677328/234642045-0416300a-8475-4afa-8285-88c0eee93c07.svg",
+            src=constants.CONTROLNET_ICON,
             tooltip="ControlNet with Canny Annotation",
             pivot=PivotType.RT,
             follow=True,

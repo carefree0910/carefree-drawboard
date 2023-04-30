@@ -73,3 +73,10 @@ UPLOAD_ROOT = Path("~").expanduser() / ".cache" / "carefree-draw"
 UPLOAD_IMAGE_FOLDER_NAME = ".images"
 UPLOAD_PROJECT_FOLDER_NAME = ".projects"
 PROJECT_META_FILE = "_meta.json"
+
+# icons
+TEXT_TO_IMAGE_ICON = "https://user-images.githubusercontent.com/15677328/234642061-98636956-4e3b-44ef-a670-a478bc9eb4ca.svg"
+IMAGE_TO_IMAGE_ICON = "https://user-images.githubusercontent.com/15677328/234642045-0416300a-8475-4afa-8285-88c0eee93c07.svg"
+IMAGE_TO_TEXT_ICON = "https://user-images.githubusercontent.com/15677328/234642056-79e20fc9-0005-4e0e-8365-3285af8803ae.svg"
+CONTROLNET_ICON = IMAGE_TO_IMAGE_ICON
+INPAINTING_ICON = IMAGE_TO_IMAGE_ICON

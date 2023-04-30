@@ -44,7 +44,7 @@ class InpaintingPlugin(IFieldsPlugin):
             h=400,
             offsetX=-48,
             nodeConstraint=NodeConstraints.MULTI_NODE,
-            src="https://user-images.githubusercontent.com/15677328/234629483-8a5cee86-ed3c-42fc-9ec4-888a1792f0c8.svg",
+            src=constants.INPAINTING_ICON,
             tooltip="Stable Diffusion Inpainting",
             pivot=PivotType.RT,
             follow=True,
