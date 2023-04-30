@@ -4,10 +4,11 @@ import { isUndefined } from "@carefree0910/core";
 
 import type { IField } from "@/schema/plugins";
 import type { INumberField } from "@/schema/fields";
+import { titleCaseWord } from "@/utils/misc";
 import { getMetaField, setMetaField } from "@/stores/meta";
 import CFSlider from "@/components/CFSlider";
 import TextField from "./TextField";
-import { getLabel, useDefaultFieldValue } from "./utils";
+import { useDefaultFieldValue } from "./utils";
 
 export interface NumberFieldProps extends IField<INumberField> {}
 function NumberField({ field, definition }: NumberFieldProps) {
@@ -37,7 +38,7 @@ function NumberField({ field, definition }: NumberFieldProps) {
       value={getMetaField(field) as number}
       onSliderChange={(value) => setMetaField(field, value)}
       scale={definition.scale}
-      label={definition.label ?? getLabel(field)}
+      label={definition.label ?? titleCaseWord(field)}
       tooltip={definition.tooltip}
       precision={definition.isInt ? 0 : definition.precision}
       {...definition.props}

@@ -2,10 +2,11 @@ import { observer } from "mobx-react-lite";
 
 import type { IField } from "@/schema/plugins";
 import type { ITextField } from "@/schema/fields";
+import { titleCaseWord } from "@/utils/misc";
 import { getMetaField, setMetaField } from "@/stores/meta";
 import CFInput from "@/components/CFInput";
 import CFTextarea from "@/components/CFTextarea";
-import { getPlaceholder, useDefaultFieldValue } from "./utils";
+import { useDefaultFieldValue } from "./utils";
 
 export interface TextFieldProps extends IField<ITextField> {}
 function TextField({ field, definition }: TextFieldProps) {
@@ -19,7 +20,7 @@ function TextField({ field, definition }: TextFieldProps) {
         setMetaField(field, event.target.value);
         definition.props?.onChange?.(event);
       }}
-      placeholder={definition.label ?? getPlaceholder(field)}
+      placeholder={definition.label ?? titleCaseWord(field)}
       {...definition.props}
     />
   );
