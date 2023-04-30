@@ -2,16 +2,19 @@ import type { ReactElement } from "react";
 
 import type { Dictionary } from "@carefree0910/core";
 
-export interface ITextField {
+interface IBaseFields {
+  props?: any;
+}
+export interface ITextField extends IBaseFields {
   type: "text";
   default: string;
   placeholder?: string;
 }
-export interface IImageField {
+export interface IImageField extends IBaseFields {
   type: "image";
   default: string;
 }
-export interface INumberField {
+export interface INumberField extends IBaseFields {
   type: "number";
   default: number;
   min?: number;
@@ -23,32 +26,32 @@ export interface INumberField {
   label?: string | ReactElement;
   precision?: number;
 }
-export interface ISelectField<T> {
+export interface ISelectField<T> extends IBaseFields {
   type: "select";
   values: readonly T[];
   default: T;
   isMulti?: boolean;
 }
-export interface IBooleanField {
+export interface IBooleanField extends IBaseFields {
   type: "boolean";
   default: boolean;
 }
-export interface IColorField {
+export interface IColorField extends IBaseFields {
   type: "color";
   default: string;
 }
-export interface IListField {
+export interface IListField extends IBaseFields {
   type: "list";
   item: IFieldDefinition;
   default: any[];
 }
-export interface IObjectField {
+export interface IObjectField extends IBaseFields {
   type: "object";
   items: IDefinitions;
   default: Dictionary<any>;
 }
 
-export type _IFieldDefinition =
+export type IFieldDefinition =
   | ITextField
   | IImageField
   | INumberField
@@ -57,6 +60,5 @@ export type _IFieldDefinition =
   | IColorField
   | IListField
   | IObjectField;
-export type IFieldType = _IFieldDefinition["type"];
-export type IFieldDefinition<T extends _IFieldDefinition = _IFieldDefinition> = T & { props?: any };
+export type IFieldType = IFieldDefinition["type"];
 export type IDefinitions = Dictionary<IFieldDefinition>;

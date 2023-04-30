@@ -4,7 +4,7 @@ import type { FlexProps } from "@chakra-ui/react";
 import type { INode, NodeType, PivotType } from "@carefree0910/core";
 import type { IResponse } from "@carefree0910/business";
 
-import type { IFieldDefinition, _IFieldDefinition } from "./fields";
+import type { IFieldDefinition } from "./fields";
 import type { IPythonFieldsPlugin, IPythonQAPlugin, IPythonTextAreaPlugin } from "./_python";
 
 // general
@@ -54,9 +54,9 @@ export interface IPlugin extends IRender {
 
 // specific
 
-export interface IField<T extends _IFieldDefinition> {
+export interface IField<T extends IFieldDefinition> {
   field: string;
-  definition: IFieldDefinition<T>;
+  definition: T;
 }
 
 // factory
