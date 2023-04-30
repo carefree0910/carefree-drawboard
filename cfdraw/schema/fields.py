@@ -26,6 +26,7 @@ class FieldType(str, Enum):
 
 
 class IBaseField(BaseModel):
+    label: Optional[str] = Field(None, description="The label of the field")
     props: Optional[IChakra] = Field(None, description="Props for the component")
     numRows: Optional[int] = Field(
         None,
@@ -39,7 +40,6 @@ class IBaseField(BaseModel):
 
 class ITextField(IBaseField):
     default: str = Field("", description="The default value of the field")
-    placeholder: Optional[str] = Field(None, description="Placeholder of the field")
     type: FieldType = Field(FieldType.TEXT, description="Type of the field")
 
 
@@ -60,7 +60,6 @@ class INumberField(IBaseField):
     step: Optional[float] = Field(None, description="The step of the field")
     isInt: Optional[bool] = Field(None, description="Whether the field is an integer")
     scale: Optional[NumberScale] = Field(None, description="The scale of the field")
-    label: Optional[str] = Field(None, description="The label of the field")
     precision: Optional[int] = Field(None, description="The precision of the field")
     type: FieldType = Field(FieldType.NUMBER, description="Type", const=True)
 

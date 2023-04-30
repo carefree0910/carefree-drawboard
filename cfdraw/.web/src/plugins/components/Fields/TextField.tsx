@@ -18,7 +18,7 @@ function TextField({ field, definition }: TextFieldProps) {
         setMetaField(field, event.target.value);
         definition.props?.onChange?.(event);
       }}
-      placeholder={definition.placeholder ?? getPlaceholder(field)}
+      placeholder={definition.label ?? getPlaceholder(field)}
       {...definition.props}
     />
   );

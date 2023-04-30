@@ -3,13 +3,13 @@ import type { ReactElement } from "react";
 import type { Dictionary } from "@carefree0910/core";
 
 interface IBaseFields {
+  label?: string;
   props?: any;
   numRows?: number;
 }
 export interface ITextField extends IBaseFields {
   type: "text";
   default: string;
-  placeholder?: string;
 }
 export interface IImageField extends IBaseFields {
   type: "image";
@@ -24,7 +24,6 @@ export interface INumberField extends IBaseFields {
   step?: number;
   isInt?: boolean;
   scale?: "linear" | "logarithmic";
-  label?: string | ReactElement;
   precision?: number;
 }
 export interface ISelectField<T> extends IBaseFields {

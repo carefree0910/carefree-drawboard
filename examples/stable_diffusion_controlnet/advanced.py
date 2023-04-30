@@ -29,7 +29,7 @@ def get_model():
 # copying parameters from https://huggingface.co/docs/diffusers/api/pipelines/stable_diffusion/inpaint#diffusers.StableDiffusionInpaintPipeline.__call__
 inpainting_fields = dict(
     prompt=ITextField(),
-    negative_prompt=ITextField(placeholder="Negative Prompt"),
+    negative_prompt=ITextField(label="Negative Prompt"),
     height=INumberField(default=512, min=64, max=1024, step=64, isInt=True),
     width=INumberField(default=512, min=64, max=1024, step=64, isInt=True),
     num_inference_steps=INumberField(
