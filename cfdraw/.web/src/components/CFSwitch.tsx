@@ -12,6 +12,7 @@ import {
 import { getRandomHash } from "@carefree0910/core";
 
 import { themeStore } from "@/stores/theme";
+import CFTooltip from "./CFTooltip";
 
 interface ICFSwitch extends FlexProps {
   label: string;
@@ -38,16 +39,17 @@ function CFSwitch({
 
   return (
     <FormControl display="flex" alignItems="center" {...props}>
-      <FormLabel
-        mb="0"
-        color={textColor}
-        fontSize={props.fontSize ?? "14px"}
-        htmlFor={hashId}
-        userSelect="none"
-        {...formLabelProps}>
-        {label}
-      </FormLabel>
-      {tooltip}
+      <CFTooltip label={tooltip}>
+        <FormLabel
+          mb="0"
+          color={textColor}
+          fontSize={props.fontSize ?? "14px"}
+          htmlFor={hashId}
+          userSelect="none"
+          {...formLabelProps}>
+          {label}
+        </FormLabel>
+      </CFTooltip>
       <Spacer />
       <Switch
         id={hashId}
