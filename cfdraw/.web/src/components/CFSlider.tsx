@@ -41,11 +41,12 @@ const CFSlider: React.FC<ICFSlider> = ({
   const [val, setVal] = useState(value ?? 0);
   const [inputVal, setInputVal] = useState<string>(value?.toString() ?? "0");
   const [iptFocused, setIptFocused] = useState(false);
+  const offset = scale === "linear" || min > 0 ? 0 : -min + 1;
 
   const handleSliderChange = useCallback(
     (v: number) => {
       if (scale === "logarithmic") {
-        v = Math.pow(Math.E, v);
+        v = Math.pow(Math.E, v) - offset;
       }
       v = +v.toFixed(precision);
       setVal(v);
@@ -137,9 +138,9 @@ const CFSlider: React.FC<ICFSlider> = ({
         flex={1}
         h="32px"
         mx="1em"
-        value={scale === "linear" ? val : Math.log(val)}
-        min={scale === "linear" ? min : Math.log(min)}
-        max={scale === "linear" ? max : Math.log(max)}
+        value={scale === "linear" ? val : Math.log(val + offset)}
+        min={scale === "linear" ? min : Math.log(min + offset)}
+        max={scale === "linear" ? max : Math.log(max + offset)}
         color="#333"
         fontSize="12px"
         step={step}
