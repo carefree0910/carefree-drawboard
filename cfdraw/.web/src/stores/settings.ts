@@ -16,6 +16,7 @@ interface IGlobalSettings {
   defaultLang?: Lang;
   defaultInfoTimeout?: number;
   excludeReactPlugins?: AvailablePlugins[];
+  iconLoadingPatience?: number;
 }
 interface IBoardSettings {
   styles?: Record<ThemeType, Partial<ThemeStyles>>;

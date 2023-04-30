@@ -46,6 +46,10 @@ export type ThemeStyles = {
   floatingColors: {
     busyColor: string;
   };
+  // lottie colors
+  lottieColors: {
+    iconLoadingColor: [number, number, number, number];
+  };
 };
 
 export const allThemes: Record<ThemeType, ThemeStyles> = {
@@ -84,6 +88,9 @@ export const allThemes: Record<ThemeType, ThemeStyles> = {
     floatingColors: {
       busyColor: "#999999",
     },
+    lottieColors: {
+      iconLoadingColor: [0.7, 0.7, 0.7, 1],
+    },
   },
   // currently dark mode is just a placeholder
   dark: {
@@ -120,6 +127,9 @@ export const allThemes: Record<ThemeType, ThemeStyles> = {
     },
     floatingColors: {
       busyColor: "#999999",
+    },
+    lottieColors: {
+      iconLoadingColor: [0.7, 0.7, 0.7, 1],
     },
   },
 };

@@ -21,14 +21,17 @@ import {
   useSelecting,
 } from "@carefree0910/business";
 
+import iconLoading from "@/assets/icon-loading.json";
 import type { IFloating, IExpandPositionInfo } from "@/schema/plugins";
 import { Event } from "@/utils/event";
 import { BG_TRANSITION, DEFAULT_PLUGIN_SETTINGS, VISIBILITY_TRANSITION } from "@/utils/constants";
 import { UI_Words } from "@/lang/ui";
 import { themeStore } from "@/stores/theme";
+import { settingsStore } from "@/stores/settings";
 import { getPluginMessage } from "@/stores/plugins";
 import { isInteractingWithBoard } from "@/stores/pointerEvents";
 import CFText from "@/components/CFText";
+import CFLottie from "@/components/CFLottie";
 import CFTooltip from "@/components/CFTooltip";
 import { CFPendingProgress, CFWorkingProgress } from "@/components/CFCircularProgress";
 
@@ -161,6 +164,9 @@ const Floating = forwardRef(function (
   const needRender = useIsReady() && (!renderFilter || renderFilter(useSelecting("raw")));
   const interactingWithBoard = isInteractingWithBoard();
   const [expand, setExpand] = useState(false);
+  const [iconLoaded, setIconLoaded] = useState(false);
+  const iconLoadingPatience =
+    settingsStore.boardSettings?.globalSettings?.iconLoadingPatience ?? 100;
   const [transform, setTransform] = useState<string | undefined>();
   const isBusy = useMemo(
     () => ["pending", "working"].includes(taskMessage?.status ?? ""),
@@ -172,6 +178,7 @@ const Floating = forwardRef(function (
   const {
     panelBg,
     floatingColors: { busyColor },
+    lottieColors: { iconLoadingColor },
   } = themeStore.styles;
   bgOpacity ??= DEFAULT_PLUGIN_SETTINGS.bgOpacity;
   const bgOpacityHex = Math.round(bgOpacity * 255).toString(16);
@@ -258,8 +265,9 @@ const Floating = forwardRef(function (
     [useModal],
   );
   // events
-  const emitIconLoaded = useCallback(() => {
+  const onIconLoaded = useCallback(() => {
     floatingIconLoadedEvent.emit({ id });
+    setIconLoaded(true);
   }, [id]);
   useLayoutEffect(() => {
     const { dispose: disposeRender } = floatingRenderEvent.on(
@@ -292,6 +300,12 @@ const Floating = forwardRef(function (
 
   if (!needRender) return null;
 
+  iconLoading.layers.forEach((layer) => {
+    if (!layer.shapes) return;
+    if (layer.shapes[0].it[1].c?.k) {
+      layer.shapes[0].it[1].c.k = iconLoadingColor;
+    }
+  });
   return (
     <>
       <CFTooltip label={tooltip} hasArrow>
@@ -336,7 +350,7 @@ const Floating = forwardRef(function (
             draggable={false}
             opacity={iconOpacity}
             transition={VISIBILITY_TRANSITION}
-            onLoad={emitIconLoaded}
+            onLoad={onIconLoaded}
           />
           {taskMessage && isBusy && (
             <Box w={`${iconW}px`} h={`${iconH}px`} position="absolute" left="0px" top="0px">
@@ -363,6 +377,16 @@ const Floating = forwardRef(function (
               )}
             </CFText>
           )}
+          <CFLottie
+            w="100%"
+            h="100%"
+            position="absolute"
+            left="0px"
+            top="0px"
+            hide={iconLoaded}
+            delay={iconLoadingPatience}
+            animationData={iconLoading}
+          />
         </Box>
       </CFTooltip>
       {!noExpand && (

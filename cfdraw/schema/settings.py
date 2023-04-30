@@ -23,6 +23,11 @@ class GlobalSettings(BaseModel):
         None,
         description="react plugins to exclude",
     )
+    iconLoadingPatience: Optional[int] = Field(
+        None,
+        ge=0,
+        description="show icon loading animation if the icon is not loaded after {patience}ms",
+    )
 
 
 class BoardSettings(BaseModel):
