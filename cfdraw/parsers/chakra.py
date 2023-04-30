@@ -15,7 +15,9 @@ class TextAlign(str, Enum):
 
 
 class IChakra(BaseModel):
-    p: Optional[str] = Field(None, description="Padding of the plugin")
+    w: Optional[str] = Field(None, description="Width")
+    h: Optional[str] = Field(None, description="Height")
+    p: Optional[str] = Field(None, description="Padding")
     bg: Optional[str] = Field(None, description="Background color")
     textAlign: Optional[TextAlign] = Field(None, description="Text align")
 
