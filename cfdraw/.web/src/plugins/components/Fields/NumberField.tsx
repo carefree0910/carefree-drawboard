@@ -38,6 +38,7 @@ function NumberField({ field, definition }: NumberFieldProps) {
       onSliderChange={(value) => setMetaField(field, value)}
       scale={definition.scale}
       label={definition.label ?? getLabel(field)}
+      tooltip={definition.tooltip}
       precision={definition.isInt ? 0 : definition.precision}
       {...definition.props}
     />

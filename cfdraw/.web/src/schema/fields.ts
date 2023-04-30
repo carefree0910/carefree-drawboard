@@ -1,9 +1,8 @@
-import type { ReactElement } from "react";
-
 import type { Dictionary } from "@carefree0910/core";
 
 interface IBaseFields {
   label?: string;
+  tooltip?: string;
   props?: any;
   numRows?: number;
 }

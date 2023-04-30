@@ -50,8 +50,8 @@ export function useDefinitions({ definitions, numColumns, rowGap, ...others }: I
     }
     definition.props = props;
     const columnIdx = argMin(heights);
-    columns[columnIdx].push(<Field key={field} field={field} definition={definition} />);
     heights[columnIdx] += FieldH + gap;
+    columns[columnIdx].push(<Field key={field} field={field} definition={definition} />);
   });
 
   return (

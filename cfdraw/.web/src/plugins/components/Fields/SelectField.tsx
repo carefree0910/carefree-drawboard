@@ -4,6 +4,7 @@ import { Box, Flex } from "@chakra-ui/react";
 import type { IField } from "@/schema/plugins";
 import type { ISelectField } from "@/schema/fields";
 import { getMetaField, setMetaField } from "@/stores/meta";
+import CFTooltip from "@/components/CFTooltip";
 import { CFCaption } from "@/components/CFText";
 import { CFSrollableSelect } from "@/components/CFSelect";
 import { useDefaultFieldValue } from "./utils";
@@ -14,7 +15,9 @@ function SelectField({ field, definition }: SelectFieldProps) {
 
   return (
     <Flex w="100%" h="100%" align="center" {...definition.props}>
-      <CFCaption label={definition.label} />
+      <CFTooltip label={definition.tooltip}>
+        <CFCaption label={definition.label} />
+      </CFTooltip>
       <Box w="8px" />
       <CFSrollableSelect
         flex={1}

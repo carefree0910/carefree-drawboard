@@ -8,11 +8,12 @@ import {
 } from "@chakra-ui/react";
 import { observer } from "mobx-react-lite";
 import { useUnmount } from "ahooks";
-import React, { ReactElement, useCallback, useEffect, useState } from "react";
+import React, { useCallback, useEffect, useState } from "react";
 
 import { themeStore } from "@/stores/theme";
 import { CFCaption } from "./CFText";
 import CFInput from "./CFInput";
+import CFTooltip from "./CFTooltip";
 
 export interface ICFSlider extends FlexProps {
   className?: string;
@@ -22,6 +23,7 @@ export interface ICFSlider extends FlexProps {
   step?: number;
   scale?: "linear" | "logarithmic";
   label?: string;
+  tooltip?: string;
   onSliderChange(value: number): void;
   precision?: number;
 }
@@ -34,6 +36,7 @@ const CFSlider: React.FC<ICFSlider> = ({
   step = 0.01,
   scale = "linear",
   label,
+  tooltip,
   onSliderChange,
   precision = 2,
   ...props
@@ -128,7 +131,9 @@ const CFSlider: React.FC<ICFSlider> = ({
 
   return (
     <Flex className={className} align="center" color={textColor} {...props}>
-      <CFCaption label={label} />
+      <CFTooltip label={tooltip}>
+        <CFCaption label={label} />
+      </CFTooltip>
       <Slider
         focusThumbOnChange={!iptFocused}
         flex={1}

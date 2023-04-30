@@ -27,6 +27,7 @@ class FieldType(str, Enum):
 
 class IBaseField(BaseModel):
     label: Optional[str] = Field(None, description="The label of the field")
+    tooltip: Optional[str] = Field(None, description="The tooltip of the field")
     props: Optional[IChakra] = Field(None, description="Props for the component")
     numRows: Optional[int] = Field(
         None,
