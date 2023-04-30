@@ -117,6 +117,7 @@ __all__ = [
     "FieldType",
     "ITextField",
     "IImageField",
+    "NumberScale",
     "INumberField",
     "ISelectField",
     "IBooleanField",
