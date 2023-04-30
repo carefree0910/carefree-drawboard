@@ -2,6 +2,15 @@ import type { ReactElement } from "react";
 
 import type { Dictionary } from "@carefree0910/core";
 
+export interface ITextField {
+  type: "text";
+  default: string;
+  placeholder?: string;
+}
+export interface IImageField {
+  type: "image";
+  default: string;
+}
 export interface INumberField {
   type: "number";
   default: number;
@@ -18,34 +27,36 @@ export interface ISelectField<T> {
   type: "select";
   values: readonly T[];
   default: T;
-}
-export interface ITextField {
-  type: "text";
-  placeholder?: string;
+  isMulti?: boolean;
 }
 export interface IBooleanField {
   type: "boolean";
   default: boolean;
 }
+export interface IColorField {
+  type: "color";
+  default: string;
+}
 export interface IListField {
   type: "list";
-  item: Dictionary<IFieldDefinition>;
+  item: IFieldDefinition;
+  default: any[];
 }
 export interface IObjectField {
   type: "object";
-  item: Dictionary<IFieldDefinition>;
-}
-export interface IImageField {
-  type: "image";
+  items: IDefinitions;
+  default: Dictionary<any>;
 }
 
 export type _IFieldDefinition =
+  | ITextField
+  | IImageField
   | INumberField
   | ISelectField<any>
-  | ITextField
   | IBooleanField
+  | IColorField
   | IListField
-  | IObjectField
-  | IImageField;
+  | IObjectField;
+export type IFieldType = _IFieldDefinition["type"];
 export type IFieldDefinition<T extends _IFieldDefinition = _IFieldDefinition> = T & { props?: any };
 export type IDefinitions = Dictionary<IFieldDefinition>;

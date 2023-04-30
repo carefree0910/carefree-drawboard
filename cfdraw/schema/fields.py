@@ -18,6 +18,7 @@ class FieldType(str, Enum):
     NUMBER = "number"
     SELECT = "select"
     BOOLEAN = "boolean"
+    COLOR = "color"
     LIST = "list"
     OBJECT = "object"
 
@@ -31,11 +32,13 @@ class IBaseField(BaseModel):
 
 
 class ITextField(IBaseField):
+    default: str = Field("", description="The default value of the field")
     placeholder: Optional[str] = Field(None, description="Placeholder of the field")
     type: FieldType = Field(FieldType.TEXT, description="Type of the field")
 
 
 class IImageField(IBaseField):
+    default: str = Field("", description="The default value of the field")
     type: FieldType = Field(FieldType.IMAGE, description="Type", const=True)
 
 
@@ -59,6 +62,7 @@ class INumberField(IBaseField):
 class ISelectField(IBaseField):
     values: List[str] = Field(..., description="The values of the field")
     default: str = Field(..., description="The default value of the field")
+    isMulti: Optional[bool] = Field(None, description="Whether use multi-select")
     type: FieldType = Field(FieldType.SELECT, description="Type", const=True)
 
 
@@ -67,13 +71,26 @@ class IBooleanField(IBaseField):
     type: FieldType = Field(FieldType.BOOLEAN, description="Type", const=True)
 
 
+class IColorField(IBaseField):
+    default: str = Field("", description="The default value of the field")
+    type: FieldType = Field(FieldType.COLOR, description="Type", const=True)
+
+
 class IListField(IBaseField):
     item: "IFieldDefinition" = Field(..., description="The item of the field")
+    default: List[Any] = Field(
+        default_factory=lambda: [],
+        description="The default items of the field",
+    )
     type: FieldType = Field(FieldType.LIST, description="Type", const=True)
 
 
 class IObjectField(IBaseField):
     fields: Dict[str, "IFieldDefinition"] = Field(..., description="Sub fields")
+    default: Dict[str, Any] = Field(
+        default_factory=lambda: {},
+        description="The default object of the field",
+    )
     type: FieldType = Field(FieldType.OBJECT, description="Type", const=True)
 
 
@@ -83,6 +100,7 @@ IFieldDefinition = Union[
     INumberField,
     ISelectField,
     IBooleanField,
+    IColorField,
     IListField,
     IObjectField,
 ]
@@ -97,6 +115,8 @@ __all__ = [
     "INumberField",
     "ISelectField",
     "IBooleanField",
+    "IColorField",
     "IListField",
     "IObjectField",
+    "IFieldDefinition",
 ]
