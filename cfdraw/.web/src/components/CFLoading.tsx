@@ -1,7 +1,6 @@
-import lottie from "lottie-web";
-import React, { PropsWithChildren, useEffect } from "react";
+import React, { PropsWithChildren } from "react";
 import { observer } from "mobx-react-lite";
-import { Box, Center, Flex, Spacer } from "@chakra-ui/react";
+import { Center, Flex, Spacer } from "@chakra-ui/react";
 
 import { useIsReady } from "@carefree0910/business";
 
@@ -10,20 +9,12 @@ import { makeVisiblilityTransition } from "@/utils/constants";
 import { useSettingsSynced } from "@/stores/settings";
 import { themeStore } from "@/stores/theme";
 import { useIsAllReady } from "@/hooks/useSetup";
+import CFLottie from "./CFLottie";
 
 const CFLoading: React.FC<PropsWithChildren> = ({ children }) => {
-  const id = "loading-animation";
   const isReady = useIsReady() && useIsAllReady();
   const isSynced = useSettingsSynced();
   const { boardBg } = themeStore.styles;
-
-  useEffect(() => {
-    if (!isSynced) return;
-    lottie.loadAnimation({
-      container: document.getElementById(id)!,
-      animationData: loadingPage,
-    });
-  }, [isSynced]);
 
   return (
     <>
@@ -42,7 +33,7 @@ const CFLoading: React.FC<PropsWithChildren> = ({ children }) => {
           transition={makeVisiblilityTransition(0.5)}>
           <Spacer />
           <Center>
-            <Box id={id} />
+            <CFLottie hide={!isSynced} animationData={loadingPage} />
           </Center>
           <Spacer />
         </Flex>
