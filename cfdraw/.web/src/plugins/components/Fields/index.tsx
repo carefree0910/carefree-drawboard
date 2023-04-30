@@ -7,6 +7,7 @@ import type { IDefinitions } from "@/schema/fields";
 import TextField from "./TextField";
 import NumberField from "./NumberField";
 import SelectField from "./SelectField";
+import BooleanField from "./BooleanField";
 
 interface IUseDefinitions extends FlexProps {
   definitions: IDefinitions;
@@ -32,6 +33,8 @@ export function useDefinitions({ definitions, numColumns, rowGap, ...others }: I
       Field = NumberField;
     } else if (definition.type === "select") {
       Field = SelectField;
+    } else if (definition.type === "boolean") {
+      Field = BooleanField;
     }
     if (!Field) return;
     const props = definition.props ?? {};
