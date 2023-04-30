@@ -15,7 +15,7 @@ interface ICFButtonWithBusyProps extends ButtonProps {
 }
 export function CFButtonWithBusyTooltip({ busy, tooltip, ...others }: ICFButtonWithBusyProps) {
   return (
-    <CFTooltip label={busy ? tooltip : undefined} hasArrow shouldWrapChildren>
+    <CFTooltip label={busy ? tooltip : undefined} shouldWrapChildren>
       <CFButton w="100%" isDisabled={busy} {...others} />
     </CFTooltip>
   );

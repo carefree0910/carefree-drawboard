@@ -308,7 +308,7 @@ const Floating = forwardRef(function (
   });
   return (
     <>
-      <CFTooltip label={tooltip} hasArrow>
+      <CFTooltip label={tooltip}>
         <Box
           as="button"
           id={id}
