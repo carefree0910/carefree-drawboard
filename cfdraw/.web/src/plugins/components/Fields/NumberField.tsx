@@ -12,7 +12,16 @@ import { getLabel } from "./utils";
 export interface NumberFieldProps extends IField<INumberField> {}
 function NumberField({ field, definition }: NumberFieldProps) {
   if (isUndefined(definition.min) || isUndefined(definition.max)) {
-    return <TextField field={field} definition={{ type: "text", props: definition.props }} />;
+    return (
+      <TextField
+        field={field}
+        definition={{
+          type: "text",
+          default: definition.default.toString(),
+          props: definition.props,
+        }}
+      />
+    );
   }
   if (isUndefined(getMetaField(field))) setMetaField(field, definition.default);
   let step = definition.step;
