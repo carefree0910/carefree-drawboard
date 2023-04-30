@@ -7,10 +7,12 @@ import type { INumberField } from "@/schema/fields";
 import { getMetaField, setMetaField } from "@/stores/meta";
 import CFSlider from "@/components/CFSlider";
 import TextField from "./TextField";
-import { getLabel } from "./utils";
+import { getLabel, useDefaultFieldValue } from "./utils";
 
 export interface NumberFieldProps extends IField<INumberField> {}
 function NumberField({ field, definition }: NumberFieldProps) {
+  useDefaultFieldValue({ field, definition });
+
   if (isUndefined(definition.min) || isUndefined(definition.max)) {
     return (
       <TextField
@@ -23,9 +25,10 @@ function NumberField({ field, definition }: NumberFieldProps) {
       />
     );
   }
-  if (isUndefined(getMetaField(field))) setMetaField(field, definition.default);
+
   let step = definition.step;
   if (!isUndefined(step) && definition.isInt) step = Math.round(step);
+
   return (
     <CFSlider
       min={definition.min}

@@ -5,15 +5,16 @@ import type { ITextField } from "@/schema/fields";
 import { getMetaField, setMetaField } from "@/stores/meta";
 import CFInput from "@/components/CFInput";
 import CFTextarea from "@/components/CFTextarea";
-import { getPlaceholder } from "./utils";
+import { getPlaceholder, useDefaultFieldValue } from "./utils";
 
 export interface TextFieldProps extends IField<ITextField> {}
 function TextField({ field, definition }: TextFieldProps) {
+  useDefaultFieldValue({ field, definition });
   const Input = definition.numRows && definition.numRows > 1 ? CFTextarea : CFInput;
 
   return (
     <Input
-      value={getMetaField(field) ?? definition.default}
+      value={getMetaField(field)}
       onChange={(event) => {
         setMetaField(field, event.target.value);
         definition.props?.onChange?.(event);
