@@ -8,6 +8,8 @@ from pydantic import Extra
 from pydantic import Field
 from pydantic import BaseModel
 
+from cfdraw.parsers.chakra import IChakra
+
 
 """ This file should be identical to `src/schema/fields.ts` """
 
@@ -24,7 +26,7 @@ class FieldType(str, Enum):
 
 
 class IBaseField(BaseModel):
-    props: Optional[Dict[str, Any]] = Field(None, description="Props for the component")
+    props: Optional[IChakra] = Field(None, description="Props for the component")
 
     class Config:
         extra = Extra.forbid
