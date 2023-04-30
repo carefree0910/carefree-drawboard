@@ -46,6 +46,10 @@ export type ThemeStyles = {
   floatingColors: {
     busyColor: string;
   };
+  // scrollbar colors
+  scrollbarColors: {
+    thumbColor: string;
+  };
   // lottie colors
   lottieColors: {
     iconLoadingColor: [number, number, number, number];
@@ -88,6 +92,9 @@ export const allThemes: Record<ThemeType, ThemeStyles> = {
     floatingColors: {
       busyColor: "#999999",
     },
+    scrollbarColors: {
+      thumbColor: "#cccccc",
+    },
     lottieColors: {
       iconLoadingColor: [0.7, 0.7, 0.7, 1],
     },
@@ -127,6 +134,9 @@ export const allThemes: Record<ThemeType, ThemeStyles> = {
     },
     floatingColors: {
       busyColor: "#999999",
+    },
+    scrollbarColors: {
+      thumbColor: "#cccccc",
     },
     lottieColors: {
       iconLoadingColor: [0.7, 0.7, 0.7, 1],

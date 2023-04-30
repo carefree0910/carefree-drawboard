@@ -121,8 +121,33 @@ function CFSelect<T extends string>({
     </Menu>
   );
 }
+export const CFSrollableSelect = observer(<T extends string>(props: ISelect<T>) => {
+  const {
+    scrollbarColors: { thumbColor },
+  } = themeStore.styles;
 
-export function CFSrollableSelect<T extends string>(props: ISelect<T>) {
-  return <CFSelect {...props} menuListProps={{ maxH: "116px", overflowY: "scroll" }} />;
-}
+  return (
+    <CFSelect
+      {...props}
+      menuListProps={{
+        maxH: "116px",
+        sx: {
+          overflowY: "overlay",
+          "&::-webkit-scrollbar": {
+            width: "8px",
+            backgroundColor: "transparent",
+          },
+          "&::-webkit-scrollbar-thumb": {
+            backgroundColor: thumbColor,
+            borderRadius: "8px",
+          },
+          "&::-webkit-scrollbar-corner": {
+            backgroundColor: "transparent",
+          },
+        },
+      }}
+    />
+  );
+});
+
 export default observer(CFSelect);
