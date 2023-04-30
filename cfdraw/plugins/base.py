@@ -54,6 +54,9 @@ class ISocketPlugin(IPlugin, metaclass=ABCMeta):
         node_constraint = d.pop("nodeConstraint")
         chakra_props = {}
         for field in IChakra.__fields__:
+            # `w` and `h` are special fields, should not be included in `chakra_props`
+            if field in ["w", "h"]:
+                continue
             chakra_value = d.pop(field)
             if chakra_value is not None:
                 chakra_props[field] = chakra_value
