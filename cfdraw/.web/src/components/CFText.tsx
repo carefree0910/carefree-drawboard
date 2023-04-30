@@ -6,7 +6,7 @@ import { themeStore } from "@/stores/theme";
 function CFText(props: TextProps) {
   const { textColor } = themeStore.styles;
 
-  return <Text color={textColor} {...props}></Text>;
+  return <Text color={textColor} {...props} />;
 }
 export const CFCaption = observer(({ label, ...props }: TextProps & { label?: string }) => {
   return (

@@ -6,7 +6,7 @@ import { themeStore } from "@/stores/theme";
 function CFInput(props: InputProps) {
   const { textColor } = themeStore.styles;
 
-  return <Input color={textColor} flexShrink={0} {...props}></Input>;
+  return <Input color={textColor} flexShrink={0} {...props} />;
 }
 
 export default observer(CFInput);

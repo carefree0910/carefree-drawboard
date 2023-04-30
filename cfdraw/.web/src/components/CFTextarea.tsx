@@ -6,7 +6,7 @@ import { themeStore } from "@/stores/theme";
 function CFTextarea(props: TextareaProps) {
   const { textColor } = themeStore.styles;
 
-  return <Textarea color={textColor} {...props}></Textarea>;
+  return <Textarea color={textColor} {...props} />;
 }
 
 export default observer(CFTextarea);
