@@ -27,6 +27,10 @@ class FieldType(str, Enum):
 
 class IBaseField(BaseModel):
     props: Optional[IChakra] = Field(None, description="Props for the component")
+    numRows: Optional[int] = Field(
+        None,
+        description="Number of rows that will be occupied by this field",
+    )
 
     class Config:
         extra = Extra.forbid

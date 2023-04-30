@@ -18,9 +18,9 @@ import { importMeta } from "@/actions/importMeta";
 import CFHeading from "@/components/CFHeading";
 import { drawboardPluginFactory } from "@/plugins/utils/factory";
 import { useClosePanel } from "../components/hooks";
+import { useDefinitions } from "../components/Fields";
 import { useCurrentMeta, useDefinitionsRequestDataFn } from "./hooks";
 import PythonPluginWithSubmit, { socketFinishedEvent } from "./PluginWithSubmit";
-import DefinitionFields from "./DefinitionFields";
 
 const PythonFieldsPlugin = ({ pluginInfo, ...props }: IPythonFieldsPlugin) => {
   const { id, pureIdentifier } = getPluginIds(pluginInfo.identifier);
@@ -98,6 +98,7 @@ const PythonFieldsPlugin = ({ pluginInfo, ...props }: IPythonFieldsPlugin) => {
   );
 
   const header = pluginInfo.header ?? titleCaseWord(pureIdentifier);
+  const Definitions = useDefinitions({ definitions, numColumns: pluginInfo.numColumns });
   return (
     <PythonPluginWithSubmit
       id={id}
@@ -112,7 +113,7 @@ const PythonFieldsPlugin = ({ pluginInfo, ...props }: IPythonFieldsPlugin) => {
         <Spacer />
         <CloseIcon w="12px" cursor="pointer" onClick={emitClose} />
       </Flex>
-      <DefinitionFields definitions={definitions} numColumns={pluginInfo.numColumns} />
+      {Definitions}
     </PythonPluginWithSubmit>
   );
 };

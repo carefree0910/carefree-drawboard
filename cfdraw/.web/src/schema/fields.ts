@@ -4,6 +4,7 @@ import type { Dictionary } from "@carefree0910/core";
 
 interface IBaseFields {
   props?: any;
+  numRows?: number;
 }
 export interface ITextField extends IBaseFields {
   type: "text";

@@ -4,12 +4,15 @@ import type { IField } from "@/schema/plugins";
 import type { ITextField } from "@/schema/fields";
 import { getMetaField, setMetaField } from "@/stores/meta";
 import CFInput from "@/components/CFInput";
+import CFTextarea from "@/components/CFTextarea";
 import { getPlaceholder } from "./utils";
 
 export interface TextFieldProps extends IField<ITextField> {}
 function TextField({ field, definition }: TextFieldProps) {
+  const Input = definition.numRows && definition.numRows > 1 ? CFTextarea : CFInput;
+
   return (
-    <CFInput
+    <Input
       value={getMetaField(field) ?? definition.default}
       onChange={(event) => {
         setMetaField(field, event.target.value);
