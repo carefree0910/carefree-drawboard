@@ -8,7 +8,7 @@ import { useInitBoard } from "./hooks/useInitBoard";
 import { useFileDropper } from "./hooks/useFileDropper";
 import { useGridLines } from "./hooks/useGridLines";
 import { usePreventDefaults } from "./hooks/usePreventDefaults";
-import CFLoading from "./components/CFLoading";
+import CFLoadingPage from "./components/CFLoadingPage";
 import BoardPanel from "./BoardPanel";
 
 function App() {
@@ -23,9 +23,9 @@ function App() {
   return (
     <Flex h="100vh" className="p-editor" direction="column" userSelect="none">
       <Flex w="100%" flex={1}>
-        <CFLoading>
+        <CFLoadingPage>
           <BoardPanel />
-        </CFLoading>
+        </CFLoadingPage>
       </Flex>
     </Flex>
   );

@@ -11,7 +11,7 @@ import { themeStore } from "@/stores/theme";
 import { useIsAllReady } from "@/hooks/useSetup";
 import CFLottie from "./CFLottie";
 
-const CFLoading: React.FC<PropsWithChildren> = ({ children }) => {
+const CFLoadingPage: React.FC<PropsWithChildren> = ({ children }) => {
   const isReady = useIsReady() && useIsAllReady();
   const isSynced = useSettingsSynced();
   const { boardBg } = themeStore.styles;
@@ -42,4 +42,4 @@ const CFLoading: React.FC<PropsWithChildren> = ({ children }) => {
   );
 };
 
-export default observer(CFLoading);
+export default observer(CFLoadingPage);
