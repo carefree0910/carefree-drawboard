@@ -7,6 +7,8 @@ from typing import Optional
 from pydantic import Extra
 from pydantic import Field
 from pydantic import BaseModel
+from pydantic import StrictStr
+from pydantic import StrictBool
 
 from cfdraw.parsers.chakra import IChakra
 
@@ -40,12 +42,12 @@ class IBaseField(BaseModel):
 
 
 class ITextField(IBaseField):
-    default: str = Field("", description="The default value of the field")
+    default: StrictStr = Field("", description="The default value of the field")
     type: FieldType = Field(FieldType.TEXT, description="Type of the field")
 
 
 class IImageField(IBaseField):
-    default: str = Field("", description="The default value of the field")
+    default: StrictStr = Field("", description="The default value of the field")
     type: FieldType = Field(FieldType.IMAGE, description="Type", const=True)
 
 
@@ -68,17 +70,17 @@ class INumberField(IBaseField):
 class ISelectField(IBaseField):
     values: List[str] = Field(..., description="The values of the field")
     default: str = Field(..., description="The default value of the field")
-    isMulti: Optional[bool] = Field(None, description="Whether use multi-select")
+    isMulti: Optional[StrictBool] = Field(None, description="Whether use multi-select")
     type: FieldType = Field(FieldType.SELECT, description="Type", const=True)
 
 
 class IBooleanField(IBaseField):
-    default: bool = Field(..., description="The default value of the field")
+    default: StrictBool = Field(..., description="The default value of the field")
     type: FieldType = Field(FieldType.BOOLEAN, description="Type", const=True)
 
 
 class IColorField(IBaseField):
-    default: str = Field("", description="The default value of the field")
+    default: StrictStr = Field("", description="The default value of the field")
     type: FieldType = Field(FieldType.COLOR, description="Type", const=True)
 
 
@@ -92,8 +94,8 @@ class IListField(IBaseField):
 
 
 class IObjectField(IBaseField):
-    fields: Dict[str, "IFieldDefinition"] = Field(..., description="Sub fields")
-    default: Dict[str, Any] = Field(
+    fields: Dict[StrictStr, "IFieldDefinition"] = Field(..., description="Sub fields")
+    default: Dict[StrictStr, Any] = Field(
         default_factory=lambda: {},
         description="The default object of the field",
     )
