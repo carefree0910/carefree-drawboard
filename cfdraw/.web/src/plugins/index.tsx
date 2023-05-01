@@ -1,7 +1,11 @@
 import { Logger, shallowCopy } from "@carefree0910/core";
 import { useSelecting } from "@carefree0910/business";
 
-import type { AvailablePluginsAndPythonPlugins, IMakePlugin } from "@/schema/plugins";
+import type {
+  AvailablePluginsAndPythonPlugins,
+  IMakePlugin,
+  NodeConstraintSettings,
+} from "@/schema/plugins";
 import { pluginIsVisible, pythonPluginIsVisible } from "@/stores/pluginVisible";
 import { drawboardPluginFactory } from "./utils/factory";
 import { getNodeFilter } from "./utils/renderFilters";
@@ -24,6 +28,16 @@ export * from "./_python/QAPlugin";
 export * from "./_python/FieldsPlugin";
 export * from "./_python/PluginGroup";
 
+function checkHasConstraint({
+  nodeConstraint,
+  nodeConstraintRules,
+}: NodeConstraintSettings): boolean {
+  if (nodeConstraint && nodeConstraint !== "none") return true;
+  if (nodeConstraintRules?.some) return true;
+  if (nodeConstraintRules?.every) return true;
+  if (nodeConstraintRules?.exactly) return true;
+  return false;
+}
 export function makePlugin<T extends AvailablePluginsAndPythonPlugins>({
   key,
   type,
@@ -32,8 +46,8 @@ export function makePlugin<T extends AvailablePluginsAndPythonPlugins>({
 }: IMakePlugin<T> & { key: string }) {
   renderInfo = shallowCopy(renderInfo);
   pluginInfo = shallowCopy(pluginInfo);
-  if (renderInfo.follow && props.nodeConstraint === "none") {
-    Logger.warn("cannot use `follow` with `targetNodeType` set to `none`");
+  if (renderInfo.follow && !checkHasConstraint(props)) {
+    Logger.warn("cannot use `follow` with no constraints");
     return null;
   }
   const Plugin = drawboardPluginFactory.get(type);
@@ -42,7 +56,7 @@ export function makePlugin<T extends AvailablePluginsAndPythonPlugins>({
     return null;
   }
   const info = useSelecting("raw");
-  if (!getNodeFilter(props.nodeConstraint)(info)) return null;
+  if (!getNodeFilter(props)(info)) return null;
   const node = info.displayNode;
   const nodes = info.nodes;
   const updatedPluginInfo = { ...pluginInfo, node, nodes };

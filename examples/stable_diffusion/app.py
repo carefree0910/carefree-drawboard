@@ -59,7 +59,6 @@ class TextToImagePlugin(IFieldsPlugin):
         return IPluginSettings(
             w=600,
             h=400,
-            nodeConstraint=NodeConstraints.NONE,
             src=constants.TEXT_TO_IMAGE_ICON,
             tooltip="Text to Image",
             pivot=PivotType.RIGHT,

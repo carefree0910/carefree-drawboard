@@ -10,6 +10,7 @@ from typing import Tuple
 from typing import Union
 from typing import Optional
 from typing import Generator
+from pydantic import Field
 from pydantic import BaseModel
 from dataclasses import dataclass
 
@@ -32,6 +33,8 @@ class PivotType(str, Enum):
 
 
 class NodeConstraints(str, Enum):
+    """This should align with the `NodeConstraints` at `cfdraw/.web/src/schema/plugins.ts`"""
+
     # shape
     POLYGON = "polygon"
     ELLIPSE = "ellipse"
@@ -52,6 +55,26 @@ class NodeConstraints(str, Enum):
     ANY_NODE = "anyNode"
     SINGLE_NODE = "singleNode"
     MULTI_NODE = "multiNode"
+
+
+class NodeConstraintRules(BaseModel):
+    """This should align with the `NodeConstraintRules` at `cfdraw/.web/src/schema/plugins.ts`"""
+
+    some: Optional[List[NodeConstraints]] = Field(
+        None,
+        description="Some of the constraints must be satisfied",
+    )
+    every: Optional[List[NodeConstraints]] = Field(
+        None,
+        description="Every constraint must be satisfied",
+    )
+    exactly: Optional[List[NodeConstraints]] = Field(
+        None,
+        description=(
+            "The exact constraints. This is useful when we want to "
+            "constrain certain number of nodes as well as their types"
+        ),
+    )
 
 
 # data structures
@@ -274,4 +297,5 @@ __all__ = [
     "SingleNodeType",
     "GroupType",
     "NodeConstraints",
+    "NodeConstraintRules",
 ]

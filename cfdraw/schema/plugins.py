@@ -22,6 +22,7 @@ from cfdraw.parsers.noli import Matrix2D
 from cfdraw.parsers.noli import INodeType
 from cfdraw.parsers.noli import PivotType
 from cfdraw.parsers.noli import NodeConstraints
+from cfdraw.parsers.noli import NodeConstraintRules
 from cfdraw.parsers.chakra import IChakra
 from cfdraw.parsers.chakra import TextAlign
 
@@ -108,8 +109,9 @@ class IPluginSettings(IChakra):
     # required fields
     w: int = Field(..., gt=0, description="Width of the expanded plugin")  # type: ignore
     h: int = Field(..., gt=0, description="Height of the expanded plugin")  # type: ignore
-    nodeConstraint: NodeConstraints = Field(
-        NodeConstraints.NONE,
+    # node constraints
+    nodeConstraint: Optional[NodeConstraints] = Field(
+        None,
         description="""
 Spcify when the plugin will be shown.
 > If set to 'none', the plugin will always be shown.
@@ -118,6 +120,14 @@ Spcify when the plugin will be shown.
 > If set to 'multiNode', the plugin will be shown when more than one node is selected.
 > Otherwise, the plugin will be shown when the selected node is of the specified type.
 """,
+    )
+    nodeConstraintRules: Optional[NodeConstraintRules] = Field(
+        None,
+        description=(
+            "Specify the complex rule of the node constraint, "
+            "will work together with `nodeConstraint`, but it is often "
+            "not necessary to use `nodeConstraint` when this field is set."
+        ),
     )
     # style fields
     src: Optional[str] = Field(

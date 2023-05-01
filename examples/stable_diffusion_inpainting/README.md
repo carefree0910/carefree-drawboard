@@ -46,7 +46,14 @@ cfdraw run --module advanced
 1. We utilized `cache_resource` to avoid re-initializing models every hot-rerun.
    * This is useful when we are focusing on the plugin styles/logic.
    * At production stage, we can call the initialization function at the very beginning to pre-load the models.
-2. We used `follow=True` and `nodeConstraint=NodeConstraints.MULTI_NODE`, so the plugin will and only will be displayed when the multiple `Node`s are selected.
+2. We used `follow=True` and
+
+```python
+nodeConstraintRules=NodeConstraintRules(
+    exactly=[NodeConstraints.IMAGE, NodeConstraints.PATH]
+)
+```
+, so the plugin will and only will be displayed when (exactly) an `ImageNode` & a `PathNode` are selected.
 
 > See [Plugin Positioning](https://github.com/carefree0910/carefree-drawboard/wiki/Plugin-Positioning) for more details.
 

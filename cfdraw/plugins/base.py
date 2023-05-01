@@ -62,6 +62,7 @@ class ISocketPlugin(IPlugin, metaclass=ABCMeta):
                 plugins.append(p.to_plugin_settings())
             plugin_info["plugins"] = plugins
         node_constraint = d.pop("nodeConstraint")
+        node_constraint_rules = d.pop("nodeConstraintRules")
         chakra_props = {}
         for field in IChakra.__fields__:
             # `w` and `h` are special fields, should not be included in `chakra_props`
@@ -81,6 +82,7 @@ class ISocketPlugin(IPlugin, metaclass=ABCMeta):
         # gather
         props = dict(
             nodeConstraint=node_constraint,
+            nodeConstraintRules=node_constraint_rules,
             pluginInfo=plugin_info,
             renderInfo=d,
             **chakra_props,
@@ -117,7 +119,7 @@ class IInternalSocketPlugin(ISocketPlugin, metaclass=ABCMeta):
 
     @property
     def settings(self) -> IPluginSettings:
-        return IPluginSettings(w=1, h=1, nodeConstraint=NodeConstraints.NONE)
+        return IPluginSettings(w=1, h=1)
 
 
 # bindings

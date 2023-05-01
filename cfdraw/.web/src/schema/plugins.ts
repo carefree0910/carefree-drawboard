@@ -14,7 +14,16 @@ import type {
 
 // general
 
-export type NodeConstraints = NodeType | "none" | "anyNode" | "singleNode" | "multiNode";
+type NodeConstraints = NodeType | "none" | "anyNode" | "singleNode" | "multiNode";
+interface NodeConstraintRules {
+  some?: NodeConstraints[];
+  every?: NodeConstraints[];
+  exactly?: NodeConstraints[];
+}
+export interface NodeConstraintSettings {
+  nodeConstraint?: NodeConstraints;
+  nodeConstraintRules?: NodeConstraintRules;
+}
 export interface IExpandPositionInfo {
   w: number;
   h: number;
@@ -45,9 +54,8 @@ export interface IFloating extends FlexProps {
   noExpand?: boolean;
   onFloatingButtonClick?: () => Promise<void>;
 }
-export interface IRender extends Omit<IFloating, "id" | "renderInfo"> {
+export interface IRender extends Omit<IFloating, "id" | "renderInfo">, NodeConstraintSettings {
   id?: string;
-  nodeConstraint: NodeConstraints;
   renderInfo: Partial<Omit<IRenderInfo, "src">> & { w: number; h: number; src: string };
   containerRef?: RefObject<HTMLDivElement>;
 }

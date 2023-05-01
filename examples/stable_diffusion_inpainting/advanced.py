@@ -42,7 +42,9 @@ class InpaintingPlugin(IFieldsPlugin):
             w=600,
             h=400,
             offsetX=-48,
-            nodeConstraint=NodeConstraints.MULTI_NODE,
+            nodeConstraintRules=NodeConstraintRules(
+                exactly=[NodeConstraints.IMAGE, NodeConstraints.PATH]
+            ),
             src=constants.INPAINTING_ICON,
             tooltip="Stable Diffusion Inpainting",
             pivot=PivotType.RT,

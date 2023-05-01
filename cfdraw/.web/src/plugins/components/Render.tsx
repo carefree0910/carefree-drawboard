@@ -104,6 +104,7 @@ const Render = (({
   id,
   groupId,
   nodeConstraint,
+  nodeConstraintRules,
   renderInfo,
   containerRef,
   children,
@@ -142,7 +143,7 @@ const Render = (({
     follow,
     expandOffsetX,
     expandOffsetY,
-    renderFilter: getNodeFilter(nodeConstraint),
+    renderFilter: getNodeFilter({ nodeConstraint, nodeConstraintRules }),
   };
 
   // This effect handles callbacks that dynamically render the plugin's position
@@ -276,6 +277,7 @@ const Render = (({
     iconW,
     iconH,
     nodeConstraint,
+    nodeConstraintRules,
     pivot,
     follow,
     offsetX,
