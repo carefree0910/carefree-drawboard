@@ -47,6 +47,8 @@ const PythonPluginGroup = ({ pluginInfo, renderInfo, ...props }: IPythonPluginGr
           settings.props.renderInfo.iconH = iconWH;
           settings.props.renderInfo.offsetX = getOffset(i % nx);
           settings.props.renderInfo.offsetY = getOffset(Math.trunc(i / nx));
+          settings.props.renderInfo.expandOffsetX = renderInfo.expandOffsetX;
+          settings.props.renderInfo.expandOffsetY = renderInfo.expandOffsetY;
           return makePlugin({
             key: `${pureIdentifier}_${settings.props.pluginInfo.identifier}`,
             containerRef: props.containerRef,
