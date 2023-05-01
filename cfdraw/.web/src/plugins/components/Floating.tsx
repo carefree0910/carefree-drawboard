@@ -36,7 +36,7 @@ export interface IFloatingEvent {
   type: string;
   data: Dictionary<any>;
 }
-export interface IFloatingRenderEvent {
+export interface IFloatingExpandEvent {
   id: string;
   expand: boolean;
   needRender: boolean;
@@ -57,7 +57,7 @@ export interface IFloatingGroupEvent {
   expand: boolean;
 }
 export const floatingEvent = new Event<IFloatingEvent>();
-export const floatingRenderEvent = new Event<IFloatingRenderEvent>();
+export const floatingExpandEvent = new Event<IFloatingExpandEvent>();
 export const floatingControlEvent = new Event<IFloatingControlEvent>();
 export const floatingIconLoadedEvent = new Event<IFloatingIconLoadedEvent>();
 export const floatingGroupEvent = new Event<IFloatingGroupEvent>();
@@ -210,7 +210,7 @@ const Floating = forwardRef(function (
   }, [id]);
   //// handle expand events
   useLayoutEffect(() => {
-    const { dispose: disposeRender } = floatingRenderEvent.on(
+    const { dispose: disposeRender } = floatingExpandEvent.on(
       ({ id: incomingId, expand: incomingExpand }) => {
         if (id !== incomingId && incomingExpand && expand) {
           setExpand(false);
@@ -230,7 +230,7 @@ const Floating = forwardRef(function (
         }
       },
     );
-    floatingRenderEvent.emit({ id, expand, needRender, noExpand });
+    floatingExpandEvent.emit({ id, expand, needRender, noExpand });
 
     return () => {
       disposeRender();

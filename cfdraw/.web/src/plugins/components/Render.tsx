@@ -17,7 +17,7 @@ import {
 import type { IExpandPositionInfo, IRender } from "@/schema/plugins";
 import { DEFAULT_PLUGIN_SETTINGS } from "@/utils/constants";
 import { getNodeFilter } from "../utils/renderFilters";
-import Floating, { floatingRenderEvent, getExpandId, IFloatingRenderEvent } from "./Floating";
+import Floating, { floatingExpandEvent, getExpandId, IFloatingExpandEvent } from "./Floating";
 
 let DEBUG_PREFIX: string | undefined;
 
@@ -250,12 +250,12 @@ const Render = (({
       });
       domFloatingExpand.style.transform = `matrix(1,0,0,1,${ex},${ey})`;
     };
-    const onFloatingReRender = ({ id: renderedId, needRender }: IFloatingRenderEvent) => {
+    const onFloatingReRender = ({ id: renderedId, needRender }: IFloatingExpandEvent) => {
       if (_id === renderedId && needRender) {
         updateFloating({ event: "rerender", needRender });
       }
     };
-    const { dispose } = floatingRenderEvent.on(onFloatingReRender);
+    const { dispose } = floatingExpandEvent.on(onFloatingReRender);
     injectNodeTransformEventCallback(_id, updateFloating);
     useSelectHooks().register({ key: _id, after: updateFloating });
     window.addEventListener("resize", updateFloating);

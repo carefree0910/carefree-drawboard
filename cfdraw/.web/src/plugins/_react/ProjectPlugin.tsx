@@ -38,7 +38,7 @@ import CFDivider from "@/components/CFDivider";
 import CFHeading from "@/components/CFHeading";
 import { CFSrollableSelect } from "@/components/CFSelect";
 import { drawboardPluginFactory } from "../utils/factory";
-import { floatingEvent, floatingRenderEvent } from "../components/Floating";
+import { floatingEvent, floatingExpandEvent } from "../components/Floating";
 import { useClosePanel } from "../components/hooks";
 import Render from "../components/Render";
 
@@ -100,7 +100,7 @@ const ProjectPlugin = ({ pluginInfo, ...props }: IPlugin) => {
         updateProjectStates(useCurrentProjectInfo());
       }
     });
-    const { dispose: floatingRenderDispose } = floatingRenderEvent.on(
+    const { dispose: floatingRenderDispose } = floatingExpandEvent.on(
       ({ id: incomingId, expand }) => {
         if (id === incomingId && expand) updateUids();
       },
