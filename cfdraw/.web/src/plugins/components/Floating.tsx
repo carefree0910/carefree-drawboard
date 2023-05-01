@@ -130,6 +130,7 @@ const Floating = forwardRef(function (
     }),
     [panelBg, busyColor, bgOpacityHex, expand, isBusy, groupIsExpanded, interactingWithBoard],
   );
+  //// progress bar props
   const progressProps = useMemo<CircularProgressProps>(() => {
     const size = Math.floor(Math.min(iconW, iconH) * 0.8);
     return {
@@ -138,7 +139,8 @@ const Floating = forwardRef(function (
       py: `${0.5 * (iconH - size)}px`,
     };
   }, [iconW, iconH]);
-  const progressCaptionProps = useMemo<TextProps>(() => {
+  //// status caption props
+  const statusCaptionProps = useMemo<TextProps>(() => {
     const p = 8;
     const w = 100;
     const defaultTop = "-32px";
@@ -303,7 +305,7 @@ const Floating = forwardRef(function (
             </Box>
           )}
           {taskMessage && isBusy && (
-            <CFText {...progressCaptionProps}>
+            <CFText {...statusCaptionProps}>
               {translate(
                 taskMessage.status === "pending"
                   ? UI_Words["task-pending-caption"]
