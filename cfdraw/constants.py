@@ -79,6 +79,6 @@ TEXT_TO_IMAGE_ICON = "https://user-images.githubusercontent.com/15677328/2346420
 IMAGE_TO_IMAGE_ICON = "https://user-images.githubusercontent.com/15677328/234642045-0416300a-8475-4afa-8285-88c0eee93c07.svg"
 IMAGE_TO_TEXT_ICON = "https://user-images.githubusercontent.com/15677328/234642056-79e20fc9-0005-4e0e-8365-3285af8803ae.svg"
 CONTROLNET_ICON = IMAGE_TO_IMAGE_ICON
-INPAINTING_ICON = IMAGE_TO_IMAGE_ICON
+SD_INPAINTING_ICON = IMAGE_TO_IMAGE_ICON
 DEFAULT_PLUGIN_ICON = "https://user-images.githubusercontent.com/15677328/234536140-233d5f2d-b6fc-407b-b6df-59b5f37e0bcf.svg"
 DEFAULT_PLUGIN_GROUP_ICON = "https://user-images.githubusercontent.com/15677328/235428758-04e6783c-6eaf-47cb-ae4f-b446c9e65412.svg"

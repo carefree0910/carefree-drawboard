@@ -46,7 +46,7 @@ class InpaintingPlugin(IFieldsPlugin):
             nodeConstraintRules=NodeConstraintRules(
                 exactly=[NodeConstraints.IMAGE, NodeConstraints.PATH]
             ),
-            src=constants.INPAINTING_ICON,
+            src=constants.SD_INPAINTING_ICON,
             tooltip="Stable Diffusion Inpainting",
             pivot=PivotType.RT,
             follow=True,
