@@ -1,3 +1,4 @@
+import type { ChakraProps } from "@chakra-ui/react";
 import { computed, makeObservable, observable } from "mobx";
 
 import type { IPathOptions } from "@carefree0910/core";
@@ -169,3 +170,25 @@ class ThemeStore extends ABCStore<IThemeStore> implements IThemeStore {
 
 export const themeStore = new ThemeStore();
 export const updateTheme = (theme: ThemeType) => themeStore.updateProperty("theme", theme);
+
+// shortcuts
+export function useScrollBarSx(): ChakraProps["sx"] {
+  const {
+    scrollbarColors: { thumbColor },
+  } = themeStore.styles;
+
+  return {
+    overflowY: "overlay",
+    "&::-webkit-scrollbar": {
+      width: "8px",
+      backgroundColor: "transparent",
+    },
+    "&::-webkit-scrollbar-thumb": {
+      backgroundColor: thumbColor,
+      borderRadius: "8px",
+    },
+    "&::-webkit-scrollbar-corner": {
+      backgroundColor: "transparent",
+    },
+  };
+}

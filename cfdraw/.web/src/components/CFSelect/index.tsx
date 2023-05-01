@@ -17,7 +17,7 @@ import {
 import "./index.scss";
 import { ReactComponent as ArrowDownIcon } from "@/assets/icons/arrow-down.svg";
 import { genBlock } from "@/utils/bem";
-import { themeStore } from "@/stores/theme";
+import { themeStore, useScrollBarSx } from "@/stores/theme";
 import CFIcon from "../CFIcon";
 
 export interface ISelect<T extends string> extends MenuButtonProps {
@@ -122,32 +122,7 @@ function CFSelect<T extends string>({
   );
 }
 export const CFSrollableSelect = observer(<T extends string>(props: ISelect<T>) => {
-  const {
-    scrollbarColors: { thumbColor },
-  } = themeStore.styles;
-
-  return (
-    <CFSelect
-      {...props}
-      menuListProps={{
-        maxH: "116px",
-        sx: {
-          overflowY: "overlay",
-          "&::-webkit-scrollbar": {
-            width: "8px",
-            backgroundColor: "transparent",
-          },
-          "&::-webkit-scrollbar-thumb": {
-            backgroundColor: thumbColor,
-            borderRadius: "8px",
-          },
-          "&::-webkit-scrollbar-corner": {
-            backgroundColor: "transparent",
-          },
-        },
-      }}
-    />
-  );
+  return <CFSelect {...props} menuListProps={{ maxH: "116px", sx: useScrollBarSx() }} />;
 });
 
 export default observer(CFSelect);
