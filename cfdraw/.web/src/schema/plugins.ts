@@ -48,7 +48,7 @@ export interface IFloating extends FlexProps {
 export interface IRender extends Omit<IFloating, "id" | "renderInfo"> {
   id?: string;
   nodeConstraint: NodeConstraints;
-  renderInfo: Partial<IRenderInfo> & { w: number; h: number };
+  renderInfo: Partial<Omit<IRenderInfo, "src">> & { w: number; h: number; src: string };
   containerRef?: RefObject<HTMLDivElement>;
 }
 export interface IPluginInfo {
