@@ -15,6 +15,7 @@ class SyncSocketPlugin(IInternalSocketPlugin):
                 pluginSettings=[
                     plugin_type().to_plugin_settings()
                     for plugin_type in PluginFactory.plugins.values()
+                    if not plugin_type._in_group
                 ],
                 internalSettings=dict(
                     useStrictMode=config.use_react_strict_mode,

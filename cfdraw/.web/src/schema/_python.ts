@@ -3,7 +3,7 @@ import type { TextareaProps } from "@chakra-ui/react";
 import type { Dictionary, INode, Matrix2DFields } from "@carefree0910/core";
 
 import type { IElapsedTimes, IMeta } from "./meta";
-import type { IPlugin, IPluginInfo } from "./plugins";
+import type { AvailablePythonPlugins, IMakePlugin, IPlugin, IPluginInfo } from "./plugins";
 import type { IDefinitions } from "./fields";
 
 // general
@@ -64,6 +64,13 @@ export interface IPythonTextAreaPlugin extends IPythonPlugin {
 export interface IPythonQAPlugin extends IPythonPlugin {
   pluginInfo: IPythonPluginInfo & {
     initialText: string;
+  };
+}
+
+export interface IPythonPluginGroup extends IPythonPlugin {
+  pluginInfo: IPythonPluginInfo & {
+    header?: string;
+    plugins: IMakePlugin<AvailablePythonPlugins>[];
   };
 }
 

@@ -5,7 +5,12 @@ import type { INode, NodeType, PivotType } from "@carefree0910/core";
 import type { IResponse } from "@carefree0910/business";
 
 import type { IFieldDefinition } from "./fields";
-import type { IPythonFieldsPlugin, IPythonQAPlugin, IPythonTextAreaPlugin } from "./_python";
+import type {
+  IPythonFieldsPlugin,
+  IPythonPluginGroup,
+  IPythonQAPlugin,
+  IPythonTextAreaPlugin,
+} from "./_python";
 
 // general
 
@@ -34,6 +39,8 @@ export interface IRenderInfo extends IExpandPositionInfo {
 }
 export interface IFloating extends FlexProps {
   id: string;
+  isGroup?: boolean;
+  groupId?: string; // the id of the group this floating belongs to
   renderInfo: IRenderInfo;
   noExpand?: boolean;
   onFloatingButtonClick?: () => Promise<void>;
@@ -83,6 +90,7 @@ export const allAvailablePythonPlugins = [
   "_python.textArea",
   "_python.QA",
   "_python.fields",
+  "_python.pluginGroup",
 ] as const;
 export type AvailablePlugins = (typeof allAvailablePlugins)[number];
 export type AvailablePythonPlugins = (typeof allAvailablePythonPlugins)[number];
@@ -110,6 +118,7 @@ export interface IPluginProps {
   "_python.textArea": IPythonTextAreaPlugin;
   "_python.QA": IPythonQAPlugin;
   "_python.fields": IPythonFieldsPlugin;
+  "_python.pluginGroup": IPythonPluginGroup;
 }
 
 export interface IMakePlugin<T extends AvailablePluginsAndPythonPlugins> {

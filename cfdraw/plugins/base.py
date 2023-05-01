@@ -48,9 +48,19 @@ class ISocketPlugin(IPlugin, metaclass=ABCMeta):
         return f"{identifier}.{self.hash}"
 
     def to_plugin_settings(self) -> Dict[str, Any]:
-        d = self.settings.dict()
-        plugin_info = d.pop("pluginInfo")
+        d = self.settings.dict(exclude={"pluginInfo"})
+        pI = self.settings.pluginInfo
+        kw = dict(exclude={"plugins"}) if isinstance(pI, IPluginGroupInfo) else {}
+        plugin_info = self.settings.pluginInfo.dict(**kw)
         plugin_info["identifier"] = self.hash_identifier(self.identifier)
+        if isinstance(pI, IPluginGroupInfo):
+            plugins: List[Dict[str, Any]] = []
+            for identifier, p_base in pI.plugins.items():
+                p_base.hash = self.hash
+                p = p_base()
+                p.identifier = identifier
+                plugins.append(p.to_plugin_settings())
+            plugin_info["plugins"] = plugins
         node_constraint = d.pop("nodeConstraint")
         chakra_props = {}
         for field in IChakra.__fields__:
@@ -125,6 +135,15 @@ class IFieldsPlugin(ISocketPlugin):
         return PluginType.FIELDS
 
 
+class IPluginGroup(ISocketPlugin):
+    @property
+    def type(self) -> PluginType:
+        return PluginType.PLUGIN_GROUP
+
+    def process(self, data: ISocketRequest) -> Any:
+        return
+
+
 ## deprecated
 
 
@@ -154,6 +173,7 @@ __all__ = [
     "ITextAreaPlugin",
     "IQAPlugin",
     "IFieldsPlugin",
+    "IPluginGroup",
     # deprecated
     "IHttpPlugin",
     "IHttpTextAreaPlugin",

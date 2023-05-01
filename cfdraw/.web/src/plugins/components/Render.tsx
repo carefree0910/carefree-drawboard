@@ -26,6 +26,7 @@ function getExpandPosition(
   {
     x,
     y,
+    groupId,
     w,
     h,
     iconW,
@@ -34,8 +35,20 @@ function getExpandPosition(
     follow,
     expandOffsetX,
     expandOffsetY,
-  }: { x: number; y: number } & IExpandPositionInfo,
+  }: { x: number; y: number; groupId?: string } & IExpandPositionInfo,
 ): Coordinate {
+  // check group
+  if (!!groupId) {
+    const group = document.getElementById(groupId);
+    if (group) {
+      const rect = group.getBoundingClientRect();
+      x = rect.left;
+      y = rect.top;
+      iconW = rect.width;
+      iconH = rect.height;
+    }
+  }
+  // check modal
   if (isModal) {
     pivot = "center";
     const { w: bw, h: bh } = useBoardContainerWH();
@@ -87,7 +100,15 @@ function getExpandPosition(
   return new Coordinate(x, y);
 }
 
-const Render = (({ id, nodeConstraint, renderInfo, containerRef, children, ...props }: IRender) => {
+const Render = (({
+  id,
+  groupId,
+  nodeConstraint,
+  renderInfo,
+  containerRef,
+  children,
+  ...props
+}: IRender) => {
   const _id = useMemo(() => id ?? `plugin_${getRandomHash()}`, [id]);
   let { w, h, iconW, iconH, pivot, follow, offsetX, offsetY, expandOffsetX, expandOffsetY } =
     renderInfo;
@@ -95,6 +116,7 @@ const Render = (({ id, nodeConstraint, renderInfo, containerRef, children, ...pr
   iconH ??= DEFAULT_PLUGIN_SETTINGS.iconH;
   pivot ??= DEFAULT_PLUGIN_SETTINGS.pivot as PivotType;
   follow ??= DEFAULT_PLUGIN_SETTINGS.follow;
+  follow = follow || !!groupId;
   expandOffsetX ??=
     renderInfo.useModal || ["top", "center", "bottom"].includes(pivot)
       ? 0
@@ -168,21 +190,28 @@ const Render = (({ id, nodeConstraint, renderInfo, containerRef, children, ...pr
           y = top + 0.5 * (bh - _iconH) + _offsetY;
         }
       } else {
-        const info = useSelecting("raw");
-        if (DEBUG_PREFIX && _id.startsWith(DEBUG_PREFIX)) {
-          console.log("> e", e);
-          console.log("> info", _id, shallowCopy(info));
+        let domPivot;
+        if (!!groupId) {
+          domPivot = Coordinate.origin();
+        } else {
+          const info = useSelecting("raw");
+          if (DEBUG_PREFIX && _id.startsWith(DEBUG_PREFIX)) {
+            console.log("> e", e);
+            console.log("> info", _id, shallowCopy(info));
+          }
+          if (!info || (updatedRenderInfo.renderFilter && !updatedRenderInfo.renderFilter(info))) {
+            return;
+          }
+          const bounding = info.displayNode
+            ? info.displayNode.bbox.bounding
+            : new INodes(info.nodes).bbox;
+          domPivot = boardBBoxToDom(bounding).pivot(_pivot);
         }
-        if (!info || (updatedRenderInfo.renderFilter && !updatedRenderInfo.renderFilter(info))) {
-          return;
-        }
-        const bounding = info.displayNode
-          ? info.displayNode.bbox.bounding
-          : new INodes(info.nodes).bbox;
-        const domPivot = boardBBoxToDom(bounding).pivot(_pivot);
         let offsetX, offsetY;
         // x
-        if (["lt", "left", "lb"].includes(_pivot)) {
+        if (!!groupId) {
+          offsetX = _offsetX;
+        } else if (["lt", "left", "lb"].includes(_pivot)) {
           offsetX = -_iconW + _offsetX;
         } else if (["rt", "right", "rb"].includes(_pivot)) {
           offsetX = _offsetX;
@@ -190,7 +219,9 @@ const Render = (({ id, nodeConstraint, renderInfo, containerRef, children, ...pr
           offsetX = -0.5 * _iconW + _offsetX;
         }
         // y
-        if (["lt", "top", "rt"].includes(_pivot)) {
+        if (!!groupId) {
+          offsetY = _offsetY;
+        } else if (["lt", "top", "rt"].includes(_pivot)) {
           offsetY = -_iconH + _offsetY;
         } else if (["lb", "bottom", "rb"].includes(_pivot)) {
           offsetY = _offsetY;
@@ -206,6 +237,7 @@ const Render = (({ id, nodeConstraint, renderInfo, containerRef, children, ...pr
       const { x: ex, y: ey } = getExpandPosition(updatedRenderInfo.useModal ?? false, {
         x,
         y,
+        groupId,
         w,
         h,
         iconW: _iconW,
@@ -255,7 +287,12 @@ const Render = (({ id, nodeConstraint, renderInfo, containerRef, children, ...pr
   ]);
 
   return (
-    <Floating id={_id} ref={containerRef} renderInfo={updatedRenderInfo} {...props}>
+    <Floating
+      id={_id}
+      groupId={groupId}
+      ref={containerRef}
+      renderInfo={updatedRenderInfo}
+      {...props}>
       {children}
     </Floating>
   );

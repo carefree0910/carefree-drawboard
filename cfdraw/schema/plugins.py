@@ -7,6 +7,7 @@ from enum import Enum
 from typing import Any
 from typing import Dict
 from typing import List
+from typing import Type
 from typing import TypeVar
 from typing import Callable
 from typing import Optional
@@ -38,6 +39,7 @@ class PluginType(str, Enum):
     TEXT_AREA = "_python.textArea"
     QA = "_python.QA"
     FIELDS = "_python.fields"
+    PLUGIN_GROUP = "_python.pluginGroup"
 
     # this type of plugins will not be rendered on the drawboard 🎨
     _INTERNAL = "_internal"
@@ -107,7 +109,7 @@ class IPluginSettings(IChakra):
     w: int = Field(..., gt=0, description="Width of the expanded plugin")  # type: ignore
     h: int = Field(..., gt=0, description="Height of the expanded plugin")  # type: ignore
     nodeConstraint: NodeConstraints = Field(
-        ...,
+        NodeConstraints.NONE,
         description="""
 Spcify when the plugin will be shown.
 > If set to 'none', the plugin will always be shown.
@@ -353,6 +355,8 @@ class IPlugin(ABC):
     task_hash: str
     send_message: ISend
     elapsed_times: ElapsedTimes
+    # internal
+    _in_group: bool = False
 
     @property
     @abstractmethod
@@ -454,6 +458,11 @@ class IQAPluginInfo(IPluginInfo):
     )
 
 
+class IPluginGroupInfo(IPluginInfo):
+    header: Optional[str] = Field(None, description="Header of the plugin group")
+    plugins: Dict[str, Type[IPlugin]] = Field(..., description="Plugins in the group")
+
+
 ## deprecated
 
 
@@ -488,6 +497,7 @@ __all__ = [
     # bindings
     "ITextAreaPluginInfo",
     "IQAPluginInfo",
+    "IPluginGroupInfo",
     # deprecated
     "IHttpTextAreaPluginInfo",
     "IHttpQAPluginInfo",
