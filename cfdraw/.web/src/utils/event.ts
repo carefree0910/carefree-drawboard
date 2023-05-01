@@ -38,8 +38,12 @@ export class Event<T> {
   };
 }
 
-export interface IGlobalEvent {
-  type: string;
-  data: Dictionary<any>;
+type GlobalEventType = "newProject";
+interface GlobalEventData {
+  newProject: undefined;
+}
+export interface IGlobalEvent<T extends GlobalEventType = GlobalEventType> {
+  type: T;
+  data: GlobalEventData[T];
 }
 export const globalEvent = new Event<IGlobalEvent>();

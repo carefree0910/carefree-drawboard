@@ -32,7 +32,7 @@ const AddPlugin = ({ pluginInfo, ...props }: IPlugin) => {
         loadLocalProject(
           getNewProject(),
           async () => {
-            globalEvent.emit({ type: "newProject", data: {} });
+            globalEvent.emit({ type: "newProject", data: undefined });
             toastWord("success", Toast_Words["add-project-success-message"]);
             closePanel();
           },
