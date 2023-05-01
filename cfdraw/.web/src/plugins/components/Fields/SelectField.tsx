@@ -22,7 +22,7 @@ function SelectField({ field, definition }: SelectFieldProps) {
       <CFSrollableSelect
         flex={1}
         h="100%"
-        value={getMetaField(field) as string}
+        value={getMetaField(field) ?? ""}
         options={definition.values as string[]}
         onOptionClick={(value) => setMetaField(field, value)}
       />

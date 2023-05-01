@@ -35,7 +35,7 @@ function NumberField({ field, definition }: NumberFieldProps) {
       min={definition.min}
       max={definition.max}
       step={step}
-      value={getMetaField(field) as number}
+      value={getMetaField(field) ?? 0}
       onSliderChange={(value) => setMetaField(field, value)}
       scale={definition.scale}
       label={definition.label ?? titleCaseWord(field)}

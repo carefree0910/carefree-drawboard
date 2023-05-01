@@ -14,7 +14,7 @@ function BooleanField({ field, definition }: BooleanFieldProps) {
   return (
     <CFSwitch
       label={definition.label ?? titleCaseWord(field)}
-      value={getMetaField(field)}
+      value={getMetaField(field) ?? false}
       setValue={(value) => setMetaField(field, value)}
       tooltip={definition.tooltip}
       {...definition.props}

@@ -15,7 +15,7 @@ function TextField({ field, definition }: TextFieldProps) {
 
   return (
     <Input
-      value={getMetaField(field)}
+      value={getMetaField(field) ?? ""}
       onChange={(event) => {
         setMetaField(field, event.target.value);
         definition.props?.onChange?.(event);
