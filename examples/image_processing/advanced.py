@@ -9,7 +9,7 @@ class GrayScalePlugin(IFieldsPlugin):
     def settings(self) -> IPluginSettings:
         return IPluginSettings(
             w=200,
-            h=100,
+            h=110,
             src="https://ailab-huawei-cdn.nolibox.com/upload/images/2f236a9291a04cadb9a0d8705f5537c3.png",
             tooltip="Convert the image to grayscale",
             pluginInfo=IFieldsPluginInfo(header="To Gray", definitions={}),
@@ -27,7 +27,7 @@ class EdgePlugin(IFieldsPlugin):
     def settings(self) -> IPluginSettings:
         return IPluginSettings(
             w=200,
-            h=100,
+            h=110,
             src="https://ailab-huawei-cdn.nolibox.com/upload/images/37a7936897494bd9ae96de5912210841.png",
             tooltip="Find edges in the image",
             pluginInfo=IFieldsPluginInfo(definitions={}),
@@ -71,7 +71,7 @@ class ImageProcessingGroup(IPluginGroup):
     def settings(self) -> IPluginSettings:
         return IPluginSettings(
             w=240,
-            h=105,
+            h=110,
             pivot=PivotType.RT,
             nodeConstraint=NodeConstraints.IMAGE,
             follow=True,

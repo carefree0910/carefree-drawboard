@@ -18,11 +18,10 @@ const PythonPluginGroup = ({ pluginInfo, renderInfo, ...props }: IPythonPluginGr
   const { id, pureIdentifier } = getPluginIds(pluginInfo.identifier);
   const header = pluginInfo.header ?? titleCaseWord(pureIdentifier);
   renderInfo = shallowCopy(renderInfo);
-  const px = 12;
-  const py = 8;
+  const p = 12;
   const gap = 4;
   const iconWH = 48;
-  const nx = Math.trunc((renderInfo.w - px * 2 - iconWH) / (iconWH + gap)) + 1;
+  const nx = Math.trunc((renderInfo.w - p * 2 - iconWH) / (iconWH + gap)) + 1;
   const pivot = renderInfo.pivot;
   renderInfo.expandProps ??= {};
   renderInfo.expandProps.p ??= "0px";
@@ -32,7 +31,7 @@ const PythonPluginGroup = ({ pluginInfo, renderInfo, ...props }: IPythonPluginGr
 
   return (
     <Render id={id} isGroup renderInfo={renderInfo} {...props}>
-      <Box w="100%" h="100%" px={`${px}px`} py={`${py}px`}>
+      <Box w="100%" h="100%" p={`${p}px`}>
         <Flex>
           <CFHeading>{header}</CFHeading>
           <Spacer />
