@@ -250,8 +250,8 @@ const Render = (({
       });
       domFloatingExpand.style.transform = `matrix(1,0,0,1,${ex},${ey})`;
     };
-    const onFloatingReRender = ({ id: renderedId, needRender }: IFloatingExpandEvent) => {
-      if (_id === renderedId && needRender) {
+    const onFloatingReRender = ({ id: incomingId, needRender }: IFloatingExpandEvent) => {
+      if ((_id === incomingId || groupId === incomingId) && needRender) {
         updateFloating({ event: "rerender", needRender });
       }
     };
