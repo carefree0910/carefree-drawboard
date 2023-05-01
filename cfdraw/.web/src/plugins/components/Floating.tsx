@@ -19,7 +19,7 @@ import type { IFloating } from "@/schema/plugins";
 import { Event } from "@/utils/event";
 import { BG_TRANSITION, DEFAULT_PLUGIN_SETTINGS, VISIBILITY_TRANSITION } from "@/utils/constants";
 import { UI_Words } from "@/lang/ui";
-import { themeStore } from "@/stores/theme";
+import { themeStore, useScrollBarSx } from "@/stores/theme";
 import { settingsStore } from "@/stores/settings";
 import { getPluginMessage } from "@/stores/plugins";
 import { isInteractingWithBoard } from "@/stores/pointerEvents";
@@ -335,7 +335,6 @@ const Floating = forwardRef(function (
             id={expandId}
             w={`${w}px`}
             h={`${h}px`}
-            overflowY="auto"
             overflowX="hidden"
             direction="column"
             opacity={expand ? 1 : 0}
@@ -343,6 +342,7 @@ const Floating = forwardRef(function (
             transition={VISIBILITY_TRANSITION}
             {...getCommonProps(true)}
             bg={expandBg}
+            sx={useScrollBarSx()}
             {...parsedExpandProps}>
             {children}
           </Flex>
