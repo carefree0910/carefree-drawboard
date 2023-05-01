@@ -304,7 +304,7 @@ const Floating = forwardRef(function (
               )}
             </Box>
           )}
-          {taskMessage && isBusy && (
+          {taskMessage && isBusy && !groupId && (
             <CFText {...statusCaptionProps}>
               {translate(
                 taskMessage.status === "pending"
