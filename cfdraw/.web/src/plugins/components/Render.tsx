@@ -199,8 +199,6 @@ const Render = (({ id, nodeConstraint, renderInfo, containerRef, children, ...pr
         }
         ({ x, y } = domPivot.add(new Coordinate(offsetX, offsetY)));
       }
-      domFloating.dataset.x = x.toString();
-      domFloating.dataset.y = y.toString();
       domFloating.style.transform = `matrix(1,0,0,1,${x},${y})`;
       // adjust expand of the floating
       const domFloatingExpand = document.querySelector<HTMLDivElement>(`#${getExpandId(_id)}`);

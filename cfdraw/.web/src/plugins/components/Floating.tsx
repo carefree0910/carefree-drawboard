@@ -68,8 +68,6 @@ const Floating = forwardRef(function (
       iconH,
       pivot,
       follow,
-      expandOffsetX,
-      expandOffsetY,
       src,
       tooltip,
       offsetY,
@@ -95,7 +93,6 @@ const Floating = forwardRef(function (
   const [iconLoaded, setIconLoaded] = useState(false);
   const iconLoadingPatience =
     settingsStore.boardSettings?.globalSettings?.iconLoadingPatience ?? 100;
-  const [transform, setTransform] = useState<string | undefined>();
   const isBusy = useMemo(
     () => ["pending", "working"].includes(taskMessage?.status ?? ""),
     [taskMessage?.status],
@@ -175,10 +172,6 @@ const Floating = forwardRef(function (
     }
     return { w: `${w}px`, top, left, position: "absolute" };
   }, [iconW, pivot]);
-  Object.keys(props).forEach((key) => {
-    const commonV = commonProps[key as keyof BoxProps];
-    (props as any)[key] ??= commonV;
-  });
   const parsedExpandProps: FlexProps = {};
   Object.entries(expandProps ?? {}).forEach(([key, value]) => {
     if (!isUndefined(value) && value !== null) {
@@ -308,7 +301,6 @@ const Floating = forwardRef(function (
             overflowY="auto"
             overflowX="hidden"
             direction="column"
-            transform={transform}
             opacity={expand ? 1 : 0}
             visibility={expand ? "visible" : "hidden"}
             transition={VISIBILITY_TRANSITION}
