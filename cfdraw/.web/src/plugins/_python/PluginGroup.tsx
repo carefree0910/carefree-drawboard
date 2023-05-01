@@ -1,5 +1,6 @@
 import { observer } from "mobx-react-lite";
-import { Box } from "@chakra-ui/react";
+import { Box, Flex, Spacer } from "@chakra-ui/react";
+import { CloseIcon } from "@chakra-ui/icons";
 
 import { shallowCopy } from "@carefree0910/core";
 
@@ -7,6 +8,7 @@ import { IPythonPluginGroup } from "@/schema/_python";
 import { titleCaseWord } from "@/utils/misc";
 import { getPluginIds } from "@/stores/plugins";
 import { drawboardPluginFactory } from "../utils/factory";
+import { useClosePanel } from "../components/hooks";
 import Render from "../components/Render";
 import { makePlugin } from "..";
 import CFHeading from "@/components/CFHeading";
@@ -26,11 +28,16 @@ const PythonPluginGroup = ({ pluginInfo, renderInfo, ...props }: IPythonPluginGr
   renderInfo.expandProps.p ??= "0px";
   renderInfo.expandProps.boxShadow ??= "2px 2px 4px rgba(0, 0, 0, 0.25)";
   const getOffset = (i: number) => i * iconWH + (i - 1) * gap;
+  const emitClose = useClosePanel(id);
 
   return (
     <Render id={id} isGroup renderInfo={renderInfo} {...props}>
       <Box w="100%" h="100%" px={`${px}px`} py={`${py}px`}>
-        <CFHeading>{header}</CFHeading>
+        <Flex>
+          <CFHeading>{header}</CFHeading>
+          <Spacer />
+          <CloseIcon w="12px" cursor="pointer" onClick={emitClose} />
+        </Flex>
         <CFDivider />
         {pluginInfo.plugins.map((settings, i) => {
           settings = shallowCopy(settings);
