@@ -1,7 +1,7 @@
 import { useCallback } from "react";
 
 import type { ExportBlobOptions } from "@carefree0910/svg";
-import { BBox, INode, INodes, Logger } from "@carefree0910/core";
+import { BBox, INode, INodes } from "@carefree0910/core";
 
 import type { IMeta } from "@/schema/meta";
 import type {
@@ -9,11 +9,8 @@ import type {
   IPythonSocketRequest,
   IUsePythonInfo,
   IUseSocketPython,
-  IPythonOnSocketMessage,
 } from "@/schema/_python";
 import { userStore } from "@/stores/user";
-import { debugStore } from "@/stores/debug";
-import { ISettingsStore, updateSettings } from "@/stores/settings";
 import { useWebSocketHook } from "@/requests/hooks";
 import { uploadImage } from "@/actions/uploadImage";
 import { Exporter } from "@/actions/export";
