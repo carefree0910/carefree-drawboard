@@ -27,7 +27,7 @@ const PythonPluginGroup = ({ pluginInfo, renderInfo, ...props }: IPythonPluginGr
   renderInfo.expandProps ??= {};
   renderInfo.expandProps.p ??= "0px";
   renderInfo.expandProps.boxShadow ??= "2px 2px 4px rgba(0, 0, 0, 0.25)";
-  const getOffset = (i: number) => i * iconWH + Math.max(0, i - 1) * gap;
+  const getOffset = (i: number) => i * (iconWH + gap);
   const emitClose = useClosePanel(id);
 
   return (
