@@ -73,6 +73,12 @@ class ISocketPlugin(IPlugin, metaclass=ABCMeta):
         for k, v in list(d.items()):
             if v is None:
                 d.pop(k)
+        # src
+        if not isinstance(pI, IPluginGroupInfo):
+            d.setdefault("src", constants.DEFAULT_PLUGIN_ICON)
+        else:
+            d.setdefault("src", constants.DEFAULT_PLUGIN_GROUP_ICON)
+        # gather
         props = dict(
             nodeConstraint=node_constraint,
             pluginInfo=plugin_info,

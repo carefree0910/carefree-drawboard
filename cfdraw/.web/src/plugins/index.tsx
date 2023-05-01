@@ -46,9 +46,6 @@ export function makePlugin<T extends AvailablePluginsAndPythonPlugins>({
   const node = info.displayNode;
   const nodes = info.nodes;
   const updatedPluginInfo = { ...pluginInfo, node, nodes };
-  if (!renderInfo.src)
-    renderInfo.src =
-      "https://user-images.githubusercontent.com/15677328/234536140-233d5f2d-b6fc-407b-b6df-59b5f37e0bcf.svg";
   if (drawboardPluginFactory.checkIsPython(type)) {
     renderInfo.isInvisible = !pythonPluginIsVisible((updatedPluginInfo as any).identifier);
   } else {
