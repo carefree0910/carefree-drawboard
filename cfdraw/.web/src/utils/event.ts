@@ -1,3 +1,5 @@
+import type { Dictionary } from "@carefree0910/core";
+
 export interface Listener<T> {
   (event: T): any;
 }
@@ -35,3 +37,9 @@ export class Event<T> {
     }
   };
 }
+
+export interface IGlobalEvent {
+  type: string;
+  data: Dictionary<any>;
+}
+export const globalEvent = new Event<IGlobalEvent>();

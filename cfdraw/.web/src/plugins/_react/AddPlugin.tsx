@@ -7,6 +7,7 @@ import { langStore, translate } from "@carefree0910/business";
 
 import type { IPlugin } from "@/schema/plugins";
 import { toastWord } from "@/utils/toast";
+import { globalEvent } from "@/utils/event";
 import { Add_Words } from "@/lang/add";
 import { Toast_Words } from "@/lang/toast";
 import { importMeta } from "@/actions/importMeta";
@@ -16,7 +17,6 @@ import CFDivider from "@/components/CFDivider";
 import CFHeading from "@/components/CFHeading";
 import CFImageUploader from "@/components/CFImageUploader";
 import { drawboardPluginFactory } from "../utils/factory";
-import { floatingEvent } from "../components/Floating";
 import Render from "../components/Render";
 import { useClosePanel } from "../components/hooks";
 
@@ -32,7 +32,7 @@ const AddPlugin = ({ pluginInfo, ...props }: IPlugin) => {
         loadLocalProject(
           getNewProject(),
           async () => {
-            floatingEvent.emit({ type: "newProject", data: {} });
+            globalEvent.emit({ type: "newProject", data: {} });
             toastWord("success", Toast_Words["add-project-success-message"]);
             closePanel();
           },

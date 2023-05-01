@@ -11,7 +11,7 @@ import {
   TextProps,
 } from "@chakra-ui/react";
 
-import { Dictionary, isUndefined } from "@carefree0910/core";
+import { isUndefined } from "@carefree0910/core";
 import { langStore, translate, useIsReady, useSelecting } from "@carefree0910/business";
 
 import iconLoading from "@/assets/icon-loading.json";
@@ -32,10 +32,6 @@ export function getExpandId(id: string): string {
   return `${id}_expand`;
 }
 
-export interface IFloatingEvent {
-  type: string;
-  data: Dictionary<any>;
-}
 export interface IFloatingExpandEvent {
   id: string;
   expand: boolean;
@@ -56,7 +52,6 @@ export interface IFloatingGroupEvent {
   groupId?: string;
   expand: boolean;
 }
-export const floatingEvent = new Event<IFloatingEvent>();
 export const floatingExpandEvent = new Event<IFloatingExpandEvent>();
 export const floatingControlEvent = new Event<IFloatingControlEvent>();
 export const floatingIconLoadedEvent = new Event<IFloatingIconLoadedEvent>();

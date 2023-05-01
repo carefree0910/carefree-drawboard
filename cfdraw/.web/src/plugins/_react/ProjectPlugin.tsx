@@ -9,6 +9,7 @@ import { langStore, translate, useSafeExecute } from "@carefree0910/business";
 import type { IPlugin } from "@/schema/plugins";
 import DeleteIcon from "@/assets/icons/delete.svg";
 import { toastWord } from "@/utils/toast";
+import { globalEvent } from "@/utils/event";
 import { Toast_Words } from "@/lang/toast";
 import { Projects_Words } from "@/lang/projects";
 import { userStore } from "@/stores/user";
@@ -38,7 +39,7 @@ import CFDivider from "@/components/CFDivider";
 import CFHeading from "@/components/CFHeading";
 import { CFSrollableSelect } from "@/components/CFSelect";
 import { drawboardPluginFactory } from "../utils/factory";
-import { floatingEvent, floatingExpandEvent } from "../components/Floating";
+import { floatingExpandEvent } from "../components/Floating";
 import { useClosePanel } from "../components/hooks";
 import Render from "../components/Render";
 
@@ -95,7 +96,7 @@ const ProjectPlugin = ({ pluginInfo, ...props }: IPlugin) => {
   }, []);
 
   useEffect(() => {
-    const { dispose: floatingDispose } = floatingEvent.on(({ type }) => {
+    const { dispose: floatingDispose } = globalEvent.on(({ type }) => {
       if (type === "newProject") {
         updateProjectStates(useCurrentProjectInfo());
       }
