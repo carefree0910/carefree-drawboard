@@ -11,18 +11,11 @@ import {
   TextProps,
 } from "@chakra-ui/react";
 
-import { Coordinate, Dictionary, isUndefined } from "@carefree0910/core";
-import {
-  langStore,
-  translate,
-  useBoardContainerLeftTop,
-  useBoardContainerWH,
-  useIsReady,
-  useSelecting,
-} from "@carefree0910/business";
+import { Dictionary, isUndefined } from "@carefree0910/core";
+import { langStore, translate, useIsReady, useSelecting } from "@carefree0910/business";
 
 import iconLoading from "@/assets/icon-loading.json";
-import type { IFloating, IExpandPositionInfo } from "@/schema/plugins";
+import type { IFloating } from "@/schema/plugins";
 import { Event } from "@/utils/event";
 import { BG_TRANSITION, DEFAULT_PLUGIN_SETTINGS, VISIBILITY_TRANSITION } from "@/utils/constants";
 import { UI_Words } from "@/lang/ui";
@@ -37,71 +30,6 @@ import { CFPendingProgress, CFWorkingProgress } from "@/components/CFCircularPro
 
 export function getExpandId(id: string): string {
   return `${id}_expand`;
-}
-export function getExpandPosition(
-  isModal: boolean,
-  {
-    x,
-    y,
-    w,
-    h,
-    iconW,
-    iconH,
-    pivot,
-    follow,
-    expandOffsetX,
-    expandOffsetY,
-  }: { x: number; y: number } & IExpandPositionInfo,
-): Coordinate {
-  if (isModal) {
-    pivot = "center";
-    const { w: bw, h: bh } = useBoardContainerWH();
-    const { x: left, y: top } = useBoardContainerLeftTop();
-    x = left + 0.5 * (bw - iconW);
-    y = top + 0.5 * (bh - h) - iconH;
-  }
-  // x
-  if (["top", "center", "bottom"].includes(pivot)) {
-    x += 0.5 * (iconW - w) + expandOffsetX;
-  } else if (["rt", "right", "rb"].includes(pivot)) {
-    if (follow) {
-      x += iconW + expandOffsetX;
-    } else {
-      x += expandOffsetX - w;
-    }
-  } else {
-    if (follow) {
-      x += expandOffsetX - w;
-    } else {
-      x += iconW + expandOffsetX;
-    }
-  }
-  // y
-  if (["left", "right"].includes(pivot)) {
-    y += 0.5 * (iconH - h) + expandOffsetY;
-  } else if (pivot === "center") {
-    y += iconH + expandOffsetY;
-  } else {
-    if (!follow) {
-      if (["lb", "bottom", "rb"].includes(pivot)) {
-        y += expandOffsetY - h;
-      } else if (["lt", "top", "rt"].includes(pivot)) {
-        y += iconH + expandOffsetY;
-      }
-    } else {
-      if (pivot === "bottom") {
-        y += iconH + expandOffsetY;
-      } else if (pivot === "top") {
-        y += expandOffsetY - h;
-      } else if (["lb", "rb"].includes(pivot)) {
-        y += expandOffsetY + iconH - h;
-      } else if (["lt", "rt"].includes(pivot)) {
-        y += expandOffsetY;
-      }
-    }
-  }
-  // return
-  return new Coordinate(x, y);
 }
 
 export interface IFloatingEvent {
@@ -315,24 +243,6 @@ const Floating = forwardRef(function (
           w={`${iconW}px`}
           h={`${iconH}px`}
           onClick={() => {
-            const self = document.querySelector<HTMLDivElement>(`#${id}`);
-            if (self && self.dataset.x && self.dataset.y) {
-              let x = parseFloat(self.dataset.x);
-              let y = parseFloat(self.dataset.y);
-              ({ x, y } = getExpandPosition(useModal ?? false, {
-                x,
-                y,
-                w,
-                h,
-                iconW,
-                iconH,
-                pivot,
-                follow,
-                expandOffsetX,
-                expandOffsetY,
-              }));
-              setTransform(`matrix(1,0,0,1,${x},${y})`);
-            }
             if (!noExpand) {
               setExpand(!expand);
             }

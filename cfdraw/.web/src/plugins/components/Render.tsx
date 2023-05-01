@@ -14,17 +14,78 @@ import {
   useSelecting,
 } from "@carefree0910/business";
 
-import type { IRender } from "@/schema/plugins";
+import type { IExpandPositionInfo, IRender } from "@/schema/plugins";
 import { DEFAULT_PLUGIN_SETTINGS } from "@/utils/constants";
 import { getNodeFilter } from "../utils/renderFilters";
-import Floating, {
-  floatingRenderEvent,
-  getExpandId,
-  getExpandPosition,
-  IFloatingRenderEvent,
-} from "./Floating";
+import Floating, { floatingRenderEvent, getExpandId, IFloatingRenderEvent } from "./Floating";
 
 let DEBUG_PREFIX: string | undefined;
+
+function getExpandPosition(
+  isModal: boolean,
+  {
+    x,
+    y,
+    w,
+    h,
+    iconW,
+    iconH,
+    pivot,
+    follow,
+    expandOffsetX,
+    expandOffsetY,
+  }: { x: number; y: number } & IExpandPositionInfo,
+): Coordinate {
+  if (isModal) {
+    pivot = "center";
+    const { w: bw, h: bh } = useBoardContainerWH();
+    const { x: left, y: top } = useBoardContainerLeftTop();
+    x = left + 0.5 * (bw - iconW);
+    y = top + 0.5 * (bh - h) - iconH;
+  }
+  // x
+  if (["top", "center", "bottom"].includes(pivot)) {
+    x += 0.5 * (iconW - w) + expandOffsetX;
+  } else if (["rt", "right", "rb"].includes(pivot)) {
+    if (follow) {
+      x += iconW + expandOffsetX;
+    } else {
+      x += expandOffsetX - w;
+    }
+  } else {
+    if (follow) {
+      x += expandOffsetX - w;
+    } else {
+      x += iconW + expandOffsetX;
+    }
+  }
+  // y
+  if (["left", "right"].includes(pivot)) {
+    y += 0.5 * (iconH - h) + expandOffsetY;
+  } else if (pivot === "center") {
+    y += iconH + expandOffsetY;
+  } else {
+    if (!follow) {
+      if (["lb", "bottom", "rb"].includes(pivot)) {
+        y += expandOffsetY - h;
+      } else if (["lt", "top", "rt"].includes(pivot)) {
+        y += iconH + expandOffsetY;
+      }
+    } else {
+      if (pivot === "bottom") {
+        y += iconH + expandOffsetY;
+      } else if (pivot === "top") {
+        y += expandOffsetY - h;
+      } else if (["lb", "rb"].includes(pivot)) {
+        y += expandOffsetY + iconH - h;
+      } else if (["lt", "rt"].includes(pivot)) {
+        y += expandOffsetY;
+      }
+    }
+  }
+  // return
+  return new Coordinate(x, y);
+}
 
 const Render = (({ id, nodeConstraint, renderInfo, containerRef, children, ...props }: IRender) => {
   const _id = useMemo(() => id ?? `plugin_${getRandomHash()}`, [id]);
