@@ -22,10 +22,13 @@ export function useDefinitions({ definitions, numColumns, rowGap, ...others }: I
     () => (numColumns === 1 ? "100%" : `${(100 - 5 * (nc - 1)) / nc}%`),
     [nc],
   );
+
+  const entries = Object.entries(shallowCopy(definitions));
+  if (entries.length === 0) return null;
+
   const columns: ReactElement[][] = range(0, nc).map(() => []);
   const heights = columns.map(() => 0);
-  definitions = shallowCopy(definitions);
-  Object.entries(definitions).forEach(([field, definition]) => {
+  entries.forEach(([field, definition]) => {
     let Field: any;
     if (definition.type === "text") {
       Field = TextField;
