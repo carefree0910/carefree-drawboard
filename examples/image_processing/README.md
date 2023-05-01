@@ -2,6 +2,8 @@
 
 ![Image Processing](../assets/image-processing.png)
 
+> The screenshot groups the plugins into an `Image Processing` plugin group, which requires to launch the `advanced.py`. See [Run](#Run) for more details.
+
 This example implements three common image processing plugins with `carefree-drawboard` 🎨:
 1. Any (colourful) image -> Gray scale image.
 2. Extract edges of an image.
@@ -19,6 +21,12 @@ cfdraw run
 
 ```bash
 cfdraw run --module {name}
+```
+
+For example, we provide an `advanced.py`, which utilized `IPluginGroup` to group the plugins together. To launch it, run:
+
+```bash
+cfdraw run --module advanced
 ```
 
 ## Details
