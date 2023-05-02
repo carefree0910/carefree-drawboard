@@ -1,4 +1,4 @@
-import { useState } from "react";
+import { useMemo, useState } from "react";
 import { observer } from "mobx-react-lite";
 
 import { isUndefined } from "@carefree0910/core";
@@ -15,6 +15,7 @@ export interface NumberFieldProps extends IField<INumberField> {}
 function NumberField({ field, definition }: NumberFieldProps) {
   useDefaultFieldValue({ field, definition });
   const [value, setValue] = useState(getMetaField(field) ?? definition.default);
+  const label = useMemo(() => definition.label ?? titleCaseWord(field), [definition.label, field]);
 
   if (isUndefined(definition.min) || isUndefined(definition.max)) {
     return (
@@ -23,6 +24,8 @@ function NumberField({ field, definition }: NumberFieldProps) {
         definition={{
           type: "text",
           default: definition.default.toString(),
+          label: definition.label,
+          tooltip: definition.tooltip ?? label,
           props: definition.props,
           numberOptions: {
             min: definition.min,
@@ -48,7 +51,7 @@ function NumberField({ field, definition }: NumberFieldProps) {
         setMetaField(field, value);
       }}
       scale={definition.scale}
-      label={definition.label ?? titleCaseWord(field)}
+      label={label}
       tooltip={definition.tooltip}
       precision={definition.isInt ? 0 : definition.precision}
       {...definition.props}
