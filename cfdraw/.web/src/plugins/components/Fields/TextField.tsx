@@ -1,4 +1,7 @@
+import { ChangeEvent, useCallback, useMemo, useState } from "react";
 import { observer } from "mobx-react-lite";
+
+import { isUndefined } from "@carefree0910/core";
 
 import type { IField } from "@/schema/plugins";
 import type { ITextField } from "@/schema/fields";
@@ -11,15 +14,44 @@ import { useDefaultFieldValue } from "./utils";
 export interface TextFieldProps extends IField<ITextField> {}
 function TextField({ field, definition }: TextFieldProps) {
   useDefaultFieldValue({ field, definition });
+  const [value, setValue] = useState(getMetaField(field) ?? definition.default);
+  const isNumber = useMemo(() => !!definition.numberOptions, [definition.numberOptions]);
   const Input = definition.numRows && definition.numRows > 1 ? CFTextarea : CFInput;
+
+  const onChange = useCallback(
+    (event: ChangeEvent<HTMLInputElement | HTMLTextAreaElement>) => {
+      const v = event.target.value;
+      setValue(v);
+      if (!isNumber) {
+        setMetaField(field, v);
+      }
+    },
+    [isNumber, field, setValue],
+  );
+  const onBlur = useCallback(() => {
+    if (definition.numberOptions) {
+      let number = +value;
+      const options = definition.numberOptions;
+      if (isNaN(number)) number = 0;
+      if (!isUndefined(options.min)) {
+        number = Math.max(number, options.min);
+      }
+      if (!isUndefined(options.max)) {
+        number = Math.min(number, options.max);
+      }
+      if (options.isInt) {
+        number = Math.round(number);
+      }
+      setValue(number.toString());
+      setMetaField(field, number);
+    }
+  }, [field, value, setValue, definition.numberOptions]);
 
   return (
     <Input
-      value={getMetaField(field) ?? ""}
-      onChange={(event) => {
-        setMetaField(field, event.target.value);
-        definition.props?.onChange?.(event);
-      }}
+      value={value}
+      onChange={onChange}
+      onBlur={onBlur}
       placeholder={definition.label ?? titleCaseWord(field)}
       {...definition.props}
     />

@@ -9,6 +9,12 @@ interface IBaseFields {
 export interface ITextField extends IBaseFields {
   type: "text";
   default: string;
+  // if `numberOptions` is provided, this field will be parsed to number.
+  numberOptions?: {
+    min?: number;
+    max?: number;
+    isInt?: boolean;
+  };
 }
 export interface IImageField extends IBaseFields {
   type: "image";

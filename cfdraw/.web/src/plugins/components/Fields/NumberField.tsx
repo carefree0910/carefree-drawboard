@@ -24,6 +24,11 @@ function NumberField({ field, definition }: NumberFieldProps) {
           type: "text",
           default: definition.default.toString(),
           props: definition.props,
+          numberOptions: {
+            min: definition.min,
+            max: definition.max,
+            isInt: definition.isInt,
+          },
         }}
       />
     );
