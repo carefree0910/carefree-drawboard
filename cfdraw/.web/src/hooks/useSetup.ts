@@ -14,6 +14,8 @@ import {
 import { ABCStore, langStore } from "@carefree0910/business";
 
 import type { IPythonOnSocketMessage, IPythonSocketRequest } from "@/schema/_python";
+import { useReactPluginSettings } from "@/_settings";
+import { IMAGE_PLACEHOLDER } from "@/utils/constants";
 import { ThemeType, allThemes, themeStore } from "@/stores/theme";
 import { userStore } from "@/stores/user";
 import { debugStore } from "@/stores/debug";
@@ -28,11 +30,10 @@ import {
   saveProject,
   useCurrentProjectWithUserId,
 } from "@/actions/manageProjects";
+import { collapseAllPlugins } from "@/actions/managePlugins";
 import { useWebSocketHook } from "@/requests/hooks";
-import { authEvent, useAuth } from "./useAuth";
 import { floatingIconLoadedEvent } from "@/plugins/components/Floating";
-import { useReactPluginSettings } from "@/_settings";
-import { IMAGE_PLACEHOLDER } from "@/utils/constants";
+import { authEvent, useAuth } from "./useAuth";
 
 export function useIsSetup(): boolean {
   return !!userStore.userId && useSettingsSynced();
@@ -204,6 +205,7 @@ function useSyncPython() {
   );
   const onMessage = useCallback<IPythonOnSocketMessage<ISettingsStore>>(
     async ({ status, total, pending, message, data: { progress, final } }) => {
+      collapseAllPlugins();
       if (status !== "finished") {
         if (status === "pending") {
           Logger.warn(`sync pending: ${pending} / ${total}`);
