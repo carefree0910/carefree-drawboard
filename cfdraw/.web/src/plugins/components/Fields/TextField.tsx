@@ -52,6 +52,7 @@ function TextField({ field, definition }: TextFieldProps) {
       value={value}
       onChange={onChange}
       onBlur={onBlur}
+      tooltip={definition.tooltip}
       placeholder={definition.label ?? titleCaseWord(field)}
       {...definition.props}
     />
