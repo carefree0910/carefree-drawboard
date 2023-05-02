@@ -15,7 +15,7 @@ import { ABCStore, langStore } from "@carefree0910/business";
 
 import type { IPythonOnSocketMessage, IPythonSocketRequest } from "@/schema/_python";
 import { useReactPluginSettings } from "@/_settings";
-import { IMAGE_PLACEHOLDER } from "@/utils/constants";
+import { IMAGE_PLACEHOLDER, IS_PROD } from "@/utils/constants";
 import { ThemeType, allThemes, themeStore } from "@/stores/theme";
 import { userStore } from "@/stores/user";
 import { debugStore } from "@/stores/debug";
@@ -93,7 +93,10 @@ const postPseduoUserId = async (): Promise<void> => {
     userId = getRandomHash().toString();
     localStorage.setItem(USER_ID_KEY, userId);
   }
-  window.postMessage({ userId }, `http://localhost:${import.meta.env.VITE_CFDRAW_FE_PORT}`);
+  const url = IS_PROD
+    ? import.meta.env.VITE_CFDRAW_API_URL
+    : `http://localhost:${import.meta.env.VITE_CFDRAW_FE_PORT}`;
+  window.postMessage({ userId }, url);
 };
 const useUserInitialization = () => {
   useEffect(() => {
