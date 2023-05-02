@@ -18,6 +18,7 @@ import { Brush_Words } from "@/lang/brush";
 import { Toast_Words } from "@/lang/toast";
 import { themeStore } from "@/stores/theme";
 import { VisibleManager, uiStore } from "@/stores/ui";
+import { setPluginExpanded } from "@/stores/pluginExpanded";
 import { hideAllPlugins } from "@/actions/managePlugins";
 import CFButton from "@/components/CFButton";
 import CFSlider from "@/components/CFSlider";
@@ -25,7 +26,6 @@ import CFSwitch from "@/components/CFSwitch";
 import CFDivider from "@/components/CFDivider";
 import CFHeading from "@/components/CFHeading";
 import { drawboardPluginFactory } from "../utils/factory";
-import { floatingControlEvent } from "../components/Floating";
 import Render from "../components/Render";
 
 const useSwitchBrushMode = () => async (): Promise<void> => {
@@ -109,9 +109,9 @@ const BrushPlugin = ({ pluginInfo, ...props }: IPlugin) => {
 
   useEffect(() => {
     if (inBrushMode) {
-      floatingControlEvent.emit({ id, expand: true });
+      setPluginExpanded(id, true);
     }
-  });
+  }, [inBrushMode]);
 
   return (
     <Render id={id} onFloatingButtonClick={switchBrushMode} {...props}>
@@ -124,7 +124,7 @@ const BrushPlugin = ({ pluginInfo, ...props }: IPlugin) => {
       <CFButton
         isDisabled={!inBrushMode}
         onClick={() => {
-          floatingControlEvent.emit({ id, expand: false });
+          setPluginExpanded(id, false);
           switchBrushMode();
         }}>
         {translate(Brush_Words["finish-brush-message"], lang)}

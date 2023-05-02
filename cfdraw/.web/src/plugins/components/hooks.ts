@@ -1,6 +1,7 @@
 import { useCallback } from "react";
-import { floatingControlEvent } from "./Floating";
+
+import { setPluginExpanded } from "@/stores/pluginExpanded";
 
 export function useClosePanel(id: string) {
-  return useCallback(() => floatingControlEvent.emit({ id, expand: false }), [id]);
+  return useCallback(() => setPluginExpanded(id, false), [id]);
 }

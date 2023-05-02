@@ -9,11 +9,11 @@ import { toast } from "@/utils/toast";
 import { Toast_Words } from "@/lang/toast";
 import { userStore } from "@/stores/user";
 import { getPluginHash } from "@/stores/plugins";
+import { setPluginExpanded } from "@/stores/pluginExpanded";
 import { useSocketPython } from "@/hooks/usePython";
 import { CFButtonWithBusyTooltip } from "@/components/CFButton";
 import CFDivider from "@/components/CFDivider";
 import Render from "../components/Render";
-import { floatingControlEvent } from "../components/Floating";
 
 export const socketFinishedEvent = new Event<{ id: string }>();
 function PythonPluginWithSubmit<R>({
@@ -45,7 +45,7 @@ function PythonPluginWithSubmit<R>({
     }
     setHash(getPluginHash(id));
     if (closeOnSubmit) {
-      floatingControlEvent.emit({ id, expand: false });
+      setPluginExpanded(id, false);
     }
     if (toastOnSubmit) {
       toastMessageOnSubmit ??= translate(Toast_Words["submit-task-success-message"], lang);

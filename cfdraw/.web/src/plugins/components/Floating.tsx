@@ -1,5 +1,5 @@
 import { observer } from "mobx-react-lite";
-import { useState, useMemo, useLayoutEffect, forwardRef, useCallback, useEffect } from "react";
+import { useState, useMemo, forwardRef, useCallback } from "react";
 import {
   Box,
   BoxProps,
@@ -22,6 +22,11 @@ import { UI_Words } from "@/lang/ui";
 import { themeStore, useScrollBarSx } from "@/stores/theme";
 import { settingsStore } from "@/stores/settings";
 import { getPluginMessage } from "@/stores/plugins";
+import {
+  usePluginIsExpanded,
+  setPluginExpanded,
+  usePluginGroupIsExpanded,
+} from "@/stores/pluginExpanded";
 import { isInteractingWithBoard } from "@/stores/pointerEvents";
 import CFText from "@/components/CFText";
 import CFLottie from "@/components/CFLottie";
@@ -32,30 +37,10 @@ export function getExpandId(id: string): string {
   return `${id}_expand`;
 }
 
-export interface IFloatingExpandEvent {
-  id: string;
-  expand: boolean;
-  needRender: boolean;
-  noExpand?: boolean;
-}
-export interface IFloatingControlEvent {
-  id?: string;
-  expand?: boolean;
-  ignoreId?: boolean;
-  forceCheckIds?: string[];
-}
 export interface IFloatingIconLoadedEvent {
   id: string;
 }
-export interface IFloatingGroupEvent {
-  id: string;
-  groupId?: string;
-  expand: boolean;
-}
-export const floatingExpandEvent = new Event<IFloatingExpandEvent>();
-export const floatingControlEvent = new Event<IFloatingControlEvent>();
 export const floatingIconLoadedEvent = new Event<IFloatingIconLoadedEvent>();
-export const floatingGroupEvent = new Event<IFloatingGroupEvent>();
 
 const Floating = forwardRef(function (
   {
@@ -92,9 +77,10 @@ const Floating = forwardRef(function (
   const taskMessage = getPluginMessage(id);
   const needRender = useIsReady() && (!renderFilter || renderFilter(useSelecting("raw")));
   const interactingWithBoard = isInteractingWithBoard();
-  const [expand, setExpand] = useState(false);
+  const expand = usePluginIsExpanded(id);
+  const groupExpand = usePluginGroupIsExpanded(groupId);
+  const iconActivated = useMemo(() => !groupId || groupExpand, [groupId, groupExpand]);
   const [iconLoaded, setIconLoaded] = useState(false);
-  const [groupIsExpanded, setGroupIsExpanded] = useState(!groupId);
   const iconLoadingPatience =
     settingsStore.boardSettings?.globalSettings?.iconLoadingPatience ?? 100;
   const isBusy = useMemo(
@@ -119,16 +105,17 @@ const Floating = forwardRef(function (
       // boxShadow: "2px 2px 4px rgba(0, 0, 0, 0.25)",
       borderRadius: "4px",
       /**
-       * if this floating belongs to a group, and:
+       * if
        *   1. `interactingWithBoard` is `true`
+       * or this floating belongs to a group, and:
        *   2. we are focusing on the plugin button (isExpand=false) and the group is not expanded
        *   3. we are focusing on the expanded panel (isExpand=true) but the floating is not expanded
        * then this floating should not be interactive
        */
       pointerEvents:
-        (!groupIsExpanded && (!isExpand || !expand)) || interactingWithBoard ? "none" : "auto",
+        interactingWithBoard || (!iconActivated && (!isExpand || !expand)) ? "none" : "auto",
     }),
-    [panelBg, busyColor, bgOpacityHex, expand, isBusy, groupIsExpanded, interactingWithBoard],
+    [panelBg, busyColor, bgOpacityHex, expand, isBusy, iconActivated, interactingWithBoard],
   );
   //// progress bar props
   const progressProps = useMemo<CircularProgressProps>(() => {
@@ -199,59 +186,11 @@ const Floating = forwardRef(function (
     () => `${panelBg}${useModal ? modalOpacityHex : bgOpacityHex}`,
     [useModal],
   );
-  // events
-  //// maintain icon loaded state
+  // maintain icon loaded state
   const onIconLoaded = useCallback(() => {
     floatingIconLoadedEvent.emit({ id });
     setIconLoaded(true);
   }, [id]);
-  //// handle expand events
-  useLayoutEffect(() => {
-    const { dispose: disposeRender } = floatingExpandEvent.on(
-      ({ id: incomingId, expand: incomingExpand }) => {
-        if (id !== incomingId && incomingExpand && expand) {
-          setExpand(false);
-        }
-      },
-    );
-    const { dispose: disposeControl } = floatingControlEvent.on(
-      ({ id: incomingId, expand: incomingExpand, ignoreId, forceCheckIds }) => {
-        if (
-          !isUndefined(incomingExpand) &&
-          (id === incomingId ||
-            (ignoreId &&
-              (!forceCheckIds ||
-                forceCheckIds.every((forcedId) => id !== forcedId && !id.startsWith(forcedId)))))
-        ) {
-          setExpand(incomingExpand);
-        }
-      },
-    );
-    floatingExpandEvent.emit({ id, expand, needRender, noExpand });
-
-    return () => {
-      disposeRender();
-      disposeControl();
-    };
-  }, [id, expand, needRender, noExpand]);
-  //// handle group events
-  ////// emit expand event if this floating represents a group
-  useEffect(() => {
-    if (isGroup) {
-      floatingGroupEvent.emit({ id, expand });
-    }
-  }, [id, isGroup, expand]);
-  ////// handle expand event if this floating is in a group
-  useEffect(() => {
-    if (!isGroup && !!groupId) {
-      const { dispose } = floatingGroupEvent.on(({ id: incomingId, expand: incomingExpand }) => {
-        if (groupId === incomingId) {
-          setGroupIsExpanded(incomingExpand);
-        }
-      });
-      return dispose;
-    }
-  }, [id, isGroup, groupId]);
 
   if (!needRender) return null;
 
@@ -263,7 +202,7 @@ const Floating = forwardRef(function (
   });
   return (
     <>
-      <CFTooltip label={groupIsExpanded ? tooltip : ""}>
+      <CFTooltip label={iconActivated ? tooltip : ""}>
         <Box
           as="button"
           id={id}
@@ -271,7 +210,7 @@ const Floating = forwardRef(function (
           h={`${iconH}px`}
           onClick={() => {
             if (!noExpand) {
-              setExpand(!expand);
+              setPluginExpanded(id, !expand);
             }
             onFloatingButtonClick?.();
           }}

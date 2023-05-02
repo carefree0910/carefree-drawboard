@@ -4,9 +4,9 @@ import type { AvailablePluginsAndPythonPlugins } from "@/schema/plugins";
 import { reactPluginSettings } from "@/_settings";
 import { usePythonPluginSettings } from "@/stores/settings";
 import { setPluginVisible, setPythonPluginVisible } from "@/stores/pluginVisible";
-import { floatingControlEvent } from "@/plugins/components/Floating";
+import { setPluginExpanded, usePluginsExpanded } from "@/stores/pluginExpanded";
 
-function setAllPlugins(visible: boolean, except?: AvailablePluginsAndPythonPlugins[]) {
+function setAllPluginVisible(visible: boolean, except?: AvailablePluginsAndPythonPlugins[]) {
   runInAction(() => {
     reactPluginSettings.forEach(({ type }) => {
       if (except?.includes(type)) return;
@@ -22,10 +22,20 @@ function setAllPlugins(visible: boolean, except?: AvailablePluginsAndPythonPlugi
   });
 }
 
-export function hideAllPlugins(opt?: { except?: AvailablePluginsAndPythonPlugins[] }) {
-  floatingControlEvent.emit({ expand: false, ignoreId: true, forceCheckIds: opt?.except });
-  setAllPlugins(false, opt?.except);
+export function collapseAllPlugins(opt?: { except?: AvailablePluginsAndPythonPlugins[] }) {
+  runInAction(() => {
+    Object.keys(usePluginsExpanded()).forEach((id) => {
+      if (opt?.except && opt.except.some((e) => id.startsWith(e))) return;
+      setPluginExpanded(id, false);
+    });
+  });
 }
-export function showAllPlugins(opt?: { except?: AvailablePluginsAndPythonPlugins[] }) {
-  setAllPlugins(true, opt?.except);
+export function hideAllPlugins(opt?: { except?: AvailablePluginsAndPythonPlugins[] }) {
+  // collapse all plugins first
+  collapseAllPlugins(opt);
+  // then hide all plugins
+  setAllPluginVisible(false, opt?.except);
+}
+export function showAllPlugins() {
+  setAllPluginVisible(true);
 }

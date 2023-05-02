@@ -21,6 +21,7 @@ import {
   updateCurrentProjectInfo,
   useCurrentProjectInfo,
 } from "@/stores/projects";
+import { usePluginIsExpanded } from "@/stores/pluginExpanded";
 import {
   AUTO_SAVE_PREFIX,
   IProject,
@@ -39,7 +40,6 @@ import CFDivider from "@/components/CFDivider";
 import CFHeading from "@/components/CFHeading";
 import { CFSrollableSelect } from "@/components/CFSelect";
 import { drawboardPluginFactory } from "../utils/factory";
-import { floatingExpandEvent } from "../components/Floating";
 import { useClosePanel } from "../components/hooks";
 import Render from "../components/Render";
 
@@ -49,6 +49,7 @@ const ProjectPlugin = ({ pluginInfo, ...props }: IPlugin) => {
   const id = useMemo(() => `project_${getRandomHash()}`, []);
   const lang = langStore.tgt;
   const userId = userStore.userId;
+  const expand = usePluginIsExpanded(id);
   const { uid, name } = useCurrentProjectInfo();
   const [selectedUid, setSelectedUid] = useState("");
   const [userInputName, setUserInputName] = useState(name);
@@ -96,22 +97,19 @@ const ProjectPlugin = ({ pluginInfo, ...props }: IPlugin) => {
   }, []);
 
   useEffect(() => {
-    const { dispose: floatingDispose } = globalEvent.on(({ type }) => {
+    const { dispose } = globalEvent.on(({ type }) => {
       if (type === "newProject") {
         updateProjectStates(useCurrentProjectInfo());
       }
     });
-    const { dispose: floatingRenderDispose } = floatingExpandEvent.on(
-      ({ id: incomingId, expand }) => {
-        if (id === incomingId && expand) updateUids();
-      },
-    );
-
-    return () => {
-      floatingDispose();
-      floatingRenderDispose();
-    };
+    return dispose;
   }, [id]);
+
+  useEffect(() => {
+    if (expand) {
+      updateUids();
+    }
+  }, [expand]);
 
   const closePanel = useClosePanel(id);
   function updateProjectStates({ uid, name }: IProjectsStore) {

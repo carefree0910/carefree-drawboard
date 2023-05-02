@@ -16,8 +16,9 @@ import {
 
 import type { IExpandPositionInfo, IRender } from "@/schema/plugins";
 import { DEFAULT_PLUGIN_SETTINGS } from "@/utils/constants";
+import { usePluginGroupIsExpanded, usePluginIsExpanded } from "@/stores/pluginExpanded";
 import { getNodeFilter } from "../utils/renderFilters";
-import Floating, { floatingExpandEvent, getExpandId, IFloatingExpandEvent } from "./Floating";
+import Floating, { getExpandId } from "./Floating";
 
 let DEBUG_PREFIX: string | undefined;
 
@@ -111,6 +112,8 @@ const Render = (({
   ...props
 }: IRender) => {
   const _id = useMemo(() => id ?? `plugin_${getRandomHash()}`, [id]);
+  const expand = usePluginIsExpanded(_id);
+  const groupExpand = usePluginGroupIsExpanded(groupId);
   let { w, h, iconW, iconH, pivot, follow, offsetX, offsetY, expandOffsetX, expandOffsetY } =
     renderInfo;
   iconW ??= DEFAULT_PLUGIN_SETTINGS.iconW;
@@ -250,12 +253,9 @@ const Render = (({
       });
       domFloatingExpand.style.transform = `matrix(1,0,0,1,${ex},${ey})`;
     };
-    const onFloatingReRender = ({ id: incomingId, needRender }: IFloatingExpandEvent) => {
-      if ((_id === incomingId || groupId === incomingId) && needRender) {
-        updateFloating({ event: "rerender", needRender });
-      }
-    };
-    const { dispose } = floatingExpandEvent.on(onFloatingReRender);
+    if (expand || groupExpand) {
+      updateFloating({ event: "expand" });
+    }
     injectNodeTransformEventCallback(_id, updateFloating);
     useSelectHooks().register({ key: _id, after: updateFloating });
     window.addEventListener("resize", updateFloating);
@@ -267,13 +267,14 @@ const Render = (({
       if (DEBUG_PREFIX && _id.startsWith(DEBUG_PREFIX)) {
         console.log(">>>>> clean up");
       }
-      dispose();
       removeNodeTransformEventCallback(_id);
       useSelectHooks().remove(_id);
       window.removeEventListener("resize", updateFloating);
     };
   }, [
     _id,
+    expand,
+    groupExpand,
     iconW,
     iconH,
     nodeConstraint,
