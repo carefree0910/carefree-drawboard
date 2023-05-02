@@ -10,13 +10,13 @@ export function getNodeFilter({
     // check rules first
     if (
       nodeConstraintRules?.some &&
-      !nodeConstraintRules.some.some((nodeConstraint) => getNodeFilter({ nodeConstraint }))
+      !nodeConstraintRules.some.some((nodeConstraint) => getNodeFilter({ nodeConstraint })(info))
     ) {
       return false;
     }
     if (
       nodeConstraintRules?.every &&
-      !nodeConstraintRules.every.every((nodeConstraint) => getNodeFilter({ nodeConstraint }))
+      !nodeConstraintRules.every.every((nodeConstraint) => getNodeFilter({ nodeConstraint })(info))
     ) {
       return false;
     }
