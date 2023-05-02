@@ -1,3 +1,4 @@
+import type { IImageUrls } from "@carefree0910/native";
 import {
   BBox,
   getCenteredBBox,
@@ -33,7 +34,7 @@ export function getNewRectangle(alias: string, info: INewRectangle): RectangleSh
 
 export function rectangleToImage(
   rectangle: IRectangleShapeNode,
-  src: string,
+  urls: IImageUrls,
   alias?: string,
 ): ImageNode {
   return new ImageNode(
@@ -43,20 +44,20 @@ export function rectangleToImage(
     rectangle.layerParams,
     undefined,
     undefined,
-    { src },
+    urls,
   );
 }
 
-export function getNewImageNode(alias: string, src: string, info: NewImageInfo): ImageNode {
+export function getNewImageNode(alias: string, urls: IImageUrls, info: NewImageInfo): ImageNode {
   const newRectangle = info.type
     ? info
     : getNewRectangle(alias, info instanceof BBox ? info : { autoFit: true, wh: info });
-  return rectangleToImage(newRectangle, src);
+  return rectangleToImage(newRectangle, urls);
 }
 
 export function addNewImage(
   alias: string,
-  src: string,
+  urls: IImageUrls,
   opt: {
     info: NewImageInfo;
     meta: IMeta;
@@ -64,7 +65,7 @@ export function addNewImage(
     noSelect?: boolean;
   },
 ): void {
-  const newImage = getNewImageNode(alias, src, opt.info);
+  const newImage = getNewImageNode(alias, urls, opt.info);
   newImage.meta = opt.meta;
   console.log("newImage: ", newImage.snapshot());
   useSafeExecute("addJson", null, true, opt.callbacks, {

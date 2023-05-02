@@ -1,9 +1,10 @@
 import { RectangleShapeNode, getRandomHash, shallowCopy } from "@carefree0910/core";
 import { BoardStore, useAddNode, useDefaultTextContent } from "@carefree0910/business";
 
-import type { IMetaData, IPythonFieldsMetaData, MetaType } from "@/schema/meta";
+import type { IPythonFieldsMetaData, MetaType } from "@/schema/meta";
 import type { IImportMeta } from "@/schema/meta";
 import { toastWord } from "@/utils/toast";
+import { IMAGE_PLACEHOLDER } from "@/utils/constants";
 import { Toast_Words } from "@/lang/toast";
 import { themeStore } from "@/stores/theme";
 import { updateMeta } from "./update";
@@ -49,12 +50,16 @@ function consumeUpload({ type, metaData }: IImportMeta<"upload">): void {
   const newAlias = `${prefix}upload.${getRandomHash()}`;
   metaData.alias = newAlias;
   const bboxInfo: NewImageInfo = { w, h };
-  addNewImage(newAlias, url, {
-    info: bboxInfo,
-    meta: { type, data: metaData },
-    callbacks: { success, failed },
-    noSelect: false,
-  });
+  addNewImage(
+    newAlias,
+    { src: url, placeholder: IMAGE_PLACEHOLDER },
+    {
+      info: bboxInfo,
+      meta: { type, data: metaData },
+      callbacks: { success, failed },
+      noSelect: false,
+    },
+  );
 }
 function consumeAddText({ lang, type, metaData }: IImportMeta<"add.text">): void {
   const newAlias = `add.text.${getRandomHash()}`;
@@ -131,12 +136,16 @@ function consumePythonFields({ type, metaData }: IImportMeta<"python.fields">): 
     const targets = getArrangements(packs.map(({ rectangle }) => rectangle)).targets;
     packs.forEach(({ data: { url }, alias, metaData }, i) => {
       const isLast = i === packs.length - 1;
-      addNewImage(alias, url, {
-        info: targets[i].bbox,
-        meta: { type, data: metaData },
-        callbacks: getCallbacks(isLast),
-        noSelect: !isLast,
-      });
+      addNewImage(
+        alias,
+        { src: url, placeholder: IMAGE_PLACEHOLDER },
+        {
+          info: targets[i].bbox,
+          meta: { type, data: metaData },
+          callbacks: getCallbacks(isLast),
+          noSelect: !isLast,
+        },
+      );
     });
   } else if (metaData.response.type === "text") {
     const fontSize = 48;

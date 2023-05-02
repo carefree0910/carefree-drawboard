@@ -32,6 +32,7 @@ import { useWebSocketHook } from "@/requests/hooks";
 import { authEvent, useAuth } from "./useAuth";
 import { floatingIconLoadedEvent } from "@/plugins/components/Floating";
 import { useReactPluginSettings } from "@/_settings";
+import { IMAGE_PLACEHOLDER } from "@/utils/constants";
 
 export function useIsSetup(): boolean {
   return !!userStore.userId && useSettingsSynced();
@@ -45,20 +46,24 @@ export function useSetup(): void {
   useSyncPython();
   useAutoSaveEvery(60);
   useCheckIconLoaded();
+  usePreloadImagePlaceholder();
 }
 
 // helper store
 
 interface ISetupStore {
   iconLoaded: boolean;
+  imagePlaceholderLoaded: boolean;
 }
 class SetupStore extends ABCStore<ISetupStore> implements ISetupStore {
   iconLoaded: boolean = false;
+  imagePlaceholderLoaded: boolean = false;
 
   constructor() {
     super();
     makeObservable(this, {
       iconLoaded: observable,
+      imagePlaceholderLoaded: observable,
       isReady: computed,
     });
   }
@@ -68,7 +73,7 @@ class SetupStore extends ABCStore<ISetupStore> implements ISetupStore {
   }
 
   get isReady(): boolean {
-    return this.iconLoaded;
+    return this.iconLoaded && this.imagePlaceholderLoaded;
   }
 }
 const setupStore = new SetupStore();
@@ -312,4 +317,17 @@ function useCheckIconLoaded() {
     });
     return dispose;
   }, [reactPlugins]);
+}
+
+//// preload image placeholder
+function usePreloadImagePlaceholder() {
+  useEffect(() => {
+    const placeholder = new Image();
+    placeholder.onload = () => {
+      setupStore.updateProperty("imagePlaceholderLoaded", true);
+      placeholder.src = "";
+      placeholder.onload = null;
+    };
+    placeholder.src = IMAGE_PLACEHOLDER;
+  }, []);
 }

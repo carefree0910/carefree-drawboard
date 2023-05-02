@@ -12,7 +12,7 @@ import {
   ABCStore,
 } from "@carefree0910/business";
 
-import { BOARD_CONTAINER_ID, IS_PROD } from "@/utils/constants";
+import { BOARD_CONTAINER_ID, IMAGE_PLACEHOLDER, IS_PROD } from "@/utils/constants";
 import { settingsStore } from "@/stores/settings";
 import { useIsSetup } from "./useSetup";
 
@@ -53,11 +53,13 @@ export function useInitBoard(): void {
     if (!initial) {
       await unittest.renderEmpty(1, onEvents);
     } else {
-      await unittest.renderGraph(
-        Graph.fromJsonInfo(shallowCopy(initial.graphInfo)),
-        undefined,
-        onEvents,
-      );
+      const graph = Graph.fromJsonInfo(shallowCopy(initial.graphInfo));
+      graph.allSingleNodes.forEach((node) => {
+        if (node.type === "image") {
+          node.renderParams.placeholder = IMAGE_PLACEHOLDER;
+        }
+      });
+      await unittest.renderGraph(graph, undefined, onEvents);
     }
 
     // setup options

@@ -19,3 +19,6 @@ export const DEFAULT_PLUGIN_SETTINGS = {
   expandOffsetX: 8,
   expandOffsetY: 8,
 };
+
+export const IMAGE_PLACEHOLDER =
+  "https://user-images.githubusercontent.com/15677328/235604347-4d34d88d-0e82-49d7-8e36-fb182647c5fa.svg";
