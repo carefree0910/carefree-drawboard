@@ -50,7 +50,7 @@ class SocketStore extends ABCStore<ISocketStore> implements ISocketStore {
   }
 
   run(key: string) {
-    waitUntil(() => !!socketStore.socket).then(() => {
+    return waitUntil(() => !!socketStore.socket).then(() => {
       const hook = socketStore.hooks.get(key);
       if (!hook) {
         Logger.warn(`hook not found: ${key}`);
@@ -108,6 +108,18 @@ export const removeSocketHooks = (...hashes: string[]) => {
 };
 export const checkSocketHookExists = (key: string) => {
   return socketStore.hooks.has(key);
+};
+export const runOneTimeSocketHook = <R>(hook: SocketHook<R>) => {
+  const onMessage: IPythonOnSocketMessage<R> = (data) => {
+    return hook.onMessage(data).then((res) => {
+      if (res && res.newMessage) {
+        Logger.warn("One-time socket hook should not return newMessage.");
+      }
+      removeSocketHooks(hook.key);
+      return {};
+    });
+  };
+  return pushSocketHook({ ...hook, onMessage }).then(() => runSocketHook(hook.key));
 };
 
 const log = socketLog;

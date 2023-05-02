@@ -129,6 +129,13 @@ Spcify when the plugin will be shown.
             "not necessary to use `nodeConstraint` when this field is set."
         ),
     )
+    nodeConstraintValidator: Optional[str] = Field(
+        None,
+        description=(
+            "The universal fallback. "
+            "It specifies the name of the validator registered by `register_node_validator`."
+        ),
+    )
     # style fields
     src: Optional[str] = Field(
         None,

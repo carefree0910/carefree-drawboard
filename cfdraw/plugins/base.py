@@ -63,6 +63,7 @@ class ISocketPlugin(IPlugin, metaclass=ABCMeta):
             plugin_info["plugins"] = plugins
         node_constraint = d.pop("nodeConstraint")
         node_constraint_rules = d.pop("nodeConstraintRules")
+        node_constraint_validator = d.pop("nodeConstraintValidator")
         chakra_props = {}
         for field in IChakra.__fields__:
             # `w` and `h` are special fields, should not be included in `chakra_props`
@@ -81,12 +82,16 @@ class ISocketPlugin(IPlugin, metaclass=ABCMeta):
             d.setdefault("src", constants.DEFAULT_PLUGIN_GROUP_ICON)
         # gather
         props = dict(
-            nodeConstraint=node_constraint,
-            nodeConstraintRules=node_constraint_rules,
             pluginInfo=plugin_info,
             renderInfo=d,
             **chakra_props,
         )
+        if node_constraint is not None:
+            props["nodeConstraint"] = node_constraint
+        if node_constraint_rules is not None:
+            props["nodeConstraintRules"] = node_constraint_rules
+        if node_constraint_validator is not None:
+            props["nodeConstraintValidator"] = node_constraint_validator
         return dict(type=self.type, props=props)
 
     # helper methods

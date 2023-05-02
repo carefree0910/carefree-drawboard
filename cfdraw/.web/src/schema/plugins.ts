@@ -23,6 +23,7 @@ interface NodeConstraintRules {
 export interface NodeConstraintSettings {
   nodeConstraint?: NodeConstraints;
   nodeConstraintRules?: NodeConstraintRules;
+  nodeConstraintValidator?: string;
 }
 export interface IExpandPositionInfo {
   w: number;

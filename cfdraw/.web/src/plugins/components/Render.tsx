@@ -18,7 +18,7 @@ import type { IExpandPositionInfo, IRender } from "@/schema/plugins";
 import { DEFAULT_PLUGIN_SETTINGS } from "@/utils/constants";
 import { usePluginGroupIsExpanded, usePluginIsExpanded } from "@/stores/pluginExpanded";
 import { setPluginNeedRender, usePluginNeedRender } from "@/stores/pluginNeedRender";
-import { getNodeFilter } from "../utils/renderFilters";
+import { hashInfo, useNodeFilter } from "../utils/renderFilters";
 import Floating, { getExpandId } from "./Floating";
 
 let DEBUG_PREFIX: string | undefined;
@@ -107,6 +107,7 @@ const Render = (({
   groupId,
   nodeConstraint,
   nodeConstraintRules,
+  nodeConstraintValidator,
   renderInfo,
   containerRef,
   children,
@@ -118,15 +119,27 @@ const Render = (({
   const expand = usePluginIsExpanded(_id);
   const groupExpand = usePluginGroupIsExpanded(groupId);
   const needRender = usePluginNeedRender(_id);
+  const renderFilter = useNodeFilter({
+    nodeConstraint,
+    nodeConstraintRules,
+    nodeConstraintValidator,
+  });
   useEffect(() => {
-    if (!getNodeFilter({ nodeConstraint, nodeConstraintRules })(info)) {
-      setPluginNeedRender(_id, false);
-    } else if (!!groupId && !groupExpand && !expand) {
-      setPluginNeedRender(_id, false);
-    } else {
-      setPluginNeedRender(_id, true);
-    }
-  }, [_id, groupId, expand, groupExpand, info, nodeConstraint, nodeConstraintRules]);
+    let latest = true;
+    renderFilter(info).then((filter) => {
+      if (!latest) return;
+      if (!filter) {
+        setPluginNeedRender(_id, false);
+      } else if (!!groupId && !groupExpand && !expand) {
+        setPluginNeedRender(_id, false);
+      } else {
+        setPluginNeedRender(_id, true);
+      }
+    });
+    return () => {
+      latest = false;
+    };
+  }, [_id, groupId, expand, groupExpand, hashInfo(info), nodeConstraint, nodeConstraintRules]);
   let { w, h, iconW, iconH, pivot, follow, offsetX, offsetY, expandOffsetX, expandOffsetY } =
     renderInfo;
   iconW ??= DEFAULT_PLUGIN_SETTINGS.iconW;
@@ -163,16 +176,17 @@ const Render = (({
 
   const deps = [
     _id,
-    info,
     expand,
     groupExpand,
     isReady,
     needRender,
+    hashInfo(info),
     groupId,
     iconW,
     iconH,
     nodeConstraint,
     nodeConstraintRules,
+    nodeConstraintValidator,
     pivot,
     follow,
     offsetX,
