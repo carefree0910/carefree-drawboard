@@ -50,7 +50,6 @@ export default defineConfig({
           axios: ["axios"],
           jszip: ["jszip"],
           react: ["react", "react-dom"],
-          opentype: ["opentype.js"],
           "chakra-ui": ["@chakra-ui/react", "@chakra-ui/icons"],
           svgdotjs: [
             "@svgdotjs/svg.js",
