@@ -7,12 +7,12 @@ import { shallowCopy } from "@carefree0910/core";
 import { IPythonPluginGroup } from "@/schema/_python";
 import { titleCaseWord } from "@/utils/misc";
 import { getPluginIds } from "@/stores/plugins";
+import CFDivider from "@/components/CFDivider";
+import CFHeading from "@/components/CFHeading";
 import { drawboardPluginFactory } from "../utils/factory";
 import { useClosePanel } from "../components/hooks";
 import Render from "../components/Render";
-import { makePlugin } from "..";
-import CFHeading from "@/components/CFHeading";
-import CFDivider from "@/components/CFDivider";
+import MakePlugin from "..";
 
 const PythonPluginGroup = ({ pluginInfo, renderInfo, ...props }: IPythonPluginGroup) => {
   const { id, pureIdentifier } = getPluginIds(pluginInfo.identifier);
@@ -48,11 +48,13 @@ const PythonPluginGroup = ({ pluginInfo, renderInfo, ...props }: IPythonPluginGr
           settings.props.renderInfo.offsetY = getOffset(Math.trunc(i / nx));
           settings.props.renderInfo.expandOffsetX = renderInfo.expandOffsetX;
           settings.props.renderInfo.expandOffsetY = renderInfo.expandOffsetY;
-          return makePlugin({
-            key: `${pureIdentifier}_${settings.props.pluginInfo.identifier}`,
-            containerRef: props.containerRef,
-            ...settings,
-          });
+          return (
+            <MakePlugin
+              key={`${pureIdentifier}_${settings.props.pluginInfo.identifier}`}
+              containerRef={props.containerRef}
+              {...settings}
+            />
+          );
         })}
       </Box>
     </Render>

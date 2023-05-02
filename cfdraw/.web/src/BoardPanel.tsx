@@ -8,7 +8,7 @@ import { useReactPluginSettings } from "@/_settings";
 import { BOARD_CONTAINER_ID } from "@/utils/constants";
 import { themeStore } from "@/stores/theme";
 import { settingsStore, usePythonPluginSettings } from "@/stores/settings";
-import { makePlugin } from "@/plugins";
+import MakePlugin from "@/plugins";
 
 function BoardPanel() {
   const ref = useRef(null);
@@ -23,16 +23,16 @@ function BoardPanel() {
           <Box id={BOARD_CONTAINER_ID} visibility={isReady ? "visible" : "hidden"}></Box>
         </Box>
         <Wrapper>
-          {useReactPluginSettings().map((settings) =>
-            makePlugin({ key: settings.type, containerRef: ref, ...settings }),
-          )}
-          {usePythonPluginSettings().map((settings) =>
-            makePlugin({
-              key: settings.props.pluginInfo.identifier,
-              containerRef: ref,
-              ...settings,
-            }),
-          )}
+          {useReactPluginSettings().map((settings) => (
+            <MakePlugin key={settings.type} containerRef={ref} {...settings} />
+          ))}
+          {usePythonPluginSettings().map((settings) => (
+            <MakePlugin
+              key={settings.props.pluginInfo.identifier}
+              containerRef={ref}
+              {...settings}
+            />
+          ))}
         </Wrapper>
       </Flex>
       <Box ref={ref} position="absolute"></Box>

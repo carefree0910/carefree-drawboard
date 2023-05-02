@@ -38,14 +38,14 @@ function checkHasConstraint({
   if (nodeConstraintRules?.exactly) return true;
   return false;
 }
-export function makePlugin<T extends AvailablePluginsAndPythonPlugins>({
-  key,
+function MakePlugin<T extends AvailablePluginsAndPythonPlugins>({
   type,
   containerRef,
   props: { renderInfo, pluginInfo, ...props },
-}: IMakePlugin<T> & { key: string }) {
+}: IMakePlugin<T>) {
   renderInfo = shallowCopy(renderInfo);
   pluginInfo = shallowCopy(pluginInfo);
+  const renderFilter = getNodeFilter(props);
   if (renderInfo.follow && !checkHasConstraint(props)) {
     Logger.warn("cannot use `follow` with no constraints");
     return null;
@@ -56,7 +56,7 @@ export function makePlugin<T extends AvailablePluginsAndPythonPlugins>({
     return null;
   }
   const info = useSelecting("raw");
-  if (!getNodeFilter(props)(info)) return null;
+  if (!renderFilter(info)) return null;
   const node = info.displayNode;
   const nodes = info.nodes;
   const updatedPluginInfo = { ...pluginInfo, node, nodes };
@@ -67,7 +67,6 @@ export function makePlugin<T extends AvailablePluginsAndPythonPlugins>({
   }
   return (
     <Plugin
-      key={key}
       renderInfo={renderInfo}
       pluginInfo={updatedPluginInfo}
       containerRef={containerRef}
@@ -75,3 +74,5 @@ export function makePlugin<T extends AvailablePluginsAndPythonPlugins>({
     />
   );
 }
+
+export default MakePlugin;
