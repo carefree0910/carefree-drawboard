@@ -106,8 +106,14 @@ class ISocketPlugin(IPlugin, metaclass=ABCMeta):
     def send_progress(
         self,
         progress: float,
-        intermediate: Optional[ISocketIntermediate] = None,
+        *,
+        textList: Optional[List[str]] = None,
+        imageList: Optional[List[str]] = None,
     ) -> bool:
+        if textList is None and imageList is None:
+            intermediate = None
+        else:
+            intermediate = ISocketIntermediate(textList=textList, imageList=imageList)
         message = ISocketMessage.make_progress(self.task_hash, progress, intermediate)
         return offload_run(self.send_message(message))
 
