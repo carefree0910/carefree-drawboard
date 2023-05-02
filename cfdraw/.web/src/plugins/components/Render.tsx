@@ -119,8 +119,14 @@ const Render = (({
   const groupExpand = usePluginGroupIsExpanded(groupId);
   const needRender = usePluginNeedRender(_id);
   useEffect(() => {
-    setPluginNeedRender(_id, getNodeFilter({ nodeConstraint, nodeConstraintRules })(info));
-  }, [_id, info, nodeConstraint, nodeConstraintRules]);
+    if (!getNodeFilter({ nodeConstraint, nodeConstraintRules })(info)) {
+      setPluginNeedRender(_id, false);
+    } else if (!!groupId && !groupExpand && !expand) {
+      setPluginNeedRender(_id, false);
+    } else {
+      setPluginNeedRender(_id, true);
+    }
+  }, [_id, groupId, expand, groupExpand, info, nodeConstraint, nodeConstraintRules]);
   let { w, h, iconW, iconH, pivot, follow, offsetX, offsetY, expandOffsetX, expandOffsetY } =
     renderInfo;
   iconW ??= DEFAULT_PLUGIN_SETTINGS.iconW;
