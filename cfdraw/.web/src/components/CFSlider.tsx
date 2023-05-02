@@ -10,6 +10,8 @@ import { observer } from "mobx-react-lite";
 import { useUnmount } from "ahooks";
 import React, { useCallback, useEffect, useState } from "react";
 
+import { BoardStore, useGlobalTransform, useIsReady } from "@carefree0910/business";
+
 import { themeStore } from "@/stores/theme";
 import { CFCaption } from "./CFText";
 import CFInput from "./CFInput";
@@ -176,5 +178,19 @@ const CFSlider: React.FC<ICFSlider> = ({
     </Flex>
   );
 };
+export const CFGlobalScaleSlider = observer(() => (
+  <>
+    {useIsReady() && (
+      <CFSlider
+        min={BoardStore.board.options.minScale}
+        max={BoardStore.board.options.maxScale}
+        step={0.001}
+        value={useGlobalTransform().globalScale}
+        scale="logarithmic"
+        onSliderChange={(value) => BoardStore.api.setGlobalScale(value)}
+      />
+    )}
+  </>
+));
 
 export default observer(CFSlider);

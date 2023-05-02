@@ -4,12 +4,10 @@ import { Box, Checkbox, Flex } from "@chakra-ui/react";
 
 import { getRandomHash, Lang } from "@carefree0910/core";
 import {
-  BoardStore,
   langDescriptions,
   langStore,
   switchLangTo,
   translate,
-  useGlobalTransform,
   useIsReady,
 } from "@carefree0910/business";
 
@@ -28,9 +26,9 @@ import {
 import { hideAllPlugins, showAllPlugins } from "@/actions/managePlugins";
 import CFButton from "@/components/CFButton";
 import CFSelect from "@/components/CFSelect";
-import CFSlider from "@/components/CFSlider";
 import CFDivider from "@/components/CFDivider";
 import CFHeading from "@/components/CFHeading";
+import { CFGlobalScaleSlider } from "@/components/CFSlider";
 import { drawboardPluginFactory } from "../utils/factory";
 import Render from "../components/Render";
 
@@ -60,14 +58,7 @@ const SettingsPlugin = ({ pluginInfo, ...props }: IPlugin) => {
           <Box mt="24px">
             <CFHeading>{translate(Settings_Words["global-scale-header"], lang)}</CFHeading>
             <CFDivider />
-            <CFSlider
-              min={BoardStore.board.options.minScale}
-              max={BoardStore.board.options.maxScale}
-              step={0.001}
-              value={useGlobalTransform().globalScale}
-              scale="logarithmic"
-              onSliderChange={(value) => BoardStore.api.setGlobalScale(value)}
-            />
+            <CFGlobalScaleSlider />
           </Box>
         )}
         {/* plugin settings */}
