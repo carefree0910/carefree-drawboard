@@ -15,6 +15,9 @@ class NodeValidatorSocketPlugin(IInternalSocketPlugin):
 
     async def process(self, data: ISocketRequest) -> ISocketMessage:
         key = data.extraData.get("key")
+        if key is None:
+            msg = "key should be provided in `extraData`"
+            return ISocketMessage.make_exception(data.hash, msg)
         validator = self._validators.get(key)
         if validator is None:
             msg = f"cannot find validator '{key}'"
