@@ -46,14 +46,14 @@ async function getNodeData(node: INode | null, opt: IGetNodeData): Promise<INode
 async function getNodeDataList(nodes: INode[], opt: IGetNodeData): Promise<INodeData[]> {
   return Promise.all(nodes.map((node) => getNodeData(node, opt)));
 }
-async function getPythonRequest({
+export async function getPythonRequest({
   node,
   nodes,
   identifier,
   getExtraRequestData,
   opt,
 }: Omit<IUsePythonInfo, "isInvisible"> & {
-  opt: ExportBlobOptions;
+  opt?: ExportBlobOptions;
 }): Promise<Omit<IPythonSocketRequest, "hash">> {
   const exportBox = nodes[argMax(nodes.map((n) => n.bbox.area))].bbox;
   const getNodeDataOpt: IGetNodeData = { exportBox, ...opt };
@@ -98,7 +98,6 @@ export function useSocketPython<R>({
         nodes,
         identifier,
         getExtraRequestData,
-        opt: {},
       }).then((req) => ({ hash: hash!, ...req })),
     [deps],
   );
