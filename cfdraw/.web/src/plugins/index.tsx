@@ -1,3 +1,5 @@
+import { observer } from "mobx-react-lite";
+
 import { Logger, shallowCopy } from "@carefree0910/core";
 import { useSelecting } from "@carefree0910/business";
 
@@ -75,4 +77,4 @@ function MakePlugin<T extends AvailablePluginsAndPythonPlugins>({
   );
 }
 
-export default MakePlugin;
+export default observer(MakePlugin);
