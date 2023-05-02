@@ -79,7 +79,10 @@ const Floating = forwardRef(function (
   const interactingWithBoard = isInteractingWithBoard();
   const expand = usePluginIsExpanded(id);
   const groupExpand = usePluginGroupIsExpanded(groupId);
-  const iconActivated = useMemo(() => !groupId || groupExpand, [groupId, groupExpand]);
+  const iconActivated = useMemo(
+    () => !isInvisible && (!groupId || groupExpand),
+    [groupId, groupExpand, isInvisible],
+  );
   const [iconLoaded, setIconLoaded] = useState(false);
   const iconLoadingPatience =
     settingsStore.boardSettings?.globalSettings?.iconLoadingPatience ?? 100;
