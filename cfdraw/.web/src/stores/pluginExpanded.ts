@@ -21,7 +21,7 @@ class PluginsExpandedStore extends ABCStore<IPluginsExpanded> {
 
 const pluginsExpandedStore = new PluginsExpandedStore();
 export const usePluginsExpanded = () => pluginsExpandedStore.expanded;
-export const usePluginIsExpanded = (id: string) => pluginsExpandedStore.info[id] ?? false;
+export const usePluginIsExpanded = (id: string) => pluginsExpandedStore.expanded[id] ?? false;
 export const usePluginGroupIsExpanded = (groupId?: string) =>
   isUndefined(groupId) ? false : usePluginIsExpanded(groupId);
 export const setPluginExpanded = (id: string, expand: boolean) => {
