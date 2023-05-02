@@ -94,3 +94,11 @@ def init(
 @cli.command()
 def install() -> None:
     prerequisites.install_frontend_packages(verbose=True)
+
+
+@cli.command()
+def build() -> None:
+    sys.path.insert(0, os.getcwd())
+    constants.set_env(constants.Env.PROD)
+    constants.set_unified(True)
+    exec.run_frontend_prod()
