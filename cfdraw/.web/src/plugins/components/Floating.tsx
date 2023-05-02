@@ -286,6 +286,7 @@ const Floating = forwardRef(function (
             h="100%"
             draggable={false}
             opacity={iconOpacity}
+            visibility={iconLoaded ? "visible" : "hidden"}
             transition={VISIBILITY_TRANSITION}
             onLoad={onIconLoaded}
           />
