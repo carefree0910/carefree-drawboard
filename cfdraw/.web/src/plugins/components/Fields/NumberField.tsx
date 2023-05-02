@@ -1,3 +1,4 @@
+import { useState } from "react";
 import { observer } from "mobx-react-lite";
 
 import { isUndefined } from "@carefree0910/core";
@@ -13,6 +14,7 @@ import { useDefaultFieldValue } from "./utils";
 export interface NumberFieldProps extends IField<INumberField> {}
 function NumberField({ field, definition }: NumberFieldProps) {
   useDefaultFieldValue({ field, definition });
+  const [value, setValue] = useState(getMetaField(field) ?? definition.default);
 
   if (isUndefined(definition.min) || isUndefined(definition.max)) {
     return (
@@ -35,8 +37,11 @@ function NumberField({ field, definition }: NumberFieldProps) {
       min={definition.min}
       max={definition.max}
       step={step}
-      value={getMetaField(field) ?? 0}
-      onSliderChange={(value) => setMetaField(field, value)}
+      value={value}
+      onSliderChange={(value) => {
+        setValue(value);
+        setMetaField(field, value);
+      }}
       scale={definition.scale}
       label={definition.label ?? titleCaseWord(field)}
       tooltip={definition.tooltip}

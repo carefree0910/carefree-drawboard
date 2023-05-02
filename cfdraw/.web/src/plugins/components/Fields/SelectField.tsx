@@ -1,3 +1,4 @@
+import { useState } from "react";
 import { observer } from "mobx-react-lite";
 import { Box, Flex } from "@chakra-ui/react";
 
@@ -12,6 +13,7 @@ import { useDefaultFieldValue } from "./utils";
 export interface SelectFieldProps extends IField<ISelectField<string>> {}
 function SelectField({ field, definition }: SelectFieldProps) {
   useDefaultFieldValue({ field, definition });
+  const [value, setValue] = useState(getMetaField(field) ?? definition.default);
 
   return (
     <Flex w="100%" h="100%" align="center" {...definition.props}>
@@ -22,9 +24,12 @@ function SelectField({ field, definition }: SelectFieldProps) {
       <CFSrollableSelect
         flex={1}
         h="100%"
-        value={getMetaField(field) ?? ""}
+        value={value}
         options={definition.values as string[]}
-        onOptionClick={(value) => setMetaField(field, value)}
+        onOptionClick={(value) => {
+          setValue(value);
+          setMetaField(field, value);
+        }}
       />
     </Flex>
   );
