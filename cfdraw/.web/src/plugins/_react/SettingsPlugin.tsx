@@ -20,8 +20,8 @@ import { stripHashFromIdentifier } from "@/utils/misc";
 import { uiStore } from "@/stores/ui";
 import { usePythonPluginSettings } from "@/stores/settings";
 import {
-  pluginIsVisible,
-  pythonPluginIsVisible,
+  usePluginIsVisible,
+  usePythonPluginIsVisible,
   setPythonPluginVisible,
   setPluginVisible,
 } from "@/stores/pluginVisible";
@@ -78,7 +78,7 @@ const SettingsPlugin = ({ pluginInfo, ...props }: IPlugin) => {
             {allAvailablePlugins
               .filter((plugin) => !["settings", "undo", "redo"].includes(plugin))
               .map((plugin, i) => {
-                const pIsVisible = pluginIsVisible(plugin);
+                const pIsVisible = usePluginIsVisible(plugin);
                 return (
                   <Checkbox
                     key={`plugin-${i}`}
@@ -94,7 +94,7 @@ const SettingsPlugin = ({ pluginInfo, ...props }: IPlugin) => {
             {usePythonPluginSettings().map((settings, i) => {
               const identifierWithHash = settings.props.pluginInfo.identifier;
               const identifier = stripHashFromIdentifier(identifierWithHash);
-              const pIsVisible = pythonPluginIsVisible(identifierWithHash);
+              const pIsVisible = usePythonPluginIsVisible(identifierWithHash);
               return (
                 <Checkbox
                   key={`${identifierWithHash}-${i}`}

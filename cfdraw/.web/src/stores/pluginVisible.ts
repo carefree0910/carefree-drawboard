@@ -22,7 +22,7 @@ class PluginsVisibleStore extends ABCStore<IPluginsVisible> {
 }
 
 const pluginsVisibleStore = new PluginsVisibleStore();
-export const pluginIsVisible = (plugin: AvailablePlugins) =>
+export const usePluginIsVisible = (plugin: AvailablePlugins) =>
   pluginsVisibleStore.info[plugin] ?? true;
 export const setPluginVisible = (plugin: AvailablePlugins, visible: boolean) =>
   pluginsVisibleStore.updateProperty(plugin, visible);
@@ -44,7 +44,7 @@ class PythonPluginsVisibleStore extends ABCStore<IPythonPluginsVisible> {
 }
 
 const pythonPluginsVisibleStore = new PythonPluginsVisibleStore();
-export const pythonPluginIsVisible = (identifier: string) =>
+export const usePythonPluginIsVisible = (identifier: string) =>
   pythonPluginsVisibleStore.info[identifier] ?? true;
 export const setPythonPluginVisible = (identifier: string, visible: boolean) =>
   pythonPluginsVisibleStore.updateProperty(identifier, visible);

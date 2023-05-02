@@ -6,8 +6,8 @@ import { ABCStore } from "@carefree0910/business";
 import type { AvailablePlugins } from "@/schema/plugins";
 import { reactPluginSettings } from "@/_settings";
 import {
-  pluginIsVisible,
-  pythonPluginIsVisible,
+  usePluginIsVisible,
+  usePythonPluginIsVisible,
   setPluginVisible,
   setPythonPluginVisible,
 } from "./pluginVisible";
@@ -42,7 +42,7 @@ export class VisibleManager {
     this.pythonVisibleBackup = {};
     for (const { type } of reactPluginSettings) {
       if (type !== "settings") {
-        this.visibleBackup[type] = pluginIsVisible(type);
+        this.visibleBackup[type] = usePluginIsVisible(type);
       }
     }
     for (const {
@@ -50,7 +50,7 @@ export class VisibleManager {
         pluginInfo: { identifier },
       },
     } of usePythonPluginSettings()) {
-      this.pythonVisibleBackup[identifier] = pythonPluginIsVisible(identifier);
+      this.pythonVisibleBackup[identifier] = usePythonPluginIsVisible(identifier);
     }
   }
 

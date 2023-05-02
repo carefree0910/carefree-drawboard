@@ -8,7 +8,7 @@ import type {
   IMakePlugin,
   NodeConstraintSettings,
 } from "@/schema/plugins";
-import { pluginIsVisible, pythonPluginIsVisible } from "@/stores/pluginVisible";
+import { usePluginIsVisible, usePythonPluginIsVisible } from "@/stores/pluginVisible";
 import { drawboardPluginFactory } from "./utils/factory";
 import { getNodeFilter } from "./utils/renderFilters";
 
@@ -63,9 +63,9 @@ function MakePlugin<T extends AvailablePluginsAndPythonPlugins>({
   const nodes = info.nodes;
   const updatedPluginInfo = { ...pluginInfo, node, nodes };
   if (drawboardPluginFactory.checkIsPython(type)) {
-    renderInfo.isInvisible = !pythonPluginIsVisible((updatedPluginInfo as any).identifier);
+    renderInfo.isInvisible = !usePythonPluginIsVisible((updatedPluginInfo as any).identifier);
   } else {
-    renderInfo.isInvisible = !pluginIsVisible(type);
+    renderInfo.isInvisible = !usePluginIsVisible(type);
   }
   return (
     <Plugin
