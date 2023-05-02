@@ -10,7 +10,6 @@ import type {
 } from "@/schema/plugins";
 import { usePluginIsVisible, usePythonPluginIsVisible } from "@/stores/pluginVisible";
 import { drawboardPluginFactory } from "./utils/factory";
-import { getNodeFilter } from "./utils/renderFilters";
 
 // these lines are needed to make sure the plugins are registered
 export * from "./_react/MetaPlugin";
@@ -47,7 +46,6 @@ function MakePlugin<T extends AvailablePluginsAndPythonPlugins>({
 }: IMakePlugin<T>) {
   renderInfo = shallowCopy(renderInfo);
   pluginInfo = shallowCopy(pluginInfo);
-  const renderFilter = getNodeFilter(props);
   if (renderInfo.follow && !checkHasConstraint(props)) {
     Logger.warn("cannot use `follow` with no constraints");
     return null;
@@ -58,7 +56,6 @@ function MakePlugin<T extends AvailablePluginsAndPythonPlugins>({
     return null;
   }
   const info = useSelecting("raw");
-  if (!renderFilter(info)) return null;
   const node = info.displayNode;
   const nodes = info.nodes;
   const updatedPluginInfo = { ...pluginInfo, node, nodes };

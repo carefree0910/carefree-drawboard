@@ -40,7 +40,6 @@ export interface IRenderInfo extends IExpandPositionInfo {
   offsetX?: number;
   offsetY?: number;
   bgOpacity?: number;
-  renderFilter?: (info?: IResponse) => boolean;
   useModal?: boolean;
   modalOpacity?: number;
   expandProps?: FlexProps;

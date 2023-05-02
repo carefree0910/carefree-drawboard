@@ -12,7 +12,7 @@ import {
 } from "@chakra-ui/react";
 
 import { isUndefined } from "@carefree0910/core";
-import { langStore, translate, useIsReady, useSelecting } from "@carefree0910/business";
+import { langStore, translate } from "@carefree0910/business";
 
 import iconLoading from "@/assets/icon-loading.json";
 import type { IFloating } from "@/schema/plugins";
@@ -60,7 +60,6 @@ const Floating = forwardRef(function (
       tooltip,
       offsetY,
       bgOpacity,
-      renderFilter,
       useModal,
       modalOpacity,
       expandProps,
@@ -75,7 +74,6 @@ const Floating = forwardRef(function (
 ) {
   const lang = langStore.tgt;
   const taskMessage = getPluginMessage(id);
-  const needRender = useIsReady() && (!renderFilter || renderFilter(useSelecting("raw")));
   const interactingWithBoard = isInteractingWithBoard();
   const expand = usePluginIsExpanded(id);
   const groupExpand = usePluginGroupIsExpanded(groupId);
@@ -194,8 +192,6 @@ const Floating = forwardRef(function (
     floatingIconLoadedEvent.emit({ id });
     setIconLoaded(true);
   }, [id]);
-
-  if (!needRender) return null;
 
   iconLoading.layers.forEach((layer) => {
     if (!layer.shapes) return;
