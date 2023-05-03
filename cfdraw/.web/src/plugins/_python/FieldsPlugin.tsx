@@ -27,7 +27,7 @@ const PythonFieldsPlugin = ({ pluginInfo, ...props }: IPythonFieldsPlugin) => {
   const lang = langStore.tgt;
   const { definitions, retryInterval, noErrorToast } = pluginInfo;
   const getExtraRequestData = useDefinitionsRequestDataFn(definitions);
-  const currentMeta = useCurrentMeta(pluginInfo.node);
+  const currentMeta = useCurrentMeta(pluginInfo.node, pluginInfo.nodes);
   const emitClose = useClosePanel(id);
 
   const onMessage = useCallback<IPythonOnSocketMessage<IPythonResults>>(

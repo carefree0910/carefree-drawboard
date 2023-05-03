@@ -15,12 +15,23 @@ export function useDefinitionsRequestDataFn(definitions: IDefinitions): () => Di
     return data;
   }, [definitions]);
 }
-export function useCurrentMeta(node: INode | null): IMeta | undefined {
+export function useCurrentMeta(node: INode | null, nodes: INode[]): IMeta | undefined {
   return useMemo(() => {
     let currentMeta: IMeta | undefined;
     if (node && node.type !== "group") {
       currentMeta = node.params.meta as IMeta;
+    } else if (nodes.length > 1) {
+      // main + mask workaround
+      const types = new Set(nodes.map((node) => node.type));
+      if (types.size === 2 && types.has("path")) {
+        for (const node of nodes) {
+          if (node.type !== "path" && node.type !== "group") {
+            currentMeta = node.params.meta as IMeta;
+            break;
+          }
+        }
+      }
     }
     return currentMeta;
-  }, [node]);
+  }, [node?.alias, nodes.map((node) => node.alias).join(",")]);
 }
