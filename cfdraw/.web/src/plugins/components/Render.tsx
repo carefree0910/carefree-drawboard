@@ -26,7 +26,7 @@ import { DEFAULT_PLUGIN_SETTINGS } from "@/utils/constants";
 import { usePluginGroupIsExpanded, usePluginIsExpanded } from "@/stores/pluginExpanded";
 import { setPluginNeedRender, usePluginNeedRender } from "@/stores/pluginNeedRender";
 import { addPluginChild, setPluginUpdater, usePluginUpdater } from "@/stores/pluginUpdater";
-import { hashInfo, useNodeFilter } from "../utils/renderFilters";
+import { checkHasConstraint, hashInfo, useNodeFilter } from "../utils/renderFilters";
 import Floating, { getExpandId } from "./Floating";
 
 let DEBUG_PREFIX: string | undefined;
@@ -124,6 +124,10 @@ const Render = (({
   const _id = useMemo(() => id ?? `plugin_${getRandomHash()}`, [id]);
   const inGroup = useMemo(() => !isUndefined(groupId), [groupId]);
   const constraintDeps = [nodeConstraint, nodeConstraintRules, nodeConstraintValidator];
+  const hasConstraint = useMemo(
+    () => checkHasConstraint({ nodeConstraint, nodeConstraintRules, nodeConstraintValidator }),
+    constraintDeps,
+  );
   const info = useSelecting("raw");
   const isReady = useIsReady();
   const expand = usePluginIsExpanded(_id);
@@ -329,7 +333,9 @@ const Render = (({
     if (follow) {
       injectNodeTransformEventCallback(_id, updater);
     }
-    useSelectHooks().register({ key: _id, after: updater });
+    if (hasConstraint) {
+      useSelectHooks().register({ key: _id, after: updater });
+    }
     window.addEventListener("resize", updater);
 
     return () => {
@@ -339,10 +345,12 @@ const Render = (({
       if (follow) {
         removeNodeTransformEventCallback(_id);
       }
-      useSelectHooks().remove(_id);
+      if (hasConstraint) {
+        useSelectHooks().remove(_id);
+      }
       window.removeEventListener("resize", updater);
     };
-  }, [updater, _id, inGroup, isReady, needRender, follow]);
+  }, [updater, _id, inGroup, isReady, needRender, follow, hasConstraint]);
 
   if (!needRender) return null;
 
