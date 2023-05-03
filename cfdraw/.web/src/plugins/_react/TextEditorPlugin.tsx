@@ -1,8 +1,8 @@
-import { useMemo, useState } from "react";
+import { useEffect, useMemo, useState } from "react";
 import { observer } from "mobx-react-lite";
 import { Flex, Textarea } from "@chakra-ui/react";
 
-import { getRandomHash, isUndefined } from "@carefree0910/core";
+import { getRandomHash } from "@carefree0910/core";
 import { langStore, translate, useEditText } from "@carefree0910/business";
 
 import type { IPlugin } from "@/schema/plugins";
@@ -16,21 +16,17 @@ import Render from "../components/Render";
 const TextEditorPlugin = ({ pluginInfo: { node }, ...props }: IPlugin) => {
   const id = useMemo(() => `textEditor_${getRandomHash()}`, []);
   const lang = langStore.tgt;
-  const { nodeContent, nodeFontSize } = useMemo<{
-    nodeContent?: string;
-    nodeFontSize?: number;
-  }>(() => {
-    if (!node || node.type !== "text") return {};
-    return {
-      nodeContent: node.params.content,
-      nodeFontSize: node.params.fontSize,
-    };
-  }, [node]);
-  const [content, setContent] = useState(nodeContent ?? "");
-  const [fontSize, setFontSize] = useState(nodeFontSize ?? 16);
+  const [content, setContent] = useState("");
+  const [fontSize, setFontSize] = useState(0);
   const { editContent, editFontSize } = useEditText();
+  useEffect(() => {
+    if (node?.type === "text") {
+      setContent(node.params.content);
+      setFontSize(node.params.fontSize);
+    }
+  }, [node]);
 
-  if (isUndefined(nodeContent)) return null;
+  if (node?.type !== "text") return null;
 
   return (
     <Render id={id} {...props}>
