@@ -27,8 +27,8 @@ export const addPluginChild = (groupId: string, id: string) => {
   const children = shallowCopy(usePluginChildren(groupId));
   if (!children.includes(id)) {
     children.push(id);
+    pluginsHierarchyStore.updateProperty(groupId, children);
   }
-  pluginsHierarchyStore.updateProperty(groupId, children);
 };
 
 // store the updaters of plugins. Notice that once the updater is triggered,
