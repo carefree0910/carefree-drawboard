@@ -3,13 +3,10 @@ import { observer } from "mobx-react-lite";
 import { Logger, shallowCopy } from "@carefree0910/core";
 import { useSelecting } from "@carefree0910/business";
 
-import type {
-  AvailablePluginsAndPythonPlugins,
-  IMakePlugin,
-  NodeConstraintSettings,
-} from "@/schema/plugins";
+import type { AvailablePluginsAndPythonPlugins, IMakePlugin } from "@/schema/plugins";
 import { usePluginIsVisible, usePythonPluginIsVisible } from "@/stores/pluginVisible";
 import { drawboardPluginFactory } from "./utils/factory";
+import { checkHasConstraint } from "./utils/renderFilters";
 
 // these lines are needed to make sure the plugins are registered
 export * from "./_react/MetaPlugin";
@@ -29,16 +26,6 @@ export * from "./_python/QAPlugin";
 export * from "./_python/FieldsPlugin";
 export * from "./_python/PluginGroup";
 
-function checkHasConstraint({
-  nodeConstraint,
-  nodeConstraintRules,
-}: NodeConstraintSettings): boolean {
-  if (nodeConstraint && nodeConstraint !== "none") return true;
-  if (nodeConstraintRules?.some) return true;
-  if (nodeConstraintRules?.every) return true;
-  if (nodeConstraintRules?.exactly) return true;
-  return false;
-}
 function MakePlugin<T extends AvailablePluginsAndPythonPlugins>({
   type,
   containerRef,

@@ -128,3 +128,14 @@ export function useNodeFilter(
     return true;
   }, useConstraintDeps(settings));
 }
+
+export function checkHasConstraint({
+  nodeConstraint,
+  nodeConstraintRules,
+}: NodeConstraintSettings): boolean {
+  if (nodeConstraint && nodeConstraint !== "none") return true;
+  if (nodeConstraintRules?.some) return true;
+  if (nodeConstraintRules?.every) return true;
+  if (nodeConstraintRules?.exactly) return true;
+  return false;
+}
