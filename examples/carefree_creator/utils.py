@@ -1,11 +1,11 @@
 from cfcreator import *
 from cfclient.models import *
 from PIL import Image
+from typing import Any
 from typing import Dict
 from typing import List
 from pydantic import BaseModel
 from cfclient.core import HttpClient
-from cfclient.utils import run_algorithm
 
 
 class APIs:
@@ -22,17 +22,17 @@ class APIs:
         for v in self.algorithms.values():
             v.initialize()
 
-    async def _run(self, data: BaseModel, task: str) -> List[Image.Image]:
+    async def _run(self, data: BaseModel, task: str, **kw: Any) -> List[Image.Image]:
         if isinstance(data, ReturnArraysModel):
             data.return_arrays = True
-        arrays = await run_algorithm(self.algorithms[task], data)
+        arrays = await self.algorithms[task].run(data, **kw)
         return list(map(Image.fromarray, arrays))
 
-    async def txt2img(self, data: Txt2ImgSDModel) -> List[Image.Image]:
-        return await self._run(data, "txt2img.sd")
+    async def txt2img(self, data: Txt2ImgSDModel, **kw: Any) -> List[Image.Image]:
+        return await self._run(data, "txt2img.sd", **kw)
 
-    async def img2img(self, data: Img2ImgSDModel) -> List[Image.Image]:
-        return await self._run(data, "img2img.sd")
+    async def img2img(self, data: Img2ImgSDModel, **kw: Any) -> List[Image.Image]:
+        return await self._run(data, "img2img.sd", **kw)
 
     async def sr(self, data: Img2ImgSRModel) -> List[Image.Image]:
         return await self._run(data, "img2img.sr")
@@ -40,13 +40,17 @@ class APIs:
     async def sod(self, data: Img2ImgSODModel) -> List[Image.Image]:
         return await self._run(data, "img2img.sod")
 
-    async def inpainting(self, data: Img2ImgInpaintingModel) -> List[Image.Image]:
+    async def inpainting(
+        self, data: Img2ImgInpaintingModel, **kw: Any
+    ) -> List[Image.Image]:
         if data.model == "sd":
             data.use_pipeline = True
-        return await self._run(data, "img2img.inpainting")
+        return await self._run(data, "img2img.inpainting", **kw)
 
-    async def sd_inpainting(self, data: Txt2ImgSDInpaintingModel) -> List[Image.Image]:
-        return await self._run(data, "txt2img.sd.inpainting")
+    async def sd_inpainting(
+        self, data: Txt2ImgSDInpaintingModel, **kw: Any
+    ) -> List[Image.Image]:
+        return await self._run(data, "txt2img.sd.inpainting", **kw)
 
 
 __all__ = [

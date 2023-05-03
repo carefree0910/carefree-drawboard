@@ -36,8 +36,11 @@ class Txt2Img(IFieldsPlugin):
         )
 
     async def process(self, data: ISocketRequest) -> List[Image.Image]:
+        def callback(step: int, num_steps: int) -> bool:
+            return self.send_progress(step / num_steps)
+
         kw = inject_seed(self, data).extraData
-        return await get_apis().txt2img(Txt2ImgSDModel(**kw))
+        return await get_apis().txt2img(Txt2ImgSDModel(**kw), step_callback=callback)
 
 
 class Img2Img(IFieldsPlugin):
@@ -55,8 +58,11 @@ class Img2Img(IFieldsPlugin):
         )
 
     async def process(self, data: ISocketRequest) -> List[Image.Image]:
+        def callback(step: int, num_steps: int) -> bool:
+            return self.send_progress(step / num_steps)
+
         kw = dict(url=data.nodeData.src, **inject_seed(self, data).extraData)
-        return await get_apis().img2img(Img2ImgSDModel(**kw))
+        return await get_apis().img2img(Img2ImgSDModel(**kw), step_callback=callback)
 
 
 class SR(IFieldsPlugin):
@@ -106,10 +112,20 @@ class Inpainting(IFieldsPlugin):
         )
 
     async def process(self, data: ISocketRequest) -> List[Image.Image]:
+        def callback() -> bool:
+            nonlocal counter
+            counter += 1.0
+            return self.send_progress(counter / total_steps)
+
         url = self.filter(data.nodeDataList, SingleNodeType.IMAGE)[0].src
         mask_url = self.filter(data.nodeDataList, SingleNodeType.PATH)[0].src
-        kw = dict(url=url, mask_url=mask_url, **data.extraData)
-        return await get_apis().inpainting(Img2ImgInpaintingModel(**kw))
+        model = Img2ImgInpaintingModel(url=url, mask_url=mask_url, **data.extraData)
+        counter = 0.0
+        if not model.use_pipeline:
+            total_steps = model.num_steps
+        else:
+            total_steps = model.num_steps * (2.0 - model.refine_fidelity)
+        return await get_apis().inpainting(model, step_callback=callback)
 
 
 class SDInpainting(IFieldsPlugin):
@@ -127,10 +143,14 @@ class SDInpainting(IFieldsPlugin):
         )
 
     async def process(self, data: ISocketRequest) -> List[Image.Image]:
+        def callback(step: int, num_steps: int) -> bool:
+            return self.send_progress(step / num_steps)
+
         url = self.filter(data.nodeDataList, SingleNodeType.IMAGE)[0].src
         mask_url = self.filter(data.nodeDataList, SingleNodeType.PATH)[0].src
-        kw = dict(url=url, mask_url=mask_url, **inject_seed(self, data).extraData)
-        return await get_apis().sd_inpainting(Txt2ImgSDInpaintingModel(**kw))
+        kw = inject_seed(self, data).extraData
+        model = Txt2ImgSDInpaintingModel(url=url, mask_url=mask_url, **kw)
+        return await get_apis().sd_inpainting(model, step_callback=callback)
 
 
 variation_targets = {
@@ -166,6 +186,9 @@ class Variation(IFieldsPlugin):
         )
 
     async def process(self, data: ISocketRequest) -> List[Image.Image]:
+        def callback(step: int, num_steps: int) -> bool:
+            return self.send_progress(step / num_steps)
+
         meta_data = data.nodeData.meta["data"]
         task = meta_data["identifier"]
         kw = meta_data["parameters"]
@@ -181,10 +204,13 @@ class Variation(IFieldsPlugin):
         variations.append((new_seed(), strength))
         # switch case
         if task == "txt2img" or task == "txt2img.variation":
-            return await get_apis().txt2img(Txt2ImgSDModel(**kw))
+            model = Txt2ImgSDModel(**kw)
+            return await get_apis().txt2img(model, step_callback=callback)
         if task == "img2img" or task == "img2img.variation":
-            return await get_apis().img2img(Img2ImgSDModel(**kw))
-        return await get_apis().sd_inpainting(Txt2ImgSDInpaintingModel(**kw))
+            model = Img2ImgSDModel(**kw)
+            return await get_apis().img2img(model, step_callback=callback)
+        model = Txt2ImgSDInpaintingModel(**kw)
+        return await get_apis().sd_inpainting(model, step_callback=callback)
 
 
 class StaticPlugins(IPluginGroup):
