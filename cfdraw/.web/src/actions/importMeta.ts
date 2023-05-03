@@ -1,10 +1,10 @@
 import { RectangleShapeNode, getRandomHash, shallowCopy } from "@carefree0910/core";
 import { BoardStore, useAddNode, useDefaultTextContent } from "@carefree0910/business";
 
-import type { IPythonFieldsMetaData, MetaType } from "@/schema/meta";
+import type { IPythonFieldsMetaData, IPythonResults, MetaType } from "@/schema/meta";
 import type { IImportMeta } from "@/schema/meta";
 import { toastWord } from "@/utils/toast";
-import { IMAGE_PLACEHOLDER } from "@/utils/constants";
+import { IMAGE_PLACEHOLDER, NSFW_IMAGE_PLACEHOLDER } from "@/utils/constants";
 import { Toast_Words } from "@/lang/toast";
 import { themeStore } from "@/stores/theme";
 import { updateMeta } from "./update";
@@ -92,6 +92,12 @@ function consumeAddText({ lang, type, metaData }: IImportMeta<"add.text">): void
 function consumeAddSketchPath(): void {
   throw Error("Add sketch path by `importMeta` is not supported yet.");
 }
+interface IPack<R> {
+  res: R;
+  alias: string;
+  rectangle: RectangleShapeNode;
+  metaData: IPythonFieldsMetaData;
+}
 function consumePythonFields({ type, metaData }: IImportMeta<"python.fields">): void {
   const success = async () => {
     toastWord("success", Toast_Words["generate-image-success-message"]);
@@ -102,25 +108,35 @@ function consumePythonFields({ type, metaData }: IImportMeta<"python.fields">): 
     });
   };
   const getNewAlias = () => `${type}.${metaData.identifier}.${getRandomHash()}`;
-  interface IPack<R> {
-    data: R;
-    alias: string;
-    rectangle: RectangleShapeNode;
-    metaData: IPythonFieldsMetaData;
-  }
-  function gatherPacks<T, R>(
-    responses: T[],
-    getRectangleInfo: (res: T) => INewRectangle,
-    getData: (res: T) => R,
-  ): IPack<R>[] {
-    const packs: IPack<R>[] = [];
-    responses.forEach((res, i) => {
+  function gatherPacks<T extends IPythonResults>(
+    results: T,
+    getRectangleInfo: (res: T["value"][number]) => INewRectangle,
+  ): IPack<T["value"][number]>[] {
+    const packs: IPack<T["value"][number]>[] = [];
+    results.value.forEach((res, i) => {
       const newAlias = getNewAlias();
       const rectangle = getNewRectangle(`${i}.${getRandomHash()}`, getRectangleInfo(res));
-      const iMetaData = shallowCopy(metaData);
+      let iMetaData = shallowCopy(metaData);
       iMetaData.response.value = metaData.response.value[i] as any;
       iMetaData.alias = newAlias;
-      packs.push({ data: getData(res), alias: newAlias, rectangle, metaData: iMetaData });
+      if (!res.safe) {
+        if (results.type === "text") {
+          results.value[i].text = `NSFW 🙈 (${results.value[i].reason})`;
+        } else {
+          results.value[i].url = NSFW_IMAGE_PLACEHOLDER;
+          iMetaData.response.extra ??= {};
+          iMetaData.response.extra.reason = results.value[i].reason;
+          toastWord("warning", Toast_Words["nsfw-image-detected-warning-message"], {
+            appendix: ` (${results.value[i].reason})`,
+          });
+        }
+      }
+      packs.push({
+        res,
+        alias: newAlias,
+        rectangle,
+        metaData: iMetaData,
+      });
     });
     return packs;
   }
@@ -128,13 +144,10 @@ function consumePythonFields({ type, metaData }: IImportMeta<"python.fields">): 
     return { success: isLast ? success : async () => void 0, failed };
   }
   if (metaData.response.type === "image") {
-    const packs = gatherPacks(
-      metaData.response.value,
-      ({ w, h }) => ({ autoFit: true, wh: { w, h } }),
-      ({ url }) => ({ url }),
-    );
+    const packs = gatherPacks(metaData.response, ({ w, h }) => ({ autoFit: true, wh: { w, h } }));
     const targets = getArrangements(packs.map(({ rectangle }) => rectangle)).targets;
-    packs.forEach(({ data: { url }, alias, metaData }, i) => {
+    const anyUnsafe = metaData.response.value.some((res) => !res.safe);
+    packs.forEach(({ res: { url }, alias, metaData }, i) => {
       const isLast = i === packs.length - 1;
       addNewImage(
         alias,
@@ -142,22 +155,21 @@ function consumePythonFields({ type, metaData }: IImportMeta<"python.fields">): 
         {
           info: targets[i].bbox,
           meta: { type, data: metaData },
-          callbacks: getCallbacks(isLast),
+          callbacks: getCallbacks(isLast && !anyUnsafe),
           noSelect: !isLast,
         },
       );
     });
   } else if (metaData.response.type === "text") {
     const fontSize = 48;
-    const packs = gatherPacks(
-      metaData.response.value,
-      (content) => ({ autoFit: true, wh: getWHFromContent(content, fontSize) }),
-      (content) => ({ content }),
-    );
+    const packs = gatherPacks(metaData.response, ({ text }) => ({
+      autoFit: true,
+      wh: getWHFromContent(text, fontSize),
+    }));
     const targets = getArrangements(packs.map(({ rectangle }) => rectangle)).targets;
-    packs.forEach(({ data: { content }, alias, metaData }, i) => {
+    packs.forEach(({ res: { text }, alias, metaData }, i) => {
       const isLast = i === packs.length - 1;
-      addNewText(alias, content, fontSize, {
+      addNewText(alias, text, fontSize, {
         bbox: targets[i].bbox,
         meta: { type, data: metaData },
         callbacks: getCallbacks(isLast),

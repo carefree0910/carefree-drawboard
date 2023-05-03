@@ -28,7 +28,12 @@ class FieldsMiddleWare(IMiddleWare):
         if not isinstance(response, list):
             response = [response]
         if isinstance(response[0], str):
-            return self.make_success(dict(type="text", value=response))
+            return self.make_success(
+                dict(
+                    type="text",
+                    value=[dict(text=text, safe=True, reason="") for text in response],
+                )
+            )
         meta = PngInfo()
         meta.add_text("request", self.request.json())
         futures = [ImageUploader.upload_image(image, meta) for image in response]

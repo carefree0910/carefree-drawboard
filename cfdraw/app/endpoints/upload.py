@@ -23,6 +23,8 @@ class ImageDataModel(BaseModel):
     w: int
     h: int
     url: str
+    safe: bool = True
+    reason: str = ""
 
 
 class UploadImageResponse(BaseModel):

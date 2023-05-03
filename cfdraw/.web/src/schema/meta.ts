@@ -32,8 +32,8 @@ interface IUploadMetaData extends ICommonMetaData {
   isDrag: boolean;
 }
 export type IPythonResults = (
-  | { type: "text"; value: string[] }
-  | { type: "image"; value: { w: number; h: number; url: string }[] }
+  | { type: "text"; value: { text: string; safe: boolean; reason: string }[] }
+  | { type: "image"; value: { w: number; h: number; url: string; safe: boolean; reason: string }[] }
 ) & { extra?: Dictionary<any> };
 export type IPythonFieldsMetaData = ICommonMetaData & {
   identifier: string;

@@ -38,6 +38,7 @@ export enum Toast_Words {
   "export-blob-error-message" = "export-blob-error-message",
   "enter-brush-mode-message" = "enter-brush-mode-message",
   "exit-brush-mode-message" = "exit-brush-mode-message",
+  "nsfw-image-detected-warning-message" = "nsfw-image-detected-warning-message",
 }
 
 export const toastLangRecords: Record<Lang, Record<Toast_Words, string>> = {
@@ -79,6 +80,7 @@ export const toastLangRecords: Record<Lang, Record<Toast_Words, string>> = {
     [Toast_Words["export-blob-error-message"]]: "导出节点时出了些问题",
     [Toast_Words["enter-brush-mode-message"]]: "已进入涂鸦模式",
     [Toast_Words["exit-brush-mode-message"]]: "已退出涂鸦模式",
+    [Toast_Words["nsfw-image-detected-warning-message"]]: "检测到图片中可能包含敏感内容",
   },
   en: {
     [Toast_Words["dropping-message"]]: "Detecting",
@@ -120,5 +122,6 @@ export const toastLangRecords: Record<Lang, Record<Toast_Words, string>> = {
     [Toast_Words["export-blob-error-message"]]: "Something is wrong when exporting Node",
     [Toast_Words["enter-brush-mode-message"]]: "Entered sketch mode",
     [Toast_Words["exit-brush-mode-message"]]: "Exited sketch mode",
+    [Toast_Words["nsfw-image-detected-warning-message"]]: "NSFW image detected",
   },
 };
