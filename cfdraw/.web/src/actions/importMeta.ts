@@ -115,7 +115,6 @@ function consumePythonFields({ type, metaData }: IImportMeta<"python.fields">): 
     const packs: IPack<T["value"][number]>[] = [];
     results.value.forEach((res, i) => {
       const newAlias = getNewAlias();
-      const rectangle = getNewRectangle(`${i}.${getRandomHash()}`, getRectangleInfo(res));
       let iMetaData = shallowCopy(metaData);
       iMetaData.response.value = metaData.response.value[i] as any;
       iMetaData.alias = newAlias;
@@ -131,6 +130,9 @@ function consumePythonFields({ type, metaData }: IImportMeta<"python.fields">): 
           });
         }
       }
+      // rectangle should be calculated after the safety check,
+      // because the response might be changed
+      const rectangle = getNewRectangle(`${i}.${getRandomHash()}`, getRectangleInfo(res));
       packs.push({
         res,
         alias: newAlias,
