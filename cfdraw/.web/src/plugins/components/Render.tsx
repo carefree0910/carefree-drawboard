@@ -123,6 +123,7 @@ const Render = (({
 }: IRender) => {
   const _id = useMemo(() => id ?? `plugin_${getRandomHash()}`, [id]);
   const inGroup = useMemo(() => !isUndefined(groupId), [groupId]);
+  const constraintDeps = [nodeConstraint, nodeConstraintRules, nodeConstraintValidator];
   const info = useSelecting("raw");
   const isReady = useIsReady();
   const expand = usePluginIsExpanded(_id);
@@ -148,7 +149,7 @@ const Render = (({
     return () => {
       latest = false;
     };
-  }, [_id, inGroup, expand, groupExpand, hashInfo(info), nodeConstraint, nodeConstraintRules]);
+  }, [_id, inGroup, expand, groupExpand, hashInfo(info), ...constraintDeps]);
   let { w, h, iconW, iconH, pivot, follow, offsetX, offsetY, expandOffsetX, expandOffsetY } =
     renderInfo;
   iconW ??= DEFAULT_PLUGIN_SETTINGS.iconW;
@@ -193,9 +194,7 @@ const Render = (({
     groupId,
     iconW,
     iconH,
-    nodeConstraint,
-    nodeConstraintRules,
-    nodeConstraintValidator,
+    ...constraintDeps,
     pivot,
     follow,
     offsetX,
