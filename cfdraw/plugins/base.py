@@ -123,7 +123,7 @@ class ISocketPlugin(IPlugin, metaclass=ABCMeta):
         message = ISocketMessage.make_progress(self.task_hash, progress, intermediate)
         return offload_run(self.send_message(message))
 
-    def send_exception(self, message: str) -> None:
+    def send_exception(self, message: str) -> bool:
         message = ISocketMessage.make_exception(self.task_hash, message)
         return offload_run(self.send_message(message))
 

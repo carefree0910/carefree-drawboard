@@ -20,7 +20,10 @@ class SendSocketMessageMiddleWare(IMiddleWare):
         return True
 
     async def process(self, response: ISocketMessage) -> ISocketMessage:
-        response.data.final["extra"] = self.plugin.extra_responses
+        if self.plugin.extra_responses:
+            if response.data.final is None:
+                response.data.final = {}
+            response.data.final["extra"] = self.plugin.extra_responses
         await self.plugin.send_message(response)
         return response
 
