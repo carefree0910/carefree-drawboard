@@ -126,7 +126,7 @@ class Inpainting(IFieldsPlugin):
         def callback() -> bool:
             nonlocal counter
             counter += 1.0
-            return self.send_progress(counter / total_steps)
+            return self.send_progress(min(1.0, counter / total_steps))
 
         url = self.filter(data.nodeDataList, SingleNodeType.IMAGE)[0].src
         mask_url = self.filter(data.nodeDataList, SingleNodeType.PATH)[0].src
