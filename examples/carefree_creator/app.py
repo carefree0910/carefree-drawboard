@@ -84,7 +84,7 @@ class SR(IFieldsPlugin):
     def settings(self) -> IPluginSettings:
         return IPluginSettings(
             w=240,
-            h=160,
+            h=180,
             src=constants.SR_ICON,
             tooltip="Super Resolution",
             pluginInfo=IFieldsPluginInfo(
