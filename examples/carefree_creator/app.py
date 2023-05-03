@@ -73,7 +73,9 @@ class Img2Img(IFieldsPlugin):
         def callback(step: int, num_steps: int) -> bool:
             return self.send_progress(step / num_steps)
 
-        kw = dict(url=data.nodeData.src, **inject_seed(self, data).extraData)
+        url = data.nodeData.src
+        kw = dict(url=url, **inject_seed(self, data).extraData)
+        self.extra_responses["url"] = url
         return await get_apis().img2img(Img2ImgSDModel(**kw), step_callback=callback)
 
 
@@ -163,6 +165,7 @@ class SDInpainting(IFieldsPlugin):
         url = self.filter(data.nodeDataList, SingleNodeType.IMAGE)[0].src
         mask_url = self.filter(data.nodeDataList, SingleNodeType.PATH)[0].src
         kw = inject_seed(self, data).extraData
+        self.extra_responses.update(url=url, mask_url=mask_url)
         model = Txt2ImgSDInpaintingModel(url=url, mask_url=mask_url, **kw)
         return await get_apis().sd_inpainting(model, step_callback=callback)
 
@@ -210,12 +213,27 @@ class Variation(IFieldsPlugin):
             kw = extra["request"]
         else:
             kw = meta_data["parameters"]
+            extra = meta_data["response"].get("extra", {})
             if kw["seed"] == -1:
-                generated_seed = meta_data["response"].get("extra", {}).get("seed")
+                generated_seed = extra.get("seed")
                 if generated_seed is None:
                     self.send_exception("cannot find a static seed")
                     return []
                 kw["seed"] = generated_seed
+            if task == Img2ImgKey:
+                url = extra.get("url")
+                if url is None:
+                    self.send_exception("cannot find `url`")
+                    return []
+                kw["url"] = url
+            elif task == SDInpaintingKey:
+                url = extra.get("url")
+                mask_url = extra.get("mask_url")
+                if url is None or mask_url is None:
+                    self.send_exception("cannot find `url` or `mask_url`")
+                    return []
+                kw["url"] = url
+                kw["mask_url"] = mask_url
         # inject varations
         strength = 1.0 - data.extraData["fidelity"]
         variations = kw.setdefault("variations", [])
