@@ -43,6 +43,7 @@ const PythonPluginGroup = ({ pluginInfo, renderInfo, ...props }: IPythonPluginGr
           settings.props.groupId = id;
           settings.props.nodeConstraint ??= props.nodeConstraint;
           settings.props.nodeConstraintRules ??= props.nodeConstraintRules;
+          settings.props.nodeConstraintValidator ??= props.nodeConstraintValidator;
           settings.props.renderInfo.pivot = pivot;
           settings.props.renderInfo.iconW = iconWH;
           settings.props.renderInfo.iconH = iconWH;
