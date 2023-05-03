@@ -6,6 +6,7 @@ export interface IElapsedTimes {
   endTime?: number;
   pending?: number;
   executing?: number;
+  upload?: number;
   total?: number;
 }
 

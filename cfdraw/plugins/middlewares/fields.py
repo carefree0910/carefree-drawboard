@@ -1,3 +1,4 @@
+import time
 import asyncio
 
 from typing import List
@@ -36,8 +37,10 @@ class FieldsMiddleWare(IMiddleWare):
             )
         meta = PngInfo()
         meta.add_text("request", self.request.json())
+        t = time.time()
         futures = [ImageUploader.upload_image(image, meta) for image in response]
         urls = [data.dict() for data in await asyncio.gather(*futures)]
+        self.plugin.elapsed_times.upload = time.time() - t
         return self.make_success(dict(type="image", value=urls))
 
 

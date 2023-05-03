@@ -196,6 +196,7 @@ class ElapsedTimes(BaseModel):
     endTime: Optional[float]
     pending: Optional[float]
     executing: Optional[float]
+    upload: Optional[float]
     total: Optional[float]
 
     def __init__(self, **data: Any):
@@ -213,6 +214,8 @@ class ElapsedTimes(BaseModel):
         self.endTime = end
         if self.startTime is not None:
             self.executing = end - self.startTime
+            if self.upload is not None:
+                self.executing -= self.upload
         if self.createTime is not None:
             self.total = end - self.createTime
 
