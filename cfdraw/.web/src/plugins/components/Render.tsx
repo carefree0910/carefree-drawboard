@@ -299,7 +299,6 @@ const Render = (({
   // This effect handles callbacks that dynamically render the plugin's position
   useLayoutEffect(() => {
     if (!needRender) return;
-    if (!!groupId && !groupExpand) return;
 
     if (expand || groupExpand) {
       updateFloating({ event: "expand" });
