@@ -21,7 +21,7 @@ export const useAuth = () => {
   useEffect(() => {
     const onMessage = (e: MessageEvent<Partial<Message>>) => {
       if (!isAllowedOrigin(e.origin)) {
-        Logger.error(`unauthorized origin: ${e.origin}`);
+        console.error(`unauthorized origin: ${e.origin}`);
         return;
       }
       if (e.data.userId) {
