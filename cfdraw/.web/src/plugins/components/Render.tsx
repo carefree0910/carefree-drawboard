@@ -300,15 +300,12 @@ const Render = (({
   useLayoutEffect(() => {
     if (!needRender) return;
 
-    if (expand || groupExpand) {
-      updateFloating({ event: "expand" });
+    if (isReady) {
+      updateFloating({ event: "init" });
     }
     injectNodeTransformEventCallback(_id, updateFloating);
     useSelectHooks().register({ key: _id, after: updateFloating });
     window.addEventListener("resize", updateFloating);
-    if (isReady) {
-      updateFloating({ event: "init" });
-    }
 
     return () => {
       if (DEBUG_PREFIX && _id.startsWith(DEBUG_PREFIX)) {
