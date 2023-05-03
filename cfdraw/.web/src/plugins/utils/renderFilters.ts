@@ -132,10 +132,12 @@ export function useNodeFilter(
 export function checkHasConstraint({
   nodeConstraint,
   nodeConstraintRules,
+  nodeConstraintValidator,
 }: NodeConstraintSettings): boolean {
   if (nodeConstraint && nodeConstraint !== "none") return true;
   if (nodeConstraintRules?.some) return true;
   if (nodeConstraintRules?.every) return true;
   if (nodeConstraintRules?.exactly) return true;
+  if (!isUndefined(nodeConstraintValidator)) return true;
   return false;
 }
