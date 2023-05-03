@@ -114,7 +114,7 @@ class RequestQueue(IRequestQueue):
                     ),
                     "\n",
                 )
-            prefix = f"[broadcase_pending] [{hash}]"
+            prefix = f"[broadcast_pending] [{hash}]"
             success = True
             message = "null"
             try:
@@ -145,7 +145,7 @@ class RequestQueue(IRequestQueue):
         if sender_pack is None:
             return False
         hash, sender = sender_pack
-        prefix = f"[broadcase_working] [{hash}]"
+        prefix = f"[broadcast_working] [{hash}]"
         success = True
         try:
             message = f"{prefix} working..."
@@ -169,7 +169,7 @@ class RequestQueue(IRequestQueue):
         if sender_pack is None:
             return False
         hash, sender = sender_pack
-        prefix = f"[broadcase_exception] [{hash}]"
+        prefix = f"[broadcast_exception] [{hash}]"
         success = True
         try:
             message = f"{prefix} {message}"
