@@ -4,7 +4,7 @@ import { BoardStore, useAddNode, useDefaultTextContent } from "@carefree0910/bus
 import type { IPythonFieldsMetaData, IPythonResults, MetaType } from "@/schema/meta";
 import type { IImportMeta } from "@/schema/meta";
 import { toastWord } from "@/utils/toast";
-import { IMAGE_PLACEHOLDER, NSFW_IMAGE_PLACEHOLDER } from "@/utils/constants";
+import { DEFAULT_FONT_SIZE, IMAGE_PLACEHOLDER, NSFW_IMAGE_PLACEHOLDER } from "@/utils/constants";
 import { Toast_Words } from "@/lang/toast";
 import { themeStore } from "@/stores/theme";
 import { updateMeta } from "./update";
@@ -75,7 +75,7 @@ function consumeAddText({ lang, type, metaData }: IImportMeta<"add.text">): void
   const { addText } = useAddNode({ success, failed });
   metaData.alias = newAlias;
   const content = useDefaultTextContent(lang);
-  const fontSize = 64;
+  const fontSize = DEFAULT_FONT_SIZE;
   const { w, h } = getWHFromContent(content, fontSize);
   addText({ trace: true })({
     alias: newAlias,
@@ -161,7 +161,7 @@ function consumePythonFields({ type, metaData }: IImportMeta<"python.fields">): 
       );
     });
   } else if (metaData.response.type === "text") {
-    const fontSize = 48;
+    const fontSize = DEFAULT_FONT_SIZE;
     const packs = gatherPacks(metaData.response, ({ text }) => ({
       autoFit: true,
       wh: getWHFromContent(text, fontSize),
