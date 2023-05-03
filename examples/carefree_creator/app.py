@@ -157,8 +157,7 @@ class SDInpainting(IFieldsPlugin):
 variation_targets = {
     "txt2img",
     "img2img",
-    "txt2img.variation",
-    "img2img.variation",
+    "variation",
     "txt2img.inpainting",
     "txt2img.outpainting",
 }
