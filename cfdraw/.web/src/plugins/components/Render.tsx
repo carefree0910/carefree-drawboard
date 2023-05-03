@@ -18,6 +18,7 @@ import type { IExpandPositionInfo, IRender } from "@/schema/plugins";
 import { DEFAULT_PLUGIN_SETTINGS } from "@/utils/constants";
 import { usePluginGroupIsExpanded, usePluginIsExpanded } from "@/stores/pluginExpanded";
 import { setPluginNeedRender, usePluginNeedRender } from "@/stores/pluginNeedRender";
+import { addPluginChild, setPluginUpdater, usePluginUpdater } from "@/stores/pluginUpdater";
 import { hashInfo, useNodeFilter } from "../utils/renderFilters";
 import Floating, { getExpandId } from "./Floating";
 
@@ -300,16 +301,27 @@ const Render = (({
     domFloatingExpand.style.transform = `matrix(1,0,0,1,${ex},${ey})`;
   }, deps);
 
+  const updater = usePluginUpdater(_id);
+  useEffect(() => {
+    if (!!groupId) {
+      addPluginChild(groupId, _id);
+    }
+  }, [_id, groupId]);
+  useEffect(() => {
+    setPluginUpdater(_id, updateFloating);
+  }, [_id, updateFloating]);
   // This effect handles callbacks that dynamically render the plugin's position
   useLayoutEffect(() => {
     if (!needRender) return;
 
     if (isReady) {
-      updateFloating({ event: "init" });
+      updater({ event: "init" });
     }
-    injectNodeTransformEventCallback(_id, updateFloating);
-    useSelectHooks().register({ key: _id, after: updateFloating });
-    window.addEventListener("resize", updateFloating);
+    // plugins in group will be updated by group's update
+    if (!!groupId) return;
+    injectNodeTransformEventCallback(_id, updater);
+    useSelectHooks().register({ key: _id, after: updater });
+    window.addEventListener("resize", updater);
 
     return () => {
       if (DEBUG_PREFIX && _id.startsWith(DEBUG_PREFIX)) {
@@ -317,9 +329,9 @@ const Render = (({
       }
       removeNodeTransformEventCallback(_id);
       useSelectHooks().remove(_id);
-      window.removeEventListener("resize", updateFloating);
+      window.removeEventListener("resize", updater);
     };
-  }, [updateFloating]);
+  }, [updater, _id, groupId, isReady, needRender]);
 
   if (!needRender) return null;
 
