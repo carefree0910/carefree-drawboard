@@ -6,7 +6,7 @@ type Message = {
   userId: string;
 };
 
-const allowedOrigins = ["http://127.0.0.1:9527", "http://localhost:9527"];
+const allowedOrigins = ["http://127.0.0.1:5123", "http://localhost:5123"];
 const allowedOriginRegexList = [/^http:\/\/localhost(:\d+)?$/, /^https:\/\/.*nolibox\.com$/];
 
 function isAllowedOrigin(origin: string): boolean {
