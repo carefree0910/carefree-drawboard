@@ -36,6 +36,7 @@ class ISocketPlugin(IPlugin, metaclass=ABCMeta):
         return common_middlewares + [send_message_middleware]
 
     async def __call__(self, data: ISocketRequest) -> ISocketMessage:
+        self.extra_responses = {}
         middlewares = self.middlewares
         for middleware in middlewares:
             await middleware.before(data)

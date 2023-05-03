@@ -373,6 +373,7 @@ class IPlugin(ABC):
     task_hash: str
     send_message: ISend
     elapsed_times: ElapsedTimes
+    extra_responses: Dict[str, Any]
     # internal
     _in_group: bool = False
 
