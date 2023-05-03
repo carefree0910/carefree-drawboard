@@ -55,7 +55,12 @@ export async function getPythonRequest({
 }: Omit<IUsePythonInfo, "isInvisible"> & {
   opt?: ExportBlobOptions;
 }): Promise<Omit<IPythonSocketRequest, "hash">> {
-  const exportBox = nodes[argMax(nodes.map((n) => n.bbox.area))].bbox;
+  const exportBox =
+    nodes.length === 0
+      ? node?.bbox ?? BBox.unit()
+      : nodes.length === 1
+      ? nodes[0].bbox
+      : nodes[argMax(nodes.map((n) => n.bbox.area))].bbox;
   const getNodeDataOpt: IGetNodeData = { exportBox, ...opt };
   const nodeData = await getNodeData(node, getNodeDataOpt);
   const nodeDataList = nodes.length <= 1 ? [] : await getNodeDataList(nodes, getNodeDataOpt);
