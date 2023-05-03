@@ -1,7 +1,5 @@
 import { useEffect } from "react";
 
-import { Logger } from "@carefree0910/core";
-
 import { Event } from "@/utils/event";
 
 type Message = {
