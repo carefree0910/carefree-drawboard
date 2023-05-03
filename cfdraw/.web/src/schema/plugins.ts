@@ -48,7 +48,6 @@ export interface IRenderInfo extends IExpandPositionInfo {
 }
 export interface IFloating extends FlexProps {
   id: string;
-  isGroup?: boolean;
   groupId?: string; // the id of the group this floating belongs to
   renderInfo: IRenderInfo;
   noExpand?: boolean;

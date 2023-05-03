@@ -45,7 +45,6 @@ export const floatingIconLoadedEvent = new Event<IFloatingIconLoadedEvent>();
 const Floating = forwardRef(function (
   {
     id,
-    isGroup,
     groupId,
     w: _w, // will not take effect
     h: _h, // will not take effect
