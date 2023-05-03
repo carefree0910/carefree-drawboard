@@ -21,6 +21,7 @@ from cfdraw.schema.fields import IFieldDefinition
 from cfdraw.parsers.noli import Matrix2D
 from cfdraw.parsers.noli import INodeType
 from cfdraw.parsers.noli import PivotType
+from cfdraw.parsers.noli import SingleNodeType
 from cfdraw.parsers.noli import NodeConstraints
 from cfdraw.parsers.noli import NodeConstraintRules
 from cfdraw.parsers.chakra import IChakra
@@ -394,7 +395,21 @@ class IPlugin(ABC):
         pass
 
     @abstractmethod
+    def filter(self, nodes: List[INodeData], target: SingleNodeType) -> List[INodeData]:
+        pass
+
+    @abstractmethod
     async def load_image(self, src: str) -> Image.Image:
+        pass
+
+    @abstractmethod
+    def send_progress(
+        self,
+        progress: float,
+        *,
+        textList: Optional[List[str]] = None,
+        imageList: Optional[List[str]] = None,
+    ) -> bool:
         pass
 
 
