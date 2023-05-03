@@ -34,7 +34,7 @@ interface IUploadMetaData extends ICommonMetaData {
 export type IPythonResults = (
   | { type: "text"; value: string[] }
   | { type: "image"; value: { w: number; h: number; url: string }[] }
-) & { extra: Dictionary<any> };
+) & { extra?: Dictionary<any> };
 export type IPythonFieldsMetaData = ICommonMetaData & {
   identifier: string;
   parameters: Dictionary<any>;
