@@ -1,5 +1,6 @@
 from PIL import Image
 from typing import List
+from cftool.misc import shallow_copy_dict
 from cfcreator.common import VariationModel
 from cflearn.misc.toolkit import new_seed
 
@@ -203,26 +204,37 @@ class Variation(IFieldsPlugin):
 
         meta_data = data.nodeData.meta["data"]
         task = meta_data["identifier"]
-        kw = meta_data["parameters"]
-        if kw["seed"] == -1:
-            generated_seed = meta_data["response"].get("extra", {}).get("seed")
-            if generated_seed is None:
-                self.send_exception("cannot find a static seed")
-                return []
-            kw["seed"] = generated_seed
+        if task == VariationKey:
+            extra = meta_data["response"]["extra"]
+            task = extra["task"]
+            kw = extra["request"]
+        else:
+            kw = meta_data["parameters"]
+            if kw["seed"] == -1:
+                generated_seed = meta_data["response"].get("extra", {}).get("seed")
+                if generated_seed is None:
+                    self.send_exception("cannot find a static seed")
+                    return []
+                kw["seed"] = generated_seed
         # inject varations
         strength = 1.0 - data.extraData["fidelity"]
         variations = kw.setdefault("variations", [])
         variations.append(VariationModel(seed=new_seed(), strength=strength))
+        # inject extra response
+        self.extra_responses["task"] = task
+        self.extra_responses["request"] = shallow_copy_dict(kw)
         # switch case
-        if task == "txt2img" or task == "txt2img.variation":
+        if task == Txt2ImgKey:
             model = Txt2ImgSDModel(**kw)
             return await get_apis().txt2img(model, step_callback=callback)
-        if task == "img2img" or task == "img2img.variation":
+        if task == Img2ImgKey:
             model = Img2ImgSDModel(**kw)
             return await get_apis().img2img(model, step_callback=callback)
-        model = Txt2ImgSDInpaintingModel(**kw)
-        return await get_apis().sd_inpainting(model, step_callback=callback)
+        if task == SDInpaintingKey:
+            model = Txt2ImgSDInpaintingModel(**kw)
+            return await get_apis().sd_inpainting(model, step_callback=callback)
+        self.send_exception(f"unknown task: {task}")
+        return []
 
 
 class StaticPlugins(IPluginGroup):
