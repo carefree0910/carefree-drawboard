@@ -131,6 +131,8 @@ class Inpainting(IFieldsPlugin):
         url = self.filter(data.nodeDataList, SingleNodeType.IMAGE)[0].src
         mask_url = self.filter(data.nodeDataList, SingleNodeType.PATH)[0].src
         model = Img2ImgInpaintingModel(url=url, mask_url=mask_url, **data.extraData)
+        if model.model == "sd":
+            model.use_pipeline = True
         counter = 0.0
         if not model.use_pipeline:
             total_steps = model.num_steps

@@ -43,8 +43,6 @@ class APIs:
     async def inpainting(
         self, data: Img2ImgInpaintingModel, **kw: Any
     ) -> List[Image.Image]:
-        if data.model == "sd":
-            data.use_pipeline = True
         return await self._run(data, "img2img.inpainting", **kw)
 
     async def sd_inpainting(
