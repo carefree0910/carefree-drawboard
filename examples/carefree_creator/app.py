@@ -1,5 +1,6 @@
 from PIL import Image
 from typing import List
+from cfcreator.common import VariationModel
 from cflearn.misc.toolkit import new_seed
 
 from cfdraw import *
@@ -201,7 +202,7 @@ class Variation(IFieldsPlugin):
         # inject varations
         strength = 1.0 - data.extraData["fidelity"]
         variations = kw.setdefault("variations", [])
-        variations.append((new_seed(), strength))
+        variations.append(VariationModel(seed=new_seed(), strength=strength))
         # switch case
         if task == "txt2img" or task == "txt2img.variation":
             model = Txt2ImgSDModel(**kw)
