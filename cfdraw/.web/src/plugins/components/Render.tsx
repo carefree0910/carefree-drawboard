@@ -190,15 +190,11 @@ const Render = (({
 
   const deps = [
     _id,
-    expand,
-    groupExpand,
-    isReady,
     needRender,
-    hashInfo(info),
+    hasConstraint ? hashInfo(info) : "",
     groupId,
     iconW,
     iconH,
-    ...constraintDeps,
     pivot,
     follow,
     offsetX,
@@ -207,7 +203,6 @@ const Render = (({
     expandOffsetY,
     JSON.stringify(props),
   ];
-
   const updateFloating = useCallback(async (e: any) => {
     if (!needRender) return;
     const _iconW = iconW!;

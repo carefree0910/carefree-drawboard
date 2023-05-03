@@ -51,7 +51,7 @@ class PluginsUpdaterStore extends ABCStore<IPluginsUpdater> {
 const pluginsUpdaterStore = new PluginsUpdaterStore();
 export const usePluginUpdater = (id: string) => {
   const updater = pluginsUpdaterStore.updaters[id];
-  const children = usePluginChildren(id);
+  const children = shallowCopy(usePluginChildren(id));
   return useCallback(
     async (e: any) => {
       if (updater) {
@@ -64,7 +64,7 @@ export const usePluginUpdater = (id: string) => {
         }
       }
     },
-    [updater, children],
+    [updater, children.sort().join(",")],
   );
 };
 export const setPluginUpdater = (id: string, updater: (e: any) => Promise<void>) => {
