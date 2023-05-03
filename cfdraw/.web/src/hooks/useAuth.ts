@@ -9,7 +9,7 @@ type Message = {
 };
 
 const allowedOrigins = ["http://127.0.0.1:9527", "http://localhost:9527"];
-const allowedOriginRegexList = [/^http:\/\/localhost(:\d+)?$/];
+const allowedOriginRegexList = [/^http:\/\/localhost(:\d+)?$/, /^https:\/\/.*nolibox\.com$/];
 
 function isAllowedOrigin(origin: string): boolean {
   if (allowedOrigins.includes(origin)) return true;
