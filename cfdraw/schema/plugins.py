@@ -189,6 +189,8 @@ Pivot of the plugin.
 
 
 class ElapsedTimes(BaseModel):
+    """This should align with `IElapsedTimes` at `cfdraw/.web/src/schema/meta.ts`"""
+
     createTime: Optional[float]
     startTime: Optional[float]
     endTime: Optional[float]

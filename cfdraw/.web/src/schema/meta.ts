@@ -4,7 +4,9 @@ export interface IElapsedTimes {
   createTime?: number;
   startTime?: number;
   endTime?: number;
-  duration?: number;
+  pending?: number;
+  executing?: number;
+  total?: number;
 }
 
 // general
