@@ -242,6 +242,10 @@ const Render = (({
     } else {
       let domPivot;
       if (!!groupId) {
+        if (DEBUG_PREFIX && _id.startsWith(DEBUG_PREFIX)) {
+          console.log("> e", e);
+          console.log("> info", _id, shallowCopy(info));
+        }
         domPivot = Coordinate.origin();
       } else {
         if (DEBUG_PREFIX && _id.startsWith(DEBUG_PREFIX)) {
