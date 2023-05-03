@@ -319,7 +319,7 @@ const Render = (({
       useSelectHooks().remove(_id);
       window.removeEventListener("resize", updateFloating);
     };
-  }, [...deps]);
+  }, [updateFloating]);
 
   if (!needRender) return null;
 
