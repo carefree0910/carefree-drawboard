@@ -22,6 +22,16 @@ def inject_seed(self: IFieldsPlugin, data: ISocketRequest) -> ISocketRequest:
     return data
 
 
+Txt2ImgKey = "txt2img"
+Img2ImgKey = "img2img"
+SRKey = "sr"
+SODKey = "sod"
+InpaintingKey = "inpainting"
+SDInpaintingKey = "sd_inpainting"
+SDOutpaintingKey = "sd_outpainting"
+VariationKey = "variation"
+
+
 class Txt2Img(IFieldsPlugin):
     @property
     def settings(self) -> IPluginSettings:
@@ -155,11 +165,11 @@ class SDInpainting(IFieldsPlugin):
 
 
 variation_targets = {
-    "txt2img",
-    "img2img",
-    "variation",
-    "txt2img.inpainting",
-    "txt2img.outpainting",
+    Txt2ImgKey,
+    Img2ImgKey,
+    VariationKey,
+    SDInpaintingKey,
+    SDOutpaintingKey,
 }
 
 
@@ -223,9 +233,9 @@ class StaticPlugins(IPluginGroup):
             follow=False,
             pluginInfo=IPluginGroupInfo(
                 header="Creator Toolbox",
-                plugins=dict(
-                    txt2img=Txt2Img,
-                ),
+                plugins={
+                    Txt2ImgKey: Txt2Img,
+                },
             ),
         )
 
@@ -241,12 +251,12 @@ class ImageFollowers(IPluginGroup):
             follow=True,
             pluginInfo=IPluginGroupInfo(
                 header="Image Toolbox",
-                plugins=dict(
-                    sr=SR,
-                    sod=SOD,
-                    img2img=Img2Img,
-                    variation=Variation,
-                ),
+                plugins={
+                    SRKey: SR,
+                    SODKey: SOD,
+                    Img2ImgKey: Img2Img,
+                    VariationKey: Variation,
+                },
             ),
         )
 
@@ -266,10 +276,10 @@ class InpaintingFollowers(IPluginGroup):
             follow=True,
             pluginInfo=IPluginGroupInfo(
                 header="Inpainting Toolbox",
-                plugins=dict(
-                    inpainting=Inpainting,
-                    sd_inpainting=SDInpainting,
-                ),
+                plugins={
+                    InpaintingKey: Inpainting,
+                    SDInpaintingKey: SDInpainting,
+                },
             ),
         )
 
