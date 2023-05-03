@@ -1,5 +1,6 @@
 from PIL import Image
 from typing import List
+from cflearn.misc.toolkit import new_seed
 
 from cfdraw import *
 from cfdraw.schema.plugins import IPluginSettings
@@ -11,6 +12,13 @@ from fields import *
 @cache_resource
 def get_apis() -> APIs:
     return APIs()
+
+
+def inject_seed(self: IFieldsPlugin, data: ISocketRequest) -> ISocketRequest:
+    if data.extraData["seed"] == -1:
+        data.extraData["seed"] = new_seed()
+    self.extra_responses["seed"] = data.extraData["seed"]
+    return data
 
 
 class Txt2Img(IFieldsPlugin):
@@ -28,7 +36,8 @@ class Txt2Img(IFieldsPlugin):
         )
 
     async def process(self, data: ISocketRequest) -> List[Image.Image]:
-        return await get_apis().txt2img(Txt2ImgSDModel(**data.extraData))
+        kw = inject_seed(self, data).extraData
+        return await get_apis().txt2img(Txt2ImgSDModel(**kw))
 
 
 class Img2Img(IFieldsPlugin):
@@ -46,7 +55,7 @@ class Img2Img(IFieldsPlugin):
         )
 
     async def process(self, data: ISocketRequest) -> List[Image.Image]:
-        kw = dict(url=data.nodeData.src, **data.extraData)
+        kw = dict(url=data.nodeData.src, **inject_seed(self, data).extraData)
         return await get_apis().img2img(Img2ImgSDModel(**kw))
 
 
@@ -120,7 +129,61 @@ class SDInpainting(IFieldsPlugin):
     async def process(self, data: ISocketRequest) -> List[Image.Image]:
         url = self.filter(data.nodeDataList, SingleNodeType.IMAGE)[0].src
         mask_url = self.filter(data.nodeDataList, SingleNodeType.PATH)[0].src
-        kw = dict(url=url, mask_url=mask_url, **data.extraData)
+        kw = dict(url=url, mask_url=mask_url, **inject_seed(self, data).extraData)
+        return await get_apis().sd_inpainting(Txt2ImgSDInpaintingModel(**kw))
+
+
+variation_targets = {
+    "txt2img",
+    "img2img",
+    "txt2img.variation",
+    "img2img.variation",
+    "txt2img.inpainting",
+    "txt2img.outpainting",
+}
+
+
+@register_node_validator("variation")
+def validate_variation(data: ISocketRequest) -> bool:
+    identifier = data.nodeData.meta["data"].get("identifier")
+    return identifier in variation_targets
+
+
+class Variation(IFieldsPlugin):
+    @property
+    def settings(self) -> IPluginSettings:
+        return IPluginSettings(
+            w=260,
+            h=200,
+            useModal=False,
+            nodeConstraint=NodeConstraints.IMAGE,
+            nodeConstraintValidator="variation",
+            src=constants.VARIATION_ICON,
+            tooltip="Generate vatiation of the given image",
+            pluginInfo=IFieldsPluginInfo(
+                header="Variation", definitions=variation_fields
+            ),
+        )
+
+    async def process(self, data: ISocketRequest) -> List[Image.Image]:
+        meta_data = data.nodeData.meta["data"]
+        task = meta_data["identifier"]
+        kw = meta_data["parameters"]
+        if kw["seed"] == -1:
+            generated_seed = meta_data["response"].get("extra", {}).get("seed")
+            if generated_seed is None:
+                self.send_exception("cannot find a static seed")
+                return []
+            kw["seed"] = generated_seed
+        # inject varations
+        strength = 1.0 - data.extraData["fidelity"]
+        variations = kw.setdefault("variations", [])
+        variations.append((new_seed(), strength))
+        # switch case
+        if task == "txt2img" or task == "txt2img.variation":
+            return await get_apis().txt2img(Txt2ImgSDModel(**kw))
+        if task == "img2img" or task == "img2img.variation":
+            return await get_apis().img2img(Img2ImgSDModel(**kw))
         return await get_apis().sd_inpainting(Txt2ImgSDInpaintingModel(**kw))
 
 
@@ -156,6 +219,7 @@ class ImageFollowers(IPluginGroup):
                     sr=SR,
                     sod=SOD,
                     img2img=Img2Img,
+                    variation=Variation,
                 ),
             ),
         )

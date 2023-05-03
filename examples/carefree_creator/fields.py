@@ -119,6 +119,8 @@ inpainting_fields = OrderedDict(
         ),
     ),
 )
+# variation fields
+variation_fields = OrderedDict(fidelity=img2img_fields["fidelity"])
 
 
 __all__ = [
@@ -128,4 +130,5 @@ __all__ = [
     "img2img_fields",
     "sr_fields",
     "inpainting_fields",
+    "variation_fields",
 ]
