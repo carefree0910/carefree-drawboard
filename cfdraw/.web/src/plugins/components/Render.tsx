@@ -217,7 +217,7 @@ const Render = (({
         ? -DEFAULT_PLUGIN_SETTINGS.offsetY
         : DEFAULT_PLUGIN_SETTINGS.offsetY);
     // adjust floating
-    const domFloating = document.querySelector<HTMLDivElement>(`#${_id}`);
+    const domFloating = document.getElementById(_id);
     if (!domFloating) return;
     let x, y;
     if (!_follow) {
@@ -282,7 +282,7 @@ const Render = (({
     }
     domFloating.style.transform = `matrix(1,0,0,1,${x},${y})`;
     // adjust expand of the floating
-    const domFloatingExpand = document.querySelector<HTMLDivElement>(`#${getExpandId(_id)}`);
+    const domFloatingExpand = document.getElementById(getExpandId(_id));
     if (!domFloatingExpand) return;
     const { x: ex, y: ey } = getExpandPosition(updatedRenderInfo.useModal ?? false, {
       x,
