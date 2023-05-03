@@ -77,7 +77,7 @@ const Floating = forwardRef(function (
   const expand = usePluginIsExpanded(id);
   const groupExpand = usePluginGroupIsExpanded(groupId);
   const iconActivated = useMemo(
-    () => !isInvisible && (!groupId || groupExpand),
+    () => !isInvisible && (isUndefined(groupId) || groupExpand),
     [groupId, groupExpand, isInvisible],
   );
   const [iconLoaded, setIconLoaded] = useState(false);
@@ -242,7 +242,7 @@ const Floating = forwardRef(function (
               )}
             </Box>
           )}
-          {taskMessage && isBusy && !groupId && (
+          {taskMessage && isBusy && isUndefined(groupId) && (
             <CFText {...statusCaptionProps}>
               {translate(
                 taskMessage.status === "pending"

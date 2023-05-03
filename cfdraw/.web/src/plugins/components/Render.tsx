@@ -2,7 +2,14 @@ import type { ChakraComponent } from "@chakra-ui/react";
 import { useCallback, useEffect, useLayoutEffect, useMemo } from "react";
 import { observer } from "mobx-react-lite";
 
-import { Coordinate, getRandomHash, INodes, PivotType, shallowCopy } from "@carefree0910/core";
+import {
+  Coordinate,
+  getRandomHash,
+  INodes,
+  isUndefined,
+  PivotType,
+  shallowCopy,
+} from "@carefree0910/core";
 import {
   boardBBoxToDom,
   injectNodeTransformEventCallback,
@@ -41,7 +48,7 @@ function getExpandPosition(
   }: { x: number; y: number; groupId?: string } & IExpandPositionInfo,
 ): Coordinate {
   // check group
-  if (!!groupId) {
+  if (!isUndefined(groupId)) {
     const group = document.getElementById(groupId);
     if (group) {
       const rect = group.getBoundingClientRect();
@@ -115,7 +122,7 @@ const Render = (({
   ...props
 }: IRender) => {
   const _id = useMemo(() => id ?? `plugin_${getRandomHash()}`, [id]);
-  const inGroup = useMemo(() => !!groupId, [groupId]);
+  const inGroup = useMemo(() => !isUndefined(groupId), [groupId]);
   const info = useSelecting("raw");
   const isReady = useIsReady();
   const expand = usePluginIsExpanded(_id);
@@ -304,7 +311,7 @@ const Render = (({
 
   const updater = usePluginUpdater(_id);
   useEffect(() => {
-    if (!!groupId) {
+    if (!isUndefined(groupId)) {
       addPluginChild(groupId, _id);
     }
   }, [_id, groupId]);
