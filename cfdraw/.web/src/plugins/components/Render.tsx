@@ -115,6 +115,7 @@ const Render = (({
   ...props
 }: IRender) => {
   const _id = useMemo(() => id ?? `plugin_${getRandomHash()}`, [id]);
+  const inGroup = useMemo(() => !!groupId, [groupId]);
   const info = useSelecting("raw");
   const isReady = useIsReady();
   const expand = usePluginIsExpanded(_id);
@@ -131,7 +132,7 @@ const Render = (({
       if (!latest) return;
       if (!filter) {
         setPluginNeedRender(_id, false);
-      } else if (!!groupId && !groupExpand && !expand) {
+      } else if (inGroup && !groupExpand && !expand) {
         setPluginNeedRender(_id, false);
       } else {
         setPluginNeedRender(_id, true);
@@ -140,14 +141,14 @@ const Render = (({
     return () => {
       latest = false;
     };
-  }, [_id, groupId, expand, groupExpand, hashInfo(info), nodeConstraint, nodeConstraintRules]);
+  }, [_id, inGroup, expand, groupExpand, hashInfo(info), nodeConstraint, nodeConstraintRules]);
   let { w, h, iconW, iconH, pivot, follow, offsetX, offsetY, expandOffsetX, expandOffsetY } =
     renderInfo;
   iconW ??= DEFAULT_PLUGIN_SETTINGS.iconW;
   iconH ??= DEFAULT_PLUGIN_SETTINGS.iconH;
   pivot ??= DEFAULT_PLUGIN_SETTINGS.pivot as PivotType;
   follow ??= DEFAULT_PLUGIN_SETTINGS.follow;
-  follow = follow || !!groupId;
+  follow = follow || inGroup;
   expandOffsetX ??=
     renderInfo.useModal || ["top", "center", "bottom"].includes(pivot)
       ? 0
@@ -242,7 +243,7 @@ const Render = (({
       }
     } else {
       let domPivot;
-      if (!!groupId) {
+      if (inGroup) {
         if (DEBUG_PREFIX && _id.startsWith(DEBUG_PREFIX)) {
           console.log("> e", e);
           console.log("> info", _id, shallowCopy(info));
@@ -260,7 +261,7 @@ const Render = (({
       }
       let offsetX, offsetY;
       // x
-      if (!!groupId) {
+      if (inGroup) {
         offsetX = _offsetX;
       } else if (["lt", "left", "lb"].includes(_pivot)) {
         offsetX = -_iconW + _offsetX;
@@ -270,7 +271,7 @@ const Render = (({
         offsetX = -0.5 * _iconW + _offsetX;
       }
       // y
-      if (!!groupId) {
+      if (inGroup) {
         offsetY = _offsetY;
       } else if (["lt", "top", "rt"].includes(_pivot)) {
         offsetY = -_iconH + _offsetY;
@@ -318,8 +319,10 @@ const Render = (({
       updater({ event: "init" });
     }
     // plugins in group will be updated by group's update
-    if (!!groupId) return;
-    injectNodeTransformEventCallback(_id, updater);
+    if (inGroup) return;
+    if (follow) {
+      injectNodeTransformEventCallback(_id, updater);
+    }
     useSelectHooks().register({ key: _id, after: updater });
     window.addEventListener("resize", updater);
 
@@ -327,11 +330,13 @@ const Render = (({
       if (DEBUG_PREFIX && _id.startsWith(DEBUG_PREFIX)) {
         console.log(">>>>> clean up");
       }
-      removeNodeTransformEventCallback(_id);
+      if (follow) {
+        removeNodeTransformEventCallback(_id);
+      }
       useSelectHooks().remove(_id);
       window.removeEventListener("resize", updater);
     };
-  }, [updater, _id, groupId, isReady, needRender]);
+  }, [updater, _id, inGroup, isReady, needRender, follow]);
 
   if (!needRender) return null;
 
