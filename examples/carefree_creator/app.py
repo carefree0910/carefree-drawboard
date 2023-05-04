@@ -11,11 +11,6 @@ from utils import *
 from fields import *
 
 
-@cache_resource
-def get_apis() -> APIs:
-    return APIs()
-
-
 def inject_seed(self: IFieldsPlugin, data: ISocketRequest) -> ISocketRequest:
     if data.extraData["seed"] == -1:
         data.extraData["seed"] = new_seed()

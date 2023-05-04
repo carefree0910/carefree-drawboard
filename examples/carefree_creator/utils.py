@@ -7,6 +7,8 @@ from typing import List
 from pydantic import BaseModel
 from cfclient.core import HttpClient
 
+from cfdraw import cache_resource
+
 
 class APIs:
     algorithms: Dict[str, IAlgorithm]
@@ -51,8 +53,13 @@ class APIs:
         return await self._run(data, "txt2img.sd.inpainting", **kw)
 
 
+@cache_resource
+def get_apis() -> APIs:
+    return APIs()
+
+
 __all__ = [
-    "APIs",
+    "get_apis",
     "Txt2ImgSDModel",
     "Img2ImgSDModel",
     "Img2ImgSRModel",
