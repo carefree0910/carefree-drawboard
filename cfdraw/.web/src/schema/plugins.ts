@@ -2,8 +2,8 @@ import type { RefObject } from "react";
 import type { FlexProps } from "@chakra-ui/react";
 
 import type { INode, NodeType, PivotType } from "@carefree0910/core";
-import type { IResponse } from "@carefree0910/business";
 
+import type { IStr } from "./misc";
 import type { IFieldDefinition } from "./fields";
 import type {
   IPythonFieldsPlugin,
@@ -36,8 +36,8 @@ export interface IExpandPositionInfo {
   expandOffsetY: number;
 }
 export interface IRenderInfo extends IExpandPositionInfo {
-  src: string;
-  tooltip?: string;
+  src: IStr;
+  tooltip?: IStr;
   offsetX?: number;
   offsetY?: number;
   bgOpacity?: number;

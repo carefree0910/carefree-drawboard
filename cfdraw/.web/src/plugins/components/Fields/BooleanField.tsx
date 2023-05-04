@@ -5,23 +5,26 @@ import type { IField } from "@/schema/plugins";
 import type { IBooleanField } from "@/schema/fields";
 import { titleCaseWord } from "@/utils/misc";
 import { getMetaField, setMetaField } from "@/stores/meta";
+import { parseIStr } from "@/actions/i18n";
 import CFSwitch from "@/components/CFSwitch";
 import { useDefaultFieldValue } from "./utils";
 
 export interface BooleanFieldProps extends IField<IBooleanField> {}
 function BooleanField({ field, definition }: BooleanFieldProps) {
   useDefaultFieldValue({ field, definition });
+  const label = parseIStr(definition.label ?? titleCaseWord(field));
+  const tooltip = parseIStr(definition.tooltip ?? "");
   const [value, setValue] = useState(getMetaField(field) ?? definition.default);
 
   return (
     <CFSwitch
-      label={definition.label ?? titleCaseWord(field)}
+      label={label}
       value={value}
       setValue={(value) => {
         setValue(value);
         setMetaField(field, value);
       }}
-      tooltip={definition.tooltip}
+      tooltip={tooltip}
       {...definition.props}
     />
   );

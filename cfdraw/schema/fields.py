@@ -10,6 +10,8 @@ from pydantic import BaseModel
 from pydantic import StrictStr
 from pydantic import StrictBool
 
+from cfdraw.parsers.noli import IStr
+from cfdraw.parsers.noli import IStrictStr
 from cfdraw.parsers.chakra import IChakra
 
 
@@ -28,8 +30,8 @@ class FieldType(str, Enum):
 
 
 class IBaseField(BaseModel):
-    label: Optional[str] = Field(None, description="The label of the field")
-    tooltip: Optional[str] = Field(None, description="The tooltip of the field")
+    label: Optional[IStr] = Field(None, description="The label of the field")
+    tooltip: Optional[IStr] = Field(None, description="The tooltip of the field")
     props: Optional[IChakra] = Field(None, description="Props for the component")
     numRows: Optional[int] = Field(
         None,
@@ -42,12 +44,12 @@ class IBaseField(BaseModel):
 
 
 class ITextField(IBaseField):
-    default: StrictStr = Field("", description="The default value of the field")
+    default: IStrictStr = Field("", description="The default value of the field")
     type: FieldType = Field(FieldType.TEXT, description="Type of the field")
 
 
 class IImageField(IBaseField):
-    default: StrictStr = Field("", description="The default value of the field")
+    default: IStrictStr = Field("", description="The default value of the field")
     type: FieldType = Field(FieldType.IMAGE, description="Type", const=True)
 
 
@@ -68,8 +70,8 @@ class INumberField(IBaseField):
 
 
 class ISelectField(IBaseField):
-    values: List[str] = Field(..., description="The values of the field")
-    default: str = Field(..., description="The default value of the field")
+    values: List[IStr] = Field(..., description="The values of the field")
+    default: IStr = Field(..., description="The default value of the field")
     isMulti: Optional[StrictBool] = Field(None, description="Whether use multi-select")
     type: FieldType = Field(FieldType.SELECT, description="Type", const=True)
 
@@ -80,7 +82,7 @@ class IBooleanField(IBaseField):
 
 
 class IColorField(IBaseField):
-    default: StrictStr = Field("", description="The default value of the field")
+    default: IStrictStr = Field("", description="The default value of the field")
     type: FieldType = Field(FieldType.COLOR, description="Type", const=True)
 
 

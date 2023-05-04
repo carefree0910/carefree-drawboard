@@ -20,6 +20,7 @@ import {
   usePluginTaskCache,
   removePluginTaskCache,
 } from "@/stores/pluginsInfo";
+import { parseIStr } from "@/actions/i18n";
 import { importMeta } from "@/actions/importMeta";
 import CFHeading from "@/components/CFHeading";
 import { drawboardPluginFactory } from "@/plugins/utils/factory";
@@ -104,7 +105,7 @@ const PythonFieldsPlugin = ({ pluginInfo, ...props }: IPythonFieldsPlugin) => {
     [lang],
   );
 
-  const header = pluginInfo.header ?? titleCaseWord(pureIdentifier);
+  const header = parseIStr(pluginInfo.header ?? titleCaseWord(pureIdentifier));
   const Definitions = useDefinitions({ definitions, numColumns: pluginInfo.numColumns });
   return (
     <PythonPluginWithSubmit

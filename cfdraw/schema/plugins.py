@@ -18,6 +18,7 @@ from pydantic import BaseModel
 
 from cfdraw.utils.misc import deprecated
 from cfdraw.schema.fields import IFieldDefinition
+from cfdraw.parsers.noli import IStr
 from cfdraw.parsers.noli import Matrix2D
 from cfdraw.parsers.noli import INodeType
 from cfdraw.parsers.noli import PivotType
@@ -100,7 +101,7 @@ class IPluginInfo(BaseModel):
         None,
         description="Whether trigger a toast message when the submit button is clicked",
     )
-    toastMessageOnSubmit: Optional[str] = Field(
+    toastMessageOnSubmit: Optional[IStr] = Field(
         None,
         description="The message of the toast, only take effect when `toastOnSubmit` is `True`",
     )
@@ -138,14 +139,14 @@ Spcify when the plugin will be shown.
         ),
     )
     # style fields
-    src: Optional[str] = Field(
+    src: Optional[IStr] = Field(
         None,
         description="""
 The image url that will be shown for the plugin.
 > If not specified, we will use a default plugin-ish image.
 """,
     )
-    tooltip: Optional[str] = Field(
+    tooltip: Optional[IStr] = Field(
         None,
         description="""
 The tooltip that will be shown for the plugin.
@@ -469,7 +470,7 @@ class IMiddleWare(ABC):
 class IFieldsPluginInfo(IPluginInfo):
     """This should align with `IPythonFieldsPlugin` at `cfdraw/.web/src/schema/_python.ts`"""
 
-    header: Optional[str] = Field(None, description="Header of the plugin")
+    header: Optional[IStr] = Field(None, description="Header of the plugin")
     definitions: Dict[str, IFieldDefinition] = Field(
         ...,
         description="Field definitions",
@@ -490,14 +491,14 @@ class ITextAreaPluginInfo(IPluginInfo):
 class IQAPluginInfo(IPluginInfo):
     """This should align with `IPythonQAPlugin` at `cfdraw/.web/src/schema/_python.ts`"""
 
-    initialText: str = Field(
+    initialText: IStr = Field(
         ...,
         description="The initial text to be displayed in the text area",
     )
 
 
 class IPluginGroupInfo(IPluginInfo):
-    header: Optional[str] = Field(None, description="Header of the plugin group")
+    header: Optional[IStr] = Field(None, description="Header of the plugin group")
     plugins: Dict[str, Type[IPlugin]] = Field(..., description="Plugins in the group")
 
 

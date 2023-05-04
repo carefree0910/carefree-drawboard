@@ -12,12 +12,24 @@ from typing import Optional
 from typing import Generator
 from pydantic import Field
 from pydantic import BaseModel
+from pydantic import StrictStr
 from dataclasses import dataclass
 
 
 class Lang(str, Enum):
     ZH = "zh"
     EN = "en"
+
+
+class I18N(BaseModel):
+    """This should have all fields of `Lang` defined above"""
+
+    zh: str = Field(..., description="Chinese")
+    en: str = Field(..., description="English")
+
+
+IStr = Union[str, I18N]
+IStrictStr = Union[StrictStr, I18N]
 
 
 class PivotType(str, Enum):
@@ -293,6 +305,7 @@ def parse_graph(render_info_list: List[Dict[str, Any]]) -> Graph:
 
 __all__ = [
     "Lang",
+    "I18N",
     "PivotType",
     "SingleNodeType",
     "GroupType",

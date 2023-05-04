@@ -7,6 +7,7 @@ import type { IField } from "@/schema/plugins";
 import type { ITextField } from "@/schema/fields";
 import { titleCaseWord } from "@/utils/misc";
 import { getMetaField, setMetaField } from "@/stores/meta";
+import { parseIStr } from "@/actions/i18n";
 import CFInput from "@/components/CFInput";
 import CFTextarea from "@/components/CFTextarea";
 import { useDefaultFieldValue } from "./utils";
@@ -14,7 +15,10 @@ import { useDefaultFieldValue } from "./utils";
 export interface TextFieldProps extends IField<ITextField> {}
 function TextField({ field, definition }: TextFieldProps) {
   useDefaultFieldValue({ field, definition });
-  const [value, setValue] = useState(getMetaField(field) ?? definition.default);
+  const label = parseIStr(definition.label ?? titleCaseWord(field));
+  const tooltip = parseIStr(definition.tooltip ?? "");
+  const defaultText = parseIStr(definition.default ?? "");
+  const [value, setValue] = useState(getMetaField(field) ?? defaultText);
   const isNumber = useMemo(() => !!definition.numberOptions, [definition.numberOptions]);
   const Input = definition.numRows && definition.numRows > 1 ? CFTextarea : CFInput;
 
@@ -52,8 +56,8 @@ function TextField({ field, definition }: TextFieldProps) {
       value={value}
       onChange={onChange}
       onBlur={onBlur}
-      tooltip={definition.tooltip}
-      placeholder={definition.label ?? titleCaseWord(field)}
+      tooltip={tooltip}
+      placeholder={label}
       {...definition.props}
     />
   );

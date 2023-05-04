@@ -1,14 +1,16 @@
 import type { Dictionary } from "@carefree0910/core";
 
+import type { IStr } from "./misc";
+
 interface IBaseFields {
-  label?: string;
-  tooltip?: string;
+  label?: IStr;
+  tooltip?: IStr;
   props?: any;
   numRows?: number;
 }
 export interface ITextField extends IBaseFields {
   type: "text";
-  default: string;
+  default: IStr;
   // if `numberOptions` is provided, this field will be parsed to number.
   numberOptions?: {
     min?: number;
@@ -18,7 +20,7 @@ export interface ITextField extends IBaseFields {
 }
 export interface IImageField extends IBaseFields {
   type: "image";
-  default: string;
+  default: IStr;
 }
 export interface INumberField extends IBaseFields {
   type: "number";
@@ -43,7 +45,7 @@ export interface IBooleanField extends IBaseFields {
 }
 export interface IColorField extends IBaseFields {
   type: "color";
-  default: string;
+  default: IStr;
 }
 export interface IListField extends IBaseFields {
   type: "list";

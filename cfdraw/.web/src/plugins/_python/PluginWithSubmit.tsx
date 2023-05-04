@@ -7,7 +7,6 @@ import type { IPythonSocketPluginWithSubmit } from "@/schema/_python";
 import { Event } from "@/utils/event";
 import { toast } from "@/utils/toast";
 import { Toast_Words } from "@/lang/toast";
-import { userStore } from "@/stores/user";
 import {
   usePluginHash,
   setPluginExpanded,
@@ -15,6 +14,7 @@ import {
   setPluginTaskCache,
 } from "@/stores/pluginsInfo";
 import { useSocketPython } from "@/hooks/usePython";
+import { parseIStr } from "@/actions/i18n";
 import { CFButtonWithBusyTooltip } from "@/components/CFButton";
 import CFDivider from "@/components/CFDivider";
 import Render from "../components/Render";
@@ -57,7 +57,7 @@ function PythonPluginWithSubmit<R>({
     }
     if (toastOnSubmit) {
       toastMessageOnSubmit ??= translate(Toast_Words["submit-task-success-message"], lang);
-      toast("info", toastMessageOnSubmit);
+      toast("info", parseIStr(toastMessageOnSubmit));
     }
   }, [
     id,

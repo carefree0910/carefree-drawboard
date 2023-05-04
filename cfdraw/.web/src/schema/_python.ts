@@ -5,6 +5,7 @@ import type { Dictionary, INode, Matrix2DFields } from "@carefree0910/core";
 import type { IElapsedTimes, IMeta } from "./meta";
 import type { AvailablePythonPlugins, IMakePlugin, IPlugin, IPluginInfo } from "./plugins";
 import type { IDefinitions } from "./fields";
+import type { IStr } from "./misc";
 
 // general
 
@@ -43,12 +44,12 @@ export interface INodeData {
 interface IPythonPluginWithSubmitPluginInfo {
   closeOnSubmit?: boolean;
   toastOnSubmit?: boolean;
-  toastMessageOnSubmit?: string;
+  toastMessageOnSubmit?: IStr;
 }
 export interface IPythonFieldsPlugin extends IPythonPlugin {
   pluginInfo: IPythonPluginInfo &
     IPythonPluginWithSubmitPluginInfo & {
-      header?: string;
+      header?: IStr;
       definitions: IDefinitions;
       numColumns?: number;
       noErrorToast?: boolean;
@@ -63,13 +64,13 @@ export interface IPythonTextAreaPlugin extends IPythonPlugin {
 }
 export interface IPythonQAPlugin extends IPythonPlugin {
   pluginInfo: IPythonPluginInfo & {
-    initialText: string;
+    initialText: IStr;
   };
 }
 
 export interface IPythonPluginGroup extends IPythonPlugin {
   pluginInfo: IPythonPluginInfo & {
-    header?: string;
+    header?: IStr;
     plugins: IMakePlugin<AvailablePythonPlugins>[];
   };
 }

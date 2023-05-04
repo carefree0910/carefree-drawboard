@@ -28,6 +28,7 @@ import {
   usePluginGroupIsExpanded,
 } from "@/stores/pluginsInfo";
 import { isInteractingWithBoard } from "@/stores/pointerEvents";
+import { parseIStr } from "@/actions/i18n";
 import CFText from "@/components/CFText";
 import CFLottie from "@/components/CFLottie";
 import CFTooltip from "@/components/CFTooltip";
@@ -200,7 +201,7 @@ const Floating = forwardRef(function (
   });
   return (
     <>
-      <CFTooltip label={iconActivated ? tooltip : ""}>
+      <CFTooltip label={iconActivated ? parseIStr(tooltip ?? "") : ""}>
         <Box
           as="button"
           id={id}
@@ -218,7 +219,7 @@ const Floating = forwardRef(function (
           {...getCommonProps(false)}
           {...props}>
           <Image
-            src={src}
+            src={parseIStr(src)}
             w="100%"
             h="100%"
             draggable={false}
