@@ -120,13 +120,6 @@ export const usePluginMessage = (id: string): IPluginsInfoStore["messages"][stri
 export const setPluginMessage = (id: string, message: IPythonSocketMessage<IPythonResults>) =>
   pluginsInfoStore.set("messages", id, message);
 export const removePluginMessage = (id: string) => pluginsInfoStore.remove("messages", id);
-export const removePluginMessageFromHash = (hash: string) => {
-  const id = Object.keys(pluginsInfoStore.messages).find(
-    (id) => pluginsInfoStore.hashes[id] === hash,
-  );
-  if (!id) return;
-  removePluginMessage(id);
-};
 // visible
 export const usePluginIsVisible = (plugin: AvailablePlugins) =>
   pluginsInfoStore.visible[plugin] ?? true;
