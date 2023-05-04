@@ -35,6 +35,7 @@ class PluginsStore extends ABCStore<IPluginsStore> implements IPluginsStore {
       ids: observable,
       hashes: observable,
       messages: observable,
+      set: action,
       setDefault: action,
     });
   }
@@ -43,6 +44,9 @@ class PluginsStore extends ABCStore<IPluginsStore> implements IPluginsStore {
     return this;
   }
 
+  set<T extends IPluginCollection>(collection: T, key: string, value: IPluginCollectionValue<T>) {
+    this[collection][key] = value;
+  }
   setDefault<T extends IPluginCollection>(
     collection: T,
     { key, hasEffect, getDefault }: ISetPluginDefault<T>,
@@ -90,11 +94,8 @@ export const usePluginHash = (id: string): string => {
 // messages
 export const usePluginMessage = (id: string): IPluginsStore["messages"][string] | undefined =>
   pluginsStore.messages[id];
-export const setPluginMessage = (id: string, message: IPythonSocketMessage<IPythonResults>) => {
-  const messages = shallowCopy(pluginsStore.messages);
-  messages[id] = message;
-  pluginsStore.updateProperty("messages", messages);
-};
+export const setPluginMessage = (id: string, message: IPythonSocketMessage<IPythonResults>) =>
+  pluginsStore.set("messages", id, message);
 export const removePluginMessage = (id: string) => {
   const messages = shallowCopy(pluginsStore.messages);
   delete messages[id];
