@@ -13,13 +13,19 @@ import { Toast_Words } from "@/lang/toast";
 import { toastWord } from "@/utils/toast";
 import { titleCaseWord } from "@/utils/misc";
 import { removeSocketHooks, socketLog } from "@/stores/socket";
-import { usePluginIds, removePluginMessage, setPluginMessage } from "@/stores/pluginsInfo";
+import {
+  usePluginIds,
+  removePluginMessage,
+  setPluginMessage,
+  usePluginTaskCache,
+  removePluginTaskCache,
+} from "@/stores/pluginsInfo";
 import { importMeta } from "@/actions/importMeta";
 import CFHeading from "@/components/CFHeading";
 import { drawboardPluginFactory } from "@/plugins/utils/factory";
 import { useClosePanel } from "../components/hooks";
 import { useDefinitions } from "../components/Fields";
-import { useCurrentMeta, useDefinitionsRequestDataFn } from "./hooks";
+import { useDefinitionsRequestDataFn } from "./hooks";
 import PythonPluginWithSubmit, { socketFinishedEvent } from "./PluginWithSubmit";
 
 const PythonFieldsPlugin = ({ pluginInfo, ...props }: IPythonFieldsPlugin) => {
@@ -27,8 +33,8 @@ const PythonFieldsPlugin = ({ pluginInfo, ...props }: IPythonFieldsPlugin) => {
   const lang = langStore.tgt;
   const { definitions, retryInterval, noErrorToast } = pluginInfo;
   const getExtraRequestData = useDefinitionsRequestDataFn(definitions);
-  const currentMeta = useCurrentMeta(pluginInfo.node, pluginInfo.nodes);
   const emitClose = useClosePanel(id);
+  const taskCache = usePluginTaskCache(id);
 
   const onMessage = useCallback<IPythonOnSocketMessage<IPythonResults>>(
     async (message) => {
@@ -59,13 +65,14 @@ const PythonFieldsPlugin = ({ pluginInfo, ...props }: IPythonFieldsPlugin) => {
               type: "python.fields",
               metaData: {
                 identifier: pureIdentifier,
-                parameters: getExtraRequestData(),
+                parameters: taskCache?.parameters ?? {},
                 response: final,
                 elapsedTimes,
-                from: currentMeta,
+                from: taskCache?.currentMeta,
               },
             });
           }
+          removePluginTaskCache(id);
           socketLog(`> remove hook (${hash})`);
           removeSocketHooks(hash);
           break;
@@ -88,7 +95,7 @@ const PythonFieldsPlugin = ({ pluginInfo, ...props }: IPythonFieldsPlugin) => {
       }
       return {};
     },
-    [id, lang, pureIdentifier, currentMeta, retryInterval, noErrorToast, getExtraRequestData],
+    [id, lang, pureIdentifier, retryInterval, noErrorToast, taskCache],
   );
   const onSocketError = useCallback(
     async (err: any) => {

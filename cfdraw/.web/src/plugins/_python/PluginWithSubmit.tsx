@@ -8,11 +8,17 @@ import { Event } from "@/utils/event";
 import { toast } from "@/utils/toast";
 import { Toast_Words } from "@/lang/toast";
 import { userStore } from "@/stores/user";
-import { usePluginHash, setPluginExpanded } from "@/stores/pluginsInfo";
+import {
+  usePluginHash,
+  setPluginExpanded,
+  usePluginTaskCache,
+  setPluginTaskCache,
+} from "@/stores/pluginsInfo";
 import { useSocketPython } from "@/hooks/usePython";
 import { CFButtonWithBusyTooltip } from "@/components/CFButton";
 import CFDivider from "@/components/CFDivider";
 import Render from "../components/Render";
+import { useCurrentMeta } from "./hooks";
 
 export const socketFinishedEvent = new Event<{ id: string }>();
 function PythonPluginWithSubmit<R>({
@@ -37,12 +43,17 @@ function PythonPluginWithSubmit<R>({
   const lang = langStore.tgt;
   const [hash, setHash] = useState<string | undefined>(undefined);
   const [busy, setBusy] = useState(false);
+  const taskCache = usePluginTaskCache(id);
+  const currentMeta = useCurrentMeta(node, nodes);
   const onClick = useCallback(() => {
     if (busy) return;
     if (!userStore.canAlwaysSubmit) {
       setBusy(true);
     }
     setHash(usePluginHash(id));
+    if (!taskCache) {
+      setPluginTaskCache(id, { currentMeta, parameters: getExtraRequestData?.() ?? {} });
+    }
     if (closeOnSubmit) {
       setPluginExpanded(id, false);
     }
@@ -50,7 +61,16 @@ function PythonPluginWithSubmit<R>({
       toastMessageOnSubmit ??= translate(Toast_Words["submit-task-success-message"], lang);
       toast("info", toastMessageOnSubmit);
     }
-  }, [id, lang, closeOnSubmit, toastOnSubmit, toastMessageOnSubmit, busy]);
+  }, [
+    id,
+    lang,
+    closeOnSubmit,
+    toastOnSubmit,
+    toastMessageOnSubmit,
+    busy,
+    currentMeta,
+    getExtraRequestData,
+  ]);
 
   useSocketPython<R>({
     hash,

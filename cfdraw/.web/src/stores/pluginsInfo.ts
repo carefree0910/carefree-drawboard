@@ -4,7 +4,7 @@ import { action, makeObservable, observable, runInAction } from "mobx";
 import { Dictionary, getRandomHash, isUndefined } from "@carefree0910/core";
 import { ABCStore, useIsReady } from "@carefree0910/business";
 
-import type { IPythonResults } from "@/schema/meta";
+import type { IMeta, IPythonResults } from "@/schema/meta";
 import type { AvailablePlugins } from "@/schema/plugins";
 import type { IPythonSocketMessage } from "@/schema/_python";
 import { stripHashFromIdentifier } from "@/utils/misc";
@@ -13,10 +13,15 @@ interface IDs {
   id: string;
   pureIdentifier: string;
 }
+interface ITaskCache {
+  currentMeta?: IMeta;
+  parameters: Dictionary<any>;
+}
 export interface IPluginsInfoStore {
   ids: Dictionary<IDs>;
   hashes: Dictionary<string>;
   messages: Dictionary<IPythonSocketMessage<IPythonResults>>;
+  taskCaches: Dictionary<ITaskCache>;
   visible: Dictionary<boolean>;
   pythonVisible: Dictionary<boolean>;
   expanded: Dictionary<boolean>;
@@ -35,6 +40,7 @@ class PluginsInfoStore extends ABCStore<IPluginsInfoStore> implements IPluginsIn
   ids: Dictionary<IDs> = {};
   hashes: Dictionary<string> = {};
   messages: Dictionary<IPythonSocketMessage<IPythonResults>> = {};
+  taskCaches: Dictionary<ITaskCache> = {};
   visible: Dictionary<boolean> = {};
   pythonVisible: Dictionary<boolean> = {};
   expanded: Dictionary<boolean> = {};
@@ -48,6 +54,7 @@ class PluginsInfoStore extends ABCStore<IPluginsInfoStore> implements IPluginsIn
       ids: observable,
       hashes: observable,
       messages: observable,
+      taskCaches: observable,
       visible: observable,
       pythonVisible: observable,
       expanded: observable,
@@ -120,6 +127,12 @@ export const usePluginMessage = (id: string): IPluginsInfoStore["messages"][stri
 export const setPluginMessage = (id: string, message: IPythonSocketMessage<IPythonResults>) =>
   pluginsInfoStore.set("messages", id, message);
 export const removePluginMessage = (id: string) => pluginsInfoStore.remove("messages", id);
+// task caches
+export const usePluginTaskCache = (id: string): ITaskCache | undefined =>
+  pluginsInfoStore.taskCaches[id];
+export const setPluginTaskCache = (id: string, cache: ITaskCache) =>
+  pluginsInfoStore.set("taskCaches", id, cache);
+export const removePluginTaskCache = (id: string) => pluginsInfoStore.remove("taskCaches", id);
 // visible
 export const usePluginIsVisible = (plugin: AvailablePlugins) =>
   pluginsInfoStore.visible[plugin] ?? true;
