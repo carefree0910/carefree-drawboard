@@ -23,9 +23,15 @@ import {
 
 import type { IExpandPositionInfo, IRender } from "@/schema/plugins";
 import { DEFAULT_PLUGIN_SETTINGS } from "@/utils/constants";
-import { usePluginGroupIsExpanded, usePluginIsExpanded } from "@/stores/pluginExpanded";
-import { setPluginNeedRender, usePluginNeedRender } from "@/stores/pluginNeedRender";
-import { addPluginChild, setPluginUpdater, usePluginUpdater } from "@/stores/pluginUpdater";
+import {
+  addPluginChild,
+  usePluginGroupIsExpanded,
+  usePluginIsExpanded,
+  setPluginNeedRender,
+  usePluginNeedRender,
+  setPluginUpdater,
+  usePluginUpdater,
+} from "@/stores/plugins";
 import { checkHasConstraint, hashInfo, useNodeFilter } from "../utils/renderFilters";
 import Floating, { getExpandId } from "./Floating";
 

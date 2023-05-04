@@ -3,8 +3,12 @@ import { runInAction } from "mobx";
 import type { AvailablePluginsAndPythonPlugins } from "@/schema/plugins";
 import { reactPluginSettings } from "@/_settings";
 import { usePythonPluginSettings } from "@/stores/settings";
-import { setPluginVisible, setPythonPluginVisible } from "@/stores/pluginVisible";
-import { setPluginExpanded, usePluginsExpanded } from "@/stores/pluginExpanded";
+import {
+  setPluginExpanded,
+  usePluginsExpanded,
+  setPluginVisible,
+  setPythonPluginVisible,
+} from "@/stores/plugins";
 
 function setAllPluginVisible(visible: boolean, except?: AvailablePluginsAndPythonPlugins[]) {
   runInAction(() => {

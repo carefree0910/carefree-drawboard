@@ -22,7 +22,7 @@ import {
   usePythonPluginIsVisible,
   setPythonPluginVisible,
   setPluginVisible,
-} from "@/stores/pluginVisible";
+} from "@/stores/plugins";
 import { hideAllPlugins, showAllPlugins } from "@/actions/managePlugins";
 import CFButton from "@/components/CFButton";
 import CFSelect from "@/components/CFSelect";

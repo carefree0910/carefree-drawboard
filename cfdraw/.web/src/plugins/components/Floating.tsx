@@ -21,12 +21,12 @@ import { BG_TRANSITION, DEFAULT_PLUGIN_SETTINGS, VISIBILITY_TRANSITION } from "@
 import { UI_Words } from "@/lang/ui";
 import { themeStore, useScrollBarSx } from "@/stores/theme";
 import { settingsStore } from "@/stores/settings";
-import { usePluginMessage } from "@/stores/plugins";
 import {
+  usePluginMessage,
   usePluginIsExpanded,
   setPluginExpanded,
   usePluginGroupIsExpanded,
-} from "@/stores/pluginExpanded";
+} from "@/stores/plugins";
 import { isInteractingWithBoard } from "@/stores/pointerEvents";
 import CFText from "@/components/CFText";
 import CFLottie from "@/components/CFLottie";
