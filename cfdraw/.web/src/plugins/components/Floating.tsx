@@ -21,7 +21,7 @@ import { BG_TRANSITION, DEFAULT_PLUGIN_SETTINGS, VISIBILITY_TRANSITION } from "@
 import { UI_Words } from "@/lang/ui";
 import { themeStore, useScrollBarSx } from "@/stores/theme";
 import { settingsStore } from "@/stores/settings";
-import { getPluginMessage } from "@/stores/plugins";
+import { usePluginMessage } from "@/stores/plugins";
 import {
   usePluginIsExpanded,
   setPluginExpanded,
@@ -72,7 +72,7 @@ const Floating = forwardRef(function (
   ref,
 ) {
   const lang = langStore.tgt;
-  const taskMessage = getPluginMessage(id);
+  const taskMessage = usePluginMessage(id);
   const interactingWithBoard = isInteractingWithBoard();
   const expand = usePluginIsExpanded(id);
   const groupExpand = usePluginGroupIsExpanded(groupId);
