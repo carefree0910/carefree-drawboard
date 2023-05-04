@@ -6,17 +6,14 @@ import { debugStore } from "./debug";
 
 export interface IUserStore {
   userId: string;
-  canAlwaysSubmit: boolean;
 }
 class UserStore extends ABCStore<IUserStore> implements IUserStore {
   userId: string = "";
-  canAlwaysSubmit: boolean = debugStore.allowAlwaysCommit;
 
   constructor() {
     super();
     makeObservable(this, {
       userId: observable,
-      canAlwaysSubmit: observable,
     });
   }
 

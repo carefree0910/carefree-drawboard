@@ -47,9 +47,7 @@ function PythonPluginWithSubmit<R>({
   const currentMeta = useCurrentMeta(node, nodes);
   const onClick = useCallback(() => {
     if (busy) return;
-    if (!userStore.canAlwaysSubmit) {
-      setBusy(true);
-    }
+    setBusy(true);
     setHash(usePluginHash(id));
     if (!taskCache) {
       setPluginTaskCache(id, { currentMeta, parameters: getExtraRequestData?.() ?? {} });
