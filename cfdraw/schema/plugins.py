@@ -77,12 +77,13 @@ class ReactPluginType(str, Enum):
 
 class IPluginInfo(BaseModel):
     """
-    This should align with:
-    * `cfdraw/.web/src/schema/_python.ts`
+    This should align with the following interfaces locate at `cfdraw/.web/src/schema/_python.ts`:
+    * `IPythonPluginInfo`: `name`
     * `IPythonSocketIntervals`: `retryInterval`, `updateInterval`
     * `IPythonPluginWithSubmitPluginInfo`: `closeOnSubmit`, `toastOnSubmit`, `toastMessageOnSubmit`
     """
 
+    name: Optional[IStr] = Field(None, description="The name of the plugin")
     retryInterval: Optional[int] = Field(
         None,
         ge=0,

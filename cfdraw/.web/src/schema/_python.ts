@@ -10,6 +10,7 @@ import type { IStr } from "./misc";
 // general
 
 interface IPythonPluginInfo extends IPluginInfo, IPythonSocketIntervals {
+  name?: IStr;
   identifier: string;
 }
 export interface IPythonPlugin extends IPlugin {

@@ -316,6 +316,10 @@ class StaticPlugins(IPluginGroup):
             pivot=PivotType.RIGHT,
             follow=False,
             pluginInfo=IPluginGroupInfo(
+                name=I18N(
+                    zh="创意工具箱",
+                    en="Creator Toolbox",
+                ),
                 header=I18N(
                     zh="创意工具箱",
                     en="Creator Toolbox",
@@ -340,6 +344,10 @@ class ImageFollowers(IPluginGroup):
             pivot=PivotType.RT,
             follow=True,
             pluginInfo=IPluginGroupInfo(
+                name=I18N(
+                    zh="图片工具箱",
+                    en="Image Toolbox",
+                ),
                 header=I18N(
                     zh="图片工具箱",
                     en="Image Toolbox",
@@ -371,6 +379,10 @@ class InpaintingFollowers(IPluginGroup):
             pivot=PivotType.RT,
             follow=True,
             pluginInfo=IPluginGroupInfo(
+                name=I18N(
+                    zh="蒙版工具箱",
+                    en="Inpainting Toolbox",
+                ),
                 header=I18N(
                     zh="蒙版工具箱",
                     en="Inpainting Toolbox",

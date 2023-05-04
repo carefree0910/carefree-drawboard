@@ -23,6 +23,7 @@ import {
   setPythonPluginVisible,
   setReactPluginVisible,
 } from "@/stores/pluginsInfo";
+import { parseIStr } from "@/actions/i18n";
 import { hideAllPlugins, showAllPlugins } from "@/actions/managePlugins";
 import CFButton from "@/components/CFButton";
 import CFSelect from "@/components/CFSelect";
@@ -94,7 +95,10 @@ const SettingsPlugin = ({ pluginInfo, ...props }: IPlugin) => {
                   onChange={() => setPythonPluginVisible(identifierWithHash, !pIsVisible)}
                   {...commonProps}
                   disabled={disablePluginSettings}>
-                  {`${translate(Plugins_Words[settings.type], lang)} (${identifier})`}
+                  {parseIStr(
+                    settings.props.pluginInfo.name ??
+                      `${translate(Plugins_Words[settings.type], lang)} (${identifier})`,
+                  )}
                 </Checkbox>
               );
             })}
