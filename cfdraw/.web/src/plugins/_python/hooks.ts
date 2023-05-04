@@ -1,6 +1,6 @@
 import { useCallback, useMemo } from "react";
 
-import { Dictionary, INode } from "@carefree0910/core";
+import { Dictionary, INode, shallowCopy } from "@carefree0910/core";
 
 import type { IMeta } from "@/schema/meta";
 import type { IDefinitions } from "@/schema/fields";
@@ -32,6 +32,6 @@ export function useCurrentMeta(node: INode | null, nodes: INode[]): IMeta | unde
         }
       }
     }
-    return currentMeta;
+    return shallowCopy(currentMeta);
   }, [node?.alias, nodes.map((node) => node.alias).join(",")]);
 }
