@@ -37,6 +37,7 @@ class PluginsStore extends ABCStore<IPluginsStore> implements IPluginsStore {
       messages: observable,
       set: action,
       setDefault: action,
+      remove: action,
     });
   }
 
@@ -71,6 +72,9 @@ class PluginsStore extends ABCStore<IPluginsStore> implements IPluginsStore {
     }
     return value as IPluginCollectionValue<T>;
   }
+  remove<T extends IPluginCollection>(collection: T, key: string) {
+    delete this[collection][key];
+  }
 }
 
 const pluginsStore = new PluginsStore();
@@ -96,15 +100,9 @@ export const usePluginMessage = (id: string): IPluginsStore["messages"][string] 
   pluginsStore.messages[id];
 export const setPluginMessage = (id: string, message: IPythonSocketMessage<IPythonResults>) =>
   pluginsStore.set("messages", id, message);
-export const removePluginMessage = (id: string) => {
-  const messages = shallowCopy(pluginsStore.messages);
-  delete messages[id];
-  pluginsStore.updateProperty("messages", messages);
-};
+export const removePluginMessage = (id: string) => pluginsStore.remove("messages", id);
 export const removePluginMessageFromHash = (hash: string) => {
   const id = Object.keys(pluginsStore.messages).find((id) => pluginsStore.hashes[id] === hash);
   if (!id) return;
-  const messages = shallowCopy(pluginsStore.messages);
-  delete messages[id];
-  pluginsStore.updateProperty("messages", messages);
+  removePluginMessage(id);
 };
