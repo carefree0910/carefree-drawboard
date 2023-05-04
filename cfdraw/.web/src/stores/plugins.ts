@@ -17,10 +17,12 @@ export interface IPluginsStore {
   hashes: Dictionary<string>;
   messages: Dictionary<IPythonSocketMessage<IPythonResults>>;
 }
-interface ISetPluginDefault<T extends keyof IPluginsStore> {
+type IPluginCollection = keyof IPluginsStore;
+type IPluginCollectionValue<T extends IPluginCollection> = IPluginsStore[T][string];
+interface ISetPluginDefault<T extends IPluginCollection> {
   key: string;
   hasEffect: boolean;
-  getDefault: () => IPluginsStore[T][string];
+  getDefault: () => IPluginCollectionValue<T>;
 }
 class PluginsStore extends ABCStore<IPluginsStore> implements IPluginsStore {
   ids: Dictionary<IDs> = {};
@@ -41,10 +43,10 @@ class PluginsStore extends ABCStore<IPluginsStore> implements IPluginsStore {
     return this;
   }
 
-  setDefault<T extends keyof IPluginsStore>(
+  setDefault<T extends IPluginCollection>(
     collection: T,
     { key, hasEffect, getDefault }: ISetPluginDefault<T>,
-  ): IPluginsStore[T][string] {
+  ): IPluginCollectionValue<T> {
     let value = this[collection][key];
     let needUpdate = false;
     if (isUndefined(value)) {
@@ -63,7 +65,7 @@ class PluginsStore extends ABCStore<IPluginsStore> implements IPluginsStore {
         }
       });
     }
-    return value as IPluginsStore[T][string];
+    return value as IPluginCollectionValue<T>;
   }
 }
 
