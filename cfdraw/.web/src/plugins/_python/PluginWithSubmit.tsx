@@ -8,7 +8,7 @@ import { Event } from "@/utils/event";
 import { toast } from "@/utils/toast";
 import { Toast_Words } from "@/lang/toast";
 import { userStore } from "@/stores/user";
-import { getPluginHash } from "@/stores/plugins";
+import { usePluginHash } from "@/stores/plugins";
 import { setPluginExpanded } from "@/stores/pluginExpanded";
 import { useSocketPython } from "@/hooks/usePython";
 import { CFButtonWithBusyTooltip } from "@/components/CFButton";
@@ -43,7 +43,7 @@ function PythonPluginWithSubmit<R>({
     if (!userStore.canAlwaysSubmit) {
       setBusy(true);
     }
-    setHash(getPluginHash(id));
+    setHash(usePluginHash(id));
     if (closeOnSubmit) {
       setPluginExpanded(id, false);
     }

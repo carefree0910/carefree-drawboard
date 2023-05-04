@@ -56,7 +56,7 @@ export const usePluginIds = (identifier: string): IDs => {
   return ids[pureIdentifier];
 };
 // hashes
-export const getPluginHash = (id: string): string => {
+export const usePluginHash = (id: string): string => {
   if (!pluginsStore.hashes[id]) {
     const hashes = shallowCopy(pluginsStore.hashes);
     hashes[id] = getRandomHash().toString();
