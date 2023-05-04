@@ -6,7 +6,7 @@ import { usePythonPluginSettings } from "@/stores/settings";
 import {
   setPluginExpanded,
   usePluginsExpanded,
-  setPluginVisible,
+  setReactPluginVisible,
   setPythonPluginVisible,
 } from "@/stores/pluginsInfo";
 
@@ -15,7 +15,7 @@ function setAllPluginVisible(visible: boolean, except?: AvailablePluginsAndPytho
     reactPluginSettings.forEach(({ type }) => {
       if (except?.includes(type)) return;
       if (!["settings", "undo", "redo"].includes(type)) {
-        setPluginVisible(type, visible);
+        setReactPluginVisible(type, visible);
       }
     });
     usePythonPluginSettings().forEach(({ props }) => {

@@ -75,7 +75,7 @@ export interface IField<T extends IFieldDefinition> {
 
 // factory
 
-export const allAvailablePlugins = [
+export const allReactPlugins = [
   "meta",
   "settings",
   "project",
@@ -99,9 +99,9 @@ export const allAvailablePythonPlugins = [
   "_python.fields",
   "_python.pluginGroup",
 ] as const;
-export type AvailablePlugins = (typeof allAvailablePlugins)[number];
+export type ReactPlugins = (typeof allReactPlugins)[number];
 export type AvailablePythonPlugins = (typeof allAvailablePythonPlugins)[number];
-export type AvailablePluginsAndPythonPlugins = AvailablePlugins | AvailablePythonPlugins;
+export type AvailablePluginsAndPythonPlugins = ReactPlugins | AvailablePythonPlugins;
 
 export interface IPluginProps {
   // react plugins

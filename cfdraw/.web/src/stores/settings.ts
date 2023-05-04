@@ -3,7 +3,7 @@ import { makeObservable, observable } from "mobx";
 import { IBoardOptions, Lang } from "@carefree0910/core";
 import { ABCStore } from "@carefree0910/business";
 
-import type { AvailablePlugins, AvailablePythonPlugins, IMakePlugin } from "@/schema/plugins";
+import type { ReactPlugins, AvailablePythonPlugins, IMakePlugin } from "@/schema/plugins";
 import type { IProject } from "@/actions/manageProjects";
 import { ThemeType, ThemeStyles } from "./theme";
 
@@ -15,7 +15,7 @@ interface IInternalSettings {
 interface IGlobalSettings {
   defaultLang?: Lang;
   defaultInfoTimeout?: number;
-  excludeReactPlugins?: AvailablePlugins[];
+  excludeReactPlugins?: ReactPlugins[];
   iconLoadingPatience?: number;
 }
 interface IBoardSettings {

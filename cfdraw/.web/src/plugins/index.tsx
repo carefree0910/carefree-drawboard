@@ -4,7 +4,7 @@ import { Logger, shallowCopy } from "@carefree0910/core";
 import { useSelecting } from "@carefree0910/business";
 
 import type { AvailablePluginsAndPythonPlugins, IMakePlugin } from "@/schema/plugins";
-import { usePluginIsVisible, usePythonPluginIsVisible } from "@/stores/pluginsInfo";
+import { useReactPluginIsVisible, usePythonPluginIsVisible } from "@/stores/pluginsInfo";
 import { drawboardPluginFactory } from "./utils/factory";
 import { checkHasConstraint } from "./utils/renderFilters";
 
@@ -49,7 +49,7 @@ function MakePlugin<T extends AvailablePluginsAndPythonPlugins>({
   if (drawboardPluginFactory.checkIsPython(type)) {
     renderInfo.isInvisible = !usePythonPluginIsVisible((updatedPluginInfo as any).identifier);
   } else {
-    renderInfo.isInvisible = !usePluginIsVisible(type);
+    renderInfo.isInvisible = !useReactPluginIsVisible(type);
   }
   return (
     <Plugin

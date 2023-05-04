@@ -5,7 +5,7 @@ import { Dictionary, getRandomHash, isUndefined } from "@carefree0910/core";
 import { ABCStore, useIsReady } from "@carefree0910/business";
 
 import type { IMeta, IPythonResults } from "@/schema/meta";
-import type { AvailablePlugins } from "@/schema/plugins";
+import type { ReactPlugins } from "@/schema/plugins";
 import type { IPythonSocketMessage } from "@/schema/_python";
 import { stripHashFromIdentifier } from "@/utils/misc";
 
@@ -134,9 +134,9 @@ export const setPluginTaskCache = (id: string, cache: ITaskCache) =>
   pluginsInfoStore.set("taskCaches", id, cache);
 export const removePluginTaskCache = (id: string) => pluginsInfoStore.remove("taskCaches", id);
 // visible
-export const usePluginIsVisible = (plugin: AvailablePlugins) =>
+export const useReactPluginIsVisible = (plugin: ReactPlugins) =>
   pluginsInfoStore.visible[plugin] ?? true;
-export const setPluginVisible = (plugin: AvailablePlugins, visible: boolean) =>
+export const setReactPluginVisible = (plugin: ReactPlugins, visible: boolean) =>
   pluginsInfoStore.set("visible", plugin, visible);
 export const usePythonPluginIsVisible = (identifier: string) =>
   pluginsInfoStore.pythonVisible[identifier] ?? true;

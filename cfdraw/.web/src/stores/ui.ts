@@ -3,12 +3,12 @@ import { makeObservable, observable, runInAction } from "mobx";
 import type { Dictionary } from "@carefree0910/core";
 import { ABCStore } from "@carefree0910/business";
 
-import type { AvailablePlugins } from "@/schema/plugins";
+import type { ReactPlugins } from "@/schema/plugins";
 import { reactPluginSettings } from "@/_settings";
 import {
-  usePluginIsVisible,
+  useReactPluginIsVisible,
   usePythonPluginIsVisible,
-  setPluginVisible,
+  setReactPluginVisible,
   setPythonPluginVisible,
 } from "./pluginsInfo";
 import { usePythonPluginSettings } from "./settings";
@@ -42,7 +42,7 @@ export class VisibleManager {
     this.pythonVisibleBackup = {};
     for (const { type } of reactPluginSettings) {
       if (type !== "settings") {
-        this.visibleBackup[type] = usePluginIsVisible(type);
+        this.visibleBackup[type] = useReactPluginIsVisible(type);
       }
     }
     for (const {
@@ -58,7 +58,7 @@ export class VisibleManager {
     runInAction(() => {
       if (this.visibleBackup) {
         Object.entries(this.visibleBackup).forEach(([plugin, visible]) => {
-          setPluginVisible(plugin as AvailablePlugins, visible);
+          setReactPluginVisible(plugin as ReactPlugins, visible);
         });
       }
       if (this.pythonVisibleBackup) {

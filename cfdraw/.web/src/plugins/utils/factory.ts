@@ -3,7 +3,7 @@ import React from "react";
 import { Logger, checkNotExists } from "@carefree0910/core";
 
 import type {
-  AvailablePlugins,
+  ReactPlugins,
   AvailablePluginsAndPythonPlugins,
   AvailablePythonPlugins,
 } from "@/schema/plugins";
@@ -30,12 +30,12 @@ function registerPlugin<T extends string>(
 }
 
 class DrawboardPluginFactory {
-  d: Partial<Record<AvailablePlugins, React.FC>> = {};
+  d: Partial<Record<ReactPlugins, React.FC>> = {};
   python_d: Partial<Record<AvailablePythonPlugins, React.FC>> = {};
 
   constructor(public name: string) {}
 
-  register(name: AvailablePlugins, overwrite: boolean = false): Function {
+  register(name: ReactPlugins, overwrite: boolean = false): Function {
     return registerPlugin(this.d, name, overwrite);
   }
 

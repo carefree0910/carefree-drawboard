@@ -1,7 +1,7 @@
 import { Dictionary, Lang } from "@carefree0910/core";
 
 import {
-  allAvailablePlugins,
+  allReactPlugins,
   allAvailablePythonPlugins,
   AvailablePluginsAndPythonPlugins,
 } from "@/schema/plugins";
@@ -65,7 +65,7 @@ function reverseMapping(data: Dictionary<string>) {
   return Object.fromEntries(Object.entries(data).map(([key, value]) => [value, key]));
 }
 
-allAvailablePlugins.forEach((plugin) => {
+allReactPlugins.forEach((plugin) => {
   (Plugins_Words as any)[plugin] = plugin;
 });
 allAvailablePythonPlugins.forEach((plugin) => {

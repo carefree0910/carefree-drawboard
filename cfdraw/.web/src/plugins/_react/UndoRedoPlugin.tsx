@@ -5,21 +5,21 @@ import { getRandomHash } from "@carefree0910/core";
 import { safeRedo, safeUndo, useUndoRedoSteps } from "@carefree0910/business";
 
 import type { IPlugin } from "@/schema/plugins";
-import { setPluginVisible } from "@/stores/pluginsInfo";
+import { setReactPluginVisible } from "@/stores/pluginsInfo";
 import { drawboardPluginFactory } from "../utils/factory";
 import Render from "../components/Render";
 
 const UndoPlugin = ({ pluginInfo, ...props }: IPlugin) => {
   const id = useMemo(() => `undo_${getRandomHash()}`, []);
   const { undoSteps } = useUndoRedoSteps();
-  useEffect(() => setPluginVisible("undo", undoSteps > 0), [undoSteps]);
+  useEffect(() => setReactPluginVisible("undo", undoSteps > 0), [undoSteps]);
 
   return <Render id={id} onFloatingButtonClick={async () => safeUndo()} {...props} />;
 };
 const RedoPlugin = ({ pluginInfo, ...props }: IPlugin) => {
   const id = useMemo(() => `redo_${getRandomHash()}`, []);
   const { redoSteps } = useUndoRedoSteps();
-  useEffect(() => setPluginVisible("redo", redoSteps > 0), [redoSteps]);
+  useEffect(() => setReactPluginVisible("redo", redoSteps > 0), [redoSteps]);
 
   return <Render id={id} onFloatingButtonClick={async () => safeRedo()} {...props} />;
 };

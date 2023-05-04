@@ -11,17 +11,17 @@ import {
   useIsReady,
 } from "@carefree0910/business";
 
-import { allAvailablePlugins, IPlugin } from "@/schema/plugins";
+import { allReactPlugins, IPlugin } from "@/schema/plugins";
 import { Plugins_Words } from "@/lang/plugins";
 import { Settings_Words } from "@/lang/settings";
 import { stripHashFromIdentifier } from "@/utils/misc";
 import { uiStore } from "@/stores/ui";
 import { usePythonPluginSettings } from "@/stores/settings";
 import {
-  usePluginIsVisible,
+  useReactPluginIsVisible,
   usePythonPluginIsVisible,
   setPythonPluginVisible,
-  setPluginVisible,
+  setReactPluginVisible,
 } from "@/stores/pluginsInfo";
 import { hideAllPlugins, showAllPlugins } from "@/actions/managePlugins";
 import CFButton from "@/components/CFButton";
@@ -61,21 +61,21 @@ const SettingsPlugin = ({ pluginInfo, ...props }: IPlugin) => {
             <CFGlobalScaleSlider />
           </Box>
         )}
-        {/* plugin settings */}
+        {/* plugin visible settings */}
         <Box mt="12px" pb="12px">
           <CFHeading>{translate(Settings_Words["plugins-header"], lang)}</CFHeading>
           <CFDivider />
           <Flex w="100%" gap="8px" direction="column" justifyContent="space-around">
-            {allAvailablePlugins
+            {allReactPlugins
               .filter((plugin) => !["settings", "undo", "redo"].includes(plugin))
               .map((plugin, i) => {
-                const pIsVisible = usePluginIsVisible(plugin);
+                const pIsVisible = useReactPluginIsVisible(plugin);
                 return (
                   <Checkbox
                     key={`plugin-${i}`}
                     value={plugin}
                     isChecked={pIsVisible}
-                    onChange={() => setPluginVisible(plugin, !pIsVisible)}
+                    onChange={() => setReactPluginVisible(plugin, !pIsVisible)}
                     {...commonProps}
                     disabled={disablePluginSettings}>
                     {translate(Plugins_Words[plugin], lang)}

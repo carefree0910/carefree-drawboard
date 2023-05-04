@@ -1,8 +1,8 @@
-import type { AvailablePlugins, IMakePlugin } from "@/schema/plugins";
+import type { ReactPlugins, IMakePlugin } from "@/schema/plugins";
 
 import { settingsStore } from "./stores/settings";
 
-export const reactPluginSettings: IMakePlugin<AvailablePlugins>[] = [
+export const reactPluginSettings: IMakePlugin<ReactPlugins>[] = [
   {
     type: "settings",
     props: {
