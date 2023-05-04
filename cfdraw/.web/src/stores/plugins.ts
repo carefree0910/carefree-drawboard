@@ -1,7 +1,7 @@
 import { useEffect } from "react";
-import { makeObservable, observable } from "mobx";
+import { action, makeObservable, observable, runInAction } from "mobx";
 
-import { Dictionary, getRandomHash, shallowCopy } from "@carefree0910/core";
+import { Dictionary, getRandomHash, isUndefined, shallowCopy } from "@carefree0910/core";
 import { ABCStore } from "@carefree0910/business";
 
 import type { IPythonResults } from "@/schema/meta";
@@ -17,6 +17,11 @@ export interface IPluginsStore {
   hashes: Dictionary<string>;
   messages: Dictionary<IPythonSocketMessage<IPythonResults>>;
 }
+interface ISetPluginDefault<T extends keyof IPluginsStore> {
+  key: string;
+  hasEffect: boolean;
+  getDefault: () => IPluginsStore[T][string];
+}
 class PluginsStore extends ABCStore<IPluginsStore> implements IPluginsStore {
   ids: Dictionary<IDs> = {};
   hashes: Dictionary<string> = {};
@@ -28,11 +33,37 @@ class PluginsStore extends ABCStore<IPluginsStore> implements IPluginsStore {
       ids: observable,
       hashes: observable,
       messages: observable,
+      setDefault: action,
     });
   }
 
   get info(): IPluginsStore {
     return this;
+  }
+
+  setDefault<T extends keyof IPluginsStore>(
+    collection: T,
+    { key, hasEffect, getDefault }: ISetPluginDefault<T>,
+  ): IPluginsStore[T][string] {
+    let value = this[collection][key];
+    let needUpdate = false;
+    if (isUndefined(value)) {
+      value = getDefault();
+      needUpdate = true;
+      if (!hasEffect) {
+        this[collection][key] = getDefault();
+      }
+    }
+    // this looks dangerous, but since the `hasEffect` should never
+    // change during the lifetime of the app, it's safe to do so
+    if (hasEffect) {
+      useEffect(() => {
+        if (needUpdate) {
+          runInAction(() => (this[collection][key] = value));
+        }
+      });
+    }
+    return value as IPluginsStore[T][string];
   }
 }
 
@@ -40,29 +71,19 @@ const pluginsStore = new PluginsStore();
 // ids
 export const usePluginIds = (identifier: string): IDs => {
   const pureIdentifier = stripHashFromIdentifier(identifier).replaceAll(".", "_");
-  let ids = pluginsStore.ids;
-  const shouldUpdate = !ids[pureIdentifier];
-  if (shouldUpdate) {
-    ids = shallowCopy(ids);
-    ids[pureIdentifier] = { id: `${pureIdentifier}_${getRandomHash()}`, pureIdentifier };
-  }
-  // wrap updates in `useEffect` to avoid cross-update-warning in React
-  useEffect(() => {
-    if (shouldUpdate) {
-      pluginsStore.updateProperty("ids", ids);
-    }
+  return pluginsStore.setDefault("ids", {
+    key: pureIdentifier,
+    hasEffect: true,
+    getDefault: () => ({ id: `${pureIdentifier}_${getRandomHash()}`, pureIdentifier }),
   });
-
-  return ids[pureIdentifier];
 };
 // hashes
 export const usePluginHash = (id: string): string => {
-  if (!pluginsStore.hashes[id]) {
-    const hashes = shallowCopy(pluginsStore.hashes);
-    hashes[id] = getRandomHash().toString();
-    pluginsStore.updateProperty("hashes", hashes);
-  }
-  return pluginsStore.hashes[id];
+  return pluginsStore.setDefault("hashes", {
+    key: id,
+    hasEffect: false,
+    getDefault: () => getRandomHash().toString(),
+  });
 };
 // messages
 export const usePluginMessage = (id: string): IPluginsStore["messages"][string] | undefined =>
