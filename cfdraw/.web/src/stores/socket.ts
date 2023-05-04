@@ -11,7 +11,7 @@ import type {
 } from "@/schema/_python";
 import { settingsStore } from "@/stores/settings";
 import { useAPI } from "@/requests/hooks";
-import { removePluginMessageFromHash } from "./plugins";
+import { removePluginMessageFromHash } from "./pluginsInfo";
 
 const DEBUG = false;
 

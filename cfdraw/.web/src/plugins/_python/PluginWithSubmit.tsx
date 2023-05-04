@@ -8,7 +8,7 @@ import { Event } from "@/utils/event";
 import { toast } from "@/utils/toast";
 import { Toast_Words } from "@/lang/toast";
 import { userStore } from "@/stores/user";
-import { usePluginHash, setPluginExpanded } from "@/stores/plugins";
+import { usePluginHash, setPluginExpanded } from "@/stores/pluginsInfo";
 import { useSocketPython } from "@/hooks/usePython";
 import { CFButtonWithBusyTooltip } from "@/components/CFButton";
 import CFDivider from "@/components/CFDivider";

@@ -13,7 +13,7 @@ interface IDs {
   id: string;
   pureIdentifier: string;
 }
-export interface IPluginsStore {
+export interface IPluginsInfoStore {
   ids: Dictionary<IDs>;
   hashes: Dictionary<string>;
   messages: Dictionary<IPythonSocketMessage<IPythonResults>>;
@@ -24,14 +24,14 @@ export interface IPluginsStore {
   hierarchy: Dictionary<string[]>;
   updaters: Dictionary<(e: any) => Promise<void>>;
 }
-type IPluginCollection = keyof IPluginsStore;
-type IPluginCollectionValue<T extends IPluginCollection> = IPluginsStore[T][string];
+type IPluginCollection = keyof IPluginsInfoStore;
+type IPluginCollectionValue<T extends IPluginCollection> = IPluginsInfoStore[T][string];
 interface ISetPluginDefault<T extends IPluginCollection> {
   key: string;
   hasEffect: boolean;
   getDefault: () => IPluginCollectionValue<T>;
 }
-class PluginsStore extends ABCStore<IPluginsStore> implements IPluginsStore {
+class PluginsInfoStore extends ABCStore<IPluginsInfoStore> implements IPluginsInfoStore {
   ids: Dictionary<IDs> = {};
   hashes: Dictionary<string> = {};
   messages: Dictionary<IPythonSocketMessage<IPythonResults>> = {};
@@ -60,7 +60,7 @@ class PluginsStore extends ABCStore<IPluginsStore> implements IPluginsStore {
     });
   }
 
-  get info(): IPluginsStore {
+  get info(): IPluginsInfoStore {
     return this;
   }
 
@@ -96,11 +96,11 @@ class PluginsStore extends ABCStore<IPluginsStore> implements IPluginsStore {
   }
 }
 
-const pluginsStore = new PluginsStore();
+const pluginsInfoStore = new PluginsInfoStore();
 // ids
 export const usePluginIds = (identifier: string): IDs => {
   const pureIdentifier = stripHashFromIdentifier(identifier).replaceAll(".", "_");
-  return pluginsStore.setDefault("ids", {
+  return pluginsInfoStore.setDefault("ids", {
     key: pureIdentifier,
     hasEffect: true,
     getDefault: () => ({ id: `${pureIdentifier}_${getRandomHash()}`, pureIdentifier }),
@@ -108,45 +108,47 @@ export const usePluginIds = (identifier: string): IDs => {
 };
 // hashes
 export const usePluginHash = (id: string): string => {
-  return pluginsStore.setDefault("hashes", {
+  return pluginsInfoStore.setDefault("hashes", {
     key: id,
     hasEffect: false,
     getDefault: () => getRandomHash().toString(),
   });
 };
 // messages
-export const usePluginMessage = (id: string): IPluginsStore["messages"][string] | undefined =>
-  pluginsStore.messages[id];
+export const usePluginMessage = (id: string): IPluginsInfoStore["messages"][string] | undefined =>
+  pluginsInfoStore.messages[id];
 export const setPluginMessage = (id: string, message: IPythonSocketMessage<IPythonResults>) =>
-  pluginsStore.set("messages", id, message);
-export const removePluginMessage = (id: string) => pluginsStore.remove("messages", id);
+  pluginsInfoStore.set("messages", id, message);
+export const removePluginMessage = (id: string) => pluginsInfoStore.remove("messages", id);
 export const removePluginMessageFromHash = (hash: string) => {
-  const id = Object.keys(pluginsStore.messages).find((id) => pluginsStore.hashes[id] === hash);
+  const id = Object.keys(pluginsInfoStore.messages).find(
+    (id) => pluginsInfoStore.hashes[id] === hash,
+  );
   if (!id) return;
   removePluginMessage(id);
 };
 // visible
 export const usePluginIsVisible = (plugin: AvailablePlugins) =>
-  pluginsStore.visible[plugin] ?? true;
+  pluginsInfoStore.visible[plugin] ?? true;
 export const setPluginVisible = (plugin: AvailablePlugins, visible: boolean) =>
-  pluginsStore.set("visible", plugin, visible);
+  pluginsInfoStore.set("visible", plugin, visible);
 export const usePythonPluginIsVisible = (identifier: string) =>
-  pluginsStore.pythonVisible[identifier] ?? true;
+  pluginsInfoStore.pythonVisible[identifier] ?? true;
 export const setPythonPluginVisible = (identifier: string, visible: boolean) =>
-  pluginsStore.set("pythonVisible", identifier, visible);
+  pluginsInfoStore.set("pythonVisible", identifier, visible);
 // expanded
-export const usePluginsExpanded = () => pluginsStore.expanded;
-export const usePluginIsExpanded = (id: string) => pluginsStore.expanded[id] ?? false;
+export const usePluginsExpanded = () => pluginsInfoStore.expanded;
+export const usePluginIsExpanded = (id: string) => pluginsInfoStore.expanded[id] ?? false;
 export const usePluginGroupIsExpanded = (groupId?: string) =>
   isUndefined(groupId) ? false : usePluginIsExpanded(groupId);
 export const setPluginExpanded = (id: string, expand: boolean) => {
   runInAction(() => {
-    pluginsStore.expanded[id] = expand;
+    pluginsInfoStore.expanded[id] = expand;
     // only one plugin can be expanded at the same time
     if (expand) {
-      Object.entries(pluginsStore.expanded).forEach(([key, value]) => {
+      Object.entries(pluginsInfoStore.expanded).forEach(([key, value]) => {
         if (expand && id !== key && value) {
-          pluginsStore.expanded[key] = false;
+          pluginsInfoStore.expanded[key] = false;
         }
       });
     }
@@ -154,16 +156,16 @@ export const setPluginExpanded = (id: string, expand: boolean) => {
 };
 // needRender
 export const usePluginNeedRender = (id: string) =>
-  useIsReady() && (pluginsStore.needRender[id] ?? false);
+  useIsReady() && (pluginsInfoStore.needRender[id] ?? false);
 export const setPluginNeedRender = (id: string, needRender: boolean) =>
   runInAction(() => {
-    pluginsStore.needRender[id] = needRender;
+    pluginsInfoStore.needRender[id] = needRender;
     if (!needRender) {
       setPluginExpanded(id, false);
     }
   });
 // hierarchy
-export const usePluginChildren = (groupId: string) => pluginsStore.hierarchy[groupId] ?? [];
+export const usePluginChildren = (groupId: string) => pluginsInfoStore.hierarchy[groupId] ?? [];
 export const addPluginChild = (groupId: string, id: string) => {
   const children = usePluginChildren(groupId);
   if (!children.includes(id)) {
@@ -172,7 +174,7 @@ export const addPluginChild = (groupId: string, id: string) => {
 };
 // updaters
 export const usePluginUpdater = (id: string) => {
-  const updater = pluginsStore.updaters[id];
+  const updater = pluginsInfoStore.updaters[id];
   const children = [...usePluginChildren(id)];
   return useCallback(
     async (e: any) => {
@@ -180,7 +182,7 @@ export const usePluginUpdater = (id: string) => {
         await updater(e);
       }
       for (const child of children) {
-        const childUpdater = pluginsStore.updaters[child];
+        const childUpdater = pluginsInfoStore.updaters[child];
         if (childUpdater) {
           await childUpdater(e);
         }
@@ -190,5 +192,5 @@ export const usePluginUpdater = (id: string) => {
   );
 };
 export const setPluginUpdater = (id: string, updater: (e: any) => Promise<void>) => {
-  pluginsStore.set("updaters", id, updater);
+  pluginsInfoStore.set("updaters", id, updater);
 };

@@ -6,7 +6,7 @@ import { shallowCopy } from "@carefree0910/core";
 
 import { IPythonPluginGroup } from "@/schema/_python";
 import { titleCaseWord } from "@/utils/misc";
-import { usePluginIds } from "@/stores/plugins";
+import { usePluginIds } from "@/stores/pluginsInfo";
 import CFDivider from "@/components/CFDivider";
 import CFHeading from "@/components/CFHeading";
 import { drawboardPluginFactory } from "../utils/factory";

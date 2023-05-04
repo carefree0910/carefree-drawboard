@@ -5,7 +5,7 @@ import { getRandomHash } from "@carefree0910/core";
 import { safeRedo, safeUndo, useUndoRedoSteps } from "@carefree0910/business";
 
 import type { IPlugin } from "@/schema/plugins";
-import { setPluginVisible } from "@/stores/plugins";
+import { setPluginVisible } from "@/stores/pluginsInfo";
 import { drawboardPluginFactory } from "../utils/factory";
 import Render from "../components/Render";
 

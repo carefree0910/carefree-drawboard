@@ -5,7 +5,7 @@ import { Textarea } from "@chakra-ui/react";
 import { getRandomHash } from "@carefree0910/core";
 
 import type { IPythonTextAreaPlugin, IPythonOnSocketMessage } from "@/schema/_python";
-import { usePluginIds } from "@/stores/plugins";
+import { usePluginIds } from "@/stores/pluginsInfo";
 import { useSocketPython } from "@/hooks/usePython";
 import { drawboardPluginFactory } from "@/plugins/utils/factory";
 import Render from "@/plugins/components/Render";

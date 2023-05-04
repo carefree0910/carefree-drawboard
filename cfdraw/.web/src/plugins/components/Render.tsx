@@ -31,7 +31,7 @@ import {
   usePluginNeedRender,
   setPluginUpdater,
   usePluginUpdater,
-} from "@/stores/plugins";
+} from "@/stores/pluginsInfo";
 import { checkHasConstraint, hashInfo, useNodeFilter } from "../utils/renderFilters";
 import Floating, { getExpandId } from "./Floating";
 

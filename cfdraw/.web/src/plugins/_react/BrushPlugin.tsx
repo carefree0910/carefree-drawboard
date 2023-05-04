@@ -18,7 +18,7 @@ import { Brush_Words } from "@/lang/brush";
 import { Toast_Words } from "@/lang/toast";
 import { themeStore } from "@/stores/theme";
 import { VisibleManager, uiStore } from "@/stores/ui";
-import { setPluginExpanded } from "@/stores/plugins";
+import { setPluginExpanded } from "@/stores/pluginsInfo";
 import { hideAllPlugins } from "@/actions/managePlugins";
 import CFButton from "@/components/CFButton";
 import CFSlider from "@/components/CFSlider";

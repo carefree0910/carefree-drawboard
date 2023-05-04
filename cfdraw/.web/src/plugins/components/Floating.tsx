@@ -26,7 +26,7 @@ import {
   usePluginIsExpanded,
   setPluginExpanded,
   usePluginGroupIsExpanded,
-} from "@/stores/plugins";
+} from "@/stores/pluginsInfo";
 import { isInteractingWithBoard } from "@/stores/pointerEvents";
 import CFText from "@/components/CFText";
 import CFLottie from "@/components/CFLottie";

@@ -21,7 +21,7 @@ import {
   updateCurrentProjectInfo,
   useCurrentProjectInfo,
 } from "@/stores/projects";
-import { usePluginIsExpanded } from "@/stores/plugins";
+import { usePluginIsExpanded } from "@/stores/pluginsInfo";
 import {
   AUTO_SAVE_PREFIX,
   IProject,

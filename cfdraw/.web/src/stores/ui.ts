@@ -10,7 +10,7 @@ import {
   usePythonPluginIsVisible,
   setPluginVisible,
   setPythonPluginVisible,
-} from "./plugins";
+} from "./pluginsInfo";
 import { usePythonPluginSettings } from "./settings";
 
 export interface IUIStore {

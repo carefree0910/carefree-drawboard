@@ -8,7 +8,7 @@ import {
   usePluginsExpanded,
   setPluginVisible,
   setPythonPluginVisible,
-} from "@/stores/plugins";
+} from "@/stores/pluginsInfo";
 
 function setAllPluginVisible(visible: boolean, except?: AvailablePluginsAndPythonPlugins[]) {
   runInAction(() => {

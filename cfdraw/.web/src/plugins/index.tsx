@@ -4,7 +4,7 @@ import { Logger, shallowCopy } from "@carefree0910/core";
 import { useSelecting } from "@carefree0910/business";
 
 import type { AvailablePluginsAndPythonPlugins, IMakePlugin } from "@/schema/plugins";
-import { usePluginIsVisible, usePythonPluginIsVisible } from "@/stores/plugins";
+import { usePluginIsVisible, usePythonPluginIsVisible } from "@/stores/pluginsInfo";
 import { drawboardPluginFactory } from "./utils/factory";
 import { checkHasConstraint } from "./utils/renderFilters";
 

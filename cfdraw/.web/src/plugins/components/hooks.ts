@@ -1,6 +1,6 @@
 import { useCallback } from "react";
 
-import { setPluginExpanded } from "@/stores/plugins";
+import { setPluginExpanded } from "@/stores/pluginsInfo";
 
 export function useClosePanel(id: string) {
   return useCallback(() => setPluginExpanded(id, false), [id]);

@@ -13,7 +13,7 @@ import { Toast_Words } from "@/lang/toast";
 import { toastWord } from "@/utils/toast";
 import { titleCaseWord } from "@/utils/misc";
 import { removeSocketHooks, socketLog } from "@/stores/socket";
-import { usePluginIds, removePluginMessage, setPluginMessage } from "@/stores/plugins";
+import { usePluginIds, removePluginMessage, setPluginMessage } from "@/stores/pluginsInfo";
 import { importMeta } from "@/actions/importMeta";
 import CFHeading from "@/components/CFHeading";
 import { drawboardPluginFactory } from "@/plugins/utils/factory";
