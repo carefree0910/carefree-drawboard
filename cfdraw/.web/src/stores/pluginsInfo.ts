@@ -171,7 +171,12 @@ export const setPluginNeedRender = (id: string, needRender: boolean) =>
     }
   });
 // hierarchy
-export const usePluginChildren = (groupId: string) => pluginsInfoStore.hierarchy[groupId] ?? [];
+export const usePluginChildren = (groupId: string) =>
+  pluginsInfoStore.setDefault("hierarchy", {
+    key: groupId,
+    hasEffect: false,
+    getDefault: () => [],
+  });
 export const addPluginChild = (groupId: string, id: string) => {
   const children = usePluginChildren(groupId);
   if (!children.includes(id)) {
