@@ -13,7 +13,7 @@ import { Toast_Words } from "@/lang/toast";
 import { toastWord } from "@/utils/toast";
 import { titleCaseWord } from "@/utils/misc";
 import { removeSocketHooks, socketLog } from "@/stores/socket";
-import { getPluginIds, removePluginMessage, updatePluginMessage } from "@/stores/plugins";
+import { usePluginIds, removePluginMessage, updatePluginMessage } from "@/stores/plugins";
 import { importMeta } from "@/actions/importMeta";
 import CFHeading from "@/components/CFHeading";
 import { drawboardPluginFactory } from "@/plugins/utils/factory";
@@ -23,7 +23,7 @@ import { useCurrentMeta, useDefinitionsRequestDataFn } from "./hooks";
 import PythonPluginWithSubmit, { socketFinishedEvent } from "./PluginWithSubmit";
 
 const PythonFieldsPlugin = ({ pluginInfo, ...props }: IPythonFieldsPlugin) => {
-  const { id, pureIdentifier } = getPluginIds(pluginInfo.identifier);
+  const { id, pureIdentifier } = usePluginIds(pluginInfo.identifier);
   const lang = langStore.tgt;
   const { definitions, retryInterval, noErrorToast } = pluginInfo;
   const getExtraRequestData = useDefinitionsRequestDataFn(definitions);

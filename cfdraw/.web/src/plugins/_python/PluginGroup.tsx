@@ -6,7 +6,7 @@ import { shallowCopy } from "@carefree0910/core";
 
 import { IPythonPluginGroup } from "@/schema/_python";
 import { titleCaseWord } from "@/utils/misc";
-import { getPluginIds } from "@/stores/plugins";
+import { usePluginIds } from "@/stores/plugins";
 import CFDivider from "@/components/CFDivider";
 import CFHeading from "@/components/CFHeading";
 import { drawboardPluginFactory } from "../utils/factory";
@@ -15,7 +15,7 @@ import Render from "../components/Render";
 import MakePlugin from "..";
 
 const PythonPluginGroup = ({ pluginInfo, renderInfo, ...props }: IPythonPluginGroup) => {
-  const { id, pureIdentifier } = getPluginIds(pluginInfo.identifier);
+  const { id, pureIdentifier } = usePluginIds(pluginInfo.identifier);
   const header = pluginInfo.header ?? titleCaseWord(pureIdentifier);
   renderInfo = shallowCopy(renderInfo);
   const p = 12;

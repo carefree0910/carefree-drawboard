@@ -5,7 +5,7 @@ import { Textarea } from "@chakra-ui/react";
 import { getRandomHash } from "@carefree0910/core";
 
 import type { IPythonTextAreaPlugin, IPythonOnSocketMessage } from "@/schema/_python";
-import { getPluginIds } from "@/stores/plugins";
+import { usePluginIds } from "@/stores/plugins";
 import { useSocketPython } from "@/hooks/usePython";
 import { drawboardPluginFactory } from "@/plugins/utils/factory";
 import Render from "@/plugins/components/Render";
@@ -14,7 +14,7 @@ const PythonTextAreaPlugin = ({
   pluginInfo: { node, nodes, identifier, retryInterval, updateInterval, noLoading, textAlign },
   ...props
 }: IPythonTextAreaPlugin) => {
-  const id = getPluginIds(`textArea_${identifier}`);
+  const id = usePluginIds(`textArea_${identifier}`);
   const hash = useMemo(() => getRandomHash().toString(), [id]);
   const [value, setValue] = useState("");
   const onMessage = useCallback<IPythonOnSocketMessage<{ text: string }>>(

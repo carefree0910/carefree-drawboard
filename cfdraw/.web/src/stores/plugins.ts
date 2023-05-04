@@ -38,7 +38,7 @@ class PluginsStore extends ABCStore<IPluginsStore> implements IPluginsStore {
 
 const pluginsStore = new PluginsStore();
 // ids
-export const getPluginIds = (identifier: string): IDs => {
+export const usePluginIds = (identifier: string): IDs => {
   const pureIdentifier = stripHashFromIdentifier(identifier).replaceAll(".", "_");
   let ids = pluginsStore.ids;
   const shouldUpdate = !ids[pureIdentifier];
