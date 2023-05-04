@@ -93,15 +93,15 @@ export const allReactPlugins = [
   "multiEditor",
   "brush",
 ] as const;
-export const allAvailablePythonPlugins = [
+export const allPythonPlugins = [
   "_python.textArea",
   "_python.QA",
   "_python.fields",
   "_python.pluginGroup",
 ] as const;
 export type ReactPlugins = (typeof allReactPlugins)[number];
-export type AvailablePythonPlugins = (typeof allAvailablePythonPlugins)[number];
-export type AvailablePluginsAndPythonPlugins = ReactPlugins | AvailablePythonPlugins;
+export type PythonPlugins = (typeof allPythonPlugins)[number];
+export type AllPlugins = ReactPlugins | PythonPlugins;
 
 export interface IPluginProps {
   // react plugins
@@ -128,7 +128,7 @@ export interface IPluginProps {
   "_python.pluginGroup": IPythonPluginGroup;
 }
 
-export interface IMakePlugin<T extends AvailablePluginsAndPythonPlugins> {
+export interface IMakePlugin<T extends AllPlugins> {
   type: T;
   props: Omit<IPluginProps[T], "containerRef" | "pluginInfo"> & {
     pluginInfo: Omit<IPluginProps[T]["pluginInfo"], "node" | "nodes">;

@@ -3,7 +3,7 @@ import { observer } from "mobx-react-lite";
 import { Logger, shallowCopy } from "@carefree0910/core";
 import { useSelecting } from "@carefree0910/business";
 
-import type { AvailablePluginsAndPythonPlugins, IMakePlugin } from "@/schema/plugins";
+import type { AllPlugins, IMakePlugin } from "@/schema/plugins";
 import { useReactPluginIsVisible, usePythonPluginIsVisible } from "@/stores/pluginsInfo";
 import { drawboardPluginFactory } from "./utils/factory";
 import { checkHasConstraint } from "./utils/renderFilters";
@@ -26,7 +26,7 @@ export * from "./_python/QAPlugin";
 export * from "./_python/FieldsPlugin";
 export * from "./_python/PluginGroup";
 
-function MakePlugin<T extends AvailablePluginsAndPythonPlugins>({
+function MakePlugin<T extends AllPlugins>({
   type,
   containerRef,
   props: { renderInfo, pluginInfo, ...props },

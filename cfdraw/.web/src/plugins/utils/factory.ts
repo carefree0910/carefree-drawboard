@@ -2,11 +2,7 @@ import React from "react";
 
 import { Logger, checkNotExists } from "@carefree0910/core";
 
-import type {
-  ReactPlugins,
-  AvailablePluginsAndPythonPlugins,
-  AvailablePythonPlugins,
-} from "@/schema/plugins";
+import type { ReactPlugins, AllPlugins, PythonPlugins } from "@/schema/plugins";
 
 function registerPlugin<T extends string>(
   d: Partial<Record<T, React.FC>>,
@@ -31,7 +27,7 @@ function registerPlugin<T extends string>(
 
 class DrawboardPluginFactory {
   d: Partial<Record<ReactPlugins, React.FC>> = {};
-  python_d: Partial<Record<AvailablePythonPlugins, React.FC>> = {};
+  python_d: Partial<Record<PythonPlugins, React.FC>> = {};
 
   constructor(public name: string) {}
 
@@ -39,15 +35,15 @@ class DrawboardPluginFactory {
     return registerPlugin(this.d, name, overwrite);
   }
 
-  registerPython(name: AvailablePythonPlugins, overwrite: boolean = false): Function {
+  registerPython(name: PythonPlugins, overwrite: boolean = false): Function {
     return registerPlugin(this.python_d, name, overwrite);
   }
 
-  checkIsPython(name: AvailablePluginsAndPythonPlugins): name is AvailablePythonPlugins {
+  checkIsPython(name: AllPlugins): name is PythonPlugins {
     return !!(this.python_d as any)[name];
   }
 
-  get(name: AvailablePluginsAndPythonPlugins): React.FC | null {
+  get(name: AllPlugins): React.FC | null {
     return ((this.checkIsPython(name) ? this.python_d : this.d) as any)[name] ?? null;
   }
 }

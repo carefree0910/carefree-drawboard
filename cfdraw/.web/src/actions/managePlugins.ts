@@ -1,6 +1,6 @@
 import { runInAction } from "mobx";
 
-import type { AvailablePluginsAndPythonPlugins } from "@/schema/plugins";
+import type { AllPlugins } from "@/schema/plugins";
 import { reactPluginSettings } from "@/_settings";
 import { usePythonPluginSettings } from "@/stores/settings";
 import {
@@ -10,7 +10,7 @@ import {
   setPythonPluginVisible,
 } from "@/stores/pluginsInfo";
 
-function setAllPluginVisible(visible: boolean, except?: AvailablePluginsAndPythonPlugins[]) {
+function setAllPluginVisible(visible: boolean, except?: AllPlugins[]) {
   runInAction(() => {
     reactPluginSettings.forEach(({ type }) => {
       if (except?.includes(type)) return;
@@ -26,7 +26,7 @@ function setAllPluginVisible(visible: boolean, except?: AvailablePluginsAndPytho
   });
 }
 
-export function collapseAllPlugins(opt?: { except?: AvailablePluginsAndPythonPlugins[] }) {
+export function collapseAllPlugins(opt?: { except?: AllPlugins[] }) {
   runInAction(() => {
     Object.keys(usePluginsExpanded()).forEach((id) => {
       if (opt?.except && opt.except.some((e) => id.startsWith(e))) return;
@@ -34,7 +34,7 @@ export function collapseAllPlugins(opt?: { except?: AvailablePluginsAndPythonPlu
     });
   });
 }
-export function hideAllPlugins(opt?: { except?: AvailablePluginsAndPythonPlugins[] }) {
+export function hideAllPlugins(opt?: { except?: AllPlugins[] }) {
   // collapse all plugins first
   collapseAllPlugins(opt);
   // then hide all plugins

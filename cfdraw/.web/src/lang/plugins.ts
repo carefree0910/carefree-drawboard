@@ -1,12 +1,8 @@
 import { Dictionary, Lang } from "@carefree0910/core";
 
-import {
-  allReactPlugins,
-  allAvailablePythonPlugins,
-  AvailablePluginsAndPythonPlugins,
-} from "@/schema/plugins";
+import { allReactPlugins, allPythonPlugins, AllPlugins } from "@/schema/plugins";
 
-const _pluginsLangRecords: Record<Lang, Record<AvailablePluginsAndPythonPlugins, string>> = {
+const _pluginsLangRecords: Record<Lang, Record<AllPlugins, string>> = {
   zh: {
     meta: "元数据",
     settings: "设置",
@@ -53,7 +49,7 @@ const _pluginsLangRecords: Record<Lang, Record<AvailablePluginsAndPythonPlugins,
   },
 };
 
-export const Plugins_Words: Record<AvailablePluginsAndPythonPlugins, string> = {} as any;
+export const Plugins_Words: Record<AllPlugins, string> = {} as any;
 export const pluginsLangRecords: Dictionary<Dictionary<string>> = {};
 
 function injectScope(scope: string, data: Dictionary<string>) {
@@ -68,7 +64,7 @@ function reverseMapping(data: Dictionary<string>) {
 allReactPlugins.forEach((plugin) => {
   (Plugins_Words as any)[plugin] = plugin;
 });
-allAvailablePythonPlugins.forEach((plugin) => {
+allPythonPlugins.forEach((plugin) => {
   (Plugins_Words as any)[plugin] = plugin;
 });
 const scope = "plugins";

@@ -3,7 +3,7 @@ import { makeObservable, observable } from "mobx";
 import { IBoardOptions, Lang } from "@carefree0910/core";
 import { ABCStore } from "@carefree0910/business";
 
-import type { ReactPlugins, AvailablePythonPlugins, IMakePlugin } from "@/schema/plugins";
+import type { ReactPlugins, PythonPlugins, IMakePlugin } from "@/schema/plugins";
 import type { IProject } from "@/actions/manageProjects";
 import { ThemeType, ThemeStyles } from "./theme";
 
@@ -25,13 +25,13 @@ interface IBoardSettings {
   initialProject?: IProject;
 }
 export interface ISettingsStore {
-  pluginSettings: IMakePlugin<AvailablePythonPlugins>[];
+  pluginSettings: IMakePlugin<PythonPlugins>[];
   internalSettings?: IInternalSettings;
   boardSettings?: IBoardSettings;
 }
 class SettingsStore extends ABCStore<ISettingsStore> implements ISettingsStore {
   hash: string = "";
-  pluginSettings: IMakePlugin<AvailablePythonPlugins>[] = [];
+  pluginSettings: IMakePlugin<PythonPlugins>[] = [];
   boardSettings?: IBoardSettings;
   internalSettings?: IInternalSettings;
 
