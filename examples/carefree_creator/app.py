@@ -39,9 +39,15 @@ class Txt2Img(IFieldsPlugin):
         return IPluginSettings(
             **common_styles,
             src=constants.TEXT_TO_IMAGE_ICON,
-            tooltip="Text to Image",
+            tooltip=I18N(
+                zh="生成符合文本描述的图片",
+                en="Text to Image",
+            ),
             pluginInfo=IFieldsPluginInfo(
-                header="Text to Image",
+                header=I18N(
+                    zh="文本生成图片",
+                    en="Text to Image",
+                ),
                 numColumns=2,
                 definitions=txt2img_fields,
             ),
@@ -61,9 +67,15 @@ class Img2Img(IFieldsPlugin):
         return IPluginSettings(
             **common_styles,
             src=constants.IMAGE_TO_IMAGE_ICON,
-            tooltip="Image to Image",
+            tooltip=I18N(
+                zh="以当前图片为参考图，生成符合文本描述的图片",
+                en="Image to Image",
+            ),
             pluginInfo=IFieldsPluginInfo(
-                header="Image to Image",
+                header=I18N(
+                    zh="垫图生成",
+                    en="Image to Image",
+                ),
                 numColumns=2,
                 definitions=img2img_fields,
             ),
@@ -86,9 +98,15 @@ class SR(IFieldsPlugin):
             w=240,
             h=180,
             src=constants.SR_ICON,
-            tooltip="Super Resolution",
+            tooltip=I18N(
+                zh="图片变高清",
+                en="Super Resolution",
+            ),
             pluginInfo=IFieldsPluginInfo(
-                header="Super Resolution",
+                header=I18N(
+                    zh="图片变高清",
+                    en="Super Resolution",
+                ),
                 definitions=sr_fields,
             ),
         )
@@ -105,8 +123,17 @@ class SOD(IFieldsPlugin):
             w=240,
             h=110,
             src=constants.SOD_ICON,
-            tooltip="Image Matting",
-            pluginInfo=IFieldsPluginInfo(header="Image Matting", definitions={}),
+            tooltip=I18N(
+                zh="抠图",
+                en="Image Matting",
+            ),
+            pluginInfo=IFieldsPluginInfo(
+                header=I18N(
+                    zh="抠图",
+                    en="Image Matting",
+                ),
+                definitions={},
+            ),
         )
 
     async def process(self, data: ISocketRequest) -> List[Image.Image]:
@@ -121,8 +148,17 @@ class Inpainting(IFieldsPlugin):
             h=200,
             useModal=False,
             src=constants.INPAINTING_ICON,
-            tooltip="Erase the masked area and fill it with the background",
-            pluginInfo=IFieldsPluginInfo(header="Erase", definitions=inpainting_fields),
+            tooltip=I18N(
+                zh="擦除蒙版区域并填充合适的背景",
+                en="Erase the masked area and fill it with the background",
+            ),
+            pluginInfo=IFieldsPluginInfo(
+                header=I18N(
+                    zh="局部擦除",
+                    en="Erase",
+                ),
+                definitions=inpainting_fields,
+            ),
         )
 
     async def process(self, data: ISocketRequest) -> List[Image.Image]:
@@ -150,9 +186,15 @@ class SDInpainting(IFieldsPlugin):
         return IPluginSettings(
             **common_styles,
             src=constants.SD_INPAINTING_ICON,
-            tooltip="Replace the masked area and fill it with the description",
+            tooltip=I18N(
+                zh="在蒙版区域内填充符合描述的内容",
+                en="Replace the masked area and fill it with the description",
+            ),
             pluginInfo=IFieldsPluginInfo(
-                header="Erase & Replace",
+                header=I18N(
+                    zh="局部替换",
+                    en="Erase & Replace",
+                ),
                 numColumns=2,
                 definitions=txt2img_fields,
             ),
@@ -195,9 +237,16 @@ class Variation(IFieldsPlugin):
             nodeConstraint=NodeConstraints.IMAGE,
             nodeConstraintValidator="variation",
             src=constants.VARIATION_ICON,
-            tooltip="Generate vatiation of the given image",
+            tooltip=I18N(
+                zh="生成与当前图片相似的图片",
+                en="Generate vatiation of the given image",
+            ),
             pluginInfo=IFieldsPluginInfo(
-                header="Variation", definitions=variation_fields
+                header=I18N(
+                    zh="生成相似图片",
+                    en="Variation",
+                ),
+                definitions=variation_fields,
             ),
         )
 
@@ -260,11 +309,17 @@ class StaticPlugins(IPluginGroup):
     def settings(self) -> IPluginSettings:
         return IPluginSettings(
             **common_group_styles,
-            tooltip="A set of plugins for generating images",
+            tooltip=I18N(
+                zh="一组用于生成图片的插件",
+                en="A set of plugins for generating images",
+            ),
             pivot=PivotType.RIGHT,
             follow=False,
             pluginInfo=IPluginGroupInfo(
-                header="Creator Toolbox",
+                header=I18N(
+                    zh="创意工具箱",
+                    en="Creator Toolbox",
+                ),
                 plugins={
                     Txt2ImgKey: Txt2Img,
                 },
@@ -277,12 +332,18 @@ class ImageFollowers(IPluginGroup):
     def settings(self) -> IPluginSettings:
         return IPluginSettings(
             **common_group_styles,
-            tooltip="A set of plugins which can generate images from given images",
+            tooltip=I18N(
+                zh="一组用于编辑/变换当前图片的插件",
+                en="A set of plugins which can generate images from given images",
+            ),
             nodeConstraint=NodeConstraints.IMAGE,
             pivot=PivotType.RT,
             follow=True,
             pluginInfo=IPluginGroupInfo(
-                header="Image Toolbox",
+                header=I18N(
+                    zh="图片工具箱",
+                    en="Image Toolbox",
+                ),
                 plugins={
                     SRKey: SR,
                     SODKey: SOD,
@@ -300,14 +361,20 @@ class InpaintingFollowers(IPluginGroup):
             **common_group_styles,
             offsetX=-48,
             expandOffsetX=56,
-            tooltip="A set of plugins which uses an image and a mask to generate images",
+            tooltip=I18N(
+                zh="一组利用当前图片+蒙版来进行生成的插件",
+                en="A set of plugins which uses an image and a mask to generate images",
+            ),
             nodeConstraintRules=NodeConstraintRules(
                 exactly=[NodeConstraints.IMAGE, NodeConstraints.PATH]
             ),
             pivot=PivotType.RT,
             follow=True,
             pluginInfo=IPluginGroupInfo(
-                header="Inpainting Toolbox",
+                header=I18N(
+                    zh="蒙版工具箱",
+                    en="Inpainting Toolbox",
+                ),
                 plugins={
                     InpaintingKey: Inpainting,
                     SDInpaintingKey: SDInpainting,
