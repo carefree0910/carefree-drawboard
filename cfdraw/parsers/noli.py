@@ -12,7 +12,6 @@ from typing import Optional
 from typing import Generator
 from pydantic import Field
 from pydantic import BaseModel
-from pydantic import StrictStr
 from dataclasses import dataclass
 
 
@@ -29,7 +28,6 @@ class I18N(BaseModel):
 
 
 IStr = Union[str, I18N]
-IStrictStr = Union[StrictStr, I18N]
 
 
 class PivotType(str, Enum):
