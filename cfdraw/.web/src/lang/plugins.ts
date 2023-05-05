@@ -20,9 +20,9 @@ const _pluginsLangRecords: Record<Lang, Record<AllPlugins, string>> = {
     groupEditor: "编辑组",
     multiEditor: "编辑多节点",
     brush: "画笔",
+    "_python.fields": "Python 插件",
     "_python.textArea": "Python 文本框",
     "_python.QA": "Python 问答",
-    "_python.fields": "Python 插件",
     "_python.pluginGroup": "Python 插件组",
   },
   en: {
@@ -42,9 +42,9 @@ const _pluginsLangRecords: Record<Lang, Record<AllPlugins, string>> = {
     groupEditor: "Edit Group",
     multiEditor: "Edit Multi Nodes",
     brush: "Brush",
+    "_python.fields": "Python Plugin",
     "_python.textArea": "Python TextArea",
     "_python.QA": "Python Q & A",
-    "_python.fields": "Python Plugin",
     "_python.pluginGroup": "Python Plugin Group",
   },
 };

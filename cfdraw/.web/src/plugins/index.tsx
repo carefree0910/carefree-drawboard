@@ -21,9 +21,9 @@ export * from "./_react/TextEditorPlugin";
 export * from "./_react/GroupPlugin";
 export * from "./_react/LinksPlugin";
 export * from "./_react/BrushPlugin";
+export * from "./_python/FieldsPlugin";
 export * from "./_python/TextAreaPlugin";
 export * from "./_python/QAPlugin";
-export * from "./_python/FieldsPlugin";
 export * from "./_python/PluginGroup";
 
 function MakePlugin<T extends AllPlugins>({

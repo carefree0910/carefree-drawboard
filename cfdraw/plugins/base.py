@@ -14,7 +14,6 @@ from cfdraw.utils.misc import offload_run
 from cfdraw.schema.plugins import *
 from cfdraw.plugins.middlewares import *
 from cfdraw.parsers.noli import SingleNodeType
-from cfdraw.parsers.noli import NodeConstraints
 from cfdraw.parsers.chakra import IChakra
 
 
@@ -141,6 +140,12 @@ class IInternalSocketPlugin(ISocketPlugin, metaclass=ABCMeta):
 # bindings
 
 
+class IFieldsPlugin(ISocketPlugin):
+    @property
+    def type(self) -> PluginType:
+        return PluginType.FIELDS
+
+
 class ITextAreaPlugin(ISocketPlugin):
     @property
     def type(self) -> PluginType:
@@ -151,12 +156,6 @@ class IQAPlugin(ISocketPlugin):
     @property
     def type(self) -> PluginType:
         return PluginType.QA
-
-
-class IFieldsPlugin(ISocketPlugin):
-    @property
-    def type(self) -> PluginType:
-        return PluginType.FIELDS
 
 
 class IPluginGroup(ISocketPlugin):
@@ -194,9 +193,9 @@ class IHttpFieldsPlugin(IFieldsPlugin):
 __all__ = [
     "ISocketPlugin",
     "IInternalSocketPlugin",
+    "IFieldsPlugin",
     "ITextAreaPlugin",
     "IQAPlugin",
-    "IFieldsPlugin",
     "IPluginGroup",
     # deprecated
     "IHttpPlugin",

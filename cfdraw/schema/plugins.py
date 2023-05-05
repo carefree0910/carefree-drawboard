@@ -39,9 +39,9 @@ class PluginType(str, Enum):
     `cfdraw/.web/src/schema/plugins.ts`
     """
 
+    FIELDS = "_python.fields"
     TEXT_AREA = "_python.textArea"
     QA = "_python.QA"
-    FIELDS = "_python.fields"
     PLUGIN_GROUP = "_python.pluginGroup"
 
     # this type of plugins will not be rendered on the drawboard 🎨

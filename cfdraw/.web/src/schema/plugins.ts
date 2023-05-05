@@ -94,9 +94,9 @@ export const allReactPlugins = [
   "brush",
 ] as const;
 export const allPythonPlugins = [
+  "_python.fields",
   "_python.textArea",
   "_python.QA",
-  "_python.fields",
   "_python.pluginGroup",
 ] as const;
 export type ReactPlugins = (typeof allReactPlugins)[number];
@@ -122,9 +122,9 @@ export interface IPluginProps {
   multiEditor: IPlugin;
   brush: IPlugin;
   // python plugins
+  "_python.fields": IPythonFieldsPlugin;
   "_python.textArea": IPythonTextAreaPlugin;
   "_python.QA": IPythonQAPlugin;
-  "_python.fields": IPythonFieldsPlugin;
   "_python.pluginGroup": IPythonPluginGroup;
 }
 
