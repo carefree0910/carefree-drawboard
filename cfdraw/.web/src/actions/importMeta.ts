@@ -1,5 +1,10 @@
 import { RectangleShapeNode, getRandomHash, shallowCopy } from "@carefree0910/core";
-import { BoardStore, useAddNode, useDefaultTextContent } from "@carefree0910/business";
+import {
+  BoardStore,
+  useAddNode,
+  useDefaultTextContent,
+  useSafeExecute,
+} from "@carefree0910/business";
 
 import type { IPythonFieldsMetaData, IPythonResults, MetaType } from "@/schema/meta";
 import type { IImportMeta } from "@/schema/meta";
@@ -34,6 +39,7 @@ function getWHFromContent(content: string, fontSize: number): { w: number; h: nu
 const consumers: Record<MetaType, (input: IImportMeta<any>) => void> = {
   upload: consumeUpload,
   "add.text": consumeAddText,
+  "add.blank": consumeAddBlank,
   "add.sketch.path": consumeAddSketchPath,
   "python.fields": consumePythonFields,
 };
@@ -87,6 +93,24 @@ function consumeAddText({ lang, type, metaData }: IImportMeta<"add.text">): void
     fontSize,
     w,
     h,
+  });
+}
+function consumeAddBlank({ type, metaData }: IImportMeta<"add.blank">): void {
+  const newAlias = `add.blank.${getRandomHash()}`;
+
+  const success = async () => {
+    toastWord("success", Toast_Words["add-blank-success-message"]);
+    updateElapsedTimes(newAlias);
+  };
+  const failed = async () => {
+    toastWord("error", Toast_Words["add-blank-error-message"]);
+  };
+  metaData.alias = newAlias;
+  const node = getNewRectangle(newAlias, { autoFit: true, wh: { w: 512, h: 512 } });
+  node.params.meta = { type, data: metaData };
+  useSafeExecute("addJson", null, true, { success, failed })({
+    alias: newAlias,
+    json: node.toJson(),
   });
 }
 function consumeAddSketchPath(): void {

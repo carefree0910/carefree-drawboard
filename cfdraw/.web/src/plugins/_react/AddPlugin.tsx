@@ -9,6 +9,7 @@ import type { IPlugin } from "@/schema/plugins";
 import { toastWord } from "@/utils/toast";
 import { globalEvent } from "@/utils/event";
 import {
+  ADD_BLANK_ICON,
   ADD_IMAGE_ICON,
   ADD_PROJECT_ICON,
   ADD_TEXT_ICON,
@@ -79,6 +80,16 @@ const AddPlugin = ({ pluginInfo, ...props }: IPlugin) => {
               {...commonProps}
             />
           </CFImageUploader>
+          <CFIconButton
+            src={ADD_BLANK_ICON}
+            tooltip={translate(Add_Words["add-blank-button"], lang)}
+            id={`${id}_blank`}
+            onClick={() => {
+              importMeta({ lang, type: "add.blank", metaData: {} });
+              closePanel();
+            }}
+            {...commonProps}
+          />
           <CFIconButton
             src={ADD_PROJECT_ICON}
             tooltip={translate(Add_Words["new-project-button"], lang)}
