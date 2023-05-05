@@ -1,6 +1,7 @@
 import { useCallback, useEffect, useState } from "react";
 import { observer } from "mobx-react-lite";
 
+import { isUndefined } from "@carefree0910/core";
 import { langStore, translate } from "@carefree0910/business";
 
 import type { IPythonSocketPluginWithSubmit } from "@/schema/_python";
@@ -53,7 +54,11 @@ function PythonPluginWithSubmit<R>({
       setPluginTaskCache(id, { currentMeta, parameters: getExtraRequestData?.() ?? {} });
     }
     if (closeOnSubmit) {
-      setPluginExpanded(id, false);
+      if (isUndefined(props.groupId)) {
+        setPluginExpanded(id, false);
+      } else {
+        setPluginExpanded(props.groupId, true);
+      }
     }
     if (toastOnSubmit) {
       toastMessageOnSubmit ??= translate(Toast_Words["submit-task-success-message"], lang);
