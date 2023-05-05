@@ -35,6 +35,8 @@ function PythonPluginWithSubmit<R>({
     toastMessageOnSubmit,
   },
   buttonText,
+  beforeSubmit,
+  afterSubmit,
   onMessage,
   onSocketError,
   getExtraRequestData,
@@ -48,6 +50,7 @@ function PythonPluginWithSubmit<R>({
   const currentMeta = useCurrentMeta(node, nodes);
   const onClick = useCallback(() => {
     if (busy) return;
+    beforeSubmit?.();
     setBusy(true);
     setHash(usePluginHash(id));
     if (!taskCache) {
@@ -64,6 +67,7 @@ function PythonPluginWithSubmit<R>({
       toastMessageOnSubmit ??= translate(Toast_Words["submit-task-success-message"], lang);
       toast("info", parseIStr(toastMessageOnSubmit));
     }
+    afterSubmit?.();
   }, [
     id,
     lang,

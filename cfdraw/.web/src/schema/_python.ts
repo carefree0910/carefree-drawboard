@@ -82,6 +82,8 @@ export interface IPythonSocketPluginWithSubmit<R>
   id: string;
   buttonText: string;
   pluginInfo: IPythonPluginInfo & IPythonPluginWithSubmitPluginInfo;
+  beforeSubmit?: () => void;
+  afterSubmit?: () => void;
 }
 
 // web
