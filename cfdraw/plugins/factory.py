@@ -43,12 +43,12 @@ class PluginFactory:
             raise ValueError(f"plugin {identifier} already exists")
 
         def _fn(plugin_type: TPlugin) -> TPlugin:
+            plugin_type.identifier = identifier
             pI = plugin_type().settings.pluginInfo
             if isinstance(pI, IPluginGroupInfo):
                 for p_identifier, p_base in pI.plugins.items():
                     p_base._in_group = True
                     cls._register(d, p_identifier)(p_base)
-            plugin_type.identifier = identifier
             d[identifier] = plugin_type
             return plugin_type
 
