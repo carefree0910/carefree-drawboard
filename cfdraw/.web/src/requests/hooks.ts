@@ -70,14 +70,12 @@ export function useWebSocketHook<R>({
   getMessage,
   onMessage,
   onSocketError,
-  dependencies,
   retryInterval,
   updateInterval,
   isInternal,
 }: IPythonSocketCallbacks<R> & {
   isInvisible: boolean;
   hash?: string;
-  dependencies?: any[];
   isInternal?: boolean;
 }) {
   const hash = useMemo(() => (isInvisible ? undefined : _hash), [isInvisible, _hash]);
@@ -102,5 +100,5 @@ export function useWebSocketHook<R>({
       );
       runSocketHook(hash);
     });
-  }, [hash, onMessageWithRetry, onSocketError, isInternal, ...(dependencies ?? [])]);
+  }, [hash, onMessageWithRetry, onSocketError, isInternal]);
 }
