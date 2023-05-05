@@ -26,7 +26,6 @@ import {
 import { isInteractingWithBoard } from "@/stores/pointerEvents";
 import { parseIStr } from "@/actions/i18n";
 import CFText from "@/components/CFText";
-import CFTooltip from "@/components/CFTooltip";
 import { CFIconButton } from "@/components/CFButton";
 import { CFPendingProgress, CFWorkingProgress } from "@/components/CFCircularProgress";
 
@@ -177,51 +176,50 @@ const Floating = forwardRef(function (
 
   return (
     <>
-      <CFTooltip label={iconActivated ? parseIStr(tooltip ?? "") : ""}>
-        <CFIconButton
-          src={parseIStr(src)}
-          id={id}
-          w={`${iconW}px`}
-          h={`${iconH}px`}
-          onClick={() => {
-            if (!noExpand) {
-              setPluginExpanded(id, !expand);
-            }
-            onFloatingButtonClick?.();
-          }}
-          opacity={isInvisible ? 0 : 1}
-          visibility={isInvisible ? "hidden" : "visible"}
-          transition={`${VISIBILITY_TRANSITION}, ${BG_TRANSITION}`}
-          {...getCommonProps(false)}
-          {...props}
-          imageProps={{ opacity: iconOpacity }}>
-          {taskMessage && isBusy && (
-            <Box w={`${iconW}px`} h={`${iconH}px`} position="absolute" left="0px" top="0px">
-              {taskMessage.status === "pending" ? (
-                <CFPendingProgress
-                  {...progressProps}
-                  value={(1.0 - taskMessage.pending / Math.max(taskMessage.total, 1)) * 100}
-                />
-              ) : (
-                <CFWorkingProgress
-                  {...progressProps}
-                  value={(taskMessage.data.progress ?? 0.0) * 100}
-                />
-              )}
-            </Box>
-          )}
-          {taskMessage && isBusy && isUndefined(groupId) && (
-            <CFText {...statusCaptionProps}>
-              {translate(
-                taskMessage.status === "pending"
-                  ? UI_Words["task-pending-caption"]
-                  : UI_Words["task-working-caption"],
-                lang,
-              )}
-            </CFText>
-          )}
-        </CFIconButton>
-      </CFTooltip>
+      <CFIconButton
+        src={parseIStr(src)}
+        tooltip={iconActivated ? parseIStr(tooltip ?? "") : ""}
+        id={id}
+        w={`${iconW}px`}
+        h={`${iconH}px`}
+        onClick={() => {
+          if (!noExpand) {
+            setPluginExpanded(id, !expand);
+          }
+          onFloatingButtonClick?.();
+        }}
+        opacity={isInvisible ? 0 : 1}
+        visibility={isInvisible ? "hidden" : "visible"}
+        transition={`${VISIBILITY_TRANSITION}, ${BG_TRANSITION}`}
+        {...getCommonProps(false)}
+        {...props}
+        imageProps={{ opacity: iconOpacity }}>
+        {taskMessage && isBusy && (
+          <Box w={`${iconW}px`} h={`${iconH}px`} position="absolute" left="0px" top="0px">
+            {taskMessage.status === "pending" ? (
+              <CFPendingProgress
+                {...progressProps}
+                value={(1.0 - taskMessage.pending / Math.max(taskMessage.total, 1)) * 100}
+              />
+            ) : (
+              <CFWorkingProgress
+                {...progressProps}
+                value={(taskMessage.data.progress ?? 0.0) * 100}
+              />
+            )}
+          </Box>
+        )}
+        {taskMessage && isBusy && isUndefined(groupId) && (
+          <CFText {...statusCaptionProps}>
+            {translate(
+              taskMessage.status === "pending"
+                ? UI_Words["task-pending-caption"]
+                : UI_Words["task-working-caption"],
+              lang,
+            )}
+          </CFText>
+        )}
+      </CFIconButton>
       {!noExpand && (
         <Portal containerRef={ref as any}>
           <Flex

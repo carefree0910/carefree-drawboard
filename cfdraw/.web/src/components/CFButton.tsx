@@ -1,6 +1,6 @@
 import { observer } from "mobx-react-lite";
-import { forwardRef, useState, useCallback } from "react";
-import { Box, Button, ButtonProps, ChakraComponent, Image, ImageProps } from "@chakra-ui/react";
+import { useState, useCallback } from "react";
+import { Box, Button, ButtonProps, Image, ImageProps } from "@chakra-ui/react";
 
 import iconLoading from "@/assets/icon-loading.json";
 import { Event } from "@/utils/event";
@@ -33,10 +33,11 @@ export const iconLoadedEvent = new Event<IIconLoadedEvent>();
 interface ICFIconButton extends ButtonProps {
   id: string;
   src?: string;
+  tooltip?: string;
   imageProps?: ImageProps;
 }
-export const CFIconButton = observer(
-  forwardRef(({ id, src, imageProps, children, ...others }: ICFIconButton, ref) => {
+export const CFIconButton = observer<ICFIconButton>(
+  ({ id, src, tooltip, imageProps, children, ...others }) => {
     const [iconLoaded, setIconLoaded] = useState(false);
     const onIconLoaded = useCallback(() => {
       iconLoadedEvent.emit({ id });
@@ -55,31 +56,33 @@ export const CFIconButton = observer(
     });
 
     return (
-      <Box as="button" id={id} {...others} ref={ref}>
-        <Image
-          src={src}
-          w="100%"
-          h="100%"
-          draggable={false}
-          visibility={iconLoaded ? "visible" : "hidden"}
-          transition={VISIBILITY_TRANSITION}
-          onLoad={onIconLoaded}
-          {...imageProps}
-        />
-        {children}
-        <CFLottie
-          w="100%"
-          h="100%"
-          position="absolute"
-          left="0px"
-          top="0px"
-          hide={iconLoaded}
-          delay={iconLoadingPatience}
-          animationData={iconLoading}
-        />
-      </Box>
+      <CFTooltip label={tooltip}>
+        <Box as="button" id={id} {...others}>
+          <Image
+            src={src}
+            w="100%"
+            h="100%"
+            draggable={false}
+            visibility={iconLoaded ? "visible" : "hidden"}
+            transition={VISIBILITY_TRANSITION}
+            onLoad={onIconLoaded}
+            {...imageProps}
+          />
+          {children}
+          <CFLottie
+            w="100%"
+            h="100%"
+            position="absolute"
+            left="0px"
+            top="0px"
+            hide={iconLoaded}
+            delay={iconLoadingPatience}
+            animationData={iconLoading}
+          />
+        </Box>
+      </CFTooltip>
     );
-  }),
-) as ChakraComponent<"button", {}>;
+  },
+);
 
 export default observer(CFButton);
