@@ -60,3 +60,14 @@ export const GITHUB_ICON =
   "https://user-images.githubusercontent.com/15677328/234538604-3017a411-e5f1-4564-8bc0-5090e973d86b.svg";
 export const EMAIL_ICON =
   "https://user-images.githubusercontent.com/15677328/234538781-b59b514f-99be-4ca2-859d-601f024cd7e0.svg";
+
+export const ADD_TEXT_ICON =
+  "https://user-images.githubusercontent.com/15677328/236501259-c84127ef-91f3-4dc7-a505-2112ca519e54.svg";
+export const ADD_IMAGE_ICON =
+  "https://user-images.githubusercontent.com/15677328/236501264-448aae30-f2ea-433d-b35d-c7ce9e5c17ba.svg";
+export const ADD_BLANK_ICON =
+  "https://user-images.githubusercontent.com/15677328/236501253-068ae3c2-6852-41c7-aac1-bdaba3a9d794.svg";
+export const ADD_PROJECT_ICON =
+  "https://user-images.githubusercontent.com/15677328/236501256-9c8981c6-fa12-4ad7-b9be-a0578a0a9ce5.svg";
+export const ADD_FRAME_ICON =
+  "https://user-images.githubusercontent.com/15677328/236501262-f3dbf29c-05b0-46d3-9eee-1345a2eadaaf.svg";
