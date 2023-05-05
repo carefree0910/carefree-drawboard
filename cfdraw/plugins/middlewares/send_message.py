@@ -1,20 +1,16 @@
 from typing import List
+from typing import Union
 
 from cfdraw.schema.plugins import PluginType
 from cfdraw.schema.plugins import IMiddleWare
+from cfdraw.schema.plugins import Subscription
 from cfdraw.schema.plugins import ISocketMessage
 
 
 class SendSocketMessageMiddleWare(IMiddleWare):
     @property
-    def subscriptions(self) -> List[PluginType]:
-        return [
-            PluginType.FIELDS,
-            PluginType.TEXT_AREA,
-            PluginType.QA,
-            PluginType.CHAT,
-            PluginType._INTERNAL,
-        ]
+    def subscriptions(self) -> Union[List[PluginType], Subscription]:
+        return Subscription.ALL
 
     @property
     def can_handle_message(self) -> bool:

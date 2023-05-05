@@ -4,7 +4,7 @@ import { Textarea } from "@chakra-ui/react";
 
 import { langStore, translate } from "@carefree0910/business";
 
-import type { IPythonOnSocketMessage, IPythonQAPlugin } from "@/schema/_python";
+import type { IPythonOnPluginMessage, IPythonQAPlugin } from "@/schema/_python";
 import { UI_Words } from "@/lang/ui";
 import { usePluginIds } from "@/stores/pluginsInfo";
 import { parseIStr } from "@/actions/i18n";
@@ -18,10 +18,12 @@ const PythonQAPlugin = ({ pluginInfo, ...props }: IPythonQAPlugin) => {
   const [serverText, setServerText] = useState(parseIStr(pluginInfo.initialText));
   const lang = langStore.tgt;
   const getExtraRequestData = useCallback(() => ({ text: userInput }), [userInput]);
-  const onMessage = useCallback<IPythonOnSocketMessage<{ text: string }>>(
+  const onMessage = useCallback<IPythonOnPluginMessage>(
     async ({ status, data }) => {
       if (status === "finished") {
-        setServerText(data.final?.text ?? "");
+        if (data.final?.type === "text") {
+          setServerText(data.final.value[0].text);
+        }
       } else {
         setServerText("Thinking...");
       }

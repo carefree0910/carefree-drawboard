@@ -5,7 +5,7 @@ import { Textarea } from "@chakra-ui/react";
 import { isUndefined } from "@carefree0910/core";
 import { langStore, translate } from "@carefree0910/business";
 
-import type { IPythonOnSocketMessage, IPythonQAPlugin } from "@/schema/_python";
+import type { IPythonOnPluginMessage, IPythonQAPlugin } from "@/schema/_python";
 import { UI_Words } from "@/lang/ui";
 import { removeSocketHooks } from "@/stores/socket";
 import { removePluginMessage, removePluginTaskCache, usePluginIds } from "@/stores/pluginsInfo";
@@ -20,10 +20,12 @@ const PythonChatPlugin = ({ pluginInfo, ...props }: IPythonQAPlugin) => {
   const [userInput, setUserInput] = useState("");
   const lang = langStore.tgt;
   const getExtraRequestData = useCallback(() => ({ context, userInput }), [context, userInput]);
-  const onMessage = useCallback<IPythonOnSocketMessage<{ text: string }>>(
+  const onMessage = useCallback<IPythonOnPluginMessage>(
     async ({ hash, status, data }) => {
       if (status === "finished") {
-        setContext(data.final?.text ?? "");
+        if (data.final?.type === "text") {
+          setContext(data.final.value[0].text);
+        }
         removeSocketHooks(hash);
         removePluginMessage(id);
         removePluginTaskCache(id);

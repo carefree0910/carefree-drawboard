@@ -6,8 +6,7 @@ import { Flex, Spacer } from "@chakra-ui/react";
 import { isUndefined } from "@carefree0910/core";
 import { langStore, translate } from "@carefree0910/business";
 
-import type { IPythonResults } from "@/schema/meta";
-import type { IPythonFieldsPlugin, IPythonOnSocketMessage } from "@/schema/_python";
+import type { IPythonFieldsPlugin, IPythonOnPluginMessage } from "@/schema/_python";
 import { UI_Words } from "@/lang/ui";
 import { Toast_Words } from "@/lang/toast";
 import { toastWord } from "@/utils/toast";
@@ -37,7 +36,7 @@ const PythonFieldsPlugin = ({ pluginInfo, ...props }: IPythonFieldsPlugin) => {
   const emitClose = useClosePanel(id);
   const taskCache = usePluginTaskCache(id);
 
-  const onMessage = useCallback<IPythonOnSocketMessage<IPythonResults>>(
+  const onMessage = useCallback<IPythonOnPluginMessage>(
     async (message) => {
       const {
         hash,

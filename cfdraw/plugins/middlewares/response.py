@@ -8,15 +8,16 @@ from PIL.PngImagePlugin import PngInfo
 
 from cfdraw.schema.plugins import PluginType
 from cfdraw.schema.plugins import IMiddleWare
+from cfdraw.schema.plugins import Subscription
 from cfdraw.schema.plugins import ISocketMessage
 from cfdraw.schema.plugins import ISocketRequest
 from cfdraw.app.endpoints.upload import ImageUploader
 
 
-class FieldsMiddleWare(IMiddleWare):
+class ResponseMiddleWare(IMiddleWare):
     @property
-    def subscriptions(self) -> List[PluginType]:
-        return [PluginType.FIELDS]
+    def subscriptions(self) -> Union[List[PluginType], Subscription]:
+        return Subscription.ALL
 
     async def before(self, request: ISocketRequest) -> None:
         await super().before(request)
@@ -45,5 +46,5 @@ class FieldsMiddleWare(IMiddleWare):
 
 
 __all__ = [
-    "FieldsMiddleWare",
+    "ResponseMiddleWare",
 ]

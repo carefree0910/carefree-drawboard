@@ -116,6 +116,7 @@ export type IPythonOnSocketMessage<R> = (data: IPythonSocketMessage<R>) => Promi
     }
   | undefined
 >;
+export type IPythonOnPluginMessage = IPythonOnSocketMessage<IPythonResults>;
 export interface IPythonSocketIntervals {
   // if set, will retry in `retryInterval` ms when exception occurred
   retryInterval?: number;

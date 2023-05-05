@@ -8,6 +8,7 @@ from typing import Any
 from typing import Dict
 from typing import List
 from typing import Type
+from typing import Union
 from typing import TypeVar
 from typing import Callable
 from typing import Optional
@@ -422,6 +423,10 @@ class IPlugin(ABC):
         pass
 
 
+class Subscription(str, Enum):
+    ALL = "__all__"
+
+
 class IMiddleWare(ABC):
     hash: str
     plugin: IPlugin
@@ -430,7 +435,7 @@ class IMiddleWare(ABC):
 
     @property
     @abstractmethod
-    def subscriptions(self) -> List[PluginType]:
+    def subscriptions(self) -> Union[List[PluginType], Subscription]:
         pass
 
     @abstractmethod
@@ -456,7 +461,10 @@ class IMiddleWare(ABC):
         self.plugin = plugin
 
     async def __call__(self, response: Any) -> ISocketMessage:
-        if self.plugin.type not in self.subscriptions:
+        if (
+            self.subscriptions != Subscription.ALL
+            and self.plugin.type not in self.subscriptions
+        ):
             return response
         if isinstance(response, ISocketMessage) and not self.can_handle_message:
             return response
