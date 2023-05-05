@@ -12,6 +12,7 @@ import type { IStr } from "./misc";
 interface IPythonPluginInfo extends IPluginInfo, IPythonSocketIntervals {
   name?: IStr;
   identifier: string;
+  noErrorToast?: boolean;
 }
 export interface IPythonPlugin extends IPlugin {
   pluginInfo: IPythonPluginInfo;
@@ -53,7 +54,6 @@ export interface IPythonFieldsPlugin extends IPythonPlugin {
       header?: IStr;
       definitions: IDefinitions;
       numColumns?: number;
-      noErrorToast?: boolean;
     };
 }
 

@@ -73,6 +73,11 @@ export async function getPythonRequest({
   };
 }
 
+/**
+ * 通过 hash 来控制是否通信
+ * > 当 hash 为 undefined 时，不会进行通信
+ * > 否则，会创建一个 task，其唯一标识即为 hash，然后向后端发起通信（任务）请求
+ */
 export function useSocketPython<R>({
   hash,
   node,

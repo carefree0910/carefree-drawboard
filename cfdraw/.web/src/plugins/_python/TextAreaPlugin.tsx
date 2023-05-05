@@ -1,28 +1,47 @@
-import { useCallback, useMemo, useState } from "react";
+import { useCallback, useEffect, useState } from "react";
 import { observer } from "mobx-react-lite";
 import { Textarea } from "@chakra-ui/react";
 
 import { getRandomHash } from "@carefree0910/core";
 
 import type { IPythonTextAreaPlugin, IPythonOnPluginMessage } from "@/schema/_python";
-import { usePluginIds } from "@/stores/pluginsInfo";
+import { usePluginIds, usePluginNeedRender } from "@/stores/pluginsInfo";
 import { useSocketPython } from "@/hooks/usePython";
 import { drawboardPluginFactory } from "@/plugins/utils/factory";
 import Render from "@/plugins/components/Render";
+import { socketFinishedEvent } from "./PluginWithSubmit";
+import { cleanupException, cleanupFinished } from "../utils/cleanup";
 
-const PythonTextAreaPlugin = ({
-  pluginInfo: { node, nodes, identifier, retryInterval, updateInterval, noLoading, textAlign },
-  ...props
-}: IPythonTextAreaPlugin) => {
+const PythonTextAreaPlugin = ({ pluginInfo, ...props }: IPythonTextAreaPlugin) => {
+  const { node, nodes, identifier, retryInterval, updateInterval, noLoading, textAlign } =
+    pluginInfo;
   const { id } = usePluginIds(`textArea_${identifier}`);
-  const hash = useMemo(() => getRandomHash().toString(), [id]);
+  const needRender = usePluginNeedRender(id);
+  const [hash, setHash] = useState<string | undefined>(undefined);
+  useEffect(() => {
+    if (needRender) {
+      setHash(getRandomHash().toString());
+    }
+  }, [needRender]);
+  useEffect(() => {
+    const { dispose } = socketFinishedEvent.on(({ id: incomingId }) => {
+      if (incomingId === id) {
+        setHash(undefined);
+      }
+    });
+    return dispose;
+  }, [id, setHash]);
   const [value, setValue] = useState("");
   const onMessage = useCallback<IPythonOnPluginMessage>(
-    async ({ status, data }) => {
+    async (message) => {
+      const { status, data } = message;
       if (status === "finished") {
         if (data.final?.type === "text") {
           setValue(data.final.value[0].text);
         }
+        cleanupFinished({ id, message });
+      } else if (status === "exception") {
+        cleanupException({ id, message, pluginInfo });
       } else if (!noLoading) {
         setValue("Loading...");
       }

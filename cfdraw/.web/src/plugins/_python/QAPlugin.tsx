@@ -11,6 +11,7 @@ import { parseIStr } from "@/actions/i18n";
 import CFInput from "@/components/CFInput";
 import { drawboardPluginFactory } from "@/plugins/utils/factory";
 import PythonPluginWithSubmit from "./PluginWithSubmit";
+import { cleanupException, cleanupFinished } from "../utils/cleanup";
 
 const PythonQAPlugin = ({ pluginInfo, ...props }: IPythonQAPlugin) => {
   const { id } = usePluginIds(`QA_${pluginInfo.identifier}`);
@@ -19,11 +20,15 @@ const PythonQAPlugin = ({ pluginInfo, ...props }: IPythonQAPlugin) => {
   const lang = langStore.tgt;
   const getExtraRequestData = useCallback(() => ({ text: userInput }), [userInput]);
   const onMessage = useCallback<IPythonOnPluginMessage>(
-    async ({ status, data }) => {
+    async (message) => {
+      const { status, data } = message;
       if (status === "finished") {
         if (data.final?.type === "text") {
           setServerText(data.final.value[0].text);
         }
+        cleanupFinished({ id, message });
+      } else if (status === "exception") {
+        cleanupException({ id, message, pluginInfo });
       } else {
         setServerText("Thinking...");
       }

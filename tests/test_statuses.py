@@ -2,7 +2,6 @@ import time
 
 from cfdraw import *
 
-
 settings = IPluginSettings(
     w=200,
     h=110,
@@ -16,7 +15,6 @@ settings = IPluginSettings(
         noErrorToast=True,
     ),
 )
-
 
 num_plugins = 6
 all_settings = {}

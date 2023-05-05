@@ -84,6 +84,7 @@ class SocketStore extends ABCStore<ISocketStore> implements ISocketStore {
 
 const socketStore = new SocketStore();
 export const socketLog = (...args: any[]) => DEBUG && console.log(...args);
+export const getSocketHook = (hash: string) => socketStore.hooks.get(hash);
 export const getSocketHooks = () => socketStore.hooks;
 export const runSocketHook = (key: string) => socketStore.run(key);
 export const pushSocketHook = <R>(hook: SocketHook<R>) => {

@@ -7,12 +7,12 @@ import { langStore, translate } from "@carefree0910/business";
 
 import type { IPythonOnPluginMessage, IPythonQAPlugin } from "@/schema/_python";
 import { UI_Words } from "@/lang/ui";
-import { removeSocketHooks } from "@/stores/socket";
-import { removePluginMessage, removePluginTaskCache, usePluginIds } from "@/stores/pluginsInfo";
+import { usePluginIds } from "@/stores/pluginsInfo";
 import { parseIStr } from "@/actions/i18n";
 import CFInput from "@/components/CFInput";
 import { drawboardPluginFactory } from "@/plugins/utils/factory";
-import PythonPluginWithSubmit, { socketFinishedEvent } from "./PluginWithSubmit";
+import PythonPluginWithSubmit from "./PluginWithSubmit";
+import { cleanupException, cleanupFinished } from "../utils/cleanup";
 
 const PythonChatPlugin = ({ pluginInfo, ...props }: IPythonQAPlugin) => {
   const { id } = usePluginIds(`Chat_${pluginInfo.identifier}`);
@@ -21,20 +21,20 @@ const PythonChatPlugin = ({ pluginInfo, ...props }: IPythonQAPlugin) => {
   const lang = langStore.tgt;
   const getExtraRequestData = useCallback(() => ({ context, userInput }), [context, userInput]);
   const onMessage = useCallback<IPythonOnPluginMessage>(
-    async ({ hash, status, data }) => {
-      if (status === "finished") {
-        if (data.final?.type === "text") {
-          setContext(data.final.value[0].text);
-        }
-        removeSocketHooks(hash);
-        removePluginMessage(id);
-        removePluginTaskCache(id);
-        socketFinishedEvent.emit({ id });
-      } else if (status === "working") {
+    async (message) => {
+      const { status, data } = message;
+      if (status === "working") {
         const intermediate = data.intermediate?.textList?.[0];
         if (!isUndefined(intermediate)) {
           setContext(intermediate);
         }
+      } else if (status === "finished") {
+        if (data.final?.type === "text") {
+          setContext(data.final.value[0].text);
+        }
+        cleanupFinished({ id, message });
+      } else if (status === "exception") {
+        cleanupException({ id, message, pluginInfo });
       }
       return {};
     },

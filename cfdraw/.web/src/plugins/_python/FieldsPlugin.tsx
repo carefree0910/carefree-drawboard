@@ -3,7 +3,6 @@ import { observer } from "mobx-react-lite";
 import { CloseIcon } from "@chakra-ui/icons";
 import { Flex, Spacer } from "@chakra-ui/react";
 
-import { isUndefined } from "@carefree0910/core";
 import { langStore, translate } from "@carefree0910/business";
 
 import type { IPythonFieldsPlugin, IPythonOnPluginMessage } from "@/schema/_python";
@@ -11,14 +10,7 @@ import { UI_Words } from "@/lang/ui";
 import { Toast_Words } from "@/lang/toast";
 import { toastWord } from "@/utils/toast";
 import { titleCaseWord } from "@/utils/misc";
-import { removeSocketHooks, socketLog } from "@/stores/socket";
-import {
-  usePluginIds,
-  removePluginMessage,
-  setPluginMessage,
-  usePluginTaskCache,
-  removePluginTaskCache,
-} from "@/stores/pluginsInfo";
+import { usePluginIds, setPluginMessage, usePluginTaskCache } from "@/stores/pluginsInfo";
 import { parseIStr } from "@/actions/i18n";
 import { importMeta } from "@/actions/importMeta";
 import CFHeading from "@/components/CFHeading";
@@ -27,6 +19,7 @@ import { useClosePanel } from "../components/hooks";
 import { useDefinitions } from "../components/Fields";
 import { useDefinitionsRequestDataFn } from "./hooks";
 import PythonPluginWithSubmit, { socketFinishedEvent } from "./PluginWithSubmit";
+import { OnFinished, cleanupException, cleanupFinished } from "../utils/cleanup";
 
 const PythonFieldsPlugin = ({ pluginInfo, ...props }: IPythonFieldsPlugin) => {
   const { id, pureIdentifier } = usePluginIds(pluginInfo.identifier);
@@ -36,14 +29,32 @@ const PythonFieldsPlugin = ({ pluginInfo, ...props }: IPythonFieldsPlugin) => {
   const emitClose = useClosePanel(id);
   const taskCache = usePluginTaskCache(id);
 
+  const onFinished = useCallback<OnFinished>(
+    ({ data: { final, elapsedTimes } }) => {
+      socketFinishedEvent.emit({ id });
+      if (!final) {
+        toastWord("success", Toast_Words["submit-task-finished-message"], {
+          appendix: ` (${pureIdentifier})`,
+        });
+      } else {
+        importMeta({
+          lang,
+          type: "python.fields",
+          metaData: {
+            identifier: pureIdentifier,
+            parameters: taskCache?.parameters ?? {},
+            response: final,
+            elapsedTimes,
+            from: taskCache?.currentMeta,
+          },
+        });
+      }
+    },
+    [id, pureIdentifier, lang, taskCache],
+  );
   const onMessage = useCallback<IPythonOnPluginMessage>(
     async (message) => {
-      const {
-        hash,
-        status,
-        data: { final, elapsedTimes },
-      } = message;
-      switch (status) {
+      switch (message.status) {
         case "pending": {
           setPluginMessage(id, message);
           break;
@@ -53,49 +64,17 @@ const PythonFieldsPlugin = ({ pluginInfo, ...props }: IPythonFieldsPlugin) => {
           break;
         }
         case "finished": {
-          removePluginMessage(id);
-          socketFinishedEvent.emit({ id });
-          if (!final) {
-            toastWord("success", Toast_Words["submit-task-finished-message"], {
-              appendix: ` (${pureIdentifier})`,
-            });
-          } else {
-            importMeta({
-              lang,
-              type: "python.fields",
-              metaData: {
-                identifier: pureIdentifier,
-                parameters: taskCache?.parameters ?? {},
-                response: final,
-                elapsedTimes,
-                from: taskCache?.currentMeta,
-              },
-            });
-          }
-          removePluginTaskCache(id);
-          socketLog(`> remove hook (${hash})`);
-          removeSocketHooks(hash);
+          cleanupFinished({ id, message, onFinished });
           break;
         }
         case "exception": {
-          if (!noErrorToast) {
-            toastWord("error", Toast_Words["submit-task-error-message"], {
-              appendix: ` - ${message.message}`,
-            });
-          }
-          // cleanup if retry is not specified
-          if (isUndefined(retryInterval)) {
-            socketFinishedEvent.emit({ id });
-            removePluginMessage(id);
-            socketLog(`> remove hook (${hash})`);
-            removeSocketHooks(hash);
-          }
+          cleanupException({ id, message, pluginInfo });
           break;
         }
       }
       return {};
     },
-    [id, lang, pureIdentifier, retryInterval, noErrorToast, taskCache],
+    [id, lang, pureIdentifier, retryInterval, noErrorToast, onFinished],
   );
   const onSocketError = useCallback(
     async (err: any) => {
