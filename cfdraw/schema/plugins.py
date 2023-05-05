@@ -35,7 +35,7 @@ ISend = Callable[["ISocketMessage"], Coroutine[Any, Any, bool]]
 
 class PluginType(str, Enum):
     """
-    These types should align with the `allAvailablePythonPlugins` locates at
+    These types should align with the `allPythonPlugins` locates at
     `cfdraw/.web/src/schema/plugins.ts`
     """
 
@@ -50,7 +50,7 @@ class PluginType(str, Enum):
 
 class ReactPluginType(str, Enum):
     """
-    These types should align with the `allAvailablePlugins` locates at
+    These types should align with the `allReactPlugins` locates at
     `cfdraw/.web/src/schema/plugins.ts`
     """
 
