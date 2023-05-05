@@ -1,10 +1,14 @@
 import { useCallback, useMemo } from "react";
 
 import { Dictionary, INode, shallowCopy } from "@carefree0910/core";
+import { langStore } from "@carefree0910/business";
 
 import type { IMeta } from "@/schema/meta";
 import type { IDefinitions } from "@/schema/fields";
+import type { IPythonOnPluginMessage, IUseOnPythonPluginMessage } from "@/schema/_python";
 import { getMetaField } from "@/stores/meta";
+import { setPluginMessage } from "@/stores/pluginsInfo";
+import { cleanupException, cleanupFinished } from "../utils/cleanup";
 
 export function useDefinitionsRequestDataFn(definitions: IDefinitions): () => Dictionary<any> {
   return useCallback(() => {
@@ -34,4 +38,39 @@ export function useCurrentMeta(node: INode | null, nodes: INode[]): IMeta | unde
     }
     return shallowCopy(currentMeta);
   }, [node?.alias, nodes.map((node) => node.alias).join(",")]);
+}
+export function useOnMessage({
+  id,
+  pluginInfo,
+  onIntermediate,
+  onFinished,
+}: IUseOnPythonPluginMessage) {
+  const lang = langStore.tgt;
+  const { retryInterval, noErrorToast } = pluginInfo;
+
+  return useCallback<IPythonOnPluginMessage>(
+    async (message) => {
+      switch (message.status) {
+        case "pending": {
+          setPluginMessage(id, message);
+          break;
+        }
+        case "working": {
+          onIntermediate?.(message);
+          setPluginMessage(id, message);
+          break;
+        }
+        case "finished": {
+          cleanupFinished({ id, message, onFinished });
+          break;
+        }
+        case "exception": {
+          cleanupException({ id, message, pluginInfo });
+          break;
+        }
+      }
+      return {};
+    },
+    [id, lang, retryInterval, noErrorToast, onFinished],
+  );
 }

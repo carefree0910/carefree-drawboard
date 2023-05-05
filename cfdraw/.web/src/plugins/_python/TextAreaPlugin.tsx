@@ -4,13 +4,13 @@ import { Textarea } from "@chakra-ui/react";
 
 import { getRandomHash } from "@carefree0910/core";
 
-import type { IPythonTextAreaPlugin, IPythonOnPluginMessage } from "@/schema/_python";
+import type { IPythonTextAreaPlugin, OnPythonPluginMessage } from "@/schema/_python";
 import { usePluginIds, usePluginNeedRender } from "@/stores/pluginsInfo";
 import { useSocketPython } from "@/hooks/usePython";
 import { drawboardPluginFactory } from "@/plugins/utils/factory";
 import Render from "@/plugins/components/Render";
 import { socketFinishedEvent } from "./PluginWithSubmit";
-import { cleanupException, cleanupFinished } from "../utils/cleanup";
+import { useOnMessage } from "./hooks";
 
 const PythonTextAreaPlugin = ({ pluginInfo, ...props }: IPythonTextAreaPlugin) => {
   const { node, nodes, identifier, retryInterval, updateInterval, noLoading, textAlign } =
@@ -32,23 +32,15 @@ const PythonTextAreaPlugin = ({ pluginInfo, ...props }: IPythonTextAreaPlugin) =
     return dispose;
   }, [id, setHash]);
   const [value, setValue] = useState("");
-  const onMessage = useCallback<IPythonOnPluginMessage>(
-    async (message) => {
-      const { status, data } = message;
-      if (status === "finished") {
-        if (data.final?.type === "text") {
-          setValue(data.final.value[0].text);
-        }
-        cleanupFinished({ id, message });
-      } else if (status === "exception") {
-        cleanupException({ id, message, pluginInfo });
-      } else if (!noLoading) {
-        setValue("Loading...");
+  const onFinished = useCallback<OnPythonPluginMessage>(
+    async ({ data: { final } }) => {
+      if (final?.type === "text") {
+        setValue(final.value[0].text);
       }
-      return {};
     },
     [setValue],
   );
+  const onMessage = useOnMessage({ id, pluginInfo, onFinished });
 
   useSocketPython({
     hash,

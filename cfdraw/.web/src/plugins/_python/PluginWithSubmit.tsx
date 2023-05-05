@@ -19,12 +19,23 @@ import { parseIStr } from "@/actions/i18n";
 import { CFButtonWithBusyTooltip } from "@/components/CFButton";
 import CFDivider from "@/components/CFDivider";
 import Render from "../components/Render";
-import { useCurrentMeta } from "./hooks";
+import { useCurrentMeta, useOnMessage } from "./hooks";
 
 export const socketFinishedEvent = new Event<{ id: string }>();
-function PythonPluginWithSubmit<R>({
+function PythonPluginWithSubmit({
   id,
-  pluginInfo: {
+  pluginInfo,
+  buttonText,
+  beforeSubmit,
+  afterSubmit,
+  onIntermediate,
+  onFinished,
+  onSocketError,
+  getExtraRequestData,
+  children,
+  ...props
+}: IPythonSocketPluginWithSubmit) {
+  const {
     node,
     nodes,
     identifier,
@@ -33,16 +44,7 @@ function PythonPluginWithSubmit<R>({
     closeOnSubmit = true,
     toastOnSubmit = true,
     toastMessageOnSubmit,
-  },
-  buttonText,
-  beforeSubmit,
-  afterSubmit,
-  onMessage,
-  onSocketError,
-  getExtraRequestData,
-  children,
-  ...props
-}: IPythonSocketPluginWithSubmit<R>) {
+  } = pluginInfo;
   const lang = langStore.tgt;
   const [hash, setHash] = useState<string | undefined>(undefined);
   const [busy, setBusy] = useState(false);
@@ -64,8 +66,12 @@ function PythonPluginWithSubmit<R>({
       }
     }
     if (toastOnSubmit) {
-      toastMessageOnSubmit ??= translate(Toast_Words["submit-task-success-message"], lang);
-      toast("info", parseIStr(toastMessageOnSubmit));
+      toast(
+        "info",
+        parseIStr(
+          toastMessageOnSubmit ?? translate(Toast_Words["submit-task-success-message"], lang),
+        ),
+      );
     }
     afterSubmit?.();
   }, [
@@ -78,8 +84,9 @@ function PythonPluginWithSubmit<R>({
     currentMeta,
     getExtraRequestData,
   ]);
+  const onMessage = useOnMessage({ id, pluginInfo, onIntermediate, onFinished });
 
-  useSocketPython<R>({
+  useSocketPython({
     hash,
     node,
     nodes,

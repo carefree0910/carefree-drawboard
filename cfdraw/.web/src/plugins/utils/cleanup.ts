@@ -1,6 +1,6 @@
 import { isUndefined } from "@carefree0910/core";
 
-import type { IPythonPlugin, IPythonPluginMessage } from "@/schema/_python";
+import type { OnPythonPluginMessage, IPythonPlugin, IPythonPluginMessage } from "@/schema/_python";
 import { toastWord } from "@/utils/toast";
 import { Toast_Words } from "@/lang/toast";
 import { getSocketHook, removeSocketHooks, socketLog } from "@/stores/socket";
@@ -14,16 +14,15 @@ function cleanup(id: string, hash: string): void {
   removeSocketHooks(hash);
 }
 
-export type OnFinished = (message: IPythonPluginMessage) => void;
 interface ICleanupFinished {
   id: string;
   message: IPythonPluginMessage;
-  onFinished?: OnFinished;
+  onFinished: OnPythonPluginMessage;
 }
 export function cleanupFinished({ id, message, onFinished }: ICleanupFinished): void {
   const { hash } = message;
   removePluginMessage(id);
-  onFinished?.(message);
+  onFinished(message);
   // cleanup if plugin need not update periodically
   if (isUndefined(getSocketHook(hash)?.updateInterval)) {
     cleanup(id, hash);

@@ -81,12 +81,19 @@ export interface IPythonPluginGroup extends IPythonPlugin {
   };
 }
 
-export interface IPythonSocketPluginWithSubmit<R>
+export interface IUseOnPythonPluginMessage {
+  id: string;
+  pluginInfo: IPythonPluginInfo & IPythonPluginWithSubmitPluginInfo;
+  onIntermediate?: OnPythonPluginMessage;
+  onFinished: OnPythonPluginMessage;
+}
+export type OnPythonPluginMessage = (message: IPythonPluginMessage) => void;
+export interface IPythonSocketPluginWithSubmit
   extends Omit<IPythonPlugin, "id" | "pluginInfo">,
-    Omit<IPythonSocketCallbacks<R>, "getMessage"> {
+    Omit<IPythonSocketCallbacks<IPythonResults>, "getMessage" | "onMessage">,
+    IUseOnPythonPluginMessage {
   id: string;
   buttonText: string;
-  pluginInfo: IPythonPluginInfo & IPythonPluginWithSubmitPluginInfo;
   beforeSubmit?: () => void;
   afterSubmit?: () => void;
 }

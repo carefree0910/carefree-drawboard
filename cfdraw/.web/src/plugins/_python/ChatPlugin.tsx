@@ -2,17 +2,15 @@ import { useCallback, useState } from "react";
 import { observer } from "mobx-react-lite";
 import { Textarea } from "@chakra-ui/react";
 
-import { isUndefined } from "@carefree0910/core";
 import { langStore, translate } from "@carefree0910/business";
 
-import type { IPythonOnPluginMessage, IPythonQAPlugin } from "@/schema/_python";
+import type { OnPythonPluginMessage, IPythonQAPlugin } from "@/schema/_python";
 import { UI_Words } from "@/lang/ui";
 import { usePluginIds } from "@/stores/pluginsInfo";
 import { parseIStr } from "@/actions/i18n";
 import CFInput from "@/components/CFInput";
 import { drawboardPluginFactory } from "@/plugins/utils/factory";
 import PythonPluginWithSubmit from "./PluginWithSubmit";
-import { cleanupException, cleanupFinished } from "../utils/cleanup";
 
 const PythonChatPlugin = ({ pluginInfo, ...props }: IPythonQAPlugin) => {
   const { id } = usePluginIds(`Chat_${pluginInfo.identifier}`);
@@ -20,23 +18,19 @@ const PythonChatPlugin = ({ pluginInfo, ...props }: IPythonQAPlugin) => {
   const [userInput, setUserInput] = useState("");
   const lang = langStore.tgt;
   const getExtraRequestData = useCallback(() => ({ context, userInput }), [context, userInput]);
-  const onMessage = useCallback<IPythonOnPluginMessage>(
-    async (message) => {
-      const { status, data } = message;
-      if (status === "working") {
-        const intermediate = data.intermediate?.textList?.[0];
-        if (!isUndefined(intermediate)) {
-          setContext(intermediate);
-        }
-      } else if (status === "finished") {
-        if (data.final?.type === "text") {
-          setContext(data.final.value[0].text);
-        }
-        cleanupFinished({ id, message });
-      } else if (status === "exception") {
-        cleanupException({ id, message, pluginInfo });
+  const onIntermediate = useCallback<OnPythonPluginMessage>(
+    async ({ data: { intermediate } }) => {
+      if (intermediate?.textList?.length) {
+        setContext(intermediate.textList[0]);
       }
-      return {};
+    },
+    [setContext],
+  );
+  const onFinished = useCallback<OnPythonPluginMessage>(
+    async ({ data: { final } }) => {
+      if (final?.type === "text") {
+        setContext(final.value[0].text);
+      }
     },
     [setContext],
   );
@@ -46,7 +40,8 @@ const PythonChatPlugin = ({ pluginInfo, ...props }: IPythonQAPlugin) => {
       id={id}
       buttonText={translate(UI_Words["submit-task"], lang)}
       getExtraRequestData={getExtraRequestData}
-      onMessage={onMessage}
+      onIntermediate={onIntermediate}
+      onFinished={onFinished}
       pluginInfo={pluginInfo}
       {...props}>
       <Textarea w="100%" flex={1} minH="0px" value={context} readOnly />
