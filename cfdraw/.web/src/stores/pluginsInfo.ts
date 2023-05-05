@@ -4,9 +4,9 @@ import { action, makeObservable, observable, runInAction } from "mobx";
 import { Dictionary, getRandomHash, isUndefined } from "@carefree0910/core";
 import { ABCStore, useIsReady } from "@carefree0910/business";
 
-import type { IMeta, IPythonResults } from "@/schema/meta";
+import type { IMeta } from "@/schema/meta";
 import type { ReactPlugins } from "@/schema/plugins";
-import type { IPythonSocketMessage } from "@/schema/_python";
+import type { IPythonPluginMessage } from "@/schema/_python";
 import { stripHashFromIdentifier } from "@/utils/misc";
 
 interface IDs {
@@ -20,7 +20,7 @@ interface ITaskCache {
 export interface IPluginsInfoStore {
   ids: Dictionary<IDs>;
   hashes: Dictionary<string>;
-  messages: Dictionary<IPythonSocketMessage<IPythonResults>>;
+  messages: Dictionary<IPythonPluginMessage>;
   taskCaches: Dictionary<ITaskCache>;
   visible: Dictionary<boolean>;
   pythonVisible: Dictionary<boolean>;
@@ -39,7 +39,7 @@ interface ISetPluginDefault<T extends IPluginCollection> {
 class PluginsInfoStore extends ABCStore<IPluginsInfoStore> implements IPluginsInfoStore {
   ids: Dictionary<IDs> = {};
   hashes: Dictionary<string> = {};
-  messages: Dictionary<IPythonSocketMessage<IPythonResults>> = {};
+  messages: Dictionary<IPythonPluginMessage> = {};
   taskCaches: Dictionary<ITaskCache> = {};
   visible: Dictionary<boolean> = {};
   pythonVisible: Dictionary<boolean> = {};
@@ -124,7 +124,7 @@ export const usePluginHash = (id: string): string => {
 // messages
 export const usePluginMessage = (id: string): IPluginsInfoStore["messages"][string] | undefined =>
   pluginsInfoStore.messages[id];
-export const setPluginMessage = (id: string, message: IPythonSocketMessage<IPythonResults>) =>
+export const setPluginMessage = (id: string, message: IPythonPluginMessage) =>
   pluginsInfoStore.set("messages", id, message);
 export const removePluginMessage = (id: string) => pluginsInfoStore.remove("messages", id);
 // task caches
