@@ -116,8 +116,8 @@ export const toastLangRecords: Record<Lang, Record<Toast_Words, string>> = {
     [Toast_Words["delete-project-error-message"]]: "Delete project failed",
     [Toast_Words["add-text-success-message"]]: "Text added successfully",
     [Toast_Words["add-text-error-message"]]: "Something is wrong when adding Text Node",
-    [Toast_Words["add-blank-success-message"]]: "Blank Node added successfully",
-    [Toast_Words["add-blank-error-message"]]: "Something is wrong when adding Blank Node",
+    [Toast_Words["add-blank-success-message"]]: "Blank Canvas added successfully",
+    [Toast_Words["add-blank-error-message"]]: "Something is wrong when adding Blank Canvas",
     [Toast_Words["auto-arrange-no-need-message"]]: "There is no need to arrange the Nodes",
     [Toast_Words["submit-task-busy-message"]]:
       "Current task is being executed, please wait for a while...",

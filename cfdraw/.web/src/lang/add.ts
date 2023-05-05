@@ -21,6 +21,6 @@ export const addLangRecords: Record<Lang, Record<Add_Words, string>> = {
     [Add_Words["new-project-button"]]: "New Project",
     [Add_Words["upload-image-button"]]: "Upload Image",
     [Add_Words["add-text-button"]]: "Add Text",
-    [Add_Words["add-blank-button"]]: "Add Blank Node",
+    [Add_Words["add-blank-button"]]: "Add Blank Canvas",
   },
 };
