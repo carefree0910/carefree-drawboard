@@ -1,5 +1,5 @@
 import type { RefObject } from "react";
-import type { FlexProps } from "@chakra-ui/react";
+import type { ButtonProps, FlexProps } from "@chakra-ui/react";
 
 import type { INode, NodeType, PivotType } from "@carefree0910/core";
 
@@ -47,7 +47,7 @@ export interface IRenderInfo extends IExpandPositionInfo {
   expandProps?: FlexProps;
   isInvisible?: boolean;
 }
-export interface IFloating extends FlexProps {
+export interface IFloating extends ButtonProps {
   id: string;
   groupId?: string; // the id of the group this floating belongs to
   renderInfo: IRenderInfo;

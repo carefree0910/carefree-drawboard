@@ -2,7 +2,7 @@ import { observer } from "mobx-react-lite";
 import { useMemo, forwardRef, useCallback } from "react";
 import {
   Box,
-  BoxProps,
+  ButtonProps,
   CircularProgressProps,
   Flex,
   FlexProps,
@@ -85,8 +85,8 @@ const Floating = forwardRef(function (
   } = themeStore.styles;
   bgOpacity ??= DEFAULT_PLUGIN_SETTINGS.bgOpacity;
   const bgOpacityHex = Math.round(bgOpacity * 255).toString(16);
-  const getCommonProps = useCallback<(isExpand: boolean) => BoxProps>(
-    (isExpand) => ({
+  const getCommonProps = useCallback(
+    <T extends boolean>(isExpand: T): T extends true ? FlexProps : ButtonProps => ({
       p: isExpand ? "12px" : "8px",
       bg: `${isBusy ? busyColor : panelBg}${bgOpacityHex}`,
       position: "absolute",
