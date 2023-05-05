@@ -9,9 +9,10 @@ class SendSocketMessageMiddleWare(IMiddleWare):
     @property
     def subscriptions(self) -> List[PluginType]:
         return [
+            PluginType.FIELDS,
             PluginType.TEXT_AREA,
             PluginType.QA,
-            PluginType.FIELDS,
+            PluginType.CHAT,
             PluginType._INTERNAL,
         ]
 

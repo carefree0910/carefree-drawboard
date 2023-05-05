@@ -6,6 +6,7 @@ import type { INode, NodeType, PivotType } from "@carefree0910/core";
 import type { IStr } from "./misc";
 import type { IFieldDefinition } from "./fields";
 import type {
+  IPythonChatPlugin,
   IPythonFieldsPlugin,
   IPythonPluginGroup,
   IPythonQAPlugin,
@@ -97,6 +98,7 @@ export const allPythonPlugins = [
   "_python.fields",
   "_python.textArea",
   "_python.QA",
+  "_python.chat",
   "_python.pluginGroup",
 ] as const;
 export type ReactPlugins = (typeof allReactPlugins)[number];
@@ -125,6 +127,7 @@ export interface IPluginProps {
   "_python.fields": IPythonFieldsPlugin;
   "_python.textArea": IPythonTextAreaPlugin;
   "_python.QA": IPythonQAPlugin;
+  "_python.chat": IPythonChatPlugin;
   "_python.pluginGroup": IPythonPluginGroup;
 }
 

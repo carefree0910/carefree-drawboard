@@ -68,6 +68,11 @@ export interface IPythonQAPlugin extends IPythonPlugin {
     initialText: IStr;
   };
 }
+export interface IPythonChatPlugin extends IPythonPlugin {
+  pluginInfo: IPythonPluginInfo & {
+    initialText: IStr;
+  };
+}
 
 export interface IPythonPluginGroup extends IPythonPlugin {
   pluginInfo: IPythonPluginInfo & {

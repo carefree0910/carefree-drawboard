@@ -23,6 +23,7 @@ const _pluginsLangRecords: Record<Lang, Record<AllPlugins, string>> = {
     "_python.fields": "Python 插件",
     "_python.textArea": "Python 文本框",
     "_python.QA": "Python 问答",
+    "_python.chat": "Python 对话",
     "_python.pluginGroup": "Python 插件组",
   },
   en: {
@@ -45,6 +46,7 @@ const _pluginsLangRecords: Record<Lang, Record<AllPlugins, string>> = {
     "_python.fields": "Python Plugin",
     "_python.textArea": "Python TextArea",
     "_python.QA": "Python Q & A",
+    "_python.chat": "Python Chat",
     "_python.pluginGroup": "Python Plugin Group",
   },
 };

@@ -42,6 +42,7 @@ class PluginType(str, Enum):
     FIELDS = "_python.fields"
     TEXT_AREA = "_python.textArea"
     QA = "_python.QA"
+    CHAT = "_python.chat"
     PLUGIN_GROUP = "_python.pluginGroup"
 
     # this type of plugins will not be rendered on the drawboard 🎨
@@ -498,6 +499,15 @@ class IQAPluginInfo(IPluginInfo):
     )
 
 
+class IChatPluginInfo(IPluginInfo):
+    """This should align with `IPythonChatPlugin` at `cfdraw/.web/src/schema/_python.ts`"""
+
+    initialText: IStr = Field(
+        "",
+        description="The initial text to be displayed in the text area",
+    )
+
+
 class IPluginGroupInfo(IPluginInfo):
     header: Optional[IStr] = Field(None, description="Header of the plugin group")
     plugins: Dict[str, Type[IPlugin]] = Field(..., description="Plugins in the group")
@@ -537,6 +547,7 @@ __all__ = [
     # bindings
     "ITextAreaPluginInfo",
     "IQAPluginInfo",
+    "IChatPluginInfo",
     "IPluginGroupInfo",
     # deprecated
     "IHttpTextAreaPluginInfo",

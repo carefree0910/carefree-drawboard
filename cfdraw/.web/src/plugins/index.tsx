@@ -24,6 +24,7 @@ export * from "./_react/BrushPlugin";
 export * from "./_python/FieldsPlugin";
 export * from "./_python/TextAreaPlugin";
 export * from "./_python/QAPlugin";
+export * from "./_python/ChatPlugin";
 export * from "./_python/PluginGroup";
 
 function MakePlugin<T extends AllPlugins>({

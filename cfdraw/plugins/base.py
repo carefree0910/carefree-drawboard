@@ -158,6 +158,12 @@ class IQAPlugin(ISocketPlugin):
         return PluginType.QA
 
 
+class IChatPlugin(ISocketPlugin):
+    @property
+    def type(self) -> PluginType:
+        return PluginType.CHAT
+
+
 class IPluginGroup(ISocketPlugin):
     @property
     def type(self) -> PluginType:
@@ -196,6 +202,7 @@ __all__ = [
     "IFieldsPlugin",
     "ITextAreaPlugin",
     "IQAPlugin",
+    "IChatPlugin",
     "IPluginGroup",
     # deprecated
     "IHttpPlugin",
