@@ -110,7 +110,7 @@ class ISocketPlugin(IPlugin, metaclass=ABCMeta):
 
     def send_progress(
         self,
-        progress: float,
+        progress: Optional[float] = None,
         *,
         textList: Optional[List[str]] = None,
         imageList: Optional[List[str]] = None,

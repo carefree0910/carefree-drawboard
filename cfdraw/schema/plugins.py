@@ -335,7 +335,7 @@ class ISocketMessage(BaseModel):
     def make_progress(
         cls,
         hash: str,
-        progress: float,
+        progress: Optional[float] = None,
         intermediate: Optional[ISocketIntermediate] = None,
     ) -> "ISocketMessage":
         return cls(
