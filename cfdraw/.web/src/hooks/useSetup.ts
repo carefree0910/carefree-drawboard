@@ -32,7 +32,7 @@ import {
 } from "@/actions/manageProjects";
 import { collapseAllPlugins } from "@/actions/managePlugins";
 import { useWebSocketHook } from "@/requests/hooks";
-import { floatingIconLoadedEvent } from "@/plugins/components/Floating";
+import { iconLoadedEvent } from "@/components/CFButton";
 import { authEvent, useAuth } from "./useAuth";
 
 export function useIsSetup(): boolean {
@@ -303,7 +303,7 @@ function useCheckIconLoaded() {
   const reactPlugins = useReactPluginSettings();
 
   useEffect(() => {
-    const { dispose } = floatingIconLoadedEvent.on(({ id }) => {
+    const { dispose } = iconLoadedEvent.on(({ id }) => {
       loaded.current.push(id);
       if (
         reactPlugins.every(

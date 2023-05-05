@@ -1,12 +1,11 @@
 import { observer } from "mobx-react-lite";
-import { useState, useMemo, forwardRef, useCallback } from "react";
+import { useMemo, forwardRef, useCallback } from "react";
 import {
   Box,
   BoxProps,
   CircularProgressProps,
   Flex,
   FlexProps,
-  Image,
   Portal,
   TextProps,
 } from "@chakra-ui/react";
@@ -14,13 +13,10 @@ import {
 import { isUndefined } from "@carefree0910/core";
 import { langStore, translate } from "@carefree0910/business";
 
-import iconLoading from "@/assets/icon-loading.json";
 import type { IFloating } from "@/schema/plugins";
-import { Event } from "@/utils/event";
 import { BG_TRANSITION, DEFAULT_PLUGIN_SETTINGS, VISIBILITY_TRANSITION } from "@/utils/constants";
 import { UI_Words } from "@/lang/ui";
 import { themeStore, useScrollBarSx } from "@/stores/theme";
-import { settingsStore } from "@/stores/settings";
 import {
   usePluginMessage,
   usePluginIsExpanded,
@@ -30,18 +26,13 @@ import {
 import { isInteractingWithBoard } from "@/stores/pointerEvents";
 import { parseIStr } from "@/actions/i18n";
 import CFText from "@/components/CFText";
-import CFLottie from "@/components/CFLottie";
 import CFTooltip from "@/components/CFTooltip";
+import { CFIconButton } from "@/components/CFButton";
 import { CFPendingProgress, CFWorkingProgress } from "@/components/CFCircularProgress";
 
 export function getExpandId(id: string): string {
   return `${id}_expand`;
 }
-
-export interface IFloatingIconLoadedEvent {
-  id: string;
-}
-export const floatingIconLoadedEvent = new Event<IFloatingIconLoadedEvent>();
 
 const Floating = forwardRef(function (
   {
@@ -81,9 +72,6 @@ const Floating = forwardRef(function (
     () => !isInvisible && (isUndefined(groupId) || groupExpand),
     [groupId, groupExpand, isInvisible],
   );
-  const [iconLoaded, setIconLoaded] = useState(false);
-  const iconLoadingPatience =
-    settingsStore.boardSettings?.globalSettings?.iconLoadingPatience ?? 100;
   const isBusy = useMemo(
     () => ["pending", "working"].includes(taskMessage?.status ?? ""),
     [taskMessage?.status],
@@ -94,7 +82,6 @@ const Floating = forwardRef(function (
   const {
     panelBg,
     floatingColors: { busyColor },
-    lottieColors: { iconLoadingColor },
   } = themeStore.styles;
   bgOpacity ??= DEFAULT_PLUGIN_SETTINGS.bgOpacity;
   const bgOpacityHex = Math.round(bgOpacity * 255).toString(16);
@@ -187,23 +174,12 @@ const Floating = forwardRef(function (
     () => `${panelBg}${useModal ? modalOpacityHex : bgOpacityHex}`,
     [useModal],
   );
-  // maintain icon loaded state
-  const onIconLoaded = useCallback(() => {
-    floatingIconLoadedEvent.emit({ id });
-    setIconLoaded(true);
-  }, [id]);
 
-  iconLoading.layers.forEach((layer) => {
-    if (!layer.shapes) return;
-    if (layer.shapes[0].it[1].c?.k) {
-      layer.shapes[0].it[1].c.k = iconLoadingColor;
-    }
-  });
   return (
     <>
       <CFTooltip label={iconActivated ? parseIStr(tooltip ?? "") : ""}>
-        <Box
-          as="button"
+        <CFIconButton
+          src={parseIStr(src)}
           id={id}
           w={`${iconW}px`}
           h={`${iconH}px`}
@@ -217,17 +193,8 @@ const Floating = forwardRef(function (
           visibility={isInvisible ? "hidden" : "visible"}
           transition={`${VISIBILITY_TRANSITION}, ${BG_TRANSITION}`}
           {...getCommonProps(false)}
-          {...props}>
-          <Image
-            src={parseIStr(src)}
-            w="100%"
-            h="100%"
-            draggable={false}
-            opacity={iconOpacity}
-            visibility={iconLoaded ? "visible" : "hidden"}
-            transition={VISIBILITY_TRANSITION}
-            onLoad={onIconLoaded}
-          />
+          {...props}
+          imageProps={{ opacity: iconOpacity }}>
           {taskMessage && isBusy && (
             <Box w={`${iconW}px`} h={`${iconH}px`} position="absolute" left="0px" top="0px">
               {taskMessage.status === "pending" ? (
@@ -253,17 +220,7 @@ const Floating = forwardRef(function (
               )}
             </CFText>
           )}
-          <CFLottie
-            w="100%"
-            h="100%"
-            position="absolute"
-            left="0px"
-            top="0px"
-            hide={iconLoaded}
-            delay={iconLoadingPatience}
-            animationData={iconLoading}
-          />
-        </Box>
+        </CFIconButton>
       </CFTooltip>
       {!noExpand && (
         <Portal containerRef={ref as any}>
