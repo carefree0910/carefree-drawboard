@@ -14,7 +14,7 @@ const PythonTextAreaPlugin = ({
   pluginInfo: { node, nodes, identifier, retryInterval, updateInterval, noLoading, textAlign },
   ...props
 }: IPythonTextAreaPlugin) => {
-  const id = usePluginIds(`textArea_${identifier}`);
+  const { id } = usePluginIds(`textArea_${identifier}`);
   const hash = useMemo(() => getRandomHash().toString(), [id]);
   const [value, setValue] = useState("");
   const onMessage = useCallback<IPythonOnPluginMessage>(
