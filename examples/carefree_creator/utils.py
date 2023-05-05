@@ -52,6 +52,10 @@ class APIs:
     ) -> List[Image.Image]:
         return await self._run(data, "txt2img.sd.inpainting", **kw)
 
+    async def image_captioning(self, data: Img2TxtModel) -> List[str]:
+        result: TextModel = await self.algorithms["img2txt.caption"].run(data)
+        return [result.text]
+
 
 @cache_resource
 def get_apis() -> APIs:
@@ -60,6 +64,7 @@ def get_apis() -> APIs:
 
 __all__ = [
     "get_apis",
+    "Img2TxtModel",
     "Txt2ImgSDModel",
     "Img2ImgSDModel",
     "Img2ImgSRModel",

@@ -22,6 +22,7 @@ Txt2ImgKey = "txt2img"
 Img2ImgKey = "img2img"
 SRKey = "sr"
 SODKey = "sod"
+CaptioningKey = "captioning"
 InpaintingKey = "inpainting"
 SDInpaintingKey = "sd_inpainting"
 SDOutpaintingKey = "sd_outpainting"
@@ -133,6 +134,30 @@ class SOD(IFieldsPlugin):
 
     async def process(self, data: ISocketRequest) -> List[Image.Image]:
         return await get_apis().sod(Img2ImgSODModel(url=data.nodeData.src))
+
+
+class Captioning(IFieldsPlugin):
+    @property
+    def settings(self) -> IPluginSettings:
+        return IPluginSettings(
+            w=240,
+            h=110,
+            src=constants.IMAGE_TO_TEXT_ICON,
+            tooltip=I18N(
+                zh="生成图片描述",
+                en="Image Captioning",
+            ),
+            pluginInfo=IFieldsPluginInfo(
+                header=I18N(
+                    zh="图片描述",
+                    en="Image Captioning",
+                ),
+                definitions={},
+            ),
+        )
+
+    async def process(self, data: ISocketRequest) -> List[str]:
+        return await get_apis().image_captioning(Img2TxtModel(url=data.nodeData.src))
 
 
 class Inpainting(IFieldsPlugin):
@@ -330,10 +355,11 @@ class ImageFollowers(IPluginGroup):
     @property
     def settings(self) -> IPluginSettings:
         return IPluginSettings(
-            **common_group_styles,
+            w=common_group_styles["w"],
+            h=164,
             tooltip=I18N(
-                zh="一组用于编辑/变换当前图片的插件",
-                en="A set of plugins which can generate images from given images",
+                zh="一组将 AI 技术应用于当前图片的插件",
+                en="A set of plugins that apply AI techniques to the given image",
             ),
             nodeConstraint=NodeConstraints.IMAGE,
             pivot=PivotType.RT,
@@ -351,6 +377,7 @@ class ImageFollowers(IPluginGroup):
                     SRKey: SR,
                     SODKey: SOD,
                     Img2ImgKey: Img2Img,
+                    CaptioningKey: Captioning,
                     VariationKey: Variation,
                 },
             ),

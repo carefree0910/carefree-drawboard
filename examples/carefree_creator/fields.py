@@ -6,7 +6,7 @@ from cflearn.api.cv.diffusion import SDVersions
 
 # common styles
 common_styles = dict(w=600, h=450, useModal=True)
-common_group_styles = dict(w=240, h=110)
+common_group_styles = dict(w=230, h=110)
 # common diffusion fields
 diffusion_fields = list(
     OrderedDict(
