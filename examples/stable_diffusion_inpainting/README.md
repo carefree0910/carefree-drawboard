@@ -55,7 +55,7 @@ nodeConstraintRules=NodeConstraintRules(
 ```
 , so the plugin will and only will be displayed when (exactly) an `ImageNode` & a `PathNode` are selected.
 
-> See [Plugin Positioning](https://github.com/carefree0910/carefree-drawboard/wiki/Plugin-Positioning) for more details.
+> See [Plugin Positioning](https://github.com/carefree0910/carefree-drawboard/wiki/Details#plugin-positioning) for more details.
 
 3. We specified `useModal=True` for the plugin, so it will always popup as a modal.
 

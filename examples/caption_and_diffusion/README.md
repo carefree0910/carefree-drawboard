@@ -47,7 +47,7 @@ cfdraw run --module advanced
    * `follow=True` and `nodeConstraint=NodeConstraints.TEXT` for `txt2img` plugin, so it will and only will be displayed when the selected `Node` is a text.
        * And we'll use the content in this `TextNode` as the input `prompt` of the Stable Diffusion model.
 
-> See [Plugin Positioning](https://github.com/carefree0910/carefree-drawboard/wiki/Plugin-Positioning) for more details.
+> See [Plugin Positioning](https://github.com/carefree0910/carefree-drawboard/wiki/Details#plugin-positioning) for more details.
 
 3. If you run image processing consecutively (e.g. first `captioning` then `txt2img`), you will find a `from` field in the `meta` data. This can be used to track the process history of every `Node`.
 

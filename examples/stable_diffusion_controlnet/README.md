@@ -44,7 +44,7 @@ cfdraw run --module advanced
    * At production stage, we can call the initialization function at the very beginning to pre-load the models.
 2. We used `follow=True` and `nodeConstraint=NodeConstraints.MULTI_NODE`, so the plugin will and only will be displayed when the multiple `Node`s are selected.
 
-> See [Plugin Positioning](https://github.com/carefree0910/carefree-drawboard/wiki/Plugin-Positioning) for more details.
+> See [Plugin Positioning](https://github.com/carefree0910/carefree-drawboard/wiki/Details#plugin-positioning) for more details.
 
 3. We specified `useModal=True` for the plugin, so it will always popup as a modal.
 

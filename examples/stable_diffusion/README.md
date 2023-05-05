@@ -43,7 +43,7 @@ cfdraw run --module advanced
    * `follow=False` and `nodeConstraint=NodeConstraints.NONE` for `txt2img` plugin, so it will always be displayed (on the right of the screen).
    * `follow=True` and `nodeConstraint=NodeConstraints.IMAGE` for `img2img` plugin, so it will and only will be displayed when the selected `Node` is an image.
 
-> See [Plugin Positioning](https://github.com/carefree0910/carefree-drawboard/wiki/Plugin-Positioning) for more details.
+> See [Plugin Positioning](https://github.com/carefree0910/carefree-drawboard/wiki/Details#plugin-positioning) for more details.
 
 3. If you run image processing consecutively (e.g. first `txt2img` then `img2img`), you will find a `from` field in the `meta` data. This can be used to track the process history of every `Node`.
 
