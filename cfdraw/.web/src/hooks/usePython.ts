@@ -27,14 +27,9 @@ async function getNodeCommonData(node: INode, opt: IGetNodeData): Promise<INodeD
   return { type: node.type, x, y, w, h, transform, text, meta, children };
 }
 async function getNodeSrc(node: INode, opt: IGetNodeData): Promise<string | undefined> {
+  if (!opt.exportBox) return;
   let src: string | undefined = undefined;
-  if (!opt.exportBox) {
-    if (node.type === "image") {
-      src = node.renderParams.src;
-    } else if (node.type === "svg") {
-      src = node.params.src;
-    }
-  } else if (node.type === "image" && node.bbox.closeTo(opt.exportBox)) {
+  if (node.type === "image" && node.bbox.closeTo(opt.exportBox)) {
     src = node.renderParams.src;
   } else if (node.type === "svg" && node.bbox.closeTo(opt.exportBox)) {
     src = node.params.src;
@@ -57,6 +52,7 @@ async function getNodeSrc(node: INode, opt: IGetNodeData): Promise<string | unde
 async function getNodeData(node: INode | null, opt: IGetNodeData): Promise<INodeData> {
   if (!node) return {};
   const common = await getNodeCommonData(node, opt);
+  if (!opt.exportBox) return common;
   common.src = await getNodeSrc(node, opt);
   return common;
 }
