@@ -104,7 +104,7 @@ class ISocketPlugin(IPlugin, metaclass=ABCMeta):
         if src.startswith("http://") and constants.UPLOAD_IMAGE_FOLDER_NAME in src:
             file = src.split(constants.UPLOAD_IMAGE_FOLDER_NAME)[1][1:]  # remove '/'
             return server.get_image(file)
-        data = FetchImageModel(url=src, return_image=True)
+        data = FetchImageModel(url=src, jpeg=False, return_image=True)
         return await ImageUploader.fetch_image(data)
 
     def send_progress(
