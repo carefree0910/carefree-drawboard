@@ -248,7 +248,7 @@ class INodeData(BaseModel):
         None,
         description="""
 Image url of the node, will be `None` if the node is not intended to be converted to image.
-> Currently only `ImageNode` and `PathNode` will have this field defined.
+> Currently only `ImageNode` / `PathNode` / `BlankNode` will have this field defined.
 """,
     )
     meta: Optional[Dict[str, Any]] = Field(None, description="Meta of the node")

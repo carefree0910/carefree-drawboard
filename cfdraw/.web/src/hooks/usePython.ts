@@ -1,7 +1,8 @@
 import { useCallback } from "react";
 
 import type { ExportBlobOptions } from "@carefree0910/svg";
-import { BBox, INode, argMax } from "@carefree0910/core";
+import { BBox, HitTest, INode, IRectangleShapeNode, argMax, isUndefined } from "@carefree0910/core";
+import { BoardStore, langStore, translate } from "@carefree0910/business";
 
 import type { IMeta } from "@/schema/meta";
 import type {
@@ -10,13 +11,42 @@ import type {
   IUsePythonInfo,
   IUseSocketPython,
 } from "@/schema/_python";
+import { Toast_Words } from "@/lang/toast";
 import { userStore } from "@/stores/user";
 import { useWebSocketHook } from "@/requests/hooks";
-import { uploadImage } from "@/actions/uploadImage";
 import { Exporter } from "@/actions/export";
+import { uploadImage } from "@/actions/uploadImage";
 
 type IGetPythonRequest = ExportBlobOptions & { noExport?: boolean };
 type IGetNodeData = ExportBlobOptions & { exportBox?: BBox };
+async function getBlankNodeSrc(node: IRectangleShapeNode, opt: IGetNodeData): Promise<string> {
+  const graph = BoardStore.graph.snapshot();
+  const bbox = node.bbox;
+  const overlapped = graph.allSingleNodes.filter(
+    (n) => n.alias !== node.alias && n.zIndex < node.zIndex && HitTest.test(bbox, n.bbox),
+  );
+  if (overlapped.length === 0) {
+    throw Error(translate(Toast_Words["no-overlapped-node-message"], langStore.tgt));
+  }
+  let src;
+  if (overlapped.length === 1) {
+    src = await getNodeSrc(overlapped[0], opt);
+  } else {
+    src = await Exporter.exportBlob(overlapped, opt)
+      .then((blob) => {
+        if (!blob) throw Error(`export overlapped blob for '${node.alias}' Node failed`);
+        return uploadImage(blob, { failed: async () => void 0 });
+      })
+      .then((res) => {
+        if (!res) throw Error(`upload overlapped image for '${node.alias}' Node failed`);
+        return res.url;
+      });
+  }
+  if (isUndefined(src)) {
+    throw Error(`get src for '${node.alias}' Node failed`);
+  }
+  return src;
+}
 async function getNodeCommonData(node: INode, opt: IGetNodeData): Promise<INodeData> {
   const { x, y } = node.position;
   const { w, h } = node.wh;
@@ -30,7 +60,9 @@ async function getNodeCommonData(node: INode, opt: IGetNodeData): Promise<INodeD
 async function getNodeSrc(node: INode, opt: IGetNodeData): Promise<string | undefined> {
   if (!opt.exportBox) return;
   let src: string | undefined = undefined;
-  if (node.type === "image" && node.bbox.closeTo(opt.exportBox)) {
+  if (node.type === "rectangle" && (node.params.meta as IMeta).type === "add.blank") {
+    src = await getBlankNodeSrc(node, opt);
+  } else if (node.type === "image" && node.bbox.closeTo(opt.exportBox)) {
     src = node.renderParams.src;
   } else if (node.type === "svg" && node.bbox.closeTo(opt.exportBox)) {
     src = node.params.src;
