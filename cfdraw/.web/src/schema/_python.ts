@@ -30,6 +30,7 @@ export interface INodeData {
   y?: number;
   w?: number;
   h?: number;
+  z?: number;
   transform?: Matrix2DFields;
   // text info
   text?: string;

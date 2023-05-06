@@ -235,6 +235,7 @@ class INodeData(BaseModel):
     y: Optional[float] = Field(None, description="Y of the node")
     w: Optional[float] = Field(None, description="Width of the node")
     h: Optional[float] = Field(None, description="Height of the node")
+    z: Optional[float] = Field(None, description="Layer of the node")
     transform: Optional[Matrix2D] = Field(
         None,
         description="Transform matrix of the node",
