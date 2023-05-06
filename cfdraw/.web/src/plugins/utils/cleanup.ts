@@ -22,7 +22,6 @@ interface ICleanupFinished {
 }
 export function cleanupFinished({ id, message, onFinished }: ICleanupFinished): void {
   const { hash } = message;
-  removePluginMessage(id);
   onFinished(message);
   // cleanup if plugin need not update periodically
   if (isUndefined(getSocketHook(hash)?.updateInterval)) {
