@@ -1,4 +1,3 @@
-from io import BytesIO
 from abc import abstractmethod
 from abc import ABCMeta
 from PIL import Image
@@ -15,6 +14,8 @@ from cfdraw.schema.plugins import *
 from cfdraw.plugins.middlewares import *
 from cfdraw.parsers.noli import SingleNodeType
 from cfdraw.parsers.chakra import IChakra
+from cfdraw.app.endpoints.upload import ImageUploader
+from cfdraw.app.endpoints.upload import FetchImageModel
 
 
 class ISocketPlugin(IPlugin, metaclass=ABCMeta):
@@ -103,8 +104,8 @@ class ISocketPlugin(IPlugin, metaclass=ABCMeta):
         if src.startswith("http://") and constants.UPLOAD_IMAGE_FOLDER_NAME in src:
             file = src.split(constants.UPLOAD_IMAGE_FOLDER_NAME)[1][1:]  # remove '/'
             return server.get_image(file)
-        async with self.http_session.get(src) as res:
-            return Image.open(BytesIO(await res.read()))
+        data = FetchImageModel(url=src, return_image=True)
+        return await ImageUploader.fetch_image(data)
 
     def send_progress(
         self,
