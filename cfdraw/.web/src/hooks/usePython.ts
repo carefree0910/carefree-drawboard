@@ -1,7 +1,15 @@
 import { useCallback } from "react";
 
 import type { ExportBlobOptions } from "@carefree0910/svg";
-import { BBox, HitTest, INode, IRectangleShapeNode, argMax, isUndefined } from "@carefree0910/core";
+import {
+  BBox,
+  HitTest,
+  INode,
+  IRectangleShapeNode,
+  ISingleNode,
+  argMax,
+  isUndefined,
+} from "@carefree0910/core";
 import { BoardStore, langStore, translate } from "@carefree0910/business";
 
 import type { IMeta } from "@/schema/meta";
@@ -19,6 +27,19 @@ import { uploadImage } from "@/actions/uploadImage";
 
 type IGetPythonRequest = ExportBlobOptions & { noExport?: boolean };
 type IGetNodeData = ExportBlobOptions & { exportBox?: BBox };
+async function getSrcFrom(nodes: ISingleNode[], opt: IGetNodeData): Promise<string> {
+  opt.exportOptions ??= {};
+  opt.exportOptions.exportBox = opt.exportBox;
+  return Exporter.exportBlob(nodes, opt)
+    .then((blob) => {
+      if (!blob) throw Error("export blob failed");
+      return uploadImage(blob, { failed: async () => void 0 });
+    })
+    .then((res) => {
+      if (!res) throw Error("upload image failed");
+      return res.url;
+    });
+}
 async function getBlankNodeSrc(node: IRectangleShapeNode, opt: IGetNodeData): Promise<string> {
   const graph = BoardStore.graph.snapshot();
   const bbox = node.bbox;
@@ -32,15 +53,7 @@ async function getBlankNodeSrc(node: IRectangleShapeNode, opt: IGetNodeData): Pr
   if (overlapped.length === 1) {
     src = await getNodeSrc(overlapped[0], opt);
   } else {
-    src = await Exporter.exportBlob(overlapped, opt)
-      .then((blob) => {
-        if (!blob) throw Error(`export overlapped blob for '${node.alias}' Node failed`);
-        return uploadImage(blob, { failed: async () => void 0 });
-      })
-      .then((res) => {
-        if (!res) throw Error(`upload overlapped image for '${node.alias}' Node failed`);
-        return res.url;
-      });
+    src = await getSrcFrom(overlapped, opt);
   }
   if (isUndefined(src)) {
     throw Error(`get src for '${node.alias}' Node failed`);
@@ -68,17 +81,7 @@ async function getNodeSrc(node: INode, opt: IGetNodeData): Promise<string | unde
     src = node.params.src;
   } else if (node.type === "path" || node.type === "image" || node.type === "svg") {
     // should export the graphic `Node` as an image based on the `exportBox`
-    opt.exportOptions ??= {};
-    opt.exportOptions.exportBox = opt.exportBox;
-    src = await Exporter.exportBlob([node], opt)
-      .then((blob) => {
-        if (!blob) throw Error(`export blob for ${node.type} Node failed`);
-        return uploadImage(blob, { failed: async () => void 0 });
-      })
-      .then((res) => {
-        if (!res) throw Error(`upload image for ${node.type} Node failed`);
-        return res.url;
-      });
+    src = await getSrcFrom([node], opt);
   }
   return src;
 }
