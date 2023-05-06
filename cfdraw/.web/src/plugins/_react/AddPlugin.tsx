@@ -17,6 +17,7 @@ import {
 } from "@/utils/constants";
 import { Add_Words } from "@/lang/add";
 import { Toast_Words } from "@/lang/toast";
+import { usePluginIsExpanded } from "@/stores/pluginsInfo";
 import { importMeta } from "@/actions/importMeta";
 import { getNewProject, loadLocalProject, saveCurrentProject } from "@/actions/manageProjects";
 import CFDivider from "@/components/CFDivider";
@@ -30,6 +31,7 @@ import Render from "../components/Render";
 const AddPlugin = ({ pluginInfo, ...props }: IPlugin) => {
   const id = useMemo(() => `add_${getRandomHash()}`, []);
   const lang = langStore.tgt;
+  const expand = usePluginIsExpanded(id);
 
   const commonProps: ButtonProps = {
     w: `${DEFAULT_PLUGIN_SETTINGS.iconW}px`,
@@ -61,7 +63,7 @@ const AddPlugin = ({ pluginInfo, ...props }: IPlugin) => {
       <Flex w="100%" h="100%" direction="column">
         <CFHeading>{translate(Add_Words["add-plugin-header"], lang)}</CFHeading>
         <CFDivider />
-        <Flex w="100%" flex={1} wrap="wrap">
+        <Flex w="100%" flex={1} wrap="wrap" pointerEvents={expand ? "auto" : "none"}>
           <CFIconButton
             src={ADD_TEXT_ICON}
             tooltip={translate(Add_Words["add-text-button"], lang)}
