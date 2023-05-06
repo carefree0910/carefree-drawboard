@@ -100,7 +100,7 @@ def get_image(file: str, jpeg: bool = False) -> Image.Image:
         raise_err(err)
 
 
-def get_image_response(
+def get_image_response(  # type: ignore
     file: str,
     jpeg: bool = False,
     return_image: bool = False,
