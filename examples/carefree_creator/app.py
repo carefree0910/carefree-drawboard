@@ -166,7 +166,6 @@ class Inpainting(IFieldsPlugin):
         return IPluginSettings(
             w=260,
             h=200,
-            useModal=False,
             src=constants.INPAINTING_ICON,
             tooltip=I18N(
                 zh="擦除蒙版区域并填充合适的背景",
@@ -232,6 +231,37 @@ class SDInpainting(IFieldsPlugin):
         return await get_apis().sd_inpainting(model, step_callback=callback)
 
 
+class SDOutpainting(IFieldsPlugin):
+    @property
+    def settings(self) -> IPluginSettings:
+        return IPluginSettings(
+            **common_styles,
+            src=constants.SD_OUTPAINTING_ICON,
+            tooltip=I18N(
+                zh="图像外延",
+                en="Outpainting",
+            ),
+            pluginInfo=IFieldsPluginInfo(
+                header=I18N(
+                    zh="图像外延",
+                    en="Outpainting",
+                ),
+                numColumns=2,
+                definitions=txt2img_fields,
+            ),
+        )
+
+    async def process(self, data: ISocketRequest) -> List[Image.Image]:
+        def callback(step: int, num_steps: int) -> bool:
+            return self.send_progress(step / num_steps)
+
+        url = data.nodeData.src
+        kw = inject_seed(self, data).extraData
+        self.extra_responses.update(url=url)
+        model = Txt2ImgSDOutpaintingModel(url=url, **kw)
+        return await get_apis().sd_outpainting(model, step_callback=callback)
+
+
 variation_targets = {
     Txt2ImgKey,
     Img2ImgKey,
@@ -253,7 +283,6 @@ class Variation(IFieldsPlugin):
         return IPluginSettings(
             w=260,
             h=200,
-            useModal=False,
             nodeConstraint=NodeConstraints.IMAGE,
             nodeConstraintValidator="variation",
             src=constants.VARIATION_ICON,
@@ -289,7 +318,7 @@ class Variation(IFieldsPlugin):
                     self.send_exception("cannot find a static seed")
                     return []
                 kw["seed"] = generated_seed
-            if task == Img2ImgKey:
+            if task == Img2ImgKey or task == SDOutpaintingKey:
                 url = extra.get("url")
                 if url is None:
                     self.send_exception("cannot find `url`")
@@ -320,6 +349,9 @@ class Variation(IFieldsPlugin):
         if task == SDInpaintingKey:
             model = Txt2ImgSDInpaintingModel(**kw)
             return await get_apis().sd_inpainting(model, step_callback=callback)
+        if task == SDOutpaintingKey:
+            model = Txt2ImgSDOutpaintingModel(**kw)
+            return await get_apis().sd_outpainting(model, step_callback=callback)
         self.send_exception(f"unknown task: {task}")
         return []
 
@@ -390,7 +422,7 @@ class InpaintingFollowers(IPluginGroup):
         return IPluginSettings(
             **common_group_styles,
             offsetX=-48,
-            expandOffsetX=56,
+            expandOffsetX=64,
             tooltip=I18N(
                 zh="一组利用当前图片+蒙版来进行生成的插件",
                 en="A set of plugins which uses an image and a mask to generate images",
@@ -417,9 +449,44 @@ class InpaintingFollowers(IPluginGroup):
         )
 
 
+@register_node_validator("canvas")
+def validate_canvas(data: ISocketRequest) -> bool:
+    return data.nodeData.meta["type"] == "add.blank"
+
+
+class CanvasFollowers(IPluginGroup):
+    @property
+    def settings(self) -> IPluginSettings:
+        return IPluginSettings(
+            **common_group_styles,
+            tooltip=I18N(
+                zh="一组利用空白画布来进行生成的插件",
+                en="A set of plugins which uses a blank canvas to generate images",
+            ),
+            nodeConstraint=NodeConstraints.RECTANGLE,
+            nodeConstraintValidator="canvas",
+            pivot=PivotType.RT,
+            follow=True,
+            pluginInfo=IPluginGroupInfo(
+                name=I18N(
+                    zh="画布工具箱",
+                    en="Canvas Toolbox",
+                ),
+                header=I18N(
+                    zh="画布工具箱",
+                    en="Canvas Toolbox",
+                ),
+                plugins={
+                    SDOutpaintingKey: SDOutpainting,
+                },
+            ),
+        )
+
+
 # uncomment this line to pre-load the models
 # get_apis()
 register_plugin("static")(StaticPlugins)
 register_plugin("image_followers")(ImageFollowers)
 register_plugin("inpainting_followers")(InpaintingFollowers)
+register_plugin("canvas_followers")(CanvasFollowers)
 app = App()

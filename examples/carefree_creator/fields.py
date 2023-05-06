@@ -95,7 +95,7 @@ diffusion_fields = list(
         ),
     ).items()
 )
-# txt2img / txt2img.sd.inpainting fields
+# txt2img / sd_inpainting / sd_outpainting fields
 txt2img_fields = OrderedDict(
     w=INumberField(
         default=512,

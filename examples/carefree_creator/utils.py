@@ -52,6 +52,11 @@ class APIs:
     ) -> List[Image.Image]:
         return await self._run(data, "txt2img.sd.inpainting", **kw)
 
+    async def sd_outpainting(
+        self, data: Txt2ImgSDOutpaintingModel, **kw: Any
+    ) -> List[Image.Image]:
+        return await self._run(data, "txt2img.sd.outpainting", **kw)
+
     async def image_captioning(self, data: Img2TxtModel) -> List[str]:
         result: TextModel = await self.algorithms["img2txt.caption"].run(data)
         return [result.text]
@@ -71,4 +76,5 @@ __all__ = [
     "Img2ImgSODModel",
     "Img2ImgInpaintingModel",
     "Txt2ImgSDInpaintingModel",
+    "Txt2ImgSDOutpaintingModel",
 ]
