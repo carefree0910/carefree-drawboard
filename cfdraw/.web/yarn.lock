@@ -230,10 +230,10 @@
   resolved "https://registry.npmjs.org/@carefree0910/core/-/core-0.5.1-alpha.1.tgz#8d9eece107af6c9368e6e83e6f9a48a96b33e258"
   integrity sha512-dfqa8nn1cvKpXAlxuMP5vLHtA+kDlo4QA9VELFAjquQOYC8UomHuun1IaR+exdWA8RdOX/2pxKGrSqam+ctGig==
 
-"@carefree0910/native@~0.5.1-alpha.1":
-  version "0.5.1-alpha.1"
-  resolved "https://registry.npmjs.org/@carefree0910/native/-/native-0.5.1-alpha.1.tgz#68d5c8da2468685d1530ddddb5e40f43e6a9072c"
-  integrity sha512-PVKc9dZzE5JcIyOYx7yFZS63ALNr1j7tRlZN6MB1G6kN83XfBfCmckiBExRVl+nsL2Tcx8l8J10JaXtxRviHcg==
+"@carefree0910/native@~0.5.1-alpha.2":
+  version "0.5.1-alpha.2"
+  resolved "https://registry.yarnpkg.com/@carefree0910/native/-/native-0.5.1-alpha.2.tgz#5df1a51b272dc24be0c1bf745d702a69d49a71ff"
+  integrity sha512-+Nhbm1Ke5XjJcbw6mD7YNE2LJ7gjy+p6YU2vTswH4rK2mynYUPrMgdZILz5bXxhf7+hDHQ9MykqpqpdDzsmP8A==
   dependencies:
     "@carefree0910/core" "^0.5.1-alpha.1"
     "@carefree0910/svg" "^0.5.1-alpha.1"
