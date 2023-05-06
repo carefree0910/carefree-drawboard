@@ -4,12 +4,13 @@ import type { OnPythonPluginMessage, IPythonPlugin, IPythonPluginMessage } from 
 import { toastWord } from "@/utils/toast";
 import { Toast_Words } from "@/lang/toast";
 import { getSocketHook, removeSocketHooks, socketLog } from "@/stores/socket";
-import { removePluginMessage } from "@/stores/pluginsInfo";
+import { removePluginMessage, removePluginTaskCache } from "@/stores/pluginsInfo";
 import { socketFinishedEvent } from "../_python/PluginWithSubmit";
 
 function cleanup(id: string, hash: string): void {
   socketFinishedEvent.emit({ id });
   removePluginMessage(id);
+  removePluginTaskCache(id);
   socketLog(`> remove hook (${hash})`);
   removeSocketHooks(hash);
 }
