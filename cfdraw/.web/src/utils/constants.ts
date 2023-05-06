@@ -13,7 +13,7 @@ export const DEFAULT_PLUGIN_SETTINGS = {
   pivot: "bottom",
   follow: false,
   bgOpacity: 0.5,
-  modalOpacity: 0.94117647,
+  expandOpacity: 0.94117647,
   offsetX: 8,
   offsetY: 8,
   expandOffsetX: 8,

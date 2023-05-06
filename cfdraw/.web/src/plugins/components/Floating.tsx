@@ -167,12 +167,9 @@ const Floating = forwardRef(function (
     }
   });
   // convert float to hex
-  modalOpacity ??= DEFAULT_PLUGIN_SETTINGS.modalOpacity;
+  modalOpacity ??= DEFAULT_PLUGIN_SETTINGS.expandOpacity;
   const modalOpacityHex = Math.round(modalOpacity * 255).toString(16);
-  const expandBg = useMemo(
-    () => `${panelBg}${useModal ? modalOpacityHex : bgOpacityHex}`,
-    [useModal],
-  );
+  const expandBg = `${panelBg}${modalOpacityHex}`;
 
   return (
     <>
