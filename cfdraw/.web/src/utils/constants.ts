@@ -21,7 +21,7 @@ export const DEFAULT_PLUGIN_SETTINGS = {
 };
 
 export const IMAGE_PLACEHOLDER =
-  "https://user-images.githubusercontent.com/15677328/235604347-4d34d88d-0e82-49d7-8e36-fb182647c5fa.svg";
+  "https://user-images.githubusercontent.com/15677328/236621223-e3b508b9-5a60-471c-8630-470b7e6e8cde.svg";
 export const NSFW_IMAGE_PLACEHOLDER =
   "https://user-images.githubusercontent.com/15677328/235883103-9a3941c0-d5d9-4064-9e28-ba0f07f6921f.svg";
 export const DEFAULT_FONT_SIZE = 64;
