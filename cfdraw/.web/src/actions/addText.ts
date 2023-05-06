@@ -27,7 +27,7 @@ export function addNewText(
   newText.meta = opt.meta;
   console.log("newText: ", newText.snapshot());
   useSafeExecute("addJson", null, true, opt.callbacks, {
-    noSelect: opt.noSelect ?? true,
+    noSelect: opt.noSelect ?? false,
     safeOpt: {
       retry: 3,
       retryInterval: 500,
