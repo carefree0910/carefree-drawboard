@@ -17,12 +17,16 @@ import { Exporter } from "@/actions/export";
 
 type IGetPythonRequest = ExportBlobOptions & { noExport?: boolean };
 type IGetNodeData = ExportBlobOptions & { exportBox?: BBox };
-async function getNodeData(node: INode | null, opt: IGetNodeData): Promise<INodeData> {
-  if (!node) return {};
+async function getNodeCommonData(node: INode, opt: IGetNodeData): Promise<INodeData> {
   const { x, y } = node.position;
   const { w, h } = node.wh;
   const transform = node.transform.fields;
   const text = node.type === "text" ? node.params.content : undefined;
+  const meta = (node.type === "group" ? undefined : node.params.meta) as IMeta | undefined;
+  const children = node.type === "group" ? await getNodeDataList(node.nodes, opt) : undefined;
+  return { type: node.type, x, y, w, h, transform, text, meta, children };
+}
+async function getNodeSrc(node: INode, opt: IGetNodeData): Promise<string | undefined> {
   let src: string | undefined = undefined;
   if (!opt.exportBox) {
     if (node.type === "image") {
@@ -48,9 +52,13 @@ async function getNodeData(node: INode | null, opt: IGetNodeData): Promise<INode
         return res.url;
       });
   }
-  const meta = (node.type === "group" ? undefined : node.params.meta) as IMeta | undefined;
-  const children = node.type === "group" ? await getNodeDataList(node.nodes, opt) : undefined;
-  return { type: node.type, x, y, w, h, transform, text, src, meta, children };
+  return src;
+}
+async function getNodeData(node: INode | null, opt: IGetNodeData): Promise<INodeData> {
+  if (!node) return {};
+  const common = await getNodeCommonData(node, opt);
+  common.src = await getNodeSrc(node, opt);
+  return common;
 }
 async function getNodeDataList(nodes: INode[], opt: IGetNodeData): Promise<INodeData[]> {
   return Promise.all(nodes.map((node) => getNodeData(node, opt)));
