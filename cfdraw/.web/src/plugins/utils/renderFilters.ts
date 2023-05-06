@@ -69,7 +69,7 @@ const results: Dictionary<boolean> = {};
 const clear = (hash: string) => {
   setTimeout(() => {
     delete results[hash];
-  }, 60 * 1000);
+  }, 1000);
 };
 function checkValidator(validator?: string, info?: IResponse): Promise<boolean> {
   if (isUndefined(validator)) return Promise.resolve(true);
