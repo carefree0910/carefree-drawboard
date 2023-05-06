@@ -215,7 +215,7 @@ class SDInpainting(IFieldsPlugin):
                     en="Erase & Replace",
                 ),
                 numColumns=2,
-                definitions=txt2img_fields,
+                definitions=sd_inpainting_fields,
             ),
         )
 
@@ -247,7 +247,7 @@ class SDOutpainting(IFieldsPlugin):
                     en="Outpainting",
                 ),
                 numColumns=2,
-                definitions=txt2img_fields,
+                definitions=sd_inpainting_fields,
             ),
         )
 

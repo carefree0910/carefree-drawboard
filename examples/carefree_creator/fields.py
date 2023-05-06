@@ -95,7 +95,7 @@ diffusion_fields = list(
         ),
     ).items()
 )
-# txt2img / sd_inpainting / sd_outpainting fields
+# txt2img
 txt2img_fields = OrderedDict(
     w=INumberField(
         default=512,
@@ -130,6 +130,9 @@ txt2img_fields = OrderedDict(
 )
 for k, v in diffusion_fields:
     txt2img_fields[k] = v
+# sd_inpainting / sd_outpainting fields
+sd_inpainting_fields = txt2img_fields.copy()
+sd_inpainting_fields.pop("version")
 # img2img fields
 img2img_fields = OrderedDict()
 for k, v in diffusion_fields[:4]:
@@ -193,5 +196,6 @@ __all__ = [
     "img2img_fields",
     "sr_fields",
     "inpainting_fields",
+    "sd_inpainting_fields",
     "variation_fields",
 ]
