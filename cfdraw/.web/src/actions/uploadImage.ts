@@ -13,6 +13,8 @@ interface IUploadImageResponseData {
   w: number;
   h: number;
   url: string;
+  safe: boolean;
+  reason: string;
 }
 
 export async function uploadImage(
