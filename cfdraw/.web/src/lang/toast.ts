@@ -43,6 +43,7 @@ export enum Toast_Words {
   "exit-brush-mode-message" = "exit-brush-mode-message",
   "nsfw-image-detected-warning-message" = "nsfw-image-detected-warning-message",
   "no-overlapped-node-message" = "no-overlapped-node-message",
+  "returned-empty-text-message" = "returned-empty-text-message",
 }
 
 export const toastLangRecords: Record<Lang, Record<Toast_Words, string>> = {
@@ -89,6 +90,7 @@ export const toastLangRecords: Record<Lang, Record<Toast_Words, string>> = {
     [Toast_Words["exit-brush-mode-message"]]: "已退出涂鸦模式",
     [Toast_Words["nsfw-image-detected-warning-message"]]: "检测到图片中可能包含敏感内容",
     [Toast_Words["no-overlapped-node-message"]]: "当前空白画布上没有内容",
+    [Toast_Words["returned-empty-text-message"]]: "返回的文本内容为空",
   },
   en: {
     [Toast_Words["dropping-message"]]: "Detecting",
@@ -135,5 +137,6 @@ export const toastLangRecords: Record<Lang, Record<Toast_Words, string>> = {
     [Toast_Words["exit-brush-mode-message"]]: "Exited sketch mode",
     [Toast_Words["nsfw-image-detected-warning-message"]]: "NSFW image detected",
     [Toast_Words["no-overlapped-node-message"]]: "Cannot detect anything on current Blank Canvas",
+    [Toast_Words["returned-empty-text-message"]]: "Returned text is empty",
   },
 };

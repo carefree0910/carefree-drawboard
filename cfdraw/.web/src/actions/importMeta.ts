@@ -153,6 +153,11 @@ function consumePythonFields({ type, metaData }: IImportMeta<"python.fields">): 
             appendix: ` (${results.value[i].reason})`,
           });
         }
+      } else if (results.type === "text") {
+        if (results.value[i].text.length === 0) {
+          toastWord("warning", Toast_Words["returned-empty-text-message"]);
+          return;
+        }
       }
       // rectangle should be calculated after the safety check,
       // because the response might be changed
