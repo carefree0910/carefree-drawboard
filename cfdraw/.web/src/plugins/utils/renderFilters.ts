@@ -60,7 +60,9 @@ export function hashInfo(info?: IResponse): string {
   if (!info) return "";
   const node = info.displayNode?.alias ?? "";
   const nodes = info.nodes.map((node) => node.alias).join(",");
-  return getHash(`${node}-${nodes}`).toString();
+  const transform = JSON.stringify(info.displayNode?.transform.fields ?? {});
+  const transforms = info.nodes.map((node) => JSON.stringify(node.transform.fields)).join(",");
+  return getHash(`${node}-${nodes}-${transform}-${transforms}`).toString();
 }
 const working: Dictionary<boolean> = {};
 const results: Dictionary<boolean> = {};
