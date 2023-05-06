@@ -8,6 +8,7 @@ from PIL import Image
 from typing import Any
 from typing import Dict
 from typing import Type
+from typing import Union
 from typing import Optional
 from fastapi import Response
 from fastapi import HTTPException
@@ -99,16 +100,24 @@ def get_image(file: str, jpeg: bool = False) -> Image.Image:
         raise_err(err)
 
 
-def get_image_response(file: str, jpeg: bool = False) -> Response:
+def get_image_response(
+    file: str,
+    jpeg: bool = False,
+    return_image: bool = False,
+) -> Union[Response, Image.Image]:
     config = get_config()
     try:
         image = Image.open(config.upload_image_folder / file)
         if not jpeg:
+            if return_image:
+                return image
             content = np_to_bytes(np.array(image))
         else:
             with BytesIO() as f:
                 to_rgb(image).save(f, format="JPEG", quality=95)
                 f.seek(0)
+                if return_image:
+                    return Image.open(f)
                 content = f.read()
         return Response(content=content, media_type="image/png")
     except Exception as err:

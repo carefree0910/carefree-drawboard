@@ -36,6 +36,7 @@ class UploadImageResponse(BaseModel):
 class FetchImageModel(BaseModel):
     url: str
     jpeg: bool
+    return_image: bool = False
 
 
 class ImageUploader:
@@ -63,9 +64,9 @@ class ImageUploader:
         return ImageDataModel(**save_image(image, meta))
 
     @staticmethod
-    async def fetch_image(data: FetchImageModel) -> Response:
+    async def fetch_image(data: FetchImageModel) -> Union[Response, Image.Image]:
         file = data.url.split(constants.UPLOAD_IMAGE_FOLDER_NAME)[1][1:]  # remove '/'
-        return get_image_response(file, data.jpeg)
+        return get_image_response(file, data.jpeg, data.return_image)
 
 
 def add_upload_image(app: IApp) -> None:
