@@ -51,11 +51,17 @@ function consumeUpload({ type, metaData }: IImportMeta<"upload">): void {
   const failed = async () => {
     toastWord("error", Toast_Words["upload-image-error-message"]);
   };
-  const { w, h, url, isDrag } = metaData;
+  let { w, h, url, safe, reason, isDrag } = metaData;
   const prefix = isDrag ? "drag-" : "";
   const newAlias = `${prefix}upload.${getRandomHash()}`;
   metaData.alias = newAlias;
   const bboxInfo: NewImageInfo = { w, h };
+  if (!safe) {
+    url = metaData.url = NSFW_IMAGE_PLACEHOLDER;
+    toastWord("warning", Toast_Words["nsfw-image-detected-warning-message"], {
+      appendix: ` (${reason})`,
+    });
+  }
   addNewImage(
     newAlias,
     { src: url, placeholder: IMAGE_PLACEHOLDER },

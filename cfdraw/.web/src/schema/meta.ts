@@ -38,6 +38,8 @@ interface IUploadMetaData extends ICommonMetaData {
   w: number;
   h: number;
   url: string;
+  safe: boolean;
+  reason: string;
   isDrag: boolean;
 }
 export type IPythonResults = (
