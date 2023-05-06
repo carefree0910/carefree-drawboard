@@ -146,18 +146,21 @@ const Render = (({
   });
   useEffect(() => {
     let latest = true;
-    renderFilter(info).then((filter) => {
-      if (!latest) return;
-      if (!filter) {
-        setPluginNeedRender(_id, false);
-      } else if (inGroup && !groupExpand && !expand) {
-        setPluginNeedRender(_id, false);
-      } else {
-        setPluginNeedRender(_id, true);
-      }
-    });
+    const timer = setTimeout(() => {
+      renderFilter(info).then((filter) => {
+        if (!latest) return;
+        if (!filter) {
+          setPluginNeedRender(_id, false);
+        } else if (inGroup && !groupExpand && !expand) {
+          setPluginNeedRender(_id, false);
+        } else {
+          setPluginNeedRender(_id, true);
+        }
+      });
+    }, 0);
     return () => {
       latest = false;
+      clearTimeout(timer);
     };
   }, [_id, inGroup, expand, groupExpand, hashInfo(info), ...constraintDeps]);
   let { w, h, iconW, iconH, pivot, follow, offsetX, offsetY, expandOffsetX, expandOffsetY } =
