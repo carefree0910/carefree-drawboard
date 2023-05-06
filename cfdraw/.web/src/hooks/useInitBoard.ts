@@ -1,7 +1,16 @@
 import { useEffect } from "react";
 import { makeObservable, observable } from "mobx";
 
-import { Graph, Logger, UnitTest, shallowCopy, waitUntil } from "@carefree0910/core";
+import {
+  Graph,
+  Logger,
+  UnitTest,
+  getRandomHash,
+  registerExecuterResponseCallback,
+  removeExecuterResponseCallback,
+  shallowCopy,
+  waitUntil,
+} from "@carefree0910/core";
 import { NoliNativeBoard } from "@carefree0910/native";
 import {
   BoardStore,
@@ -12,6 +21,7 @@ import {
   ABCStore,
 } from "@carefree0910/business";
 
+import type { IMeta } from "@/schema/meta";
 import { BOARD_CONTAINER_ID, IMAGE_PLACEHOLDER, IS_PROD } from "@/utils/constants";
 import { settingsStore } from "@/stores/settings";
 import { useIsSetup } from "./useSetup";
@@ -113,5 +123,29 @@ export function useInitBoard(): void {
         _initialize();
       });
     }
+  }, []);
+
+  // handle clone meta issue
+  useEffect(() => {
+    const key = `clone-${getRandomHash()}`;
+    registerExecuterResponseCallback({
+      key,
+      type: "clone",
+      fn: async (executer, data) => {
+        const clonedAliases = data.response.value as string[];
+        for (const alias of clonedAliases) {
+          const node = executer.graph.getExistingNode(alias);
+          node.allChildrenNodes.forEach((child) => {
+            if (child.params.meta) {
+              (child.params.meta as IMeta).data.alias = child.alias;
+            }
+          });
+        }
+      },
+    });
+
+    return () => {
+      removeExecuterResponseCallback(key);
+    };
   }, []);
 }
