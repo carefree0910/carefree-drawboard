@@ -1,6 +1,6 @@
 # Carefree Creator
 
-![Carefree Creator](https://user-images.githubusercontent.com/15677328/236476036-ee651a3d-b2d9-4eb9-9b77-bedef164b41b.png)
+![Carefree Creator](../assets/carefree-creator.png)
 
 This example migrates `carefree-creator`'s functionalities to `carefree-drawboard` 🎨:
 1. Text to Image generation.
