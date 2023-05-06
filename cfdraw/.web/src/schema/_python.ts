@@ -137,7 +137,7 @@ export interface IPythonSocketCallbacks<R> extends IPythonCallbacks, IPythonSock
   onSocketError?: (err: any) => void;
 }
 
-export type PythonSocketStatus = "pending" | "working" | "finished" | "exception";
+export type PythonSocketStatus = "pending" | "working" | "finished" | "exception" | "interrupted";
 interface IPythonSocketIntermediate {
   imageList?: string[]; // intermediate images, if any
   textList?: string[]; // intermediate texts, if any

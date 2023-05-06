@@ -292,6 +292,7 @@ class SocketStatus(str, Enum):
     WORKING = "working"
     FINISHED = "finished"
     EXCEPTION = "exception"
+    INTERRUPTED = "interrupted"
 
 
 class ISocketIntermediate(BaseModel):

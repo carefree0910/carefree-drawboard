@@ -8,7 +8,7 @@ import type { IDefinitions } from "@/schema/fields";
 import type { IPythonOnPluginMessage, IUseOnPythonPluginMessage } from "@/schema/_python";
 import { getMetaField } from "@/stores/meta";
 import { setPluginMessage } from "@/stores/pluginsInfo";
-import { cleanupException, cleanupFinished } from "../utils/cleanup";
+import { cleanupException, cleanupFinished, cleanupInterrupted } from "../utils/cleanup";
 
 export function useDefinitionsRequestDataFn(definitions: IDefinitions): () => Dictionary<any> {
   return useCallback(() => {
@@ -66,6 +66,10 @@ export function useOnMessage({
         }
         case "exception": {
           cleanupException({ id, message, pluginInfo });
+          break;
+        }
+        case "interrupted": {
+          cleanupInterrupted({ id, message });
           break;
         }
       }

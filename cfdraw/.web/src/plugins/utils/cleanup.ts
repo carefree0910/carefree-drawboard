@@ -49,3 +49,14 @@ export function cleanupException({
     cleanup(id, hash);
   }
 }
+
+interface ICleanupInterrupted {
+  id: string;
+  message: IPythonPluginMessage;
+}
+export function cleanupInterrupted({ id, message: { hash, message } }: ICleanupInterrupted): void {
+  toastWord("warning", Toast_Words["submit-task-interrupted-message"], {
+    appendix: ` - ${message}`,
+  });
+  cleanup(id, hash);
+}
