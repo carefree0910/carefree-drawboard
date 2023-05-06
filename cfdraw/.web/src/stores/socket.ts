@@ -59,21 +59,33 @@ class SocketStore extends ABCStore<ISocketStore> implements ISocketStore {
       socketLog(`>> send message (${hash})`);
 
       const send = () => {
-        hook.getMessage().then((data) => {
-          if (data.hash !== hash) {
-            Logger.warn("Internal error: hash mismatched.");
-            return;
-          }
-          if (this.shouldTerminate) {
-            Logger.warn("Should terminate socket connection in `send`.");
-            return;
-          }
-          socketStore.socket!.send(JSON.stringify(data));
-          socketLog(`>>> message sent (${hash})`);
-          if (hook.updateInterval && !hook.shouldTerminate) {
-            hook.timer = setTimeout(send, hook.updateInterval);
-          }
-        });
+        hook
+          .getMessage()
+          .then((data) => {
+            if (data.hash !== hash) {
+              Logger.warn("Internal error: hash mismatched.");
+              return;
+            }
+            if (this.shouldTerminate) {
+              Logger.warn("Should terminate socket connection in `send`.");
+              return;
+            }
+            socketStore.socket!.send(JSON.stringify(data));
+            socketLog(`>>> message sent (${hash})`);
+            if (hook.updateInterval && !hook.shouldTerminate) {
+              hook.timer = setTimeout(send, hook.updateInterval);
+            }
+          })
+          .catch((e) => {
+            hook.onMessage({
+              hash,
+              status: "interrupted",
+              message: e.message,
+              total: 0,
+              pending: 0,
+              data: {},
+            });
+          });
       };
 
       hook.shouldTerminate = false;
