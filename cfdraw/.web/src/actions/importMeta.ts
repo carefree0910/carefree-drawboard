@@ -1,4 +1,4 @@
-import { RectangleShapeNode, getRandomHash, shallowCopy } from "@carefree0910/core";
+import { RectangleShapeNode, getRandomHash, isUndefined, shallowCopy } from "@carefree0910/core";
 import {
   BoardStore,
   useAddNode,
@@ -176,7 +176,10 @@ function consumePythonFields({ type, metaData }: IImportMeta<"python.fields">): 
   }
   if (metaData.response.type === "image") {
     const packs = gatherPacks(metaData.response, ({ w, h }) => ({ autoFit: true, wh: { w, h } }));
-    const targets = getArrangements(packs.map(({ rectangle }) => rectangle)).targets;
+    const targets =
+      metaData.from?.type === "add.blank" && !isUndefined(metaData.from.data.alias)
+        ? packs.map(() => BoardStore.graph.getExistingNode(metaData.from?.data.alias!))
+        : getArrangements(packs.map(({ rectangle }) => rectangle)).targets;
     const anyUnsafe = metaData.response.value.some((res) => !res.safe);
     packs.forEach(({ res: { url }, alias, metaData }, i) => {
       const isLast = i === packs.length - 1;
