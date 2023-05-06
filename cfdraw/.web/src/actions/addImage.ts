@@ -69,7 +69,7 @@ export function addNewImage(
   newImage.meta = opt.meta;
   console.log("newImage: ", newImage.snapshot());
   useSafeExecute("addJson", null, true, opt.callbacks, {
-    noSelect: opt.noSelect ?? false,
+    noSelect: opt.noSelect ?? true,
     safeOpt: {
       retry: 3,
       retryInterval: 500,

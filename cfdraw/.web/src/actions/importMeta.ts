@@ -198,7 +198,7 @@ function consumePythonFields({ type, metaData }: IImportMeta<"python.fields">): 
           info: targets[i].bbox,
           meta: { type, data: metaData },
           callbacks: getCallbacks(isLast && !anyUnsafe),
-          noSelect: !isLast,
+          noSelect: true,
         },
       );
     });
@@ -215,7 +215,7 @@ function consumePythonFields({ type, metaData }: IImportMeta<"python.fields">): 
         bbox: targets[i].bbox,
         meta: { type, data: metaData },
         callbacks: getCallbacks(isLast),
-        noSelect: !isLast,
+        noSelect: true,
       });
     });
   }
