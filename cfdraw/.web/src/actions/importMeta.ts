@@ -45,7 +45,9 @@ const consumers: Record<MetaType, (input: IImportMeta<any>) => void> = {
 };
 function consumeUpload({ type, metaData }: IImportMeta<"upload">): void {
   const success = async () => {
-    toastWord("success", Toast_Words["upload-image-success-message"]);
+    if (safe) {
+      toastWord("success", Toast_Words["upload-image-success-message"]);
+    }
     updateElapsedTimes(newAlias);
   };
   const failed = async () => {
