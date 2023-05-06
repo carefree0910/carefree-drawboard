@@ -1,7 +1,7 @@
 import { useCallback } from "react";
 
 import type { ExportBlobOptions } from "@carefree0910/svg";
-import { BBox, INode, INodes, argMax } from "@carefree0910/core";
+import { BBox, INode, argMax } from "@carefree0910/core";
 
 import type { IMeta } from "@/schema/meta";
 import type {
@@ -15,7 +15,8 @@ import { useWebSocketHook } from "@/requests/hooks";
 import { uploadImage } from "@/actions/uploadImage";
 import { Exporter } from "@/actions/export";
 
-type IGetNodeData = ExportBlobOptions & { exportBox: BBox };
+type IGetPythonRequest = ExportBlobOptions & { noExport?: boolean };
+type IGetNodeData = ExportBlobOptions & { exportBox?: BBox };
 async function getNodeData(node: INode | null, opt: IGetNodeData): Promise<INodeData> {
   if (!node) return {};
   const { x, y } = node.position;
@@ -23,9 +24,17 @@ async function getNodeData(node: INode | null, opt: IGetNodeData): Promise<INode
   const transform = node.transform.fields;
   const text = node.type === "text" ? node.params.content : undefined;
   let src: string | undefined = undefined;
-  if (node.type === "image" && node.bbox.closeTo(opt.exportBox)) {
+  if (!opt.exportBox) {
+    if (node.type === "image") {
+      src = node.renderParams.src;
+    } else if (node.type === "svg") {
+      src = node.params.src;
+    }
+  } else if (node.type === "image" && node.bbox.closeTo(opt.exportBox)) {
     src = node.renderParams.src;
-  } else if (node.type === "path" || node.type === "image") {
+  } else if (node.type === "svg" && node.bbox.closeTo(opt.exportBox)) {
+    src = node.params.src;
+  } else if (node.type === "path" || node.type === "image" || node.type === "svg") {
     // should export the graphic `Node` as an image based on the `exportBox`
     opt.exportOptions ??= {};
     opt.exportOptions.exportBox = opt.exportBox;
@@ -51,16 +60,19 @@ export async function getPythonRequest({
   nodes,
   identifier,
   getExtraRequestData,
-  opt,
+  opt = {},
 }: Omit<IUsePythonInfo, "isInvisible"> & {
-  opt?: ExportBlobOptions;
+  opt?: IGetPythonRequest;
 }): Promise<Omit<IPythonSocketRequest, "hash">> {
-  const exportBox =
-    nodes.length === 0
-      ? node?.bbox ?? BBox.unit()
-      : nodes.length === 1
-      ? nodes[0].bbox
-      : nodes[argMax(nodes.map((n) => n.bbox.area))].bbox;
+  let exportBox: BBox | undefined;
+  if (!opt.noExport) {
+    exportBox =
+      nodes.length === 0
+        ? node?.bbox ?? BBox.unit()
+        : nodes.length === 1
+        ? nodes[0].bbox
+        : nodes[argMax(nodes.map((n) => n.bbox.area))].bbox;
+  }
   const getNodeDataOpt: IGetNodeData = { exportBox, ...opt };
   const nodeData = await getNodeData(node, getNodeDataOpt);
   const nodeDataList = nodes.length <= 1 ? [] : await getNodeDataList(nodes, getNodeDataOpt);
