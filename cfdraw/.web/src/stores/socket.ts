@@ -1,7 +1,7 @@
 import { makeObservable, observable } from "mobx";
 import { useEffect } from "react";
 
-import { Bundle, Logger, waitUntil } from "@carefree0910/core";
+import { Bundle, Dictionary, Logger, isUndefined, waitUntil } from "@carefree0910/core";
 import { ABCStore } from "@carefree0910/business";
 
 import type {
@@ -120,17 +120,62 @@ export const removeSocketHooks = (...hashes: string[]) => {
 export const checkSocketHookExists = (key: string) => {
   return socketStore.hooks.has(key);
 };
-export const runOneTimeSocketHook = <R>(hook: SocketHook<R>) => {
-  const onMessage: IPythonOnSocketMessage<R> = (data) => {
-    return hook.onMessage(data).then((res) => {
-      if (res && res.newMessage) {
-        Logger.warn("One-time socket hook should not return newMessage.");
-      }
-      removeSocketHooks(hook.key);
-      return {};
-    });
+interface ICaches<R> {
+  key: string;
+  working: Dictionary<boolean>;
+  results: Dictionary<R | undefined>;
+}
+interface IRunOneTimeSocketHook<R> {
+  key: string;
+  hook: Omit<SocketHook<R>, "onMessage">;
+}
+const timers: Dictionary<any> = {};
+const caches = new Bundle<ICaches<any>>([]);
+const clear = (key: string, hash: string) => {
+  const timerKey = `${key}-${hash}`;
+  clearTimeout(timers[timerKey]);
+  timers[timerKey] = setTimeout(() => {
+    delete timers[timerKey];
+    delete caches.get(key)?.results[hash];
+  }, 10 * 1000);
+};
+export const runOneTimeSocketHook = async <R>({
+  key,
+  hook,
+}: IRunOneTimeSocketHook<R>): Promise<R | undefined> => {
+  let _caches = caches.get(key);
+  if (isUndefined(_caches)) {
+    _caches = { key, working: {}, results: {} };
+    caches.push(_caches);
+  }
+  const hookKey = hook.key;
+  const keyCaches = _caches as ICaches<R>;
+  const returnResults = () => {
+    clear(key, hookKey);
+    return keyCaches.results[hookKey];
   };
-  return pushSocketHook({ ...hook, onMessage }).then(() => runSocketHook(hook.key));
+  if (isUndefined(hookKey)) return;
+  if (!isUndefined(keyCaches.results[hookKey])) return returnResults();
+  if (keyCaches.working[hookKey]) {
+    return waitUntil(() => !isUndefined(keyCaches.results[hookKey])).then(returnResults);
+  }
+  keyCaches.working[hookKey] = true;
+  return new Promise((resolve) => {
+    const onMessage: IPythonOnSocketMessage<R> = async ({ status, message, data: { final } }) => {
+      removeSocketHooks(hookKey);
+      delete keyCaches.working[hookKey];
+      if (status === "finished" && final) {
+        keyCaches.results[hookKey] = final;
+        clear(key, hookKey);
+        resolve(final);
+      } else if (status === "exception") {
+        Logger.warn(`runOneTimeSocketHook (${key}) failed: ${message}`);
+        resolve(undefined);
+      }
+      return {};
+    };
+    pushSocketHook({ ...hook, onMessage }).then(() => runSocketHook(hookKey));
+  });
 };
 
 const log = socketLog;

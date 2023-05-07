@@ -62,59 +62,31 @@ export function hashInfo(info?: IResponse): string {
   const nodes = info.nodes.map((node) => node.alias).join(",");
   return getHash(`${node}-${nodes}`).toString();
 }
-const working: Dictionary<boolean> = {};
-const results: Dictionary<boolean> = {};
-const clear = (hash: string) => {
-  setTimeout(() => {
-    delete results[hash];
-  }, 1000);
-};
 function checkValidator(validator?: string, info?: IResponse): Promise<boolean> {
   if (isUndefined(validator)) return Promise.resolve(true);
-  return new Promise((resolve) => {
-    const hash = hashInfo(info);
-    if (!isUndefined(results[hash])) return resolve(results[hash]);
-    if (working[hash]) {
-      return waitUntil(() => !isUndefined(results[hash])).then(() => resolve(results[hash]));
-    }
-    working[hash] = true;
-    const getMessage = (): Promise<IPythonSocketRequest> => {
-      return getPythonRequest({
-        node: info?.displayNode ?? null,
-        nodes: info?.nodes ?? [],
-        identifier: "node_validator",
-        opt: { noExport: true },
-      }).then((data) => ({
-        ...data,
-        hash,
-        extraData: { key: validator },
-        isInternal: true,
-      }));
-    };
-    const onMessage = async ({
-      status,
-      message,
-      data: { final },
-    }: IPythonSocketMessage<IValidatorResponse>) => {
-      delete working[hash];
-      if (status === "finished" && final) {
-        results[hash] = final.acceptable;
-        clear(hash);
-        resolve(final.acceptable);
-      } else if (status === "exception") {
-        Logger.warn(`execute node validator ${validator} failed: ${message}`);
-        resolve(false);
-      }
-      return {};
-    };
+  const hash = hashInfo(info);
+  const getMessage = (): Promise<IPythonSocketRequest> => {
+    return getPythonRequest({
+      node: info?.displayNode ?? null,
+      nodes: info?.nodes ?? [],
+      identifier: "node_validator",
+      opt: { noExport: true },
+    }).then((data) => ({
+      ...data,
+      hash,
+      extraData: { key: validator },
+      isInternal: true,
+    }));
+  };
 
-    runOneTimeSocketHook({
+  return runOneTimeSocketHook<IValidatorResponse>({
+    key: "checkValidator",
+    hook: {
       key: hash,
       getMessage,
-      onMessage,
       isInternal: true,
-    });
-  });
+    },
+  }).then((res) => res?.acceptable ?? false);
 }
 export function useConstraintDeps(settings: NodeConstraintSettings) {
   return [settings.nodeConstraint, settings.nodeConstraintRules, settings.nodeConstraintValidator];
