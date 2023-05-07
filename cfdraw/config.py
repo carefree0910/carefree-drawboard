@@ -3,6 +3,7 @@ import os
 from typing import Optional
 from pathlib import Path
 from importlib import import_module
+from dataclasses import field
 from dataclasses import dataclass
 
 from cfdraw import constants
@@ -20,7 +21,7 @@ class Config:
     backend_port: str = constants.BACKEND_PORT
     backend_hosting_url: Optional[str] = None  # this must be provided for hosting
     # upload
-    upload_root: str = str(constants.UPLOAD_ROOT)
+    upload_root: str = field(default_factory=constants.get_upload_root)
     # board
     board_settings: BoardSettings = BoardSettings()
     # misc

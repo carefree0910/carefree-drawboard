@@ -42,6 +42,7 @@ class LogLevel(str, Enum):
 # env
 ENV_KEY = "CFDRAW_ENV"
 UNIFIED_KEY = "CFDRAW_UNIFIED"
+UPLOAD_ROOT_KEY = "CFDRAW_UPLOAD_ROOT"
 
 
 class Env(str, Enum):
@@ -63,6 +64,10 @@ def use_unified() -> bool:
 
 def set_unified(enable: bool) -> None:
     os.environ[UNIFIED_KEY] = "enabled" if enable else "disabled"
+
+
+def get_upload_root() -> str:
+    return os.environ.get(UPLOAD_ROOT_KEY, str(UPLOAD_ROOT))
 
 
 # directories
