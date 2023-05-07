@@ -33,11 +33,18 @@ export interface INumberField extends IBaseFields {
   scale?: "linear" | "logarithmic";
   precision?: number;
 }
+interface ISelectLocalProperties {
+  path: string;
+  regex?: string;
+  noExt: boolean;
+  onlyFiles: boolean;
+}
 export interface ISelectField<T> extends IBaseFields {
   type: "select";
   values: readonly T[];
   default: T;
   isMulti?: boolean;
+  localProperties?: ISelectLocalProperties;
 }
 export interface IBooleanField extends IBaseFields {
   type: "boolean";

@@ -1,7 +1,8 @@
-from cfdraw import constants
-from cfdraw.config import get_config
 from cfdraw.schema.plugins import *
 from cfdraw.plugins.base import *
+from cfdraw import constants
+from cfdraw.config import get_config
+from cfdraw.schema.fields import ISelectLocalField
 from cfdraw.plugins.factory import PluginFactory
 
 
@@ -24,6 +25,13 @@ class SyncSocketPlugin(IInternalSocketPlugin):
                 boardSettings=config.board_settings.to_filtered(),
             ),
         )
+
+
+@PluginFactory.register_internal("sync_local_select")
+class SyncLocalSelectSocketPlugin(IInternalSocketPlugin):
+    async def process(self, data: ISocketRequest) -> ISocketMessage:
+        values = ISelectLocalField.get_values(**data.extraData)
+        return ISocketMessage.make_success(data.hash, dict(values=values))
 
 
 __all__ = [

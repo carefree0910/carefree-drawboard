@@ -1,9 +1,12 @@
+import regex as re
+
 from enum import Enum
 from typing import Any
 from typing import Dict
 from typing import List
 from typing import Union
 from typing import Optional
+from pathlib import Path
 from pydantic import Extra
 from pydantic import Field
 from pydantic import BaseModel
@@ -20,6 +23,7 @@ class FieldType(str, Enum):
     IMAGE = "image"
     NUMBER = "number"
     SELECT = "select"
+    SELECT_LOCAL = "select_local"
     BOOLEAN = "boolean"
     COLOR = "color"
     LIST = "list"
@@ -73,6 +77,49 @@ class ISelectField(IBaseField):
     type: FieldType = Field(FieldType.SELECT, description="Type", const=True)
 
 
+class ISelectLocalField(IBaseField):
+    path: str = Field(..., description="The local path you want to read")
+    default: Optional[str] = Field(None, description="The default value of the field")
+    regex: Optional[str] = Field(None, description="The regex to filter the files")
+    noExt: bool = Field(False, description="Whether to remove the extension")
+    onlyFiles: bool = Field(True, description="Whether only consider files")
+    isMulti: Optional[bool] = Field(None, description="Whether use multi-select")
+    type: FieldType = Field(FieldType.SELECT_LOCAL, description="Type", const=True)
+
+    @staticmethod
+    def get_values(
+        *,
+        path: str,
+        regex: Optional[str],
+        noExt: bool,
+        onlyFiles: bool,
+    ) -> List[str]:
+        p = Path(path)
+        paths = [f for f in p.iterdir() if f]
+        if onlyFiles:
+            paths = [f for f in paths if f.is_file()]
+        if regex:
+            paths = [f for f in paths if re.search(regex, f.name)]
+        return sorted([f.stem if noExt else f.name for f in paths])
+
+    def dict(self, **kwargs: Any) -> Dict[str, Any]:
+        d = super().dict(**kwargs)
+        d["type"] = FieldType.SELECT.value
+        kw = dict(
+            path=d.pop("path"),
+            regex=d.pop("regex"),
+            noExt=d.pop("noExt"),
+            onlyFiles=d.pop("onlyFiles"),
+        )
+        values = self.get_values(**kw)
+        d["values"] = values
+        if d["default"] is None:
+            d["default"] = "" if not values else values[0]
+        d["isLocal"] = True
+        d["localProperties"] = kw
+        return d
+
+
 class IBooleanField(IBaseField):
     default: bool = Field(..., description="The default value of the field")
     type: FieldType = Field(FieldType.BOOLEAN, description="Type", const=True)
@@ -106,6 +153,7 @@ IFieldDefinition = Union[
     IImageField,
     INumberField,
     ISelectField,
+    ISelectLocalField,
     IBooleanField,
     IColorField,
     IListField,
@@ -122,6 +170,7 @@ __all__ = [
     "NumberScale",
     "INumberField",
     "ISelectField",
+    "ISelectLocalField",
     "IBooleanField",
     "IColorField",
     "IListField",
