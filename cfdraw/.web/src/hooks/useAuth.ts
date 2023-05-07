@@ -7,7 +7,11 @@ type Message = {
 };
 
 const allowedOrigins = ["http://127.0.0.1:5123", "http://localhost:5123"];
-const allowedOriginRegexList = [/^http:\/\/localhost(:\d+)?$/, /^https:\/\/.*nolibox\.com$/];
+const allowedOriginRegexList = [/^http:\/\/localhost(:\d+)?$/];
+const envAllowedOrigins = import.meta.env.VITE_CFDRAW_ALLOWED_ORIGINS;
+if (envAllowedOrigins) {
+  allowedOrigins.push(...envAllowedOrigins.split(","));
+}
 
 function isAllowedOrigin(origin: string): boolean {
   if (allowedOrigins.includes(origin)) return true;
