@@ -135,6 +135,7 @@ const Render = (({
     constraintDeps,
   );
   const info = useSelecting("raw");
+  const infoDeps = useMemo(() => [hasConstraint ? hashInfo(info) : ""], [hasConstraint, info]);
   const isReady = useIsReady();
   const expand = usePluginIsExpanded(_id);
   const groupExpand = usePluginGroupIsExpanded(groupId);
@@ -162,7 +163,7 @@ const Render = (({
       latest = false;
       clearTimeout(timer);
     };
-  }, [_id, inGroup, expand, groupExpand, hashInfo(info), ...constraintDeps]);
+  }, [_id, inGroup, expand, groupExpand, ...infoDeps, ...constraintDeps]);
   let { w, h, iconW, iconH, pivot, follow, offsetX, offsetY, expandOffsetX, expandOffsetY } =
     renderInfo;
   iconW ??= DEFAULT_PLUGIN_SETTINGS.iconW;
@@ -200,7 +201,7 @@ const Render = (({
   const deps = [
     _id,
     needRender,
-    hasConstraint ? hashInfo(info) : "",
+    ...infoDeps,
     groupId,
     iconW,
     iconH,
