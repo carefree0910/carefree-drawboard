@@ -15,6 +15,7 @@ import { ABCStore, langStore } from "@carefree0910/business";
 
 import type { IPythonOnSocketMessage, IPythonSocketRequest } from "@/schema/_python";
 import { useReactPluginSettings } from "@/_settings";
+import { cleanURL } from "@/utils/misc";
 import { IMAGE_PLACEHOLDER, IS_PROD } from "@/utils/constants";
 import { ThemeType, allThemes, themeStore } from "@/stores/theme";
 import { userStore } from "@/stores/user";
@@ -94,7 +95,7 @@ const postPseduoUserId = async (): Promise<void> => {
     localStorage.setItem(USER_ID_KEY, userId);
   }
   const url = IS_PROD
-    ? import.meta.env.VITE_CFDRAW_API_URL
+    ? cleanURL(import.meta.env.VITE_CFDRAW_API_URL)
     : `http://localhost:${import.meta.env.VITE_CFDRAW_FE_PORT}`;
   window.postMessage({ userId }, url);
 };

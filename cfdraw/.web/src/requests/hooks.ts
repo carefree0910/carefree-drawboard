@@ -9,6 +9,7 @@ import type {
   IPythonSocketRequest,
   IPythonSocketCallbacks,
 } from "@/schema/_python";
+import { cleanURL } from "@/utils/misc";
 import { settingsStore } from "@/stores/settings";
 import { useInceptors } from "./interceptors";
 import {
@@ -22,7 +23,7 @@ import {
 // cannot use `useMemo` here
 export function useAPI<T extends APISources>(source: T): APIs[T] {
   const timeout = settingsStore.internalSettings?.timeout ?? 300000;
-  let baseURL = import.meta.env.VITE_CFDRAW_API_URL;
+  let baseURL = cleanURL(import.meta.env.VITE_CFDRAW_API_URL);
   if (!baseURL) {
     let backendPort = import.meta.env.VITE_CFDRAW_BE_PORT;
     if (!backendPort) {
