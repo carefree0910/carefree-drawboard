@@ -3,6 +3,7 @@ import os
 from enum import Enum
 from pathlib import Path
 
+
 # global
 DEFAULT_CONFIG_MODULE = "cfconfig"
 DEFAULT_CONFIG_ENTRY = "config"
@@ -30,7 +31,15 @@ class Endpoint(Enum):
     __repr__ = __str__
 
 
-# misc
+class LogLevel(str, Enum):
+    DEBUG = "debug"
+    INFO = "info"
+    WARNING = "warning"
+    ERROR = "error"
+    CRITICAL = "critical"
+
+
+# env
 ENV_KEY = "CFDRAW_ENV"
 UNIFIED_KEY = "CFDRAW_UNIFIED"
 
@@ -54,14 +63,6 @@ def use_unified() -> bool:
 
 def set_unified(enable: bool) -> None:
     os.environ[UNIFIED_KEY] = "enabled" if enable else "disabled"
-
-
-class LogLevel(str, Enum):
-    DEBUG = "debug"
-    INFO = "info"
-    WARNING = "warning"
-    ERROR = "error"
-    CRITICAL = "critical"
 
 
 # directories
