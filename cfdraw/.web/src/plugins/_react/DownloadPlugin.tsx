@@ -1,4 +1,4 @@
-import { useMemo, useState } from "react";
+import { useCallback, useMemo, useState } from "react";
 import { observer } from "mobx-react-lite";
 import { Flex, Spacer } from "@chakra-ui/react";
 
@@ -16,8 +16,8 @@ import CFButton from "@/components/CFButton";
 import CFDivider from "@/components/CFDivider";
 import CFHeading from "@/components/CFHeading";
 import { drawboardPluginFactory } from "../utils/factory";
-import Render from "../components/Render";
 import { useClosePanel } from "../components/hooks";
+import Render from "../components/Render";
 
 const DownloadPlugin = ({ pluginInfo, ...props }: IPlugin) => {
   const id = useMemo(() => `download_${getRandomHash()}`, []);
@@ -34,21 +34,23 @@ const DownloadPlugin = ({ pluginInfo, ...props }: IPlugin) => {
     if (!imgWH) return "Loading...";
     return `${imgWH.w} x ${imgWH.h}`;
   }, [type, lang, w, h, imgWH, keepOriginal]);
-
-  if (!nodes) return null;
-
-  const getWord = (keepOriginal: string) =>
-    translate(
-      keepOriginal === "true"
-        ? Download_Words["download-image-size-original"]
-        : Download_Words["download-image-size-drawboard"],
-      lang,
-    );
+  const getWord = useCallback(
+    (keepOriginal: string) =>
+      translate(
+        keepOriginal === "true"
+          ? Download_Words["download-image-size-original"]
+          : Download_Words["download-image-size-drawboard"],
+        lang,
+      ),
+    [lang],
+  );
   const closePanel = useClosePanel(id);
-  const onDownload = () => {
+  const onDownload = useCallback(() => {
     downloadNodes(nodes, format, keepOriginal);
     closePanel();
-  };
+  }, [nodes, format, keepOriginal, closePanel]);
+
+  if (!nodes) return null;
 
   return (
     <Render id={id} {...props}>
