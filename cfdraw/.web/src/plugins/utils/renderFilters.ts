@@ -1,9 +1,9 @@
 import { useCallback } from "react";
 
 import type { IResponse } from "@carefree0910/business";
-import { Dictionary, Logger, getHash, isUndefined, waitUntil } from "@carefree0910/core";
+import { getHash, isUndefined } from "@carefree0910/core";
 
-import type { IPythonSocketMessage, IPythonSocketRequest } from "@/schema/_python";
+import type { IPythonSocketRequest } from "@/schema/_python";
 import type { NodeConstraintSettings } from "@/schema/plugins";
 import { runOneTimeSocketHook } from "@/stores/socket";
 import { getPythonRequest } from "@/hooks/usePython";
@@ -86,6 +86,7 @@ function checkValidator(validator?: string, info?: IResponse): Promise<boolean> 
       getMessage,
       isInternal: true,
     },
+    timeout: 10 * 1000,
   }).then((res) => res?.acceptable ?? false);
 }
 export function useConstraintDeps(settings: NodeConstraintSettings) {

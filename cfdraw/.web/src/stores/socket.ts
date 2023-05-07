@@ -128,20 +128,22 @@ interface ICaches<R> {
 interface IRunOneTimeSocketHook<R> {
   key: string;
   hook: Omit<SocketHook<R>, "onMessage">;
+  timeout?: number;
 }
 const timers: Dictionary<any> = {};
 const caches = new Bundle<ICaches<any>>([]);
-const clear = (key: string, hash: string) => {
+const clear = (key: string, hash: string, timeout?: number) => {
   const timerKey = `${key}-${hash}`;
   clearTimeout(timers[timerKey]);
   timers[timerKey] = setTimeout(() => {
     delete timers[timerKey];
     delete caches.get(key)?.results[hash];
-  }, 10 * 1000);
+  }, timeout ?? 1000);
 };
 export const runOneTimeSocketHook = async <R>({
   key,
   hook,
+  timeout,
 }: IRunOneTimeSocketHook<R>): Promise<R | undefined> => {
   let _caches = caches.get(key);
   if (isUndefined(_caches)) {
@@ -151,7 +153,7 @@ export const runOneTimeSocketHook = async <R>({
   const hookKey = hook.key;
   const keyCaches = _caches as ICaches<R>;
   const returnResults = () => {
-    clear(key, hookKey);
+    clear(key, hookKey, timeout);
     return keyCaches.results[hookKey];
   };
   if (isUndefined(hookKey)) return;
@@ -166,7 +168,7 @@ export const runOneTimeSocketHook = async <R>({
       delete keyCaches.working[hookKey];
       if (status === "finished" && final) {
         keyCaches.results[hookKey] = final;
-        clear(key, hookKey);
+        clear(key, hookKey, timeout);
         resolve(final);
       } else if (status === "exception") {
         Logger.warn(`runOneTimeSocketHook (${key}) failed: ${message}`);
