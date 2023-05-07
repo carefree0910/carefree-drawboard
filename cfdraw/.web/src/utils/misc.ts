@@ -28,3 +28,7 @@ export function formatTime(time: Date | number, pattern = "YYYY-MM-DD HH:mm:ss")
 export function titleCaseWord(word: string) {
   return word.charAt(0).toUpperCase() + word.slice(1);
 }
+
+export function cleanURL(url: string) {
+  return url.trim().replace(/\/+$/, "");
+}

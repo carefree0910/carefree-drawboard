@@ -1,6 +1,7 @@
 import { useEffect } from "react";
 
 import { Event } from "@/utils/event";
+import { cleanURL } from "@/utils/misc";
 
 type Message = {
   userId: string;
@@ -10,8 +11,7 @@ const allowedOrigins = ["http://127.0.0.1:5123", "http://localhost:5123"];
 const allowedOriginRegexList = [/^http:\/\/localhost(:\d+)?$/];
 const envAllowedOrigins = import.meta.env.VITE_CFDRAW_ALLOWED_ORIGINS as string;
 if (envAllowedOrigins) {
-  const cleanOrigins = envAllowedOrigins.split(",").map((s) => s.trim().replace(/[/\\]$/, ""));
-  allowedOrigins.push(...cleanOrigins);
+  allowedOrigins.push(...envAllowedOrigins.split(",").map(cleanURL));
 }
 
 function isAllowedOrigin(origin: string): boolean {
