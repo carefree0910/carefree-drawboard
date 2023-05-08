@@ -69,6 +69,7 @@ def get_apis() -> APIs:
 
 __all__ = [
     "get_apis",
+    "HighresModel",
     "Img2TxtModel",
     "Txt2ImgSDModel",
     "Img2ImgSDModel",

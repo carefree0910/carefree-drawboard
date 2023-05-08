@@ -5,7 +5,7 @@ from cflearn.api.cv.diffusion import SDVersions
 
 
 # common styles
-common_styles = dict(w=600, h=450, useModal=True)
+common_styles = dict(w=600, h=510, useModal=True)
 common_group_styles = dict(w=230, h=110)
 # common diffusion fields
 diffusion_fields = list(
@@ -15,21 +15,10 @@ diffusion_fields = list(
                 zh="提示词",
                 en="Prompt",
             ),
-            numRows=2,
+            numRows=3,
             tooltip=I18N(
                 zh="想要生成的图片的描述",
                 en="The description of the image",
-            ),
-        ),
-        negative_prompt=ITextField(
-            label=I18N(
-                zh="负面词",
-                en="Negative Prompt",
-            ),
-            numRows=2,
-            tooltip=I18N(
-                zh="不想图片中出现的东西的描述",
-                en="The negative description of the image",
             ),
         ),
         version=ISelectField(
@@ -57,6 +46,17 @@ diffusion_fields = list(
             label=I18N(
                 zh="采样步数",
                 en="Steps",
+            ),
+        ),
+        negative_prompt=ITextField(
+            label=I18N(
+                zh="负面词",
+                en="Negative Prompt",
+            ),
+            numRows=2,
+            tooltip=I18N(
+                zh="不想图片中出现的东西的描述",
+                en="The negative description of the image",
             ),
         ),
         guidance_scale=INumberField(
@@ -90,7 +90,18 @@ diffusion_fields = list(
             ),
             tooltip=I18N(
                 zh="是否让模型尝试生成四方连续纹样",
-                en="Whether should we generate circular patterns (i.e., generate textures).",
+                en="Whether should we generate circular patterns (i.e., generate textures)",
+            ),
+        ),
+        use_highres=IBooleanField(
+            default=False,
+            label=I18N(
+                zh="高清生成",
+                en="Highres",
+            ),
+            tooltip=I18N(
+                zh="是否让模型进行高清生成（最高到 1024）",
+                en="Whether should we generate high resolution images (up to 1024)",
             ),
         ),
     ).items()
@@ -133,6 +144,7 @@ for k, v in diffusion_fields:
 # sd_inpainting / sd_outpainting fields
 sd_inpainting_fields = txt2img_fields.copy()
 sd_inpainting_fields.pop("version")
+sd_inpainting_fields.pop("use_highres")
 # img2img fields
 img2img_fields = OrderedDict()
 for k, v in diffusion_fields[:4]:

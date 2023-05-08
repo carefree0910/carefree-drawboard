@@ -74,7 +74,10 @@ class Txt2Img(CarefreeCreatorPlugin):
             return self.send_progress(step / num_steps)
 
         kw = inject_seed(self, data).extraData
-        return await get_apis().txt2img(Txt2ImgSDModel(**kw), step_callback=callback)
+        model = Txt2ImgSDModel(**kw)
+        if kw["use_highres"]:
+            model.highres_info = HighresModel()
+        return await get_apis().txt2img(model, step_callback=callback)
 
 
 class Img2Img(CarefreeCreatorPlugin):
@@ -103,8 +106,11 @@ class Img2Img(CarefreeCreatorPlugin):
 
         url = data.nodeData.src
         kw = dict(url=url, **inject_seed(self, data).extraData)
+        model = Img2ImgSDModel(**kw)
+        if kw["use_highres"]:
+            model.highres_info = HighresModel()
         self.extra_responses["url"] = url
-        return await get_apis().img2img(Img2ImgSDModel(**kw), step_callback=callback)
+        return await get_apis().img2img(model, step_callback=callback)
 
 
 class SR(CarefreeCreatorPlugin):
@@ -362,9 +368,13 @@ class Variation(CarefreeCreatorPlugin):
         # switch case
         if task == Txt2ImgKey:
             model = Txt2ImgSDModel(**kw)
+            if kw["use_highres"]:
+                model.highres_info = HighresModel()
             return await get_apis().txt2img(model, step_callback=callback)
         if task == Img2ImgKey:
             model = Img2ImgSDModel(**kw)
+            if kw["use_highres"]:
+                model.highres_info = HighresModel()
             return await get_apis().img2img(model, step_callback=callback)
         if task == SDInpaintingKey:
             model = Txt2ImgSDInpaintingModel(**kw)
