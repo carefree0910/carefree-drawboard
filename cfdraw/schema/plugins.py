@@ -388,6 +388,8 @@ class IPlugin(ABC):
     # internal
     _in_group: bool = False
 
+    # abstract
+
     @property
     @abstractmethod
     def type(self) -> PluginType:
@@ -423,6 +425,13 @@ class IPlugin(ABC):
         imageList: Optional[List[str]] = None,
     ) -> bool:
         pass
+
+    # optional
+
+    ## List of python package requirements of the plugin
+    requirements: Optional[List[str]] = None
+    ## The notification (introductions, hardware requirements, etc.) you want to print out
+    notification: Optional[str] = None
 
 
 class Subscription(str, Enum):

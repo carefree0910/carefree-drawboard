@@ -1,5 +1,8 @@
-from typing import Dict
+import sys
+import subprocess
+
 from typing import List
+from typing import Type
 from typing import AsyncGenerator
 from aiohttp import ClientSession
 from fastapi import FastAPI
@@ -9,9 +12,11 @@ from cftool.misc import random_hash
 from fastapi.middleware import cors
 
 from cfdraw import constants
+from cfdraw.utils import console
 from cfdraw.config import get_config
 from cfdraw.app.schema import IApp
 from cfdraw.app.endpoints import *
+from cfdraw.schema.plugins import IPlugin
 from cfdraw.plugins.factory import Plugins
 from cfdraw.plugins.factory import PluginFactory
 
@@ -34,9 +39,26 @@ class App(IApp):
             self.hash = random_hash()
             info(f"🚀 Starting Backend Server at {self.config.api_url} ...")
             info("🔨 Compiling Plugins & Endpoints...")
-            for plugin_type in self.plugins.values():
-                plugin_type.hash = self.hash
-                plugin_type.http_session = self.http_session
+            requirements = []
+            tplugin_with_notification: List[Type[IPlugin]] = []
+            for tplugin in self.plugins.values():
+                tplugin.hash = self.hash
+                tplugin.http_session = self.http_session
+                if tplugin.requirements is not None:
+                    requirements += tplugin.requirements
+                if tplugin.notification is not None:
+                    tplugin_with_notification.append(tplugin)
+            if requirements:
+                info("📦 Installing Requirements...")
+                cmd = f"{sys.executable} -m pip install {' '.join(requirements)}"
+                subprocess.run(cmd, shell=True)
+            if tplugin_with_notification:
+                console.rule("")
+                info(f"📣 Notifications:")
+                for tplugin in tplugin_with_notification:
+                    console.rule(f"[bold green][ {tplugin.identifier} ]")
+                    console.print(tplugin.notification)
+                console.rule("")
             for endpoint in self.endpoints:
                 await endpoint.on_startup()
             upload_root_path = self.config.upload_root_path
@@ -48,8 +70,8 @@ class App(IApp):
             # shutdown
 
             await self.http_session.close()
-            for plugin_type in self.plugins.values():
-                plugin_type.http_session = None
+            for tplugin in self.plugins.values():
+                tplugin.http_session = None
             for endpoint in self.endpoints:
                 await endpoint.on_shutdown()
             self.http_session = None
