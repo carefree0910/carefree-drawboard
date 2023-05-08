@@ -8,19 +8,13 @@ This example implements two common Stable Diffusion plugins with `carefree-drawb
 
 > See [Details](#Details) for more details!
 
-## Install
-
-This example requires the famous `diffusers` library, which can be installed by:
-
-```bash
-pip install --upgrade transformers diffusers[torch]
-```
-
 ## Run
 
 ```bash
 cfdraw run
 ```
+
+> We will install the required dependencies for you with the `run` command, so the first time may take a while.
 
 We use `app` as the default entry name. If your script is named other than `app.py` (e.g. `{name}.py`), then run:
 

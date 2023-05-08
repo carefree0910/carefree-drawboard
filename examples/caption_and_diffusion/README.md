@@ -11,21 +11,15 @@ This example implements an `ImageCaptioning` plugin and a `StableDiffusion` plug
 > * For example, we can first generate a caption of a given image, then use this caption to generate a new image using the Stable Diffusion model. In this way, we can generate variation images for any given image!
 > * See [Details](#Details) for more details.
 
-## Install
-
-This example requires the famous `diffusers` (and `transformers`) library, which can be installed by:
-
-```bash
-pip install --upgrade transformers diffusers[torch]
-```
-
 ## Run
 
 ```bash
 cfdraw run
 ```
 
-> We use `app` as the default entry name. If your script is named other than `app.py` (e.g. `{name}.py`), then run:
+> We will install the required dependencies for you with the `run` command, so the first time may take a while.
+
+We use `app` as the default entry name. If your script is named other than `app.py` (e.g. `{name}.py`), then run:
 
 ```bash
 cfdraw run --module {name}

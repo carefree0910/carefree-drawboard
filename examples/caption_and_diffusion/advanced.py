@@ -37,7 +37,11 @@ txt2img_fields = dict(
 )
 
 
-class TextToImagePlugin(IFieldsPlugin):
+class DiffusersPlugin(IFieldsPlugin):
+    requirements = ["transformers>=4.26.1", "diffusers[torch]>=0.14.0"]
+
+
+class TextToImagePlugin(DiffusersPlugin):
     @property
     def settings(self) -> IPluginSettings:
         return IPluginSettings(
@@ -69,7 +73,7 @@ class TextToImagePlugin(IFieldsPlugin):
         return get_models()[0](prompt=prompt, **kwargs).images
 
 
-class ImageCaptioningPlugin(IFieldsPlugin):
+class ImageCaptioningPlugin(DiffusersPlugin):
     @property
     def settings(self) -> IPluginSettings:
         return IPluginSettings(

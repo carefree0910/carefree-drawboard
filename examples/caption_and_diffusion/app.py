@@ -37,6 +37,8 @@ txt2img_fields = dict(
 
 
 class TextToImagePlugin(IFieldsPlugin):
+    requirements = ["transformers>=4.26.1", "diffusers[torch]>=0.14.0"]
+
     @property
     def settings(self) -> IPluginSettings:
         return IPluginSettings(
@@ -63,6 +65,8 @@ class TextToImagePlugin(IFieldsPlugin):
 
 
 class ImageCaptioningPlugin(IFieldsPlugin):
+    requirements = ["transformers>=4.26.1", "diffusers[torch]>=0.14.0"]
+
     @property
     def settings(self) -> IPluginSettings:
         return IPluginSettings(
