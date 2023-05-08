@@ -50,7 +50,9 @@ class App(IApp):
                     tplugin_with_notification.append(tplugin)
             if requirements:
                 info("📦 Installing Requirements...")
-                cmd = f"{sys.executable} -m pip install {' '.join(requirements)}"
+                enclosed = lambda s: f'"{s}"'
+                requirements_string = " ".join(map(enclosed, requirements))
+                cmd = f"{sys.executable} -m pip install {requirements_string}"
                 subprocess.run(cmd, shell=True)
             if tplugin_with_notification:
                 console.rule("")
