@@ -9,3 +9,8 @@ from cfdraw.utils.misc import offload_run
 from cfdraw.utils.cache import cache_resource
 
 register_plugin = PluginFactory.register
+
+from pkg_resources import get_distribution
+
+pkg = get_distribution("carefree-drawboard")
+__version__ = pkg.version
