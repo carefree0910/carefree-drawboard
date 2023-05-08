@@ -36,4 +36,5 @@ class SyncLocalSelectSocketPlugin(IInternalSocketPlugin):
 
 __all__ = [
     "SyncSocketPlugin",
+    "SyncLocalSelectSocketPlugin",
 ]
