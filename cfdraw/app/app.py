@@ -37,7 +37,6 @@ class App(IApp):
             def info(msg: str) -> None:
                 print_info(msg)
 
-            self.hash = random_hash()
             info(f"🚀 Starting Backend Server at {self.config.api_url} ...")
             info("🔨 Compiling Plugins & Endpoints...")
             requirements = []
