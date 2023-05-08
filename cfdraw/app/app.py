@@ -66,7 +66,7 @@ class App(IApp):
                 if tplugin_with_notification:
                     for tplugin in tplugin_with_notification:
                         console.rule(f"[bold green][ {tplugin.identifier} ]")
-                        console.print(tplugin.notification)
+                        console.print(tplugin.notification)  # type: ignore
                 console.rule("")
             for endpoint in self.endpoints:
                 await endpoint.on_startup()
