@@ -29,7 +29,27 @@ SDOutpaintingKey = "sd_outpainting"
 VariationKey = "variation"
 
 
-class Txt2Img(IFieldsPlugin):
+notification = """
+* This demo requires 16GB GPU memory.
+* This demo migrates `carefree-creator`'s functionalities to `carefree-drawboard` 🎨:
+1. Text to Image generation.
+2. Image to Image generation.
+3. Variation generation.
+4. Super Resolution.
+5. Image Matting.
+6. Image Captioning.
+7. Inpainting (Erase).
+8. Stable Diffusion Inpainting (Erase & Replace).
+9. Stable Diffusion Outpainting.
+10. And much more to come!
+"""
+
+
+class CarefreeCreatorPlugin(IFieldsPlugin):
+    requirements = ["carefree-creator>=0.2.2"]
+
+
+class Txt2Img(CarefreeCreatorPlugin):
     @property
     def settings(self) -> IPluginSettings:
         return IPluginSettings(
@@ -57,7 +77,7 @@ class Txt2Img(IFieldsPlugin):
         return await get_apis().txt2img(Txt2ImgSDModel(**kw), step_callback=callback)
 
 
-class Img2Img(IFieldsPlugin):
+class Img2Img(CarefreeCreatorPlugin):
     @property
     def settings(self) -> IPluginSettings:
         return IPluginSettings(
@@ -87,7 +107,7 @@ class Img2Img(IFieldsPlugin):
         return await get_apis().img2img(Img2ImgSDModel(**kw), step_callback=callback)
 
 
-class SR(IFieldsPlugin):
+class SR(CarefreeCreatorPlugin):
     @property
     def settings(self) -> IPluginSettings:
         return IPluginSettings(
@@ -112,7 +132,7 @@ class SR(IFieldsPlugin):
         return await get_apis().sr(Img2ImgSRModel(**kw))
 
 
-class SOD(IFieldsPlugin):
+class SOD(CarefreeCreatorPlugin):
     @property
     def settings(self) -> IPluginSettings:
         return IPluginSettings(
@@ -136,7 +156,7 @@ class SOD(IFieldsPlugin):
         return await get_apis().sod(Img2ImgSODModel(url=data.nodeData.src))
 
 
-class Captioning(IFieldsPlugin):
+class Captioning(CarefreeCreatorPlugin):
     @property
     def settings(self) -> IPluginSettings:
         return IPluginSettings(
@@ -160,7 +180,7 @@ class Captioning(IFieldsPlugin):
         return await get_apis().image_captioning(Img2TxtModel(url=data.nodeData.src))
 
 
-class Inpainting(IFieldsPlugin):
+class Inpainting(CarefreeCreatorPlugin):
     @property
     def settings(self) -> IPluginSettings:
         return IPluginSettings(
@@ -199,7 +219,7 @@ class Inpainting(IFieldsPlugin):
         return await get_apis().inpainting(model, step_callback=callback)
 
 
-class SDInpainting(IFieldsPlugin):
+class SDInpainting(CarefreeCreatorPlugin):
     @property
     def settings(self) -> IPluginSettings:
         return IPluginSettings(
@@ -231,7 +251,7 @@ class SDInpainting(IFieldsPlugin):
         return await get_apis().sd_inpainting(model, step_callback=callback)
 
 
-class SDOutpainting(IFieldsPlugin):
+class SDOutpainting(CarefreeCreatorPlugin):
     @property
     def settings(self) -> IPluginSettings:
         return IPluginSettings(
@@ -277,7 +297,7 @@ def validate_variation(data: ISocketRequest) -> bool:
     return identifier in variation_targets
 
 
-class Variation(IFieldsPlugin):
+class Variation(CarefreeCreatorPlugin):
     @property
     def settings(self) -> IPluginSettings:
         return IPluginSettings(
@@ -489,4 +509,4 @@ register_plugin("static")(StaticPlugins)
 register_plugin("image_followers")(ImageFollowers)
 register_plugin("inpainting_followers")(InpaintingFollowers)
 register_plugin("canvas_followers")(CanvasFollowers)
-app = App()
+app = App(notification)

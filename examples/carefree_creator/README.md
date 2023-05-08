@@ -8,25 +8,21 @@ This example migrates `carefree-creator`'s functionalities to `carefree-drawboar
 3. Variation generation.
 4. Super Resolution.
 5. Image Matting.
-6. Inpainting (Erase).
-7. Stable Diffusion Inpainting (Erase & Replace).
-8. And much more to come!
+6. Image Captioning.
+7. Inpainting (Erase).
+8. Stable Diffusion Inpainting (Erase & Replace).
+9. Stable Diffusion Outpainting.
+10. And much more to come!
 
 > See [Details](#Details) for more details!
-
-## Install
-
-This example requires the latest `carefree-creator` library, which can be installed by:
-
-```bash
-pip install --upgrade carefree-creator
-```
 
 ## Run
 
 ```bash
 cfdraw run
 ```
+
+> We will install the required dependencies for you with the `run` command, so the first time may take a while.
 
 ## Details
 
