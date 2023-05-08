@@ -3,6 +3,7 @@ import subprocess
 
 from typing import List
 from typing import Type
+from typing import Optional
 from typing import AsyncGenerator
 from aiohttp import ClientSession
 from fastapi import FastAPI
@@ -26,7 +27,7 @@ async def ping() -> str:
 
 
 class App(IApp):
-    def __init__(self) -> None:
+    def __init__(self, notification: Optional[str] = None) -> None:
         # FastAPI lifspan
 
         @asynccontextmanager
@@ -56,12 +57,16 @@ class App(IApp):
                 requirements_string = " ".join(map(enclosed, requirements))
                 cmd = f"{sys.executable} -m pip install {requirements_string}"
                 subprocess.run(cmd, shell=True)
-            if tplugin_with_notification:
+            if tplugin_with_notification or notification is not None:
                 console.rule("")
                 info(f"📣 Notifications:")
-                for tplugin in tplugin_with_notification:
-                    console.rule(f"[bold green][ {tplugin.identifier} ]")
-                    console.print(tplugin.notification)
+                if notification is not None:
+                    console.rule(f"[bold green][ GLOBAL ]")
+                    console.print(notification)
+                if tplugin_with_notification:
+                    for tplugin in tplugin_with_notification:
+                        console.rule(f"[bold green][ {tplugin.identifier} ]")
+                        console.print(tplugin.notification)
                 console.rule("")
             for endpoint in self.endpoints:
                 await endpoint.on_startup()
