@@ -26,15 +26,11 @@ class PluginFactory:
     """
     A class to manage plugins
     > `plugins` stores all plugins that will be used on drawboard
-    > `recorded` stores all plugins that are recorded, and can be accessed via `available`
-    >> You can record a plugin by using the `record` decorator
-    >> After which you can decide which plugins to use with the `register` method!
-    > Notice that we don't need to guarantee that the plugin's name is identical to the plugin's identifier
-    >> `plugins` use 'identifier' as the key, and `recorded` use 'name' as the key
+    > `internal_plugins` stores all plugins that are internally used,
+    they have higest priority to be executed, and will not be shown on the drawboard
     """
 
     plugins = Plugins()
-    recorded = Plugins()
     internal_plugins = Plugins()
 
     @classmethod
@@ -61,24 +57,6 @@ class PluginFactory:
     @classmethod
     def register_internal(cls, identifier: str) -> Callable[[TPlugin], TPlugin]:
         return cls._register(cls.internal_plugins, identifier)
-
-    @classmethod
-    def record(cls, name: str) -> Callable[[TPlugin], TPlugin]:
-        if name in cls.recorded:
-            raise ValueError(f"plugin {name} already recorded")
-
-        def _record(plugin_type: TPlugin) -> TPlugin:
-            cls.recorded[name] = plugin_type
-            return plugin_type
-
-        return _record
-
-    @classmethod
-    def available(cls) -> Dict[str, PluginInfo]:
-        return {
-            name: PluginInfo(name, plugin_type().settings, plugin_type)
-            for name, plugin_type in cls.recorded.items()
-        }
 
 
 __all__ = [
