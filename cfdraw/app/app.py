@@ -45,7 +45,9 @@ class App(IApp):
                 tplugin.hash = self.hash
                 tplugin.http_session = self.http_session
                 if tplugin.requirements is not None:
-                    requirements += tplugin.requirements
+                    for req in tplugin.requirements:
+                        if req not in requirements:
+                            requirements.append(req)
                 if tplugin.notification is not None:
                     tplugin_with_notification.append(tplugin)
             if requirements:
