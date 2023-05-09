@@ -6,6 +6,7 @@ import {
   Logger,
   UnitTest,
   getRandomHash,
+  isString,
   registerExecuterResponseCallback,
   removeExecuterResponseCallback,
   shallowCopy,
@@ -132,14 +133,18 @@ export function useInitBoard(): void {
       key,
       type: "clone",
       fn: async (executer, data) => {
-        const clonedAliases = data.response.value as string[];
-        for (const alias of clonedAliases) {
-          const node = executer.graph.getExistingNode(alias);
-          node.allChildrenNodes.forEach((child) => {
-            if (child.params.meta) {
-              (child.params.meta as IMeta).data.alias = child.alias;
+        const clonedAliases = data.response.value as (string | string[])[];
+        for (let aliases of clonedAliases) {
+          if (isString(aliases)) {
+            aliases = [aliases];
+          }
+          for (const alias of aliases) {
+            const node = executer.graph.getExistingNode(alias);
+            if (node.type === "group") continue;
+            if (node.params.meta) {
+              (node.params.meta as IMeta).data.alias = node.alias;
             }
-          });
+          }
         }
       },
     });
