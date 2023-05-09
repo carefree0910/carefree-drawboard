@@ -100,8 +100,8 @@ diffusion_fields = list(
                 en="Highres",
             ),
             tooltip=I18N(
-                zh="是否让模型进行高清生成（最高到 1024）",
-                en="Whether should we generate high resolution images (up to 1024)",
+                zh="生成 2 倍宽高的图片",
+                en="Generate images with 2x width & height",
             ),
         ),
     ).items()
