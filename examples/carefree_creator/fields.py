@@ -8,103 +8,103 @@ from cflearn.api.cv.diffusion import SDVersions
 common_styles = dict(w=600, h=510, useModal=True)
 common_group_styles = dict(w=230, h=110)
 # common diffusion fields
-diffusion_fields = list(
-    OrderedDict(
-        text=ITextField(
-            label=I18N(
-                zh="提示词",
-                en="Prompt",
-            ),
-            numRows=3,
-            tooltip=I18N(
-                zh="想要生成的图片的描述",
-                en="The description of the image",
-            ),
-        ),
-        version=ISelectField(
-            default=SDVersions.v1_5,
-            values=[version for version in SDVersions if version],
-            label=I18N(
-                zh="模型",
-                en="Model",
-            ),
-        ),
-        sampler=ISelectField(
-            default=SDSamplers.K_EULER,
-            values=[sampler for sampler in SDSamplers],
-            label=I18N(
-                zh="采样器",
-                en="Sampler",
-            ),
-        ),
-        num_steps=INumberField(
-            default=20,
-            min=5,
-            max=100,
-            step=1,
-            isInt=True,
-            label=I18N(
-                zh="采样步数",
-                en="Steps",
-            ),
-        ),
-        negative_prompt=ITextField(
-            label=I18N(
-                zh="负面词",
-                en="Negative Prompt",
-            ),
-            numRows=2,
-            tooltip=I18N(
-                zh="不想图片中出现的东西的描述",
-                en="The negative description of the image",
-            ),
-        ),
-        guidance_scale=INumberField(
-            default=7.5,
-            min=-20.0,
-            max=25.0,
-            step=0.5,
-            precision=1,
-            label=I18N(
-                zh="扣题程度",
-                en="Cfg Scale",
-            ),
-        ),
-        seed=INumberField(
-            default=-1,
-            min=-1,
-            max=2**32,
-            step=1,
-            scale=NumberScale.LOGARITHMIC,
-            isInt=True,
-            label=I18N(
-                zh="随机种子",
-                en="Seed",
-            ),
-        ),
-        use_circular=IBooleanField(
-            default=False,
-            label=I18N(
-                zh="循环纹样",
-                en="Circular",
-            ),
-            tooltip=I18N(
-                zh="是否让模型尝试生成四方连续纹样",
-                en="Whether should we generate circular patterns (i.e., generate textures)",
-            ),
-        ),
-        use_highres=IBooleanField(
-            default=False,
-            label=I18N(
-                zh="高清生成",
-                en="Highres",
-            ),
-            tooltip=I18N(
-                zh="生成 2 倍宽高的图片",
-                en="Generate images with 2x width & height",
-            ),
-        ),
-    ).items()
+text = ITextField(
+    label=I18N(
+        zh="提示词",
+        en="Prompt",
+    ),
+    numRows=3,
+    tooltip=I18N(
+        zh="想要生成的图片的描述",
+        en="The description of the image",
+    ),
+)
+version = ISelectField(
+    default=SDVersions.v1_5,
+    values=[version for version in SDVersions if version],
+    label=I18N(
+        zh="模型",
+        en="Model",
+    ),
+)
+sampler = ISelectField(
+    default=SDSamplers.K_EULER,
+    values=[sampler for sampler in SDSamplers],
+    label=I18N(
+        zh="采样器",
+        en="Sampler",
+    ),
+)
+num_steps = INumberField(
+    default=20,
+    min=5,
+    max=100,
+    step=1,
+    isInt=True,
+    label=I18N(
+        zh="采样步数",
+        en="Steps",
+    ),
+)
+negative_prompt = ITextField(
+    label=I18N(
+        zh="负面词",
+        en="Negative Prompt",
+    ),
+    numRows=2,
+    tooltip=I18N(
+        zh="不想图片中出现的东西的描述",
+        en="The negative description of the image",
+    ),
+)
+guidance_scale = INumberField(
+    default=7.5,
+    min=-20.0,
+    max=25.0,
+    step=0.5,
+    precision=1,
+    label=I18N(
+        zh="扣题程度",
+        en="Cfg Scale",
+    ),
+)
+seed = INumberField(
+    default=-1,
+    min=-1,
+    max=2**32,
+    step=1,
+    scale=NumberScale.LOGARITHMIC,
+    isInt=True,
+    label=I18N(
+        zh="随机种子",
+        en="Seed",
+    ),
+    tooltip=I18N(
+        zh="'-1' 表示种子将会被随机生成",
+        en="'-1' means the seed will be randomly generated",
+    ),
+)
+use_circular = IBooleanField(
+    default=False,
+    label=I18N(
+        zh="循环纹样",
+        en="Circular",
+    ),
+    tooltip=I18N(
+        zh="是否让模型尝试生成四方连续纹样",
+        en="Whether should we generate circular patterns (i.e., generate textures)",
+    ),
+)
+use_highres = IBooleanField(
+    default=False,
+    label=I18N(
+        zh="高清生成",
+        en="Highres",
+    ),
+    tooltip=I18N(
+        zh="生成 2 倍宽高的图片",
+        en="Generate images with 2x width & height",
+    ),
 )
 # txt2img
 txt2img_fields = OrderedDict(
@@ -138,18 +138,28 @@ txt2img_fields = OrderedDict(
             en="The height of the generated image",
         ),
     ),
+    text=text,
+    version=version,
+    sampler=sampler,
+    num_steps=num_steps,
+    negative_prompt=negative_prompt,
+    guidance_scale=guidance_scale,
+    seed=seed,
+    use_circular=use_circular,
+    use_highres=use_highres,
 )
-for k, v in diffusion_fields:
-    txt2img_fields[k] = v
 # sd_inpainting / sd_outpainting fields
-sd_inpainting_fields = txt2img_fields.copy()
-sd_inpainting_fields.pop("version")
-sd_inpainting_fields.pop("use_highres")
+sd_inpainting_fields = OrderedDict(
+    text=text,
+    sampler=sampler,
+    num_steps=num_steps,
+    guidance_scale=guidance_scale,
+    negative_prompt=negative_prompt,
+    seed=seed,
+    use_circular=use_circular,
+)
 # img2img fields
-img2img_fields = OrderedDict()
-for k, v in diffusion_fields[:4]:
-    img2img_fields[k] = v
-img2img_fields["fidelity"] = INumberField(
+fidelity = INumberField(
     default=0.2,
     min=0.0,
     max=1.0,
@@ -163,8 +173,20 @@ img2img_fields["fidelity"] = INumberField(
         en="How similar the generated image should be to the input image",
     ),
 )
-for k, v in diffusion_fields[4:]:
-    img2img_fields[k] = v
+img2img_negative_prompt = negative_prompt.copy()
+img2img_negative_prompt.numRows = 3
+img2img_fields = OrderedDict(
+    text=text,
+    fidelity=fidelity,
+    version=version,
+    sampler=sampler,
+    negative_prompt=img2img_negative_prompt,
+    num_steps=num_steps,
+    guidance_scale=guidance_scale,
+    seed=seed,
+    use_circular=use_circular,
+    use_highres=use_highres,
+)
 # super resolution fields
 sr_fields = OrderedDict(
     is_anime=IBooleanField(
