@@ -1,5 +1,6 @@
 import sys
 import subprocess
+import pkg_resources
 
 from typing import List
 from typing import Type
@@ -51,11 +52,14 @@ class App(IApp):
                 if tplugin.notification is not None:
                     tplugin_with_notification.append(tplugin)
             if requirements:
-                info("📦 Installing Requirements...")
-                enclosed = lambda s: f'"{s}"'
-                requirements_string = " ".join(map(enclosed, requirements))
-                cmd = f"{sys.executable} -m pip install {requirements_string}"
-                subprocess.run(cmd, shell=True)
+                try:
+                    pkg_resources.require(requirements)
+                except Exception as err:
+                    info(f"📦 Installing Requirements... ({err})")
+                    enclosed = lambda s: f'"{s}"'
+                    requirements_string = " ".join(map(enclosed, requirements))
+                    cmd = f"{sys.executable} -m pip install {requirements_string}"
+                    subprocess.run(cmd, shell=True)
             if tplugin_with_notification or notification is not None:
                 console.rule("")
                 info(f"📣 Notifications:")
