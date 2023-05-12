@@ -32,3 +32,19 @@ export function titleCaseWord(word: string) {
 export function cleanURL(url: string) {
   return url.trim().replace(/\/+$/, "");
 }
+
+export function getBaseURL(): string {
+  let baseURL = cleanURL(import.meta.env.VITE_CFDRAW_API_URL);
+  if (!baseURL) {
+    if (import.meta.env.PROD) {
+      baseURL = window.location.origin;
+    } else {
+      let backendPort = import.meta.env.VITE_CFDRAW_BE_PORT;
+      if (!backendPort) {
+        backendPort = 8123;
+      }
+      baseURL = `http://localhost:${backendPort}`;
+    }
+  }
+  return baseURL;
+}
