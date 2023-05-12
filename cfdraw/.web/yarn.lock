@@ -217,31 +217,31 @@
     "@babel/helper-validator-identifier" "^7.19.1"
     to-fast-properties "^2.0.0"
 
-"@carefree0910/business@~0.5.1-alpha.4":
-  version "0.5.1-alpha.4"
-  resolved "https://registry.npmmirror.com/@carefree0910/business/-/business-0.5.1-alpha.4.tgz#0bbedf961e5ca2680d6c739edfff3f6c204ddec2"
-  integrity sha512-w3hzyt2EpMiPfzQtY6T7noNhUmRDd06t3MJ2WLnhg77X8qYS93pPN03k9RhUtYr82eJShpCO09NpKYahoJPlAg==
+"@carefree0910/business@~0.5.1-alpha.5":
+  version "0.5.1-alpha.5"
+  resolved "https://registry.npmmirror.com/@carefree0910/business/-/business-0.5.1-alpha.5.tgz#c6a05434e523678dcb72dcbb220405c681ab6eda"
+  integrity sha512-XFg0CW9wVT9c19GOiC4tqrcZUcvwujQ2OcWGGOBsLTc3i2hCNK+Zj7OsYSAF/NHP3uo9pq2RSxqkDTIhG85Nug==
   dependencies:
     "@carefree0910/core" "^0.5.1-alpha.4"
-    "@carefree0910/svg" "^0.5.1-alpha.4"
+    "@carefree0910/svg" "^0.5.1-alpha.5"
 
 "@carefree0910/core@^0.5.1-alpha.4", "@carefree0910/core@~0.5.1-alpha.4":
   version "0.5.1-alpha.4"
   resolved "https://registry.npmmirror.com/@carefree0910/core/-/core-0.5.1-alpha.4.tgz#72ffff08d2425d67b0d7799bba0ae95328cca3c6"
   integrity sha512-WBdHYP1fjEGjCPgKtTpjzwdKPlWq9EBzwdly5ZefXuEo65BEOc247xpPhyEUWkNQLUwbetZuuy8yKf6q9MhMfQ==
 
-"@carefree0910/native@~0.5.1-alpha.4":
-  version "0.5.1-alpha.4"
-  resolved "https://registry.npmmirror.com/@carefree0910/native/-/native-0.5.1-alpha.4.tgz#64a55213640b55d2ca3720df1862df39c606a410"
-  integrity sha512-EUw/YGE+QVdCpQV7MmWKARCCGxTByd+uGhJauCAmOSyAGRP8rl3cgpEyux/japWYnr6y5w+r4EfF4SSPKtVU2A==
+"@carefree0910/native@~0.5.1-alpha.5":
+  version "0.5.1-alpha.5"
+  resolved "https://registry.npmmirror.com/@carefree0910/native/-/native-0.5.1-alpha.5.tgz#3abf3af02447fe3a61fd32f6957e70fcb66d5388"
+  integrity sha512-byZ1BychFb0z5525g0vctyWeS8ffL3/Ht1IqAOu65myQdMl8SbHUolT0KXTqsgYt8JIg5ZYIUL3iUfc432vhVQ==
   dependencies:
     "@carefree0910/core" "^0.5.1-alpha.4"
-    "@carefree0910/svg" "^0.5.1-alpha.4"
+    "@carefree0910/svg" "^0.5.1-alpha.5"
 
-"@carefree0910/svg@^0.5.1-alpha.4", "@carefree0910/svg@~0.5.1-alpha.4":
-  version "0.5.1-alpha.4"
-  resolved "https://registry.npmmirror.com/@carefree0910/svg/-/svg-0.5.1-alpha.4.tgz#8576dfc046d9bf55b2e5b94a73866637f153ac62"
-  integrity sha512-mXcfaHcEIUqfn25FsmfdLGoEYZErr0rwNvZSy7YNzZTWgskqT7nbvSsyqzbHfdTsWVDPl6slcTWbTp/BhSbnEg==
+"@carefree0910/svg@^0.5.1-alpha.5", "@carefree0910/svg@~0.5.1-alpha.5":
+  version "0.5.1-alpha.5"
+  resolved "https://registry.npmmirror.com/@carefree0910/svg/-/svg-0.5.1-alpha.5.tgz#9d92a81d985ae1df2ffe7ec969c6f5534d0344ce"
+  integrity sha512-etiB+n+SZDi+esVGx+OvqCglF988+YIxFayS7ORWWDX4YeFZ7YOfZ1E5uLkfNFut1IDYi2rLgTlKhbStg0NBxQ==
   dependencies:
     "@carefree0910/core" "^0.5.1-alpha.4"
 
