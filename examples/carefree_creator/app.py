@@ -46,7 +46,7 @@ notification = """
 
 
 class CarefreeCreatorPlugin(IFieldsPlugin):
-    requirements = ["carefree-creator>=0.2.2"]
+    requirements = ["carefree-creator>=0.2.4"]
 
 
 class Txt2Img(CarefreeCreatorPlugin):
