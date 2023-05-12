@@ -9,10 +9,12 @@ type Message = {
 
 const allowedOrigins = ["http://127.0.0.1:5123", "http://localhost:5123"];
 const allowedOriginRegexList = [/^http:\/\/localhost(:\d+)?$/];
-const envAllowedOrigins = import.meta.env.VITE_CFDRAW_ALLOWED_ORIGINS as string;
-if (envAllowedOrigins) {
-  allowedOrigins.push(...envAllowedOrigins.split(",").map(cleanURL));
+let envAllowedOrigins = import.meta.env.VITE_CFDRAW_ALLOWED_ORIGINS as string;
+if (!envAllowedOrigins) {
+  // THIS IS DANGEROUS, but will be convenient for quick deployment
+  envAllowedOrigins = window.location.origin;
 }
+allowedOrigins.push(...envAllowedOrigins.split(",").map(cleanURL));
 
 function isAllowedOrigin(origin: string): boolean {
   if (allowedOrigins.includes(origin)) return true;
