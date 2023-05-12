@@ -20,7 +20,9 @@ function getMetaRepresentation(meta: IMeta): string {
 const MetaPlugin = ({ pluginInfo, ...others }: IPlugin) => {
   const { id } = usePluginIds("meta");
   const info = useSelecting("raw");
-  if (!info || info.type === "group" || info.type === "multiple") return null;
+  if (!info || info.type === "group" || info.type === "frame" || info.type === "multiple") {
+    return null;
+  }
   const _meta = info.displayNode?.params.meta;
   if (!_meta) return null;
   const meta = _meta as IMeta;

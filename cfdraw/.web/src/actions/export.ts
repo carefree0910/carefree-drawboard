@@ -1,4 +1,4 @@
-import { INode, ISingleNode, toJsonBlob } from "@carefree0910/core";
+import { INode, ISingleNode, isGroupNode, toJsonBlob } from "@carefree0910/core";
 import { ExportBlobOptions, exportBlob, exportNodes } from "@carefree0910/svg";
 
 import type { DownloadFormat, ImageFormat } from "@/schema/misc";
@@ -14,7 +14,7 @@ function fetchImage(data: { url: string; jpeg: boolean }): Promise<Blob> {
 }
 
 export class Exporter {
-  static async exportBlob(nodes: ISingleNode[], opt: ExportBlobOptions): Promise<Blob | void> {
+  static async exportBlob(nodes: INode[], opt: ExportBlobOptions): Promise<Blob | void> {
     return exportBlob(nodes, {
       failedCallback: async () => toastWord("error", Toast_Words["export-blob-error-message"]),
       ...opt,
@@ -31,7 +31,7 @@ export class Exporter {
       return fetchImage({ url: node.renderParams.src, jpeg });
     }
     const bounding = node.bbox.bounding.toAABB();
-    const targetNodes = node.type === "group" ? node.allChildrenNodes : [node];
+    const targetNodes = isGroupNode(node) ? node.allRenderChildrenNodes : [node];
     if (isImage(format)) {
       const blob = await Exporter.exportBlob(targetNodes, {
         exportOptions: { exportBox: bounding },

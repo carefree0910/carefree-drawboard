@@ -18,7 +18,7 @@ export function getNewRectangle(alias: string, info: INewRectangle): RectangleSh
   const { w, h } = info.wh;
   const node = new RectangleShapeNode(
     alias,
-    { x: 0, y: 0, w, h },
+    {},
     BBox.from(0, 0, w, h).fields,
     { z: BoardStore.graph.minZIndex - 1 },
     [{ type: "color", src: "rgb(253, 254, 255)", opacity: 1.0 }],

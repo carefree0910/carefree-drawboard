@@ -1,4 +1,10 @@
-import { RectangleShapeNode, getRandomHash, isUndefined, shallowCopy } from "@carefree0910/core";
+import {
+  RectangleShapeNode,
+  getRandomHash,
+  isGroupNode,
+  isUndefined,
+  shallowCopy,
+} from "@carefree0910/core";
 import {
   BoardStore,
   useAddNode,
@@ -21,7 +27,7 @@ import { getArrangements } from "./arrange";
 
 function updateElapsedTimes(alias: string): void {
   const node = BoardStore.graph.getNode(alias);
-  if (!node || node.type === "group" || !node.params.meta?.data) return;
+  if (!node || isGroupNode(node) || !node.params.meta?.data) return;
   node.params.meta.data.elapsedTimes = { endTime: Date.now() };
   updateMeta(alias, node.params.meta);
 }

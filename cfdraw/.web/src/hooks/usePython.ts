@@ -8,6 +8,7 @@ import {
   IRectangleShapeNode,
   ISingleNode,
   argMax,
+  isGroupNode,
   isUndefined,
 } from "@carefree0910/core";
 import { BoardStore, langStore, translate } from "@carefree0910/business";
@@ -63,11 +64,11 @@ async function getBlankNodeSrc(node: IRectangleShapeNode, opt: IGetNodeData): Pr
 async function getNodeCommonData(node: INode, opt: IGetNodeData): Promise<INodeData> {
   const { x, y } = node.position;
   const { w, h } = node.wh;
-  const z = node.type === "group" ? undefined : node.zIndex;
+  const z = isGroupNode(node) ? undefined : node.zIndex;
   const transform = node.transform.fields;
   const text = node.type === "text" ? node.params.content : undefined;
-  const meta = (node.type === "group" ? undefined : node.params.meta) as IMeta | undefined;
-  const children = node.type === "group" ? await getNodeDataList(node.nodes, opt) : undefined;
+  const meta = (isGroupNode(node) ? undefined : node.params.meta) as IMeta | undefined;
+  const children = isGroupNode(node) ? await getNodeDataList(node.nodes, opt) : undefined;
   return { type: node.type, x, y, w, h, z, transform, text, meta, children };
 }
 async function getNodeSrc(node: INode, opt: IGetNodeData): Promise<string | undefined> {

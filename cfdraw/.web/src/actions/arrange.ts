@@ -7,7 +7,7 @@ import {
   HitTest,
   INode,
   INodes,
-  INodeType,
+  isGroupNode,
   Matrix2DFields,
   range,
   runGroupContext,
@@ -130,8 +130,8 @@ async function animateArrangement(
       {
         aliases: original
           .filter((node) =>
-            node.type === "group"
-              ? node.allChildrenNodes.every((n) => existingNodes.has(n.alias))
+            isGroupNode(node)
+              ? node.allRenderChildrenNodes.every((n) => existingNodes.has(n.alias))
               : existingNodes.has(node.alias),
           )
           .map((node) => node.alias),
@@ -201,7 +201,7 @@ export function getArrangements(
     resizeAutoArrangeTargets([node], node.w * scales[attachTo.node.alias]);
   });
   targets.forEach((node) => {
-    const meta = node.type === "group" ? undefined : node.meta;
+    const meta = isGroupNode(node) ? undefined : node.meta;
     let key, origin;
     if (!checkMeta(meta)) {
       key = `${defaultPrefix}${node.alias.split(".").slice(0, -1).join(".")}`;
@@ -269,13 +269,7 @@ export async function autoArrange(
   const { numFrame, trace, schedule } = getDefaultArrangeOptions(opt);
   animateArrangement(original, targets, numFrame, trace, schedule);
 }
-export function onArrange({
-  type,
-  nodes,
-}: {
-  type: "none" | "multiple";
-  nodes: INodeType[];
-}): void {
+export function onArrange({ type, nodes }: { type: "none" | "multiple"; nodes: INode[] }): void {
   autoArrange(type === "none" ? BoardStore.graph.rootNodes.filter((node) => !node.noSave) : nodes, {
     fitContainer: type === "none",
   });
