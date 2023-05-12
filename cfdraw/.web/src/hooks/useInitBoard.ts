@@ -2,6 +2,7 @@ import { useEffect } from "react";
 import { makeObservable, observable } from "mobx";
 
 import {
+  Disposable,
   Graph,
   Logger,
   UnitTest,
@@ -87,7 +88,7 @@ export function useInitBoard(): void {
     }
 
     // setup board store
-    await useBoardStore(
+    ({ dispose: disposeBoardStore } = await useBoardStore(
       unittest.api,
       {
         apiInfo: {},
@@ -95,7 +96,7 @@ export function useInitBoard(): void {
         modelCodes: [""],
       },
       storeOptions,
-    );
+    ));
 
     // post settings
     const { setGuidelineSystem } = useFlags();
@@ -117,6 +118,7 @@ export function useInitBoard(): void {
     initStore.updateProperty("working", false);
   }
 
+  let disposeBoardStore: Disposable["dispose"];
   useEffect(() => {
     Logger.isDebug = !IS_PROD;
     if (!useIsReady()) {
@@ -124,6 +126,9 @@ export function useInitBoard(): void {
         _initialize();
       });
     }
+    return () => {
+      disposeBoardStore?.();
+    };
   }, []);
 
   // handle clone meta issue

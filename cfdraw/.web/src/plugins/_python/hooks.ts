@@ -1,6 +1,6 @@
 import { useCallback, useMemo } from "react";
 
-import { Dictionary, INode, shallowCopy } from "@carefree0910/core";
+import { Dictionary, INode, isSingleNode, shallowCopy } from "@carefree0910/core";
 import { langStore } from "@carefree0910/business";
 
 import type { IMeta } from "@/schema/meta";
@@ -22,14 +22,14 @@ export function useDefinitionsRequestDataFn(definitions: IDefinitions): () => Di
 export function useCurrentMeta(node: INode | null, nodes: INode[]): IMeta | undefined {
   return useMemo(() => {
     let currentMeta: IMeta | undefined;
-    if (node && node.type !== "group") {
+    if (node && isSingleNode(node)) {
       currentMeta = node.params.meta as IMeta;
     } else if (nodes.length > 1) {
       // main + mask workaround
       const types = new Set(nodes.map((node) => node.type));
       if (types.size === 2 && types.has("path")) {
         for (const node of nodes) {
-          if (node.type !== "path" && node.type !== "group") {
+          if (node.type !== "path" && isSingleNode(node)) {
             currentMeta = node.params.meta as IMeta;
             break;
           }

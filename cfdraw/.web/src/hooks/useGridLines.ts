@@ -7,12 +7,12 @@ import {
   useGlobalTransform,
   useIsReady,
 } from "@carefree0910/business";
-import { Coordinate, GlobalEvent } from "@carefree0910/core";
+import { Coordinate, GlobalEvent, GlobalEvents } from "@carefree0910/core";
 
 import { gridlinesStore } from "@/stores/gridLines";
 
 const gridLinesCanvasId = "gridLinesLayer";
-const gridLineEvents = [GlobalEvent.MOVE, GlobalEvent.SCALE, GlobalEvent.TRANSFORM];
+const gridLineEventTypes = [GlobalEvents.MOVE, GlobalEvents.SCALE, GlobalEvents.TRANSFORM];
 function getMod(x: number, y: number): number {
   let mod = x % y;
   if (mod < 0) mod += y;
@@ -102,13 +102,17 @@ export function useGridLines(): void {
 
     updateGridLines();
     window.addEventListener("resize", updateGridLines);
-    gridLineEvents.forEach((event) => {
-      injectEventCallback(event, gridLinesCanvasId, updateGridLines);
+    gridLineEventTypes.forEach((triggerType) => {
+      injectEventCallback(triggerType, {
+        key: gridLinesCanvasId,
+        event: GlobalEvent,
+        fn: updateGridLines,
+      });
     });
     return () => {
       window.removeEventListener("resize", updateGridLines);
-      gridLineEvents.forEach((event) => {
-        removeEventCallback(event, gridLinesCanvasId);
+      gridLineEventTypes.forEach((triggerType) => {
+        removeEventCallback(triggerType, gridLinesCanvasId);
       });
     };
   }, [isReady]);
