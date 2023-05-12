@@ -19,7 +19,8 @@ class Config:
     frontend_port: str = constants.FRONTEND_PORT
     # api
     backend_port: str = constants.BACKEND_PORT
-    backend_hosting_url: Optional[str] = None  # this must be provided for hosting
+    ## if provided, will be set as `CFDRAW_API_URL`
+    backend_hosting_url: Optional[str] = None
     # upload
     upload_root: str = field(default_factory=constants.get_upload_root)
     # board
