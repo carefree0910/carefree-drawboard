@@ -94,10 +94,7 @@ const postPseduoUserId = async (): Promise<void> => {
     userId = getRandomHash().toString();
     localStorage.setItem(USER_ID_KEY, userId);
   }
-  const url = IS_PROD
-    ? cleanURL(import.meta.env.VITE_CFDRAW_API_URL)
-    : `http://localhost:${import.meta.env.VITE_CFDRAW_FE_PORT}`;
-  window.postMessage({ userId }, url);
+  window.postMessage({ userId }, window.location.origin);
 };
 const useUserInitialization = () => {
   useEffect(() => {
