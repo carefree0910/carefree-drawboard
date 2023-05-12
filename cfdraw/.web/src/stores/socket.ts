@@ -9,8 +9,8 @@ import type {
   IPythonSocketMessage,
   IPythonOnSocketMessage,
 } from "@/schema/_python";
+import { getBaseURL } from "@/utils/misc";
 import { settingsStore } from "@/stores/settings";
-import { useAPI } from "@/requests/hooks";
 
 const DEBUG = false;
 
@@ -70,7 +70,6 @@ class SocketStore extends ABCStore<ISocketStore> implements ISocketStore {
               Logger.warn("Should terminate socket connection in `send`.");
               return;
             }
-            data.baseURL = useAPI("_python").defaults.baseURL!;
             socketStore.socket!.send(JSON.stringify(data));
             socketLog(`>>> message sent (${hash})`);
             if (hook.updateInterval && !hook.shouldTerminate) {
@@ -187,7 +186,7 @@ interface IUseWebSocket {
 }
 export function useWebSocket(opt?: IUseWebSocket) {
   const interval = opt?.interval ?? 1000;
-  const baseURL = useAPI("_python").defaults.baseURL!;
+  const baseURL = getBaseURL();
   const socketURL = baseURL.replace("http", "ws").replace("https", "wss");
   const socketEndpoint = settingsStore.internalSettings?.socketEndpoint ?? "/ws";
 

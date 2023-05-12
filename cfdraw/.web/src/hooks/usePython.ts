@@ -20,6 +20,7 @@ import type {
   IUsePythonInfo,
   IUseSocketPython,
 } from "@/schema/_python";
+import { getBaseURL } from "@/utils/misc";
 import { Toast_Words } from "@/lang/toast";
 import { userStore } from "@/stores/user";
 import { useWebSocketHook } from "@/requests/hooks";
@@ -119,6 +120,7 @@ export async function getPythonRequest({
   const nodeDataList = nodes.length <= 1 ? [] : await getNodeDataList(nodes, getNodeDataOpt);
   return {
     userId: userStore.userId,
+    baseURL: getBaseURL(),
     identifier,
     nodeData,
     nodeDataList,

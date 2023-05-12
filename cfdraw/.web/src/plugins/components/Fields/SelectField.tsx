@@ -6,7 +6,7 @@ import { getHash } from "@carefree0910/core";
 
 import type { IField } from "@/schema/plugins";
 import type { ISelectField } from "@/schema/fields";
-import { titleCaseWord } from "@/utils/misc";
+import { getBaseURL, titleCaseWord } from "@/utils/misc";
 import { userStore } from "@/stores/user";
 import { runOneTimeSocketHook } from "@/stores/socket";
 import { getMetaField, setMetaField } from "@/stores/meta";
@@ -35,6 +35,7 @@ function SelectField({ field, definition }: SelectFieldProps) {
           getMessage: async () => ({
             hash,
             userId,
+            baseURL: getBaseURL(),
             identifier: "sync_local_select",
             nodeData: {},
             nodeDataList: [],
