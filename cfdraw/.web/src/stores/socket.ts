@@ -70,6 +70,7 @@ class SocketStore extends ABCStore<ISocketStore> implements ISocketStore {
               Logger.warn("Should terminate socket connection in `send`.");
               return;
             }
+            data.baseURL = useAPI("_python").defaults.baseURL!;
             socketStore.socket!.send(JSON.stringify(data));
             socketLog(`>>> message sent (${hash})`);
             if (hook.updateInterval && !hook.shouldTerminate) {

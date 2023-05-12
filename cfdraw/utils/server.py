@@ -76,7 +76,7 @@ def raise_err(err: Exception) -> None:
     raise HTTPException(status_code=constants.ERR_CODE, detail=get_err_msg(err))
 
 
-def save_image(image: Image.Image, meta: Optional[PngInfo] = None) -> Dict[str, Any]:
+def save_image(image: Image.Image, meta: PngInfo, base_url: str) -> Dict[str, Any]:
     w, h = image.size
     config = get_config()
     state = random.getstate()
@@ -84,7 +84,8 @@ def save_image(image: Image.Image, meta: Optional[PngInfo] = None) -> Dict[str, 
     path = config.upload_image_folder / f"{random_hash()}.png"
     random.setstate(state)
     image.save(path, pnginfo=meta)
-    url = f"{config.api_url}/{path.relative_to(config.upload_root_path).as_posix()}"
+    base_url = base_url.rstrip("/")
+    url = f"{base_url}/{path.relative_to(config.upload_root_path).as_posix()}"
     return dict(w=w, h=h, url=url)
 
 

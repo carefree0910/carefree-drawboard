@@ -4,6 +4,7 @@ from typing import Union
 from typing import Optional
 from fastapi import File
 from fastapi import Form
+from fastapi import Request
 from fastapi import Response
 from fastapi import UploadFile
 from pydantic import BaseModel
@@ -50,6 +51,7 @@ class ImageUploader:
     async def upload_image(
         contents: Union[bytes, Image.Image],
         meta: PngInfo,
+        base_url: str,
     ) -> ImageDataModel:
         """
         When this method is used in the:
@@ -61,7 +63,7 @@ class ImageUploader:
             image = contents
         else:
             image = Image.open(BytesIO(contents))
-        return ImageDataModel(**save_image(image, meta))
+        return ImageDataModel(**save_image(image, meta, base_url))
 
     @staticmethod
     async def fetch_image(data: FetchImageModel) -> Union[Response, Image.Image]:
@@ -74,12 +76,15 @@ def add_upload_image(app: IApp) -> None:
     async def upload_image(
         image: UploadFile = File(),
         userId: str = Form(),
+        *,
+        request: Request,
     ) -> UploadImageResponse:
         try:
+            base_url = str(request.base_url)
             contents = image.file.read()
             meta = PngInfo()
             meta.add_text("userId", userId)
-            data = await ImageUploader.upload_image(contents, meta)
+            data = await ImageUploader.upload_image(contents, meta, base_url)
         except Exception as err:
             err_msg = get_err_msg(err)
             return UploadImageResponse(success=False, message=err_msg, data=None)

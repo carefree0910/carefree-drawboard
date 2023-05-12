@@ -104,6 +104,7 @@ export interface IPythonSocketPluginWithSubmit
 export interface IPythonSocketRequest {
   hash: string;
   userId: string;
+  baseURL: string;
   identifier: string;
   nodeData: INodeData;
   nodeDataList: INodeData[];

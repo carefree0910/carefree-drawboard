@@ -9,7 +9,7 @@ import type {
   IPythonSocketRequest,
   IPythonSocketCallbacks,
 } from "@/schema/_python";
-import { cleanURL, getBaseURL } from "@/utils/misc";
+import { getBaseURL } from "@/utils/misc";
 import { settingsStore } from "@/stores/settings";
 import { useInceptors } from "./interceptors";
 import {
