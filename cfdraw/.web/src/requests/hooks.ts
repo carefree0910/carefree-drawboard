@@ -25,11 +25,15 @@ export function useAPI<T extends APISources>(source: T): APIs[T] {
   const timeout = settingsStore.internalSettings?.timeout ?? 300000;
   let baseURL = cleanURL(import.meta.env.VITE_CFDRAW_API_URL);
   if (!baseURL) {
-    let backendPort = import.meta.env.VITE_CFDRAW_BE_PORT;
-    if (!backendPort) {
-      backendPort = 8123;
+    if (import.meta.env.PROD) {
+      baseURL = window.location.origin;
+    } else {
+      let backendPort = import.meta.env.VITE_CFDRAW_BE_PORT;
+      if (!backendPort) {
+        backendPort = 8123;
+      }
+      baseURL = `http://localhost:${backendPort}`;
     }
-    baseURL = `http://localhost:${backendPort}`;
   }
   const apis = {
     _python: axios.create({ baseURL, timeout }),
