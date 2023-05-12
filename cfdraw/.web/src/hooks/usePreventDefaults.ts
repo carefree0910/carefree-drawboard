@@ -8,12 +8,18 @@ function preventDefaultWheel(e: WheelEvent) {
     }
   }
 }
+function preventPopstate(e: PopStateEvent) {
+  e.preventDefault();
+  window.history.forward();
+}
 
 export function usePreventDefaults() {
   useEffect(() => {
     window.addEventListener("wheel", preventDefaultWheel, { passive: false });
+    window.addEventListener("popstate", preventPopstate);
     return () => {
       window.removeEventListener("wheel", preventDefaultWheel);
+      window.removeEventListener("popstate", preventPopstate);
     };
   }, []);
 }
