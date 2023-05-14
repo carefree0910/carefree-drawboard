@@ -177,6 +177,10 @@ export const usePluginChildren = (groupId: string) =>
     hasEffect: false,
     getDefault: () => [],
   });
+export const usePluginParent = (id: string) => {
+  const hierarchy = pluginsInfoStore.hierarchy;
+  return Object.entries(hierarchy).find(([, children]) => children.includes(id))?.[0];
+};
 export const addPluginChild = (groupId: string, id: string) => {
   const children = usePluginChildren(groupId);
   if (!children.includes(id)) {
