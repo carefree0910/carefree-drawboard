@@ -24,6 +24,16 @@ cfdraw run
 
 > We will install the required dependencies for you with the `run` command, so the first time may take a while.
 
+## Demo Videos
+
+### Stable Diffusion Outpainting
+
+This might be the best to demonstrate why `carefree-drawboard` 🎨 is so powerful and flexible!
+
+> You can use <kbd>[</kbd> to move the blank canvas to the bottom. See [Keyboard Shortcuts](https://github.com/carefree0910/carefree-drawboard/wiki/Features#keyboard-shortcuts) for more details.
+
+[Stable Diffusion Outpainting](https://github.com/carefree0910/carefree-drawboard/assets/15677328/3cdaa9d7-f279-4478-b8fb-5f0196c93c97)
+
 ## Details
 
 This example is a rather mature and production ready (after a few more modifications) example, it shows how can we build a web app which holds plenty of fancy AI plugins with only a few lines of codes.
