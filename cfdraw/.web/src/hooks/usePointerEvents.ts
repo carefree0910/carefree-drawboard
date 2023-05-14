@@ -28,7 +28,7 @@ class PointerEventManager {
   };
 }
 
-export interface IPointerEventsStore {
+interface IPointerEventsStore {
   interactingWithBoard: boolean;
 }
 class PointerEventsStore extends ABCStore<IPointerEventsStore> implements IPointerEventsStore {

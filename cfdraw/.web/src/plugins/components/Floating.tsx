@@ -23,7 +23,7 @@ import {
   setPluginExpanded,
   usePluginGroupIsExpanded,
 } from "@/stores/pluginsInfo";
-import { isInteractingWithBoard } from "@/stores/pointerEvents";
+import { isInteractingWithBoard } from "@/hooks/usePointerEvents";
 import { parseIStr } from "@/actions/i18n";
 import CFText from "@/components/CFText";
 import { CFIconButton } from "@/components/CFButton";
