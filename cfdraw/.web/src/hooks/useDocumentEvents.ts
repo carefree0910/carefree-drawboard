@@ -12,7 +12,7 @@ import { collapseAllPlugins } from "@/actions/managePlugins";
 function smartCollapse(): void {
   const currentExpanded = usePluginsExpanded();
   const expanding = Object.keys(currentExpanded).find((key) => currentExpanded[key]);
-  collapseAllPlugins();
+  collapseAllPlugins({ except: ["brush"] });
   if (!isUndefined(expanding)) {
     const parent = usePluginParent(expanding);
     if (!isUndefined(parent)) {
