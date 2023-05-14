@@ -3,6 +3,8 @@ import { makeObservable, observable } from "mobx";
 
 import { ABCStore, BoardStore, useIsReady } from "@carefree0910/business";
 
+import { collapseAllPlugins } from "@/actions/managePlugins";
+
 class PointerEventManager {
   constructor(private isPointerDown: boolean = false) {}
 
@@ -14,6 +16,7 @@ class PointerEventManager {
     this.isPointerDown = true;
     if (e.target === this.container) {
       pointerEventStore.updateProperty("interactingWithBoard", true);
+      collapseAllPlugins();
     }
   };
   onPointerMove = (e: PointerEvent) => {
