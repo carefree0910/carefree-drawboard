@@ -152,8 +152,6 @@ const Render = (({
         if (!latest) return;
         if (!filter) {
           setPluginNeedRender(_id, false);
-        } else if (inGroup && !groupExpand && !expand) {
-          setPluginNeedRender(_id, false);
         } else {
           setPluginNeedRender(_id, true);
         }
