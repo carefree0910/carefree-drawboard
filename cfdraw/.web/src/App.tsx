@@ -7,7 +7,7 @@ import { useInitBoard } from "./hooks/useInitBoard";
 import { useFileDropper } from "./hooks/useFileDropper";
 import { useGridLines } from "./hooks/useGridLines";
 import { usePreventDefaults } from "./hooks/usePreventDefaults";
-import { usePointerEvents } from "./hooks/usePointerEvents";
+import { useDocumentEvents } from "./hooks/useDocumentEvents";
 import CFLoadingPage from "./components/CFLoadingPage";
 import BoardPanel from "./BoardPanel";
 
@@ -18,7 +18,7 @@ function App() {
   useFileDropper();
   useGridLines();
   usePreventDefaults();
-  usePointerEvents();
+  useDocumentEvents();
 
   return (
     <Flex h="100vh" className="p-editor" direction="column" userSelect="none">

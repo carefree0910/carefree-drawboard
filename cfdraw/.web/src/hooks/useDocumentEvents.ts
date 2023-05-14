@@ -59,23 +59,23 @@ class PointerEventsStore extends ABCStore<IPointerEventsStore> implements IPoint
   }
 }
 
-const manager = new PointerEventManager();
+const pointerManager = new PointerEventManager();
 const pointerEventStore = new PointerEventsStore();
 
 export const isInteractingWithBoard = () => pointerEventStore.interactingWithBoard;
-export const usePointerEvents = () => {
+export const useDocumentEvents = () => {
   const isReady = useIsReady();
 
   useEffect(() => {
     if (!isReady) return;
-    document.addEventListener("pointerdown", manager.onPointerDown);
-    document.addEventListener("pointermove", manager.onPointerMove);
-    document.addEventListener("pointerup", manager.onPointerUp);
+    document.addEventListener("pointerdown", pointerManager.onPointerDown);
+    document.addEventListener("pointermove", pointerManager.onPointerMove);
+    document.addEventListener("pointerup", pointerManager.onPointerUp);
 
     return () => {
-      document.removeEventListener("pointerdown", manager.onPointerDown);
-      document.removeEventListener("pointermove", manager.onPointerMove);
-      document.removeEventListener("pointerup", manager.onPointerUp);
+      document.removeEventListener("pointerdown", pointerManager.onPointerDown);
+      document.removeEventListener("pointermove", pointerManager.onPointerMove);
+      document.removeEventListener("pointerup", pointerManager.onPointerUp);
     };
   }, [isReady]);
 };
