@@ -32,8 +32,8 @@ export interface ISettingsStore {
 class SettingsStore extends ABCStore<ISettingsStore> implements ISettingsStore {
   hash: string = "";
   pluginSettings: IMakePlugin<PythonPlugins>[] = [];
-  boardSettings?: IBoardSettings;
-  internalSettings?: IInternalSettings;
+  boardSettings?: IBoardSettings = undefined;
+  internalSettings?: IInternalSettings = undefined;
 
   constructor() {
     super();

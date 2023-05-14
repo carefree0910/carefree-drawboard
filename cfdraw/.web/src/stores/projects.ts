@@ -13,16 +13,18 @@ export interface IProjectsStore {
 }
 type IPartialProjectsStore = Partial<IProjectsStore>;
 class ProjectsStore extends ABCStore<IPartialProjectsStore> implements IPartialProjectsStore {
-  uid?: string;
-  name?: string;
-  createTime?: number;
-  updateTime?: number;
+  uid?: string = undefined;
+  name?: string = undefined;
+  createTime?: number = undefined;
+  updateTime?: number = undefined;
 
   constructor() {
     super();
     makeObservable(this, {
       uid: observable,
       name: observable,
+      createTime: observable,
+      updateTime: observable,
     });
   }
 

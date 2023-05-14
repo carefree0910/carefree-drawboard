@@ -10,7 +10,7 @@ export interface IToastStore {
   timer: any;
 }
 class ToastStore extends ABCStore<IToastStore> implements IToastStore {
-  timer: any;
+  timer: any = undefined;
 
   constructor() {
     super();

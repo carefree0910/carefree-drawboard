@@ -31,7 +31,7 @@ export interface ISocketStore {
   hooks: Bundle<SocketHook<any>>;
 }
 class SocketStore extends ABCStore<ISocketStore> implements ISocketStore {
-  socket?: WebSocket;
+  socket?: WebSocket = undefined;
   shouldTerminate: boolean = false;
   hooks = new Bundle<SocketHook<any>>([]);
 
