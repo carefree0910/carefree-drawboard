@@ -188,6 +188,7 @@ const Floating = forwardRef(function (
         opacity={isInvisible ? 0 : 1}
         visibility={isInvisible ? "hidden" : "visible"}
         transition={`${VISIBILITY_TRANSITION}, ${BG_TRANSITION}`}
+        _focus={{ outline: "none" }}
         {...getCommonProps(false)}
         {...props}
         imageProps={{ opacity: iconOpacity }}>
