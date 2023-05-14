@@ -4,6 +4,13 @@
     <meta charset="UTF-8" />
     <meta name="viewport" content="width=device-width, initial-scale=1.0" />
     <title>carefree-drawboard 🎨</title>
+    <script>
+      window._env_ = {
+        CFDRAW_BE_PORT: "{{ CFDRAW_BE_PORT }}",
+        CFDRAW_API_URL: "{{ CFDRAW_API_URL }}",
+        CFDRAW_ALLOWED_ORIGINS: "{{ CFDRAW_ALLOWED_ORIGINS }}",
+      }
+    </script>
     <script type="module" src="/src/index.tsx"></script>
   </head>
   <body>

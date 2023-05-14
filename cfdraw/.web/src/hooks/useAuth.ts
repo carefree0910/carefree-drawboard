@@ -1,7 +1,7 @@
 import { useEffect } from "react";
 
 import { Event } from "@/utils/event";
-import { cleanURL } from "@/utils/misc";
+import { cleanURL, getEnv } from "@/utils/misc";
 
 type Message = {
   userId: string;
@@ -9,7 +9,7 @@ type Message = {
 
 const allowedOrigins = ["http://127.0.0.1:5123", "http://localhost:5123"];
 const allowedOriginRegexList = [/^http:\/\/localhost(:\d+)?$/];
-let envAllowedOrigins = import.meta.env.VITE_CFDRAW_ALLOWED_ORIGINS as string;
+let envAllowedOrigins = getEnv("CFDRAW_ALLOWED_ORIGINS");
 if (!envAllowedOrigins) {
   // THIS IS DANGEROUS, but will be convenient for quick deployment
   envAllowedOrigins = window.location.origin;

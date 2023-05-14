@@ -34,17 +34,21 @@ export function cleanURL(url: string) {
 }
 
 export function getBaseURL(): string {
-  let baseURL = cleanURL(import.meta.env.VITE_CFDRAW_API_URL);
+  let baseURL = cleanURL(getEnv("CFDRAW_API_URL"));
   if (!baseURL) {
     if (import.meta.env.PROD) {
       baseURL = window.location.origin;
     } else {
-      let backendPort = import.meta.env.VITE_CFDRAW_BE_PORT;
+      let backendPort = getEnv("CFDRAW_BE_PORT");
       if (!backendPort) {
-        backendPort = 8123;
+        backendPort = "8123";
       }
       baseURL = `http://localhost:${backendPort}`;
     }
   }
   return baseURL;
+}
+
+export function getEnv(key: keyof Window["_env_"]): string {
+  return window._env_[key] || import.meta.env[`VITE_${key}`] || "";
 }
