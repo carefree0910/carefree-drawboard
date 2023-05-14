@@ -1,8 +1,10 @@
 import { useEffect } from "react";
 import { makeObservable, observable } from "mobx";
 
+import { isUndefined } from "@carefree0910/core";
 import { ABCStore, BoardStore, useIsReady } from "@carefree0910/business";
 
+import { setPluginExpanded, usePluginParent, usePluginsExpanded } from "@/stores/pluginsInfo";
 import { collapseAllPlugins } from "@/actions/managePlugins";
 
 class PointerEventManager {
@@ -16,7 +18,15 @@ class PointerEventManager {
     this.isPointerDown = true;
     if (e.target === this.container) {
       pointerEventStore.updateProperty("interactingWithBoard", true);
+      const currentExpanded = usePluginsExpanded();
+      const expanding = Object.keys(currentExpanded).find((key) => currentExpanded[key]);
       collapseAllPlugins();
+      if (!isUndefined(expanding)) {
+        const parent = usePluginParent(expanding);
+        if (!isUndefined(parent)) {
+          setPluginExpanded(parent, true);
+        }
+      }
     }
   };
   onPointerMove = (e: PointerEvent) => {
