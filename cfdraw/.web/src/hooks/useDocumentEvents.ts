@@ -68,6 +68,14 @@ class PointerEventsStore extends ABCStore<IPointerEventsStore> implements IPoint
 const pointerManager = new PointerEventManager();
 const pointerEventStore = new PointerEventsStore();
 
+// keyboard
+
+function onEsc(e: KeyboardEvent) {
+  if (e.key === "Escape") {
+    smartCollapse();
+  }
+}
+
 // api
 export const isInteractingWithBoard = () => pointerEventStore.interactingWithBoard;
 export const useDocumentEvents = () => {
@@ -78,11 +86,13 @@ export const useDocumentEvents = () => {
     document.addEventListener("pointerdown", pointerManager.onPointerDown);
     document.addEventListener("pointermove", pointerManager.onPointerMove);
     document.addEventListener("pointerup", pointerManager.onPointerUp);
+    document.addEventListener("keydown", onEsc);
 
     return () => {
       document.removeEventListener("pointerdown", pointerManager.onPointerDown);
       document.removeEventListener("pointermove", pointerManager.onPointerMove);
       document.removeEventListener("pointerup", pointerManager.onPointerUp);
+      document.removeEventListener("keydown", onEsc);
     };
   }, [isReady]);
 };
