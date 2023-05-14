@@ -7,6 +7,22 @@ import { ABCStore, BoardStore, useIsReady } from "@carefree0910/business";
 import { setPluginExpanded, usePluginParent, usePluginsExpanded } from "@/stores/pluginsInfo";
 import { collapseAllPlugins } from "@/actions/managePlugins";
 
+// helpers
+
+function smartCollapse(): void {
+  const currentExpanded = usePluginsExpanded();
+  const expanding = Object.keys(currentExpanded).find((key) => currentExpanded[key]);
+  collapseAllPlugins();
+  if (!isUndefined(expanding)) {
+    const parent = usePluginParent(expanding);
+    if (!isUndefined(parent)) {
+      setPluginExpanded(parent, true);
+    }
+  }
+}
+
+// pointer
+
 class PointerEventManager {
   constructor(private isPointerDown: boolean = false) {}
 
@@ -18,15 +34,7 @@ class PointerEventManager {
     this.isPointerDown = true;
     if (e.target === this.container) {
       pointerEventStore.updateProperty("interactingWithBoard", true);
-      const currentExpanded = usePluginsExpanded();
-      const expanding = Object.keys(currentExpanded).find((key) => currentExpanded[key]);
-      collapseAllPlugins();
-      if (!isUndefined(expanding)) {
-        const parent = usePluginParent(expanding);
-        if (!isUndefined(parent)) {
-          setPluginExpanded(parent, true);
-        }
-      }
+      smartCollapse();
     }
   };
   onPointerMove = (e: PointerEvent) => {
@@ -40,7 +48,6 @@ class PointerEventManager {
     pointerEventStore.updateProperty("interactingWithBoard", false);
   };
 }
-
 interface IPointerEventsStore {
   interactingWithBoard: boolean;
 }
@@ -58,10 +65,10 @@ class PointerEventsStore extends ABCStore<IPointerEventsStore> implements IPoint
     return this;
   }
 }
-
 const pointerManager = new PointerEventManager();
 const pointerEventStore = new PointerEventsStore();
 
+// api
 export const isInteractingWithBoard = () => pointerEventStore.interactingWithBoard;
 export const useDocumentEvents = () => {
   const isReady = useIsReady();
