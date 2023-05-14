@@ -78,6 +78,7 @@ WEB_ROOT = ROOT / ".web"
 UPLOAD_ROOT = Path("~").expanduser() / ".cache" / "carefree-draw"
 UPLOAD_IMAGE_FOLDER_NAME = ".images"
 UPLOAD_PROJECT_FOLDER_NAME = ".projects"
+BUGGY_PROJECT_FOLDER = ".buggy"
 PROJECT_META_FILE = "_meta.json"
 
 # icons

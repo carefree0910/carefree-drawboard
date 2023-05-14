@@ -63,14 +63,23 @@ def maintain_meta(app: IApp, userId: str) -> None:
         return
     project_meta = {}
     for path in existing_projects:
-        with open(path, "r") as f:
-            d = json.load(f)
-        project_meta[d["uid"]] = dict(
-            uid=d["uid"],
-            name=d["name"],
-            createTime=d["createTime"],
-            updateTime=d["updateTime"],
-        )
+        try:
+            with open(path, "r") as f:
+                d = json.load(f)
+            project_meta[d["uid"]] = dict(
+                uid=d["uid"],
+                name=d["name"],
+                createTime=d["createTime"],
+                updateTime=d["updateTime"],
+            )
+        except Exception as err:
+            buggy_folder = upload_project_folder / constants.BUGGY_PROJECT_FOLDER
+            backup_path = buggy_folder / path.name
+            print_warning(
+                f"failed to load project '{path}', it will be moved to '{backup_path}'"
+                f" ({get_err_msg(err)})"
+            )
+            path.rename(buggy_folder / path.name)
     with open(meta_path, "w") as f:
         json.dump(project_meta, f)
 
