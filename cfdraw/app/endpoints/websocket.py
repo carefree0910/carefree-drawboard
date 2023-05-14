@@ -40,6 +40,7 @@ def add_websocket(app: IApp) -> None:
 
         await websocket.accept()
         while True:
+            raw_data = data = None
             try:
                 target_plugin = None
                 raw_data = await websocket.receive_text()
@@ -75,7 +76,13 @@ def add_websocket(app: IApp) -> None:
             except WebSocketDisconnect:
                 break
             except Exception as e:
-                await on_failed(e, data.hash)
+                if data is not None:
+                    req_hash = data.hash
+                elif raw_data is not None and isinstance(raw_data, dict):
+                    req_hash = raw_data.get("hash", "unknown")
+                else:
+                    req_hash = "unknown"
+                await on_failed(e, req_hash)
             finally:
                 del target_plugin
 
