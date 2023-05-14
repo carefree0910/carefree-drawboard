@@ -74,6 +74,7 @@ def maintain_meta(app: IApp, userId: str) -> None:
             )
         except Exception as err:
             buggy_folder = upload_project_folder / constants.BUGGY_PROJECT_FOLDER
+            buggy_folder.mkdir(parents=True, exist_ok=True)
             backup_path = buggy_folder / path.name
             print_warning(
                 f"failed to load project '{path}', it will be moved to '{backup_path}'"
