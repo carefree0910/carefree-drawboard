@@ -15,8 +15,8 @@ import { ABCStore, langStore } from "@carefree0910/business";
 
 import type { IPythonOnSocketMessage, IPythonSocketRequest } from "@/schema/_python";
 import { useReactPluginSettings } from "@/_settings";
-import { cleanURL, getBaseURL } from "@/utils/misc";
-import { IMAGE_PLACEHOLDER, IS_PROD } from "@/utils/constants";
+import { getBaseURL } from "@/utils/misc";
+import { IMAGE_PLACEHOLDER } from "@/utils/constants";
 import { ThemeType, allThemes, themeStore } from "@/stores/theme";
 import { userStore } from "@/stores/user";
 import { debugStore } from "@/stores/debug";
