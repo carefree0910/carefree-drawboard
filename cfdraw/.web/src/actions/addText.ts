@@ -17,12 +17,9 @@ export function addNewText(
 ): void {
   const newText = new TextNode(
     alias,
-    { content, fontSize },
+    { content, fontSize, color: themeStore.styles.textColor },
     opt.bbox.fields,
     { z: BoardStore.graph.minZIndex - 1 },
-    undefined,
-    undefined,
-    { color: themeStore.styles.textColor },
   );
   newText.meta = opt.meta;
   console.log("newText: ", newText.snapshot());
