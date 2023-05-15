@@ -50,5 +50,7 @@ export function getBaseURL(): string {
 }
 
 export function getEnv(key: keyof Window["_env_"]): string {
-  return window._env_[key] || import.meta.env[`VITE_${key}`] || "";
+  let windowEnv = window._env_[key];
+  if (windowEnv.replaceAll(" ", "") === `{{${key}}}`) windowEnv = "";
+  return windowEnv || import.meta.env[`VITE_${key}`] || "";
 }
