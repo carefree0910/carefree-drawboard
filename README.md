@@ -6,7 +6,7 @@
 
 <br>
 
-**✨ Build performant, Infinite Drawboard based web apps in pure Python.**
+**✨ Build performant, business ready web apps in pure Python.**
 
 <br>
 
