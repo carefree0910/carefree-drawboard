@@ -100,7 +100,7 @@ class ISelectLocalField(IBaseField):
             paths = [f for f in paths if f.is_file()]
         if regex:
             paths = [f for f in paths if re.search(regex, f.name)]
-        return sorted([f.stem if noExt else f.name for f in paths])
+        return [""] + sorted([f.stem if noExt else f.name for f in paths])
 
     def dict(self, **kwargs: Any) -> Dict[str, Any]:
         d = super().dict(**kwargs)
@@ -114,7 +114,7 @@ class ISelectLocalField(IBaseField):
         values = self.get_values(**kw)
         d["values"] = values
         if d["default"] is None:
-            d["default"] = "" if not values else values[0]
+            d["default"] = ""
         d["isLocal"] = True
         d["localProperties"] = kw
         return d
