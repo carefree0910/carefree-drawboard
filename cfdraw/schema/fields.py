@@ -90,7 +90,7 @@ class ISelectLocalField(IBaseField):
     def get_values(
         *,
         path: str,
-        regex: Optional[str],
+        regex: Optional[str] = None,
         noExt: bool,
         onlyFiles: bool,
     ) -> List[str]:
