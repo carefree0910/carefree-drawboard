@@ -100,6 +100,8 @@ class ISelectLocalField(IBaseField):
         defaultPlaceholder: Optional[str] = None,
     ) -> List[str]:
         p = Path(path)
+        if not p.is_dir():
+            return [] if defaultPlaceholder is None else [defaultPlaceholder]
         paths = [f for f in p.iterdir() if f]
         if onlyFiles:
             paths = [f for f in paths if f.is_file()]
