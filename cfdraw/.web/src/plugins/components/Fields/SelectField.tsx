@@ -28,7 +28,7 @@ function SelectField({ field, definition }: SelectFieldProps) {
     if (definition.localProperties) {
       const extraData = definition.localProperties;
       const hash = getHash(JSON.stringify(extraData)).toString();
-      runOneTimeSocketHook<{ values: string[] }>({
+      runOneTimeSocketHook<{ options: string[] }>({
         key: "selectField",
         hook: {
           key: hash,
@@ -45,7 +45,7 @@ function SelectField({ field, definition }: SelectFieldProps) {
         },
       }).then((res) => {
         if (res) {
-          setOptions(res.values);
+          setOptions(res.options);
         }
       });
     }

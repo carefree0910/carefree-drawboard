@@ -87,7 +87,7 @@ class ISelectLocalField(IBaseField):
     type: FieldType = Field(FieldType.SELECT_LOCAL, description="Type", const=True)
 
     @staticmethod
-    def get_values(
+    def get_options(
         *,
         path: str,
         regex: Optional[str] = None,
@@ -111,7 +111,7 @@ class ISelectLocalField(IBaseField):
             noExt=d.pop("noExt"),
             onlyFiles=d.pop("onlyFiles"),
         )
-        values = self.get_values(**kw)
+        values = self.get_options(**kw)
         d["values"] = values
         if d["default"] is None:
             d["default"] = ""

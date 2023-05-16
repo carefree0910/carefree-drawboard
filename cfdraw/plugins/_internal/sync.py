@@ -30,8 +30,8 @@ class SyncSocketPlugin(IInternalSocketPlugin):
 @PluginFactory.register_internal("sync_local_select")
 class SyncLocalSelectSocketPlugin(IInternalSocketPlugin):
     async def process(self, data: ISocketRequest) -> ISocketMessage:
-        values = ISelectLocalField.get_values(**data.extraData)
-        return ISocketMessage.make_success(data.hash, dict(values=values))
+        options = ISelectLocalField.get_options(**data.extraData)
+        return ISocketMessage.make_success(data.hash, dict(options=options))
 
 
 __all__ = [
