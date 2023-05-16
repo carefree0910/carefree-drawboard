@@ -38,6 +38,7 @@ interface ISelectLocalProperties {
   regex?: string;
   noExt: boolean;
   onlyFiles: boolean;
+  defaultPlaceholder?: string;
 }
 export interface ISelectField<T> extends IBaseFields {
   type: "select";

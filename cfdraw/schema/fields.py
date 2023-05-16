@@ -83,6 +83,10 @@ class ISelectLocalField(IBaseField):
     regex: Optional[str] = Field(None, description="The regex to filter the files")
     noExt: bool = Field(False, description="Whether to remove the extension")
     onlyFiles: bool = Field(True, description="Whether only consider files")
+    defaultPlaceholder: Optional[str] = Field(
+        None,
+        description="If provided, it will be inserted to the first of the options and serve as the default value",
+    )
     isMulti: Optional[bool] = Field(None, description="Whether use multi-select")
     type: FieldType = Field(FieldType.SELECT_LOCAL, description="Type", const=True)
 
@@ -93,6 +97,7 @@ class ISelectLocalField(IBaseField):
         regex: Optional[str] = None,
         noExt: bool,
         onlyFiles: bool,
+        defaultPlaceholder: Optional[str] = None,
     ) -> List[str]:
         p = Path(path)
         paths = [f for f in p.iterdir() if f]
@@ -100,7 +105,10 @@ class ISelectLocalField(IBaseField):
             paths = [f for f in paths if f.is_file()]
         if regex:
             paths = [f for f in paths if re.search(regex, f.name)]
-        return [""] + sorted([f.stem if noExt else f.name for f in paths])
+        sorted_paths = sorted([f.stem if noExt else f.name for f in paths])
+        if defaultPlaceholder is None:
+            return sorted_paths
+        return [defaultPlaceholder] + sorted_paths
 
     def dict(self, **kwargs: Any) -> Dict[str, Any]:
         d = super().dict(**kwargs)
@@ -110,11 +118,12 @@ class ISelectLocalField(IBaseField):
             regex=d.pop("regex"),
             noExt=d.pop("noExt"),
             onlyFiles=d.pop("onlyFiles"),
+            defaultPlaceholder=d.pop("defaultPlaceholder"),
         )
         values = self.get_options(**kw)
         d["values"] = values
         if d["default"] is None:
-            d["default"] = ""
+            d["default"] = values[0]
         d["isLocal"] = True
         d["localProperties"] = kw
         return d
