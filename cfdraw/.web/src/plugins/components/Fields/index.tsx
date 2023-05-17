@@ -4,7 +4,8 @@ import { Flex, FlexProps } from "@chakra-ui/react";
 import { argMin, range, shallowCopy } from "@carefree0910/core";
 
 import type { IDefinitions } from "@/schema/fields";
-import { Field, getFieldH } from "./Field";
+import { getFieldH } from "./utils";
+import { Field } from "./Field";
 
 interface IDefinitionsComponent extends FlexProps {
   definitions: IDefinitions;
