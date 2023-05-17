@@ -13,7 +13,6 @@ from cfdraw.utils.misc import offload_run
 from cfdraw.schema.plugins import *
 from cfdraw.plugins.middlewares import *
 from cfdraw.parsers.noli import SingleNodeType
-from cfdraw.parsers.chakra import IChakra
 from cfdraw.app.endpoints.upload import ImageUploader
 from cfdraw.app.endpoints.upload import FetchImageModel
 
@@ -43,14 +42,11 @@ class ISocketPlugin(IPlugin, metaclass=ABCMeta):
             response = await middleware(response)
         return response
 
-    def hash_identifier(self, identifier: str) -> str:
-        return f"{identifier}.{self.hash}"
-
     def to_react(self) -> Dict[str, Any]:
         return self.settings.to_react(
             self.type,
             self.hash,
-            self.hash_identifier(self.identifier),
+            hash_identifier(self.hash, self.identifier),
         )
 
     # helper methods

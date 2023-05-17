@@ -78,6 +78,10 @@ class ReactPluginType(str, Enum):
 # general
 
 
+def hash_identifier(hash: str, identifier: str) -> str:
+    return f"{identifier}.{hash}"
+
+
 class IPluginInfo(BaseModel):
     """
     This should align with the following interfaces locate at `cfdraw/.web/src/schema/_python.ts`:
@@ -596,6 +600,7 @@ __all__ = [
     "PluginType",
     "ReactPluginType",
     # general
+    "hash_identifier",
     "IPluginInfo",
     "IPluginSettings",
     # web
