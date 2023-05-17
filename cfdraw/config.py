@@ -8,6 +8,7 @@ from dataclasses import dataclass
 
 from cfdraw import constants
 from cfdraw.utils.cache import cache_resource
+from cfdraw.schema.settings import ExtraPlugins
 from cfdraw.schema.settings import BoardSettings
 
 
@@ -25,6 +26,8 @@ class Config:
     upload_root: str = field(default_factory=constants.get_upload_root)
     # board
     board_settings: BoardSettings = BoardSettings()
+    # extra plugins
+    extra_plugins: ExtraPlugins = ExtraPlugins()
     # misc
     use_react_strict_mode: bool = False
 

@@ -17,7 +17,6 @@ interface IGlobalSettings {
   defaultInfoTimeout?: number;
   excludeReactPlugins?: ReactPlugins[];
   iconLoadingPatience?: number;
-  logo?: IMakePlugin<"logo">;
 }
 interface IBoardSettings {
   styles?: Record<ThemeType, Partial<ThemeStyles>>;
@@ -25,16 +24,21 @@ interface IBoardSettings {
   globalSettings?: IGlobalSettings;
   initialProject?: IProject;
 }
+interface IExtraPlugins {
+  logo?: IMakePlugin<"logo">;
+}
 export interface ISettingsStore {
   pluginSettings: IMakePlugin<PythonPlugins>[];
   internalSettings?: IInternalSettings;
   boardSettings?: IBoardSettings;
+  extraPlugins?: IExtraPlugins;
 }
 class SettingsStore extends ABCStore<ISettingsStore> implements ISettingsStore {
   hash: string = "";
   pluginSettings: IMakePlugin<PythonPlugins>[] = [];
   boardSettings?: IBoardSettings = undefined;
   internalSettings?: IInternalSettings = undefined;
+  extraPlugins?: IExtraPlugins = undefined;
 
   constructor() {
     super();
@@ -43,6 +47,7 @@ class SettingsStore extends ABCStore<ISettingsStore> implements ISettingsStore {
       pluginSettings: observable,
       internalSettings: observable,
       boardSettings: observable,
+      extraPlugins: observable,
     });
   }
 

@@ -23,6 +23,7 @@ class SyncSocketPlugin(IInternalSocketPlugin):
                     sockenEndpoint=str(constants.Endpoint.WEBSOCKET),
                 ),
                 boardSettings=config.board_settings.to_filtered(),
+                extraPlugins=config.extra_plugins.dict(),
             ),
         )
 

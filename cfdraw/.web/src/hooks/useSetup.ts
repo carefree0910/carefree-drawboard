@@ -117,6 +117,8 @@ const updateSettings = (data: ISettingsStore): boolean => {
   runInAction(async () => {
     settingsStore.hash = incomingHash;
     settingsStore.pluginSettings = data.pluginSettings;
+    // `extraPlugins` should be updated every time to enable hot reload.
+    settingsStore.extraPlugins = data.extraPlugins;
     // `internalSettings` should only be updated once.
     if (!settingsStore.internalSettings) {
       settingsStore.internalSettings = data.internalSettings;
@@ -206,7 +208,7 @@ function useSyncPython() {
     [],
   );
   const onMessage = useCallback<IPythonOnSocketMessage<ISettingsStore>>(
-    async ({ status, total, pending, message, data: { progress, final } }) => {
+    async ({ status, total, pending, message, data: { final } }) => {
       collapseAllPlugins();
       if (status !== "finished") {
         if (status === "pending") {

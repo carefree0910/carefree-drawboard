@@ -277,9 +277,11 @@ export const reactPluginSettings: IMakePlugin<ReactPlugins>[] = [
 export function useReactPluginSettings() {
   const exclude = settingsStore.boardSettings?.globalSettings?.excludeReactPlugins;
   const builtins = reactPluginSettings.filter(({ type }) => !exclude?.includes(type));
-  const logoSettings = settingsStore.boardSettings?.globalSettings?.logo;
-  if (logoSettings) {
-    builtins.push(logoSettings);
+  const extraPlugins = settingsStore.extraPlugins;
+  if (extraPlugins) {
+    if (extraPlugins.logo) {
+      builtins.push(extraPlugins.logo);
+    }
   }
   return builtins;
 }

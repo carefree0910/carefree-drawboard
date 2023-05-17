@@ -31,6 +31,21 @@ class GlobalSettings(BaseModel):
         ge=0,
         description="show icon loading animation if the icon is not loaded after {patience}ms",
     )
+
+
+class BoardSettings(BaseModel):
+    boardOptions: Optional[BoardOptions] = Field(None, description="board options")
+    globalSettings: Optional[GlobalSettings] = Field(None, description="global setting")
+
+    def to_filtered(self) -> Dict[str, Any]:
+        d = self.dict()
+        gs = d["globalSettings"]
+        if gs is not None:
+            d["globalSettings"] = {k: v for k, v in gs.items() if v is not None}
+        return d
+
+
+class ExtraPlugins(BaseModel):
     logo: Optional[ILogoSettings] = Field(None, description="logo settings")
 
     def dict(self, **kwargs: Any) -> Dict[str, Any]:
@@ -46,20 +61,9 @@ class GlobalSettings(BaseModel):
         return d
 
 
-class BoardSettings(BaseModel):
-    boardOptions: Optional[BoardOptions] = Field(None, description="board options")
-    globalSettings: Optional[GlobalSettings] = Field(None, description="global setting")
-
-    def to_filtered(self) -> Dict[str, Any]:
-        d = self.dict()
-        ms = d["globalSettings"]
-        if ms is not None:
-            d["globalSettings"] = {k: v for k, v in ms.items() if v is not None}
-        return d
-
-
 __all__ = [
     "BoardOptions",
     "GlobalSettings",
     "BoardSettings",
+    "ExtraPlugins",
 ]
