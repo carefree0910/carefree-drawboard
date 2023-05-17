@@ -4,8 +4,9 @@ $blockName: c-list-field;
   &__icon {
     width: 28px;
     height: 28px;
-    padding: 6px;
-    margin-top: 1.5px;
+    padding: 8px;
+    margin-top: 2.5px;
+    margin-left: 2px;
 
     &--expanded {
       @extend .#{$blockName}__icon;
