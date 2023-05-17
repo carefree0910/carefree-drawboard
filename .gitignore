@@ -3,6 +3,7 @@
 **/.images/*
 **/.projects/*
 cfdraw/.web/analyze.html
+examples/carefree_creator/lora/*.safetensors
 
 # Logs
 logs
