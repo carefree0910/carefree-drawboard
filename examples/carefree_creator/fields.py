@@ -107,13 +107,33 @@ use_highres = IBooleanField(
         en="Generate images with 2x width & height",
     ),
 )
-lora_field = ISelectLocalField(
+lora_field = IListField(
     label="LoRA",
-    path=str(Path(__file__).parent / "lora"),
-    noExt=True,
-    onlyFiles=True,
-    regex=".*\\.safetensors",
-    defaultPlaceholder="None",
+    tooltip=I18N(zh="配置 LoRA 模型", en="Setup LoRA models"),
+    item=dict(
+        model=ISelectLocalField(
+            label=I18N(
+                zh="模型",
+                en="Model",
+            ),
+            path=str(Path(__file__).parent / "lora"),
+            noExt=True,
+            onlyFiles=True,
+            regex=".*\\.safetensors",
+            defaultPlaceholder="None",
+        ),
+        strength=INumberField(
+            default=1.0,
+            min=0.0,
+            max=4.0,
+            step=0.1,
+            precision=1,
+            label=I18N(
+                zh="强度",
+                en="Strength",
+            ),
+        ),
+    ),
 )
 # txt2img
 txt2img_fields = OrderedDict(

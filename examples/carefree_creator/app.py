@@ -13,18 +13,30 @@ from fields import *
 
 
 def inject(self: IFieldsPlugin, data: ISocketRequest) -> ISocketRequest:
+    # seed
     if data.extraData["seed"] == -1:
         data.extraData["seed"] = new_seed()
-    if data.extraData["lora"] != lora_field.defaultPlaceholder:
-        lora_name = data.extraData.pop("lora")
-        folder = Path(lora_field.path)
-        if folder.is_dir():
-            for path in folder.iterdir():
-                if path.stem == lora_name:
-                    data.extraData["lora_paths"] = [str(path)]
-                    data.extraData.setdefault("lora_scales", {lora_name: 1.0})
-                    break
     self.extra_responses["seed"] = data.extraData["seed"]
+    # lora
+    lora = data.extraData.pop("lora", [])
+    lora_definition = lora_field.item
+    lora_folder = Path(lora_definition["model"].path)
+    lora_placeholder = lora_definition["model"].defaultPlaceholder
+    if lora and lora_folder.is_dir():
+        lora_paths = []
+        lora_scales = data.extraData.setdefault("lora_scales", {})
+        for lora_item in lora:
+            lora_name = lora_item["model"]
+            if lora_name == lora_placeholder:
+                continue
+            for path in lora_folder.iterdir():
+                if path.stem == lora_name:
+                    lora_paths.append(str(path))
+                    lora_scales[lora_name] = lora_item["strength"]
+                    break
+        if lora_paths:
+            data.extraData["lora_paths"] = lora_paths
+    self.extra_responses["lora_scales"] = data.extraData["lora_scales"]
     return data
 
 
