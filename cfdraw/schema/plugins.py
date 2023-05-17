@@ -17,6 +17,7 @@ from aiohttp import ClientSession
 from pydantic import Field
 from pydantic import BaseModel
 
+from cfdraw import constants
 from cfdraw.utils.misc import deprecated
 from cfdraw.schema.fields import IFieldDefinition
 from cfdraw.parsers.noli import IStr
@@ -190,6 +191,49 @@ Pivot of the plugin.
     )
     # React fields
     pluginInfo: IPluginInfo = Field(IPluginInfo(), description="Plugin info")
+
+    def to_react(self, type: str, hash: str, identifier: str) -> Dict[str, Any]:
+        d = self.dict(exclude={"pluginInfo"})
+        pI = self.pluginInfo
+        kw = dict(exclude={"plugins"}) if isinstance(pI, IPluginGroupInfo) else {}
+        plugin_info = self.pluginInfo.dict(**kw)
+        plugin_info["identifier"] = identifier
+        if isinstance(pI, IPluginGroupInfo):
+            plugins: List[Dict[str, Any]] = []
+            for p_identifier, p_base in pI.plugins.items():
+                p_base.hash = hash
+                p = p_base()
+                p.identifier = p_identifier
+                plugins.append(p.to_react())
+            plugin_info["plugins"] = plugins
+        node_constraint = d.pop("nodeConstraint")
+        node_constraint_rules = d.pop("nodeConstraintRules")
+        node_constraint_validator = d.pop("nodeConstraintValidator")
+        chakra_props = {}
+        for field in IChakra.__fields__:
+            # `w` and `h` are special fields, should not be included in `chakra_props`
+            if field in ["w", "h"]:
+                continue
+            chakra_value = d.pop(field)
+            if chakra_value is not None:
+                chakra_props[field] = chakra_value
+        for k, v in list(d.items()):
+            if v is None:
+                d.pop(k)
+        # src
+        if not isinstance(pI, IPluginGroupInfo):
+            d.setdefault("src", constants.DEFAULT_PLUGIN_ICON)
+        else:
+            d.setdefault("src", constants.DEFAULT_PLUGIN_GROUP_ICON)
+        # gather
+        props = dict(pluginInfo=plugin_info, renderInfo=d, **chakra_props)
+        if node_constraint is not None:
+            props["nodeConstraint"] = node_constraint
+        if node_constraint_rules is not None:
+            props["nodeConstraintRules"] = node_constraint_rules
+        if node_constraint_validator is not None:
+            props["nodeConstraintValidator"] = node_constraint_validator
+        return dict(type=type, props=props)
 
 
 class ElapsedTimes(BaseModel):
