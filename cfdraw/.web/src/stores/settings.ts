@@ -17,6 +17,7 @@ interface IGlobalSettings {
   defaultInfoTimeout?: number;
   excludeReactPlugins?: ReactPlugins[];
   iconLoadingPatience?: number;
+  logo?: IMakePlugin<"logo">;
 }
 interface IBoardSettings {
   styles?: Record<ThemeType, Partial<ThemeStyles>>;

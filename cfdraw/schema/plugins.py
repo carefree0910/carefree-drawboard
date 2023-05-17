@@ -67,8 +67,9 @@ class ReactPluginType(str, Enum):
     DOWNLOAD = "download"
     DELETE = "delete"
     WIKI = "wiki"
-    GITHUB = "github"
     EMAIL = "email"
+    GITHUB = "github"
+    LOGO = "logo"
     TEXT_EDITOR = "textEditor"
     GROUP_EDITOR = "groupEditor"
     MULTI_EDITOR = "multiEditor"
@@ -538,6 +539,20 @@ class IMiddleWare(ABC):
 # (react) bindings
 
 
+class ILogoPluginInfo(IPluginInfo):
+    """This should align with `ILogoPlugin` at `cfdraw/.web/src/schema/plugins.ts`"""
+
+    redirectUrl: Optional[IStr] = Field(
+        None,
+        description="Redirection target when clicking the logo, `None` means no redirection",
+    )
+
+
+class ILogoSettings(IPluginSettings):
+    w: int = Field(0, gt=0, description="Width of the expanded plugin")  # type: ignore
+    h: int = Field(0, gt=0, description="Height of the expanded plugin")  # type: ignore
+
+
 class IFieldsPluginInfo(IPluginInfo):
     """This should align with `IPythonFieldsPlugin` at `cfdraw/.web/src/schema/_python.ts`"""
 
@@ -615,6 +630,8 @@ __all__ = [
     "IMiddleWare",
     "IFieldsPluginInfo",
     # bindings
+    "ILogoPluginInfo",
+    "ILogoSettings",
     "ITextAreaPluginInfo",
     "IQAPluginInfo",
     "IChatPluginInfo",

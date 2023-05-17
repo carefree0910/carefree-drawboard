@@ -66,6 +66,9 @@ export interface IPluginInfo {
 export interface IPlugin extends IRender {
   pluginInfo: IPluginInfo;
 }
+export interface ILogoPlugin extends IPlugin {
+  pluginInfo: IPluginInfo & { redirectUrl?: string };
+}
 
 // specific
 
@@ -87,8 +90,9 @@ export const allReactPlugins = [
   "download",
   "delete",
   "wiki",
-  "github",
   "email",
+  "github",
+  "logo",
   "textEditor",
   "groupEditor",
   "multiEditor",
@@ -117,8 +121,9 @@ export interface IPluginProps {
   download: IPlugin;
   delete: IPlugin;
   wiki: IPlugin;
-  github: IPlugin;
   email: IPlugin;
+  github: IPlugin;
+  logo: ILogoPlugin;
   textEditor: IPlugin;
   groupEditor: IPlugin;
   multiEditor: IPlugin;

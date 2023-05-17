@@ -4,8 +4,11 @@ from typing import List
 from typing import Optional
 from pydantic import Field
 from pydantic import BaseModel
+from cftool.misc import random_hash
 
 from cfdraw.parsers import noli
+from cfdraw.schema.plugins import hash_identifier
+from cfdraw.schema.plugins import ILogoSettings
 from cfdraw.schema.plugins import ReactPluginType
 
 
@@ -28,6 +31,19 @@ class GlobalSettings(BaseModel):
         ge=0,
         description="show icon loading animation if the icon is not loaded after {patience}ms",
     )
+    logo: Optional[ILogoSettings] = Field(None, description="logo settings")
+
+    def dict(self, **kwargs: Any) -> Dict[str, Any]:
+        kwargs["exclude"] = (kwargs.get("exclude") or set()) | {"logo"}
+        d = super().dict(**kwargs)
+        if self.logo is None:
+            d["logo"] = None
+        else:
+            hash = random_hash()
+            p_type = ReactPluginType.LOGO
+            identifier = hash_identifier(hash, p_type.value)
+            d["logo"] = self.logo.to_react(p_type, hash, identifier)
+        return d
 
 
 class BoardSettings(BaseModel):
