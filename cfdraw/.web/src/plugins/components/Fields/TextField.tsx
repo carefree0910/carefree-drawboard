@@ -12,12 +12,12 @@ import CFInput from "@/components/CFInput";
 import CFTextarea from "@/components/CFTextarea";
 import { useDefaultFieldValue } from "./utils";
 
-function TextField({ field, definition }: IField<ITextField>) {
-  useDefaultFieldValue({ field, definition });
-  const label = parseIStr(definition.label ?? titleCaseWord(field));
+function TextField({ definition, ...fieldKeys }: IField<ITextField>) {
+  useDefaultFieldValue({ definition, ...fieldKeys });
+  const label = parseIStr(definition.label ?? titleCaseWord(fieldKeys.field));
   const tooltip = parseIStr(definition.tooltip ?? "");
   const defaultText = parseIStr(definition.default ?? "");
-  const [value, setValue] = useState(getMetaField(field) ?? defaultText);
+  const [value, setValue] = useState(getMetaField(fieldKeys) ?? defaultText);
   const isNumber = useMemo(() => !!definition.numberOptions, [definition.numberOptions]);
   const Input = definition.numRows && definition.numRows > 1 ? CFTextarea : CFInput;
 
@@ -26,10 +26,10 @@ function TextField({ field, definition }: IField<ITextField>) {
       const v = event.target.value;
       setValue(v);
       if (!isNumber) {
-        setMetaField(field, v);
+        setMetaField(fieldKeys, v);
       }
     },
-    [isNumber, field, setValue],
+    [isNumber, fieldKeys, setValue],
   );
   const onBlur = useCallback(() => {
     if (definition.numberOptions) {
@@ -46,9 +46,9 @@ function TextField({ field, definition }: IField<ITextField>) {
         number = Math.round(number);
       }
       setValue(number.toString());
-      setMetaField(field, number);
+      setMetaField(fieldKeys, number);
     }
-  }, [field, value, setValue, definition.numberOptions]);
+  }, [fieldKeys, value, setValue, definition.numberOptions]);
 
   return (
     <Input

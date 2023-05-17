@@ -16,12 +16,12 @@ import { CFLabel } from "@/components/CFText";
 import { CFSrollableSelect } from "@/components/CFSelect";
 import { useDefaultFieldValue } from "./utils";
 
-function SelectField({ field, definition }: IField<ISelectField<string>>) {
-  useDefaultFieldValue({ field, definition });
+function SelectField({ definition, ...fieldKeys }: IField<ISelectField<string>>) {
+  useDefaultFieldValue({ definition, ...fieldKeys });
   const userId = userStore.userId;
-  const label = parseIStr(definition.label ?? titleCaseWord(field));
+  const label = parseIStr(definition.label ?? titleCaseWord(fieldKeys.field));
   const tooltip = parseIStr(definition.tooltip ?? "");
-  const [value, setValue] = useState(getMetaField(field) ?? definition.default);
+  const [value, setValue] = useState(getMetaField(fieldKeys) ?? definition.default);
   const [options, setOptions] = useState(definition.values as string[]);
   const onClick = useCallback(() => {
     if (definition.localProperties) {
@@ -63,7 +63,7 @@ function SelectField({ field, definition }: IField<ISelectField<string>>) {
         options={options}
         onOptionClick={(value) => {
           setValue(value);
-          setMetaField(field, value);
+          setMetaField(fieldKeys, value);
         }}
         onClick={onClick}
       />

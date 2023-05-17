@@ -2,30 +2,31 @@ import { useEffect } from "react";
 
 import { isUndefined } from "@carefree0910/core";
 
-import type { IField } from "@/schema/plugins";
+import type { IField, IListProperties } from "@/schema/plugins";
 import type { IFieldDefinition } from "@/schema/fields";
 import { getMetaField, setMetaField } from "@/stores/meta";
 import { parseIStr } from "@/actions/i18n";
 
-export function useDefaultFieldValue({ field, definition }: IField<IFieldDefinition>) {
+export function useDefaultFieldValue({ definition, ...fieldKeys }: IField<IFieldDefinition>) {
   useEffect(() => {
-    if (isUndefined(getMetaField(field))) {
+    if (isUndefined(getMetaField(fieldKeys))) {
       setMetaField(
-        field,
+        fieldKeys,
         definition.type === "text" || definition.type === "image" || definition.type === "color"
           ? parseIStr(definition.default)
           : definition.default,
       );
     }
-  }, [field, definition]);
+  }, [fieldKeys]);
 }
 
 export interface IFieldComponent {
-  field: string;
-  definition: IFieldDefinition;
   gap: number;
+  definition: IFieldDefinition;
+  field: string;
+  listProperties?: IListProperties;
 }
-export function getFieldH({ field, definition, gap }: IFieldComponent): number {
+export function getFieldH({ gap, definition, field }: IFieldComponent): number {
   const defaultH = 42;
 
   // calculate height, in order to place the field in the shortest column (if needed)
@@ -43,9 +44,9 @@ export function getFieldH({ field, definition, gap }: IFieldComponent): number {
   return fieldH;
 }
 
-export function injectDefaultFieldProps({ field, definition, gap }: IFieldComponent): void {
+export function injectDefaultFieldProps({ gap, definition, field }: IFieldComponent): void {
   const props = definition.props ?? {};
   if (isUndefined(props.w)) props.w = "100%";
-  if (isUndefined(props.h)) props.h = `${getFieldH({ field, definition, gap })}px`;
+  if (isUndefined(props.h)) props.h = `${getFieldH({ gap, definition, field })}px`;
   definition.props = props;
 }

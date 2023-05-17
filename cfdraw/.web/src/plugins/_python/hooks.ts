@@ -14,7 +14,7 @@ export function useDefinitionsRequestDataFn(definitions: IDefinitions): () => Di
   return useCallback(() => {
     const data: Dictionary<any> = {};
     Object.keys(definitions).forEach((field) => {
-      data[field] = getMetaField(field);
+      data[field] = getMetaField({ field });
     });
     return data;
   }, [definitions]);

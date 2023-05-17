@@ -72,9 +72,14 @@ export interface ILogoPlugin extends IPlugin {
 
 // specific
 
+export interface IListProperties {
+  listKey: string;
+  listIndex: number;
+}
 export interface IField<T extends IFieldDefinition> {
   field: string;
   definition: T;
+  listProperties?: IListProperties;
 }
 
 // factory

@@ -9,11 +9,11 @@ import { parseIStr } from "@/actions/i18n";
 import CFSwitch from "@/components/CFSwitch";
 import { useDefaultFieldValue } from "./utils";
 
-function BooleanField({ field, definition }: IField<IBooleanField>) {
-  useDefaultFieldValue({ field, definition });
-  const label = parseIStr(definition.label ?? titleCaseWord(field));
+function BooleanField({ definition, ...fieldKeys }: IField<IBooleanField>) {
+  useDefaultFieldValue({ definition, ...fieldKeys });
+  const label = parseIStr(definition.label ?? titleCaseWord(fieldKeys.field));
   const tooltip = parseIStr(definition.tooltip ?? "");
-  const [value, setValue] = useState(getMetaField(field) ?? definition.default);
+  const [value, setValue] = useState(getMetaField(fieldKeys) ?? definition.default);
 
   return (
     <CFSwitch
@@ -21,7 +21,7 @@ function BooleanField({ field, definition }: IField<IBooleanField>) {
       value={value}
       setValue={(value) => {
         setValue(value);
-        setMetaField(field, value);
+        setMetaField(fieldKeys, value);
       }}
       tooltip={tooltip}
       {...definition.props}
