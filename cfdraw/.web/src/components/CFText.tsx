@@ -9,7 +9,7 @@ const CFText = forwardRef(function (props: TextProps, ref) {
 
   return <Text ref={ref} color={textColor} {...props} />;
 });
-export const CFCaption = observer(
+export const CFLabel = observer(
   forwardRef(function ({ label, ...props }: TextProps & { label?: string }, ref) {
     return (
       <>

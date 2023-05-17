@@ -12,7 +12,7 @@ import { runOneTimeSocketHook } from "@/stores/socket";
 import { getMetaField, setMetaField } from "@/stores/meta";
 import { parseIStr } from "@/actions/i18n";
 import CFTooltip from "@/components/CFTooltip";
-import { CFCaption } from "@/components/CFText";
+import { CFLabel } from "@/components/CFText";
 import { CFSrollableSelect } from "@/components/CFSelect";
 import { useDefaultFieldValue } from "./utils";
 
@@ -53,7 +53,7 @@ function SelectField({ field, definition }: IField<ISelectField<string>>) {
   return (
     <Flex w="100%" h="100%" align="center" {...definition.props}>
       <CFTooltip label={tooltip}>
-        <CFCaption label={label} />
+        <CFLabel label={label} />
       </CFTooltip>
       <Box w="8px" />
       <CFSrollableSelect
