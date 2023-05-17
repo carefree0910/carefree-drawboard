@@ -191,6 +191,7 @@ Pivot of the plugin.
     )
     # React fields
     pluginInfo: IPluginInfo = Field(IPluginInfo(), description="Plugin info")
+    chakraProps: Optional[Dict[str, Any]] = Field(None, description="Chakra props")
 
     def to_react(self, type: str, hash: str, identifier: str) -> Dict[str, Any]:
         d = self.dict(exclude={"pluginInfo"})
@@ -209,7 +210,7 @@ Pivot of the plugin.
         node_constraint = d.pop("nodeConstraint")
         node_constraint_rules = d.pop("nodeConstraintRules")
         node_constraint_validator = d.pop("nodeConstraintValidator")
-        chakra_props = {}
+        chakra_props = d.pop("chakraProps", None) or {}
         for field in IChakra.__fields__:
             # `w` and `h` are special fields, should not be included in `chakra_props`
             if field in ["w", "h"]:
