@@ -38,7 +38,9 @@ def inject(self: IFieldsPlugin, data: ISocketRequest) -> ISocketRequest:
             data.extraData["lora_paths"] = lora_paths
         if lora_scales:
             data.extraData["lora_scales"] = lora_scales
-    self.extra_responses["lora_scales"] = data.extraData["lora_scales"]
+    lora_scales = data.extraData.get("lora_scales")
+    if lora_scales is not None:
+        self.extra_responses["lora_scales"] = lora_scales
     return data
 
 
