@@ -17,13 +17,9 @@ class APIs:
         OPT["verbose"] = False
         OPT["lazy_load"] = True
 
-        OPT["focus"] = "sd.anime"
-        OPT["verbose"] = True
-        focuses = ["txt2img.sd"]
-
         http_client = HttpClient()
         clients = dict(http=http_client, triton=None)
-        self.algorithms = {k: v(clients) for k, v in algorithms.items() if k in focuses}
+        self.algorithms = {k: v(clients) for k, v in algorithms.items()}
         http_client.start()
         for v in self.algorithms.values():
             v.initialize()
