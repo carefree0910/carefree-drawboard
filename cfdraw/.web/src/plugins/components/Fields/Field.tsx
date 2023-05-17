@@ -1,10 +1,8 @@
-import { isUndefined } from "@carefree0910/core";
-
 import TextField from "./TextField";
 import NumberField from "./NumberField";
 import SelectField from "./SelectField";
 import BooleanField from "./BooleanField";
-import { IFieldComponent, getFieldH } from "./utils";
+import { IFieldComponent, injectDefaultFieldProps } from "./utils";
 
 export function Field({ field, definition, gap }: IFieldComponent) {
   let Field: any;
@@ -18,9 +16,6 @@ export function Field({ field, definition, gap }: IFieldComponent) {
     Field = BooleanField;
   }
   if (!Field) return null;
-  const props = definition.props ?? {};
-  if (isUndefined(props.w)) props.w = "100%";
-  if (isUndefined(props.h)) props.h = `${getFieldH({ field, definition, gap })}px`;
-  definition.props = props;
+  injectDefaultFieldProps({ field, definition, gap });
   return <Field field={field} definition={definition} />;
 }

@@ -42,3 +42,10 @@ export function getFieldH({ field, definition, gap }: IFieldComponent): number {
   }
   return fieldH;
 }
+
+export function injectDefaultFieldProps({ field, definition, gap }: IFieldComponent): void {
+  const props = definition.props ?? {};
+  if (isUndefined(props.w)) props.w = "100%";
+  if (isUndefined(props.h)) props.h = `${getFieldH({ field, definition, gap })}px`;
+  definition.props = props;
+}
