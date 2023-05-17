@@ -1,4 +1,3 @@
-import sys
 import asyncio
 import threading
 
@@ -6,16 +5,13 @@ from typing import Any
 from typing import TypeVar
 from typing import Callable
 from typing import Coroutine
+from cftool.misc import get_err_msg
 from cftool.misc import print_error
 from cftool.misc import print_warning
 from concurrent.futures import ThreadPoolExecutor
 
 
 TFutureResponse = TypeVar("TFutureResponse")
-
-
-def get_err_msg(err: Exception) -> str:
-    return " | ".join(map(repr, sys.exc_info()[:2] + (str(err),)))
 
 
 def deprecated(message: str) -> Callable[[type], type]:

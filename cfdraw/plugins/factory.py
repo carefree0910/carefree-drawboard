@@ -1,9 +1,8 @@
-from typing import Dict
 from typing import Type
 from typing import Callable
 from typing import NamedTuple
+from cftool.data_structures import Types
 
-from cfdraw.utils.data_structures import Types
 from cfdraw.schema.plugins import IPlugin
 from cfdraw.schema.plugins import IPluginSettings
 from cfdraw.schema.plugins import IPluginGroupInfo

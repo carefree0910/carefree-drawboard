@@ -4,6 +4,7 @@ import logging
 
 from fastapi import WebSocket
 from fastapi import WebSocketDisconnect
+from cftool.misc import get_err_msg
 from cftool.misc import print_error
 from starlette.websockets import WebSocketState
 
@@ -11,7 +12,6 @@ from cfdraw import constants
 from cfdraw.app.schema import IApp
 from cfdraw.app.schema import IRequestQueueData
 from cfdraw.utils.misc import offload
-from cfdraw.utils.misc import get_err_msg
 from cfdraw.schema.plugins import ElapsedTimes
 from cfdraw.schema.plugins import ISocketRequest
 from cfdraw.schema.plugins import ISocketMessage

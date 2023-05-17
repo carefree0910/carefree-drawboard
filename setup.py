@@ -23,7 +23,7 @@ setup(
         "websockets",
         "watchdog",
         "python-multipart",
-        "carefree-toolkit>=0.3.4",
+        "carefree-toolkit>=0.3.5",
         "pillow",
         "aiohttp",
         "charset-normalizer==2.1.0",
