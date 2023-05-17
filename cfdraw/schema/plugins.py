@@ -597,19 +597,6 @@ class IPluginGroupInfo(IPluginInfo):
     plugins: Dict[str, Type[IPlugin]] = Field(..., description="Plugins in the group")
 
 
-## deprecated
-
-
-@deprecated("please use `ITextAreaPluginInfo` instead")
-class IHttpTextAreaPluginInfo(ITextAreaPluginInfo):
-    pass
-
-
-@deprecated("please use `IQAPluginInfo` instead")
-class IHttpQAPluginInfo(IQAPluginInfo):
-    pass
-
-
 __all__ = [
     "ISend",
     "PluginType",
@@ -636,7 +623,4 @@ __all__ = [
     "IQAPluginInfo",
     "IChatPluginInfo",
     "IPluginGroupInfo",
-    # deprecated
-    "IHttpTextAreaPluginInfo",
-    "IHttpQAPluginInfo",
 ]

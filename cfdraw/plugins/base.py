@@ -128,29 +128,6 @@ class IPluginGroup(ISocketPlugin):
         return
 
 
-## deprecated
-
-
-@deprecated("please use `ISocketPlugin` instead")
-class IHttpPlugin(ISocketPlugin, metaclass=ABCMeta):
-    pass
-
-
-@deprecated("please use `ITextAreaPlugin` instead")
-class IHttpTextAreaPlugin(ITextAreaPlugin):
-    pass
-
-
-@deprecated("please use `IQAPlugin` instead")
-class IHttpQAPlugin(IQAPlugin):
-    pass
-
-
-@deprecated("please use `IFieldsPlugin` instead")
-class IHttpFieldsPlugin(IFieldsPlugin):
-    pass
-
-
 __all__ = [
     "ISocketPlugin",
     "IInternalSocketPlugin",
@@ -159,9 +136,4 @@ __all__ = [
     "IQAPlugin",
     "IChatPlugin",
     "IPluginGroup",
-    # deprecated
-    "IHttpPlugin",
-    "IHttpTextAreaPlugin",
-    "IHttpQAPlugin",
-    "IHttpFieldsPlugin",
 ]
