@@ -8,11 +8,11 @@ interface ICFInput extends InputProps {
   tooltip?: string;
 }
 function CFInput({ tooltip, ...props }: ICFInput) {
-  const { textColor } = themeStore.styles;
+  const { textColor, captionColor } = themeStore.styles;
 
   return (
     <CFTooltip label={tooltip}>
-      <Input color={textColor} flexShrink={0} {...props} />
+      <Input color={textColor} _placeholder={{ color: captionColor }} flexShrink={0} {...props} />
     </CFTooltip>
   );
 }

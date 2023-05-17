@@ -8,11 +8,11 @@ interface ICFTextarea extends TextareaProps {
   tooltip?: string;
 }
 function CFTextarea({ tooltip, ...props }: ICFTextarea) {
-  const { textColor } = themeStore.styles;
+  const { textColor, captionColor } = themeStore.styles;
 
   return (
     <CFTooltip label={tooltip}>
-      <Textarea color={textColor} {...props} />
+      <Textarea color={textColor} _placeholder={{ color: captionColor }} {...props} />
     </CFTooltip>
   );
 }
