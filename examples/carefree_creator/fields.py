@@ -1,4 +1,5 @@
 from cfdraw import *
+from pathlib import Path
 from collections import OrderedDict
 from cfcreator.common import SDSamplers
 from cflearn.api.cv.diffusion import SDVersions
@@ -13,7 +14,7 @@ text = ITextField(
         zh="提示词",
         en="Prompt",
     ),
-    numRows=3,
+    numRows=2,
     tooltip=I18N(
         zh="想要生成的图片的描述",
         en="The description of the image",
@@ -106,6 +107,14 @@ use_highres = IBooleanField(
         en="Generate images with 2x width & height",
     ),
 )
+lora_field = ISelectLocalField(
+    label="LoRA",
+    path=str(Path(__file__).parent / "lora"),
+    noExt=True,
+    onlyFiles=True,
+    regex=".*\\.safetensors",
+    defaultPlaceholder="None",
+)
 # txt2img
 txt2img_fields = OrderedDict(
     w=INumberField(
@@ -141,12 +150,13 @@ txt2img_fields = OrderedDict(
     text=text,
     version=version,
     sampler=sampler,
-    num_steps=num_steps,
     negative_prompt=negative_prompt,
+    num_steps=num_steps,
     guidance_scale=guidance_scale,
-    seed=seed,
     use_circular=use_circular,
     use_highres=use_highres,
+    seed=seed,
+    lora=lora_field,
 )
 # sd_inpainting / sd_outpainting fields
 sd_inpainting_fields = OrderedDict(
@@ -173,19 +183,20 @@ fidelity = INumberField(
         en="How similar the generated image should be to the input image",
     ),
 )
-img2img_negative_prompt = negative_prompt.copy()
-img2img_negative_prompt.numRows = 3
+img2img_prompt = text.copy()
+img2img_prompt.numRows = 3
 img2img_fields = OrderedDict(
-    text=text,
+    text=img2img_prompt,
     fidelity=fidelity,
     version=version,
     sampler=sampler,
-    negative_prompt=img2img_negative_prompt,
+    negative_prompt=negative_prompt,
     num_steps=num_steps,
     guidance_scale=guidance_scale,
-    seed=seed,
     use_circular=use_circular,
     use_highres=use_highres,
+    seed=seed,
+    lora=lora_field,
 )
 # super resolution fields
 sr_fields = OrderedDict(
@@ -226,6 +237,7 @@ variation_fields = OrderedDict(fidelity=img2img_fields["fidelity"])
 __all__ = [
     "common_styles",
     "common_group_styles",
+    "lora_field",
     "txt2img_fields",
     "img2img_fields",
     "sr_fields",

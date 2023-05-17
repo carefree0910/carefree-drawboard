@@ -1,5 +1,6 @@
 from PIL import Image
 from typing import List
+from pathlib import Path
 from cftool.misc import shallow_copy_dict
 from cfcreator.common import VariationModel
 from cflearn.misc.toolkit import new_seed
@@ -11,9 +12,18 @@ from utils import *
 from fields import *
 
 
-def inject_seed(self: IFieldsPlugin, data: ISocketRequest) -> ISocketRequest:
+def inject(self: IFieldsPlugin, data: ISocketRequest) -> ISocketRequest:
     if data.extraData["seed"] == -1:
         data.extraData["seed"] = new_seed()
+    if data.extraData["lora"] != lora_field.defaultPlaceholder:
+        lora_name = data.extraData.pop("lora")
+        folder = Path(lora_field.path)
+        if folder.is_dir():
+            for path in folder.iterdir():
+                if path.stem == lora_name:
+                    data.extraData["lora_paths"] = [str(path)]
+                    data.extraData.setdefault("lora_scales", {lora_name: 1.0})
+                    break
     self.extra_responses["seed"] = data.extraData["seed"]
     return data
 
@@ -73,7 +83,7 @@ class Txt2Img(CarefreeCreatorPlugin):
         def callback(step: int, num_steps: int) -> bool:
             return self.send_progress(step / num_steps)
 
-        kw = inject_seed(self, data).extraData
+        kw = inject(self, data).extraData
         model = Txt2ImgSDModel(**kw)
         if kw["use_highres"]:
             model.highres_info = HighresModel()
@@ -105,7 +115,7 @@ class Img2Img(CarefreeCreatorPlugin):
             return self.send_progress(step / num_steps)
 
         url = data.nodeData.src
-        kw = dict(url=url, **inject_seed(self, data).extraData)
+        kw = dict(url=url, **inject(self, data).extraData)
         model = Img2ImgSDModel(**kw)
         if kw["use_highres"]:
             model.highres_info = HighresModel()
@@ -251,7 +261,7 @@ class SDInpainting(CarefreeCreatorPlugin):
 
         url = self.filter(data.nodeDataList, SingleNodeType.IMAGE)[0].src
         mask_url = self.filter(data.nodeDataList, SingleNodeType.PATH)[0].src
-        kw = inject_seed(self, data).extraData
+        kw = inject(self, data).extraData
         self.extra_responses.update(url=url, mask_url=mask_url)
         model = Txt2ImgSDInpaintingModel(url=url, mask_url=mask_url, **kw)
         return await get_apis().sd_inpainting(model, step_callback=callback)
@@ -282,7 +292,7 @@ class SDOutpainting(CarefreeCreatorPlugin):
             return self.send_progress(step / num_steps)
 
         url = data.nodeData.src
-        kw = inject_seed(self, data).extraData
+        kw = inject(self, data).extraData
         self.extra_responses.update(url=url)
         model = Txt2ImgSDOutpaintingModel(url=url, **kw)
         return await get_apis().sd_outpainting(model, step_callback=callback)
