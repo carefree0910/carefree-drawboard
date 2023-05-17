@@ -24,7 +24,7 @@ def inject(self: IFieldsPlugin, data: ISocketRequest) -> ISocketRequest:
     lora_placeholder = lora_definition["model"].defaultPlaceholder
     if lora and lora_folder.is_dir():
         lora_paths = []
-        lora_scales = data.extraData.setdefault("lora_scales", {})
+        lora_scales = {}
         for lora_item in lora:
             lora_name = lora_item["model"]
             if lora_name == lora_placeholder:
@@ -36,6 +36,8 @@ def inject(self: IFieldsPlugin, data: ISocketRequest) -> ISocketRequest:
                     break
         if lora_paths:
             data.extraData["lora_paths"] = lora_paths
+        if lora_scales:
+            data.extraData["lora_scales"] = lora_scales
     self.extra_responses["lora_scales"] = data.extraData["lora_scales"]
     return data
 
