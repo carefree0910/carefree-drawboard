@@ -6,6 +6,8 @@ export function makeVisiblilityTransition(second: number) {
 }
 export const VISIBILITY_TRANSITION = makeVisiblilityTransition(0.3);
 export const BG_TRANSITION = "background-color 0.3s ease-in-out";
+const expand_cubic_bezier = ".3s cubic-bezier(.08,.52,.52,1)";
+export const EXPAND_TRANSITION = `height ${expand_cubic_bezier}, transform ${expand_cubic_bezier}, margin-top ${expand_cubic_bezier}`;
 
 export const DEFAULT_PLUGIN_SETTINGS = {
   iconW: 48,

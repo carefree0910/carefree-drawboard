@@ -142,11 +142,12 @@ class IColorField(IBaseField):
 
 
 class IListField(IBaseField):
-    item: "IFieldDefinition" = Field(..., description="The item of the field")
+    item: Dict[str, "IFieldDefinition"] = Field(..., description="Definitions")
     default: List[Any] = Field(
         default_factory=lambda: [],
         description="The default items of the field",
     )
+    maxNumRows: Optional[int] = Field(None, description="Maximum number of rows")
     type: FieldType = Field(FieldType.LIST, description="Type", const=True)
 
 

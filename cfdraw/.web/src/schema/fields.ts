@@ -57,8 +57,9 @@ export interface IColorField extends IBaseFields {
 }
 export interface IListField extends IBaseFields {
   type: "list";
-  item: IFieldDefinition;
+  item: IDefinitions;
   default: any[];
+  maxNumRows?: number;
 }
 export interface IObjectField extends IBaseFields {
   type: "object";

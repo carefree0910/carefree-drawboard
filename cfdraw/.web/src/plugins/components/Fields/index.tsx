@@ -6,6 +6,7 @@ import { argMin, range, shallowCopy } from "@carefree0910/core";
 import type { IDefinitions } from "@/schema/fields";
 import { getFieldH } from "./utils";
 import { Field } from "./Field";
+import ListField from "./ListField";
 
 interface IDefinitionsComponent extends FlexProps {
   definitions: IDefinitions;
@@ -27,8 +28,13 @@ export function Definitions({ definitions, numColumns, rowGap, ...others }: IDef
   const columns: ReactElement[][] = range(0, nc).map(() => []);
   const heights = columns.map(() => 0);
   entries.forEach(([field, definition]) => {
-    const FieldComponent = <Field key={field} field={field} definition={definition} gap={gap} />;
-    const fieldH = getFieldH({ field, definition, gap });
+    let FieldComponent;
+    if (definition.type !== "list") {
+      FieldComponent = <Field key={field} field={field} definition={definition} gap={gap} />;
+    } else {
+      FieldComponent = <ListField key={field} field={field} definition={definition} gap={gap} />;
+    }
+    const fieldH = getFieldH({ gap, definition, field });
     const columnIdx = argMin(heights);
     heights[columnIdx] += fieldH + gap;
     columns[columnIdx].push(FieldComponent);
