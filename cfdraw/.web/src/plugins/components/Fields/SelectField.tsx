@@ -16,8 +16,7 @@ import { CFCaption } from "@/components/CFText";
 import { CFSrollableSelect } from "@/components/CFSelect";
 import { useDefaultFieldValue } from "./utils";
 
-export interface SelectFieldProps extends IField<ISelectField<string>> {}
-function SelectField({ field, definition }: SelectFieldProps) {
+function SelectField({ field, definition }: IField<ISelectField<string>>) {
   useDefaultFieldValue({ field, definition });
   const userId = userStore.userId;
   const label = parseIStr(definition.label ?? titleCaseWord(field));

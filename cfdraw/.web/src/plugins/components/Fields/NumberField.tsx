@@ -12,8 +12,7 @@ import CFSlider from "@/components/CFSlider";
 import TextField from "./TextField";
 import { useDefaultFieldValue } from "./utils";
 
-export interface NumberFieldProps extends IField<INumberField> {}
-function NumberField({ field, definition }: NumberFieldProps) {
+function NumberField({ field, definition }: IField<INumberField>) {
   useDefaultFieldValue({ field, definition });
   const label = parseIStr(definition.label ?? titleCaseWord(field));
   const [value, setValue] = useState(getMetaField(field) ?? definition.default);

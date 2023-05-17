@@ -12,8 +12,7 @@ import CFInput from "@/components/CFInput";
 import CFTextarea from "@/components/CFTextarea";
 import { useDefaultFieldValue } from "./utils";
 
-export interface TextFieldProps extends IField<ITextField> {}
-function TextField({ field, definition }: TextFieldProps) {
+function TextField({ field, definition }: IField<ITextField>) {
   useDefaultFieldValue({ field, definition });
   const label = parseIStr(definition.label ?? titleCaseWord(field));
   const tooltip = parseIStr(definition.tooltip ?? "");

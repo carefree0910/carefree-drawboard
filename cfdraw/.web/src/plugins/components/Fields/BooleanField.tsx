@@ -9,8 +9,7 @@ import { parseIStr } from "@/actions/i18n";
 import CFSwitch from "@/components/CFSwitch";
 import { useDefaultFieldValue } from "./utils";
 
-export interface BooleanFieldProps extends IField<IBooleanField> {}
-function BooleanField({ field, definition }: BooleanFieldProps) {
+function BooleanField({ field, definition }: IField<IBooleanField>) {
   useDefaultFieldValue({ field, definition });
   const label = parseIStr(definition.label ?? titleCaseWord(field));
   const tooltip = parseIStr(definition.tooltip ?? "");
