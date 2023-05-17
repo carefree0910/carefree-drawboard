@@ -1,4 +1,4 @@
-import { Fragment, useState } from "react";
+import { useState } from "react";
 import { observer } from "mobx-react-lite";
 import { Center, Flex, Image, Spacer } from "@chakra-ui/react";
 
