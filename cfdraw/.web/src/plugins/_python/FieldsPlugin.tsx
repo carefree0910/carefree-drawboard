@@ -16,7 +16,7 @@ import { importMeta } from "@/actions/importMeta";
 import CFHeading from "@/components/CFHeading";
 import { drawboardPluginFactory } from "@/plugins/utils/factory";
 import { useClosePanel } from "../components/hooks";
-import { useDefinitions } from "../components/Fields";
+import { Definitions } from "../components/Fields";
 import { useDefinitionsRequestDataFn } from "./hooks";
 import PythonPluginWithSubmit from "./PluginWithSubmit";
 
@@ -58,7 +58,6 @@ const PythonFieldsPlugin = ({ pluginInfo, ...props }: IPythonFieldsPlugin) => {
   );
 
   const header = parseIStr(pluginInfo.header ?? titleCaseWord(pureIdentifier));
-  const Definitions = useDefinitions({ definitions, numColumns: pluginInfo.numColumns });
   return (
     <PythonPluginWithSubmit
       id={id}
@@ -73,7 +72,7 @@ const PythonFieldsPlugin = ({ pluginInfo, ...props }: IPythonFieldsPlugin) => {
         <Spacer />
         <CloseIcon w="12px" cursor="pointer" onClick={emitClose} />
       </Flex>
-      {Definitions}
+      <Definitions definitions={definitions} numColumns={pluginInfo.numColumns} />
     </PythonPluginWithSubmit>
   );
 };

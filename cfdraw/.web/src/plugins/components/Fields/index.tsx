@@ -9,12 +9,12 @@ import NumberField from "./NumberField";
 import SelectField from "./SelectField";
 import BooleanField from "./BooleanField";
 
-interface IUseDefinitions extends FlexProps {
+interface IDefinitionsComponent extends FlexProps {
   definitions: IDefinitions;
   numColumns?: number;
   rowGap?: number;
 }
-export function useDefinitions({ definitions, numColumns, rowGap, ...others }: IUseDefinitions) {
+export function Definitions({ definitions, numColumns, rowGap, ...others }: IDefinitionsComponent) {
   const nc = numColumns ?? 1;
   const gap = rowGap ?? 12;
   const defaultH = 42;
