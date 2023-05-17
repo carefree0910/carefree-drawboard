@@ -46,7 +46,7 @@ class ISocketPlugin(IPlugin, metaclass=ABCMeta):
     def hash_identifier(self, identifier: str) -> str:
         return f"{identifier}.{self.hash}"
 
-    def to_plugin_settings(self) -> Dict[str, Any]:
+    def to_react(self) -> Dict[str, Any]:
         d = self.settings.dict(exclude={"pluginInfo"})
         pI = self.settings.pluginInfo
         kw = dict(exclude={"plugins"}) if isinstance(pI, IPluginGroupInfo) else {}
@@ -58,7 +58,7 @@ class ISocketPlugin(IPlugin, metaclass=ABCMeta):
                 p_base.hash = self.hash
                 p = p_base()
                 p.identifier = identifier
-                plugins.append(p.to_plugin_settings())
+                plugins.append(p.to_react())
             plugin_info["plugins"] = plugins
         node_constraint = d.pop("nodeConstraint")
         node_constraint_rules = d.pop("nodeConstraintRules")

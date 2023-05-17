@@ -14,7 +14,7 @@ class SyncSocketPlugin(IInternalSocketPlugin):
             data.hash,
             dict(
                 pluginSettings=[
-                    plugin_type().to_plugin_settings()
+                    plugin_type().to_react()
                     for plugin_type in PluginFactory.plugins.values()
                     if not plugin_type._in_group
                 ],

@@ -406,7 +406,7 @@ class IPlugin(ABC):
         pass
 
     @abstractmethod
-    def to_plugin_settings(self) -> Dict[str, Any]:
+    def to_react(self) -> Dict[str, Any]:
         pass
 
     @abstractmethod
