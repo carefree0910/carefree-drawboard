@@ -1,4 +1,4 @@
-import React, { useMemo } from "react";
+import React from "react";
 import { observer } from "mobx-react-lite";
 import {
   Box,
@@ -14,9 +14,6 @@ import {
 } from "@chakra-ui/react";
 import { ChromePicker, ChromePickerProps } from "react-color";
 
-import { getRandomHash } from "@carefree0910/core";
-
-import { themeStore } from "@/stores/theme";
 import CFTooltip, { CFFormLabel } from "./CFTooltip";
 
 interface IColorPicker {
@@ -68,8 +65,6 @@ interface ICFColorPicker extends ChromePickerProps {
   thumbnailProps?: ButtonProps;
 }
 function CFColorPicker({ label, tooltip, formProps, thumbnailProps, ...props }: ICFColorPicker) {
-  const hashId = useMemo(() => getRandomHash().toString(), []);
-
   if (!label) {
     return (
       <CFTooltip label={tooltip}>
@@ -79,12 +74,7 @@ function CFColorPicker({ label, tooltip, formProps, thumbnailProps, ...props }: 
   }
   return (
     <FormControl display="flex" alignItems="center" {...formProps?.control}>
-      <CFFormLabel
-        label={label}
-        tooltip={{ label: tooltip }}
-        {...formProps?.label}
-        htmlFor={hashId}
-      />
+      <CFFormLabel label={label} tooltip={{ label: tooltip }} {...formProps?.label} />
       <Spacer />
       <ColorPicker pickerProps={props} thumbnailProps={thumbnailProps} />
     </FormControl>
