@@ -68,7 +68,9 @@ function CFColorPicker({ label, tooltip, formProps, thumbnailProps, ...props }: 
   if (!label) {
     return (
       <CFTooltip label={tooltip}>
-        <ColorPicker pickerProps={props} thumbnailProps={thumbnailProps} />
+        <Box>
+          <ColorPicker pickerProps={props} thumbnailProps={thumbnailProps} />
+        </Box>
       </CFTooltip>
     );
   }
