@@ -9,6 +9,7 @@ import { usePluginIds, usePluginNeedRender } from "@/stores/pluginsInfo";
 import { useSocketPython } from "@/hooks/usePython";
 import { drawboardPluginFactory } from "@/plugins/utils/factory";
 import Render from "@/plugins/components/Render";
+import { checkHasConstraint } from "../utils/renderFilters";
 import { socketFinishedEvent } from "./PluginWithSubmit";
 import { useOnMessage } from "./hooks";
 
@@ -41,6 +42,7 @@ const PythonTextAreaPlugin = ({ pluginInfo, ...props }: IPythonTextAreaPlugin) =
     [setValue],
   );
   const onMessage = useOnMessage({ id, pluginInfo, onFinished });
+  const hasConstraint = checkHasConstraint(props);
 
   useSocketPython({
     hash,
@@ -51,6 +53,7 @@ const PythonTextAreaPlugin = ({ pluginInfo, ...props }: IPythonTextAreaPlugin) =
     retryInterval,
     updateInterval,
     onMessage,
+    needExportNodeData: hasConstraint,
   });
 
   return (

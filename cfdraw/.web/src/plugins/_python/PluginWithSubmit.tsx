@@ -99,6 +99,7 @@ function PythonPluginWithSubmit({
     onMessage,
     onSocketError,
     getExtraRequestData,
+    needExportNodeData: hasConstraint,
   });
 
   useEffect(() => {

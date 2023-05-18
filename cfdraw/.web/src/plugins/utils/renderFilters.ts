@@ -71,6 +71,7 @@ function checkValidator(validator?: string, info?: IResponse): Promise<boolean> 
       nodes: info?.nodes ?? [],
       identifier: "node_validator",
       opt: { noExport: true },
+      needExportNodeData: true,
     }).then((data) => ({
       ...data,
       hash,

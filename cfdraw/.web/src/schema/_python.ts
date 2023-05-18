@@ -22,6 +22,7 @@ interface IPythonCallbacks {
 }
 export interface IUsePythonInfo extends IPythonPluginInfo, IPythonCallbacks {
   isInvisible: boolean;
+  needExportNodeData: boolean;
 }
 export interface INodeData {
   type?: INode["type"];

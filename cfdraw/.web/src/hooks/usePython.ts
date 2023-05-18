@@ -103,6 +103,7 @@ export async function getPythonRequest({
   identifier,
   getExtraRequestData,
   opt = {},
+  needExportNodeData,
 }: Omit<IUsePythonInfo, "isInvisible"> & {
   opt?: IGetPythonRequest;
 }): Promise<Omit<IPythonSocketRequest, "hash">> {
@@ -116,8 +117,9 @@ export async function getPythonRequest({
         : nodes[argMax(nodes.map((n) => n.bbox.area))].bbox;
   }
   const getNodeDataOpt: IGetNodeData = { exportBox, ...opt };
-  const nodeData = await getNodeData(node, getNodeDataOpt);
-  const nodeDataList = nodes.length <= 1 ? [] : await getNodeDataList(nodes, getNodeDataOpt);
+  const nodeData = needExportNodeData ? await getNodeData(node, getNodeDataOpt) : {};
+  const nodeDataList =
+    !needExportNodeData || nodes.length <= 1 ? [] : await getNodeDataList(nodes, getNodeDataOpt);
   return {
     userId: userStore.userId,
     baseURL: getBaseURL(),
@@ -144,6 +146,7 @@ export function useSocketPython<R>({
   getExtraRequestData,
   onMessage,
   onSocketError,
+  needExportNodeData,
 }: IUseSocketPython<R>) {
   const deps = [
     hash,
@@ -163,6 +166,7 @@ export function useSocketPython<R>({
         nodes,
         identifier,
         getExtraRequestData,
+        needExportNodeData,
       }).then((req) => ({ hash: hash!, ...req })),
     [deps],
   );
