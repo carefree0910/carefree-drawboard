@@ -14,7 +14,11 @@ import { isUndefined } from "@carefree0910/core";
 import { langStore, translate } from "@carefree0910/business";
 
 import type { IFloating } from "@/schema/plugins";
-import { BG_TRANSITION, DEFAULT_PLUGIN_SETTINGS, VISIBILITY_TRANSITION } from "@/utils/constants";
+import {
+  BG_TRANSITION,
+  DEFAULT_PLUGIN_SETTINGS,
+  makeVisibilityTransitionProps,
+} from "@/utils/constants";
 import { UI_Words } from "@/lang/ui";
 import { themeStore, useScrollBarSx } from "@/stores/theme";
 import {
@@ -185,9 +189,10 @@ const Floating = forwardRef(function (
           }
           onFloatingButtonClick?.();
         }}
-        opacity={isInvisible ? 0 : 1}
-        visibility={isInvisible ? "hidden" : "visible"}
-        transition={`${VISIBILITY_TRANSITION}, ${BG_TRANSITION}`}
+        {...makeVisibilityTransitionProps({
+          visible: !isInvisible,
+          extraTransitions: BG_TRANSITION,
+        })}
         _focus={{ outline: "none" }}
         {...getCommonProps(false)}
         {...props}
@@ -226,9 +231,7 @@ const Floating = forwardRef(function (
             h={`${h}px`}
             overflowX="hidden"
             direction="column"
-            opacity={expand ? 1 : 0}
-            visibility={expand ? "visible" : "hidden"}
-            transition={VISIBILITY_TRANSITION}
+            {...makeVisibilityTransitionProps({ visible: expand })}
             {...getCommonProps(true)}
             bg={expandBg}
             sx={useScrollBarSx()}

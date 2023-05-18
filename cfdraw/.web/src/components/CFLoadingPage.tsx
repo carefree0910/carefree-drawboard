@@ -5,7 +5,7 @@ import { Center, Flex, Spacer } from "@chakra-ui/react";
 import { useIsReady } from "@carefree0910/business";
 
 import loadingPage from "@/assets/loading-page.json";
-import { makeVisiblilityTransition } from "@/utils/constants";
+import { makeVisibilityTransitionProps } from "@/utils/constants";
 import { useSettingsSynced } from "@/stores/settings";
 import { themeStore } from "@/stores/theme";
 import { useIsAllReady } from "@/hooks/useSetup";
@@ -28,9 +28,7 @@ const CFLoadingPage: React.FC<PropsWithChildren> = ({ children }) => {
           position="absolute"
           direction="column"
           alignContent="center"
-          opacity={isReady ? 0 : 1}
-          visibility={isReady ? "hidden" : "visible"}
-          transition={makeVisiblilityTransition(0.5)}>
+          {...makeVisibilityTransitionProps({ visible: !isReady, second: 0.5 })}>
           <Spacer />
           <Center>
             <CFLottie hide={!isSynced} animationData={loadingPage} />

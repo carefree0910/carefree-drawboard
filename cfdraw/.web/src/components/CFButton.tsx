@@ -4,7 +4,7 @@ import { Box, Button, ButtonProps, Image, ImageProps } from "@chakra-ui/react";
 
 import iconLoading from "@/assets/icon-loading.json";
 import { Event } from "@/utils/event";
-import { VISIBILITY_TRANSITION } from "@/utils/constants";
+import { makeVisibilityTransitionProps } from "@/utils/constants";
 import { themeStore } from "@/stores/theme";
 import { settingsStore } from "@/stores/settings";
 import CFLottie from "./CFLottie";
@@ -63,10 +63,12 @@ export const CFIconButton = observer<ICFIconButton>(
             w="100%"
             h="100%"
             draggable={false}
-            visibility={iconLoaded ? "visible" : "hidden"}
-            transition={VISIBILITY_TRANSITION}
             onLoad={onIconLoaded}
             {...imageProps}
+            {...makeVisibilityTransitionProps({
+              visible: iconLoaded,
+              opacity: imageProps?.opacity,
+            })}
           />
           {children}
           <CFLottie
