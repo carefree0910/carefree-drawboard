@@ -93,18 +93,18 @@ const Floating = forwardRef(function (
       p: isExpand ? "12px" : "8px",
       bg: `${isBusy ? busyColor : panelBg}${bgOpacityHex}`,
       position: "absolute",
-      // boxShadow: "2px 2px 4px rgba(0, 0, 0, 0.25)",
       borderRadius: "4px",
       /**
        * if
        *   1. `interactingWithBoard` is `true`
-       * or this floating belongs to a group, and:
-       *   2. we are focusing on the plugin button (isExpand=false) and the group is not expanded
-       *   3. we are focusing on the expanded panel (isExpand=true) but the floating is not expanded
+       *   2. we are focusing on the expanded panel (isExpand=true) but the floating is not expanded
+       *   3. we are focusing on the plugin icon (isExpand=false), but the icon is not activated
        * then this floating should not be interactive
        */
       pointerEvents:
-        interactingWithBoard || (!iconActivated && (!isExpand || !expand)) ? "none" : "auto",
+        interactingWithBoard || (isExpand && !expand) || (!isExpand && !iconActivated)
+          ? "none"
+          : "auto",
     }),
     [panelBg, busyColor, bgOpacityHex, expand, isBusy, iconActivated, interactingWithBoard],
   );
