@@ -19,6 +19,7 @@ import { parseIStr } from "@/actions/i18n";
 import { CFButtonWithBusyTooltip } from "@/components/CFButton";
 import CFDivider from "@/components/CFDivider";
 import Render from "../components/Render";
+import { checkHasConstraint } from "../utils/renderFilters";
 import { useCurrentMeta, useOnMessage } from "./hooks";
 
 export const socketFinishedEvent = new Event<{ id: string }>();
@@ -49,7 +50,8 @@ function PythonPluginWithSubmit({
   const [hash, setHash] = useState<string | undefined>(undefined);
   const [busy, setBusy] = useState(false);
   const taskCache = usePluginTaskCache(id);
-  const currentMeta = useCurrentMeta(node, nodes);
+  const hasConstraint = checkHasConstraint(props);
+  const currentMeta = hasConstraint ? useCurrentMeta(node, nodes) : undefined;
   const onClick = useCallback(() => {
     if (busy) return;
     beforeSubmit?.();
