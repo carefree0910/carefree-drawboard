@@ -23,7 +23,7 @@ function SelectField({ definition, ...fieldKeys }: IField<ISelectField<string>>)
   const tooltip = parseIStr(definition.tooltip ?? "");
   const [value, setValue] = useState(getMetaField(fieldKeys) ?? definition.default);
   const [options, setOptions] = useState(definition.values as string[]);
-  const onClick = useCallback(() => {
+  const onMenuOpen = useCallback(() => {
     if (definition.localProperties) {
       const extraData = definition.localProperties;
       const hash = getHash(JSON.stringify(extraData)).toString();
@@ -50,22 +50,27 @@ function SelectField({ definition, ...fieldKeys }: IField<ISelectField<string>>)
     }
   }, [definition.localProperties]);
 
+  const selected = { value, label: value };
+  const selectOptions = options.map((value) => ({ value, label: value }));
+
   return (
     <Flex w="100%" h="100%" align="center" {...definition.props}>
       <CFTooltip label={tooltip}>
         <CFLabel label={label} />
       </CFTooltip>
       <Box w="8px" />
-      <CFSrollableSelect
-        flex={1}
-        h="100%"
-        value={value}
-        options={options}
-        onOptionClick={(value) => {
-          setValue(value);
-          setMetaField(fieldKeys, value);
+      <CFSrollableSelect<string, false>
+        height="40px"
+        boxProps={{ flex: 1 }}
+        value={selected}
+        options={selectOptions}
+        onMenuOpen={onMenuOpen}
+        onChange={(e) => {
+          if (!!e) {
+            setValue(e.value);
+            setMetaField(fieldKeys, e.value);
+          }
         }}
-        onClick={onClick}
       />
     </Flex>
   );

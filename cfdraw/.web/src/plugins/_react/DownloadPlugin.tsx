@@ -35,9 +35,9 @@ const DownloadPlugin = ({ pluginInfo, ...props }: IPlugin) => {
     return `${imgWH.w} x ${imgWH.h}`;
   }, [type, lang, w, h, imgWH, keepOriginal]);
   const getWord = useCallback(
-    (keepOriginal: string) =>
+    (keepOriginal: boolean) =>
       translate(
-        keepOriginal === "true"
+        keepOriginal
           ? Download_Words["download-image-size-original"]
           : Download_Words["download-image-size-drawboard"],
         lang,
@@ -49,6 +49,18 @@ const DownloadPlugin = ({ pluginInfo, ...props }: IPlugin) => {
     downloadNodes(nodes, format, keepOriginal);
     closePanel();
   }, [nodes, format, keepOriginal, closePanel]);
+
+  const selectedDownloadFormat = { value: format, label: format };
+  const downloadFormatOptions = allDownloadFormat.map((format) => ({
+    value: format,
+    label: format,
+  }));
+
+  const selectedKeepOriginal = { value: keepOriginal, label: getWord(keepOriginal) };
+  const keepOriginalOptions = [true, false].map((keepOriginal) => ({
+    value: keepOriginal,
+    label: getWord(keepOriginal),
+  }));
 
   if (!nodes) return null;
 
@@ -62,17 +74,24 @@ const DownloadPlugin = ({ pluginInfo, ...props }: IPlugin) => {
           </CFText>
         </Flex>
         <CFDivider />
-        <CFSrollableSelect
-          value={format}
-          options={allDownloadFormat as any}
-          onOptionClick={(option) => setFormat(option as DownloadFormat)}
+        <CFSrollableSelect<DownloadFormat, false>
+          value={selectedDownloadFormat}
+          options={downloadFormatOptions}
+          onChange={(e) => {
+            if (!!e) {
+              setFormat(e.value);
+            }
+          }}
         />
-        <CFSelect
-          mt="4px"
-          value={keepOriginal ? "true" : "false"}
-          options={["true", "false"]}
-          optionConverter={getWord}
-          onOptionClick={(option) => setKeepOriginal(option === "true")}
+        <CFSelect<boolean, false>
+          boxProps={{ mt: "10px" }}
+          value={selectedKeepOriginal}
+          options={keepOriginalOptions}
+          onChange={(e) => {
+            if (!!e) {
+              setKeepOriginal(e.value);
+            }
+          }}
         />
         <Flex mt="8px" pr="6px">
           <Spacer />

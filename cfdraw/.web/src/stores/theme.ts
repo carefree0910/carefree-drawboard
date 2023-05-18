@@ -18,11 +18,6 @@ export type ThemeStyles = {
   dividerColor: string;
   // colors of the `CFSelect` component
   selectColors: {
-    color: string;
-    bgColor: string;
-    hoverBgColor: string;
-    checkedColor: string;
-    hoverBorderColor: string;
     activeBorderColor: string;
   };
   // colors of the `CFSlider` component
@@ -65,12 +60,7 @@ export const allThemes: Record<ThemeType, ThemeStyles> = {
     captionColor: "#888888",
     dividerColor: "#cccccc",
     selectColors: {
-      color: "#333333",
-      bgColor: "#f0f0f0",
-      hoverBgColor: "#f9f9f9",
-      checkedColor: "#3ad822",
-      hoverBorderColor: "#bbbbbb",
-      activeBorderColor: "#999999",
+      activeBorderColor: "#3fc9a8",
     },
     sliderColors: {
       sliderTrackColor: "#3ad822",
@@ -108,12 +98,7 @@ export const allThemes: Record<ThemeType, ThemeStyles> = {
     captionColor: "#888888",
     dividerColor: "#cccccc",
     selectColors: {
-      color: "#333333",
-      bgColor: "#f0f0f0",
-      hoverBgColor: "#f9f9f9",
-      checkedColor: "#3ad822",
-      hoverBorderColor: "#bbbbbb",
-      activeBorderColor: "#999999",
+      activeBorderColor: "#3fc9a8",
     },
     sliderColors: {
       sliderTrackColor: "#3ad822",

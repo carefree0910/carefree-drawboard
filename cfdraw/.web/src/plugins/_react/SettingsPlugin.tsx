@@ -33,11 +33,21 @@ import { CFGlobalScaleSlider } from "@/components/CFSlider";
 import { drawboardPluginFactory } from "../utils/factory";
 import Render from "../components/Render";
 
+interface LangOption {
+  value: Lang;
+  label: string;
+}
 const SettingsPlugin = ({ pluginInfo, ...props }: IPlugin) => {
   const id = useMemo(() => `settings_${getRandomHash()}`, []);
   const lang = langStore.tgt;
   const commonProps = { fontWeight: 400, size: "md" };
   const disablePluginSettings = uiStore.disablePluginSettings;
+
+  const selected = { value: lang, label: langDescriptions[lang] };
+  const options: LangOption[] = Object.keys(langDescriptions).map((lang) => ({
+    value: lang as Lang,
+    label: langDescriptions[lang as Lang],
+  }));
 
   return (
     <Render id={id} {...props}>
@@ -46,12 +56,15 @@ const SettingsPlugin = ({ pluginInfo, ...props }: IPlugin) => {
         <Box mt="12px">
           <CFHeading>语言 / Language</CFHeading>
           <CFDivider />
-          <CFSelect
-            flex={1}
-            value={lang}
-            options={Object.keys(langDescriptions)}
-            optionConverter={(lang: string) => langDescriptions[lang as Lang]}
-            onOptionClick={(lang: string) => switchLangTo(lang as Lang)}
+          <CFSelect<Lang, false>
+            boxProps={{ mt: "16px" }}
+            value={selected}
+            options={options}
+            onChange={(e) => {
+              if (!!e) {
+                switchLangTo(e.value);
+              }
+            }}
           />
         </Box>
         {/* globalScale settings */}
