@@ -4,6 +4,7 @@ import {
   BoxProps,
   Center,
   Flex,
+  Input,
   Menu,
   MenuButton,
   MenuButtonProps,
@@ -87,8 +88,8 @@ function CFSelect<T extends string>({
         }}
         {...props}>
         <Flex>
-          {value ? convertedValue : null}
-          {value ? <Spacer /> : null}
+          {convertedValue}
+          {<Spacer />}
           <Center color={selectColors.color} fontSize="8px" {...iconProps}>
             {icon ?? <CFIcon svg={ArrowDownIcon} className={block()} fillbyCurrentColor />}
           </Center>
