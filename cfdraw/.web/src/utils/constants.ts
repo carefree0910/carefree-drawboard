@@ -1,12 +1,16 @@
 export const IS_PROD = import.meta.env.PROD;
 
 export const BOARD_CONTAINER_ID = "board.container";
+export function makeCubicBezier(second: number) {
+  return `${second}s cubic-bezier(.08,.52,.52,1)`;
+}
 export function makeVisiblilityTransition(second: number) {
-  return `opacity ${second}s cubic-bezier(.08,.52,.52,1), visibility ${second}s cubic-bezier(.08,.52,.52,1)`;
+  const cubic_bezier = makeCubicBezier(second);
+  return `opacity ${cubic_bezier}, visibility ${cubic_bezier}`;
 }
 export const VISIBILITY_TRANSITION = makeVisiblilityTransition(0.3);
 export const BG_TRANSITION = "background-color 0.3s ease-in-out";
-const expand_cubic_bezier = ".3s cubic-bezier(.08,.52,.52,1)";
+const expand_cubic_bezier = makeCubicBezier(0.3);
 export const EXPAND_TRANSITION = `height ${expand_cubic_bezier}, transform ${expand_cubic_bezier}, margin-top ${expand_cubic_bezier}`;
 
 export const DEFAULT_PLUGIN_SETTINGS = {
