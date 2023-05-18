@@ -137,7 +137,7 @@ class IBooleanField(IBaseField):
 
 
 class IColorField(IBaseField):
-    default: IStr = Field("", description="The default value of the field")
+    default: IStr = Field("#ffffff", description="The default value of the field")
     type: FieldType = Field(FieldType.COLOR, description="Type", const=True)
 
 
