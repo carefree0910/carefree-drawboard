@@ -35,11 +35,9 @@ const ColorPicker: React.FC<IColorPicker> = ({ pickerProps, thumbnailProps }) =>
           as="button"
           w="32px"
           h="32px"
-          bg="white"
           position="relative"
           borderWidth="4px"
-          borderColor="#ddd"
-          borderRadius="6px"
+          borderColor="transparent"
           {...thumbnailProps}>
           <Box
             w="100%"
