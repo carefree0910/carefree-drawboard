@@ -75,6 +75,7 @@ function ListField({ definition, gap, ...fieldKeys }: IField<IListField> & { gap
           <Flex w="100%" h="100%" align="center" as="button" onClick={() => setExpanded(!expanded)}>
             <CFIcon
               svg={ArrowDownIcon}
+              squared={false}
               className={block({ e: "icon", m: expanded ? "expanded" : "folded" })}
               fillbyCurrentColor
               transition={EXPAND_TRANSITION}
