@@ -1,8 +1,8 @@
 import { observer } from "mobx-react-lite";
 import { useMemo, ReactElement } from "react";
 import {
-  FlexProps,
   FormControl,
+  FormControlProps,
   FormLabel,
   FormLabelProps,
   Spacer,
@@ -14,7 +14,7 @@ import { getRandomHash } from "@carefree0910/core";
 import { themeStore } from "@/stores/theme";
 import CFTooltip from "./CFTooltip";
 
-interface ICFSwitch extends FlexProps {
+interface ICFSwitch extends FormControlProps {
   label: string;
   value: boolean;
   setValue: (value: boolean) => void;
