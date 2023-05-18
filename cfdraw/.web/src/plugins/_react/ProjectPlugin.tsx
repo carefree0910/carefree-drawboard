@@ -201,12 +201,15 @@ const ProjectPlugin = ({ pluginInfo, ...props }: IPlugin) => {
         {allUid2Name ? (
           allProjectUids.length > 0 ? (
             <Flex w="100%">
-              <CFSrollableSelect
-                flex={1}
-                value={selectedUid}
-                options={allProjectUids}
-                onOptionClick={(uid) => setSelectedUid(uid)}
-                optionConverter={(uid) => allUid2Name[uid]}
+              <CFSrollableSelect<string, false>
+                boxProps={{ flex: 1 }}
+                value={{ value: selectedUid, label: allUid2Name?.[selectedUid] }}
+                options={allProjectUids.map((uid) => ({ value: uid, label: allUid2Name[uid] }))}
+                onChange={(e) => {
+                  if (!!e) {
+                    setSelectedUid(e.value);
+                  }
+                }}
               />
               <Box as="button" w="32px" h="100%" p="4px" mx="4px" onClick={onDeleteProject}>
                 <Image src={DeleteIcon} />
