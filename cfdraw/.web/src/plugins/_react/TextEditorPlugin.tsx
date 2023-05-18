@@ -63,7 +63,6 @@ const TextEditorPlugin = ({ pluginInfo: { node }, ...props }: IPlugin) => {
             color={textParams.color}
             onChange={onChange}
             onChangeComplete={onChangeComplete}
-            disableAlpha
             thumbnailProps={{ ml: "12px" }}
           />
         </Flex>

@@ -51,7 +51,7 @@ const ColorPicker: React.FC<IColorPicker> = ({ pickerProps, thumbnailProps }) =>
       </PopoverTrigger>
       <Portal>
         <PopoverContent w="100%" h="100%">
-          <ChromePicker {...pickerProps} />
+          <ChromePicker disableAlpha {...pickerProps} />
         </PopoverContent>
       </Portal>
     </Popover>
