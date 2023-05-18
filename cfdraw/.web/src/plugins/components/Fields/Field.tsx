@@ -1,4 +1,5 @@
 import TextField from "./TextField";
+import ColorField from "./ColorField";
 import NumberField from "./NumberField";
 import SelectField from "./SelectField";
 import BooleanField from "./BooleanField";
@@ -14,6 +15,8 @@ export function Field({ gap, definition, ...fieldKeys }: IFieldComponent) {
     Field = SelectField;
   } else if (definition.type === "boolean") {
     Field = BooleanField;
+  } else if (definition.type === "color") {
+    Field = ColorField;
   }
   if (!Field) return null;
   injectDefaultFieldProps({ gap, definition, ...fieldKeys });
