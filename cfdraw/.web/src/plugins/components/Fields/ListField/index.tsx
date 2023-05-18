@@ -1,13 +1,14 @@
-import { useState } from "react";
+import { Fragment, useState } from "react";
 import { observer } from "mobx-react-lite";
-import { Center, Flex, Image, Spacer } from "@chakra-ui/react";
+import { Box, Center, Flex, Image, Spacer } from "@chakra-ui/react";
 
-import { Dictionary } from "@carefree0910/core";
+import { Dictionary, getRandomHash } from "@carefree0910/core";
 import { langStore, translate } from "@carefree0910/business";
 
 import type { IField, IListProperties } from "@/schema/plugins";
 import type { IDefinitions, IListField } from "@/schema/fields";
 import "./index.scss";
+import DeleteIcon from "@/assets/icons/delete.svg";
 import { ReactComponent as ArrowDownIcon } from "@/assets/icons/arrow-down.svg";
 import { genBlock } from "@/utils/bem";
 import { titleCaseWord } from "@/utils/misc";
@@ -23,8 +24,9 @@ import CFTooltip from "@/components/CFTooltip";
 import { getFieldH, useDefaultFieldValue } from "../utils";
 import { Field } from "../Field";
 
+const ID_KEY = "^_^__id__^_^";
 function getDefaults(item: IDefinitions): Dictionary<any> {
-  const defaults: Dictionary<any> = {};
+  const defaults: Dictionary<any> = { [ID_KEY]: getRandomHash() };
   for (const [key, value] of Object.entries(item)) {
     defaults[key] = value.default;
   }
@@ -45,7 +47,7 @@ function ListField({ definition, gap, ...fieldKeys }: IField<IListField> & { gap
 
   if (!values) return null;
 
-  const itemRows = Object.keys(definition.item).length;
+  const itemRows = Object.keys(definition.item).length + 1;
   definition.numRows = Math.max(1, Math.min(values.length * itemRows, definition.maxNumRows ?? 4));
   const expandH = getFieldH({ gap, definition, field });
   definition.numRows = 1;
@@ -54,6 +56,11 @@ function ListField({ definition, gap, ...fieldKeys }: IField<IListField> & { gap
 
   const onAdd = () => {
     setMetaField(fieldKeys, [...values, getDefaults(definition.item)]);
+  };
+  const onDelete = (index: number) => {
+    const newValues = [...values];
+    newValues.splice(index, 1);
+    setMetaField(fieldKeys, newValues);
   };
 
   return (
@@ -83,7 +90,7 @@ function ListField({ definition, gap, ...fieldKeys }: IField<IListField> & { gap
       <Flex
         w="100%"
         h={`${expanded ? expandH : 0}px`}
-        mt={`${expanded ? gap : 0}px`}
+        mt={`${expanded ? 6 : 0}px`}
         overflow="hidden"
         direction="column"
         transition={EXPAND_TRANSITION}>
@@ -100,21 +107,41 @@ function ListField({ definition, gap, ...fieldKeys }: IField<IListField> & { gap
             overflowX="hidden"
             overflowY="auto"
             sx={useScrollBarSx()}>
-            {values.map((_, index) => {
+            {values.map((pack, index) => {
+              const keyId = `${field}-${pack[ID_KEY]}`;
+              const isLast = index === values.length - 1;
               const listProperties: IListProperties = { listKey: field, listIndex: index };
               return (
-                <Flex key={`${field}-${index}`} mr="12px" flexShrink={0} direction="column">
-                  {Object.entries(definition.item).map(([key, item]) => (
-                    <Field
-                      key={`${key}-${index}`}
-                      gap={gap}
-                      definition={item}
-                      field={key}
-                      listProperties={listProperties}
-                    />
-                  ))}
-                  {index !== values.length - 1 && <CFDivider my={`${gap}px`} />}
-                </Flex>
+                <Fragment key={`${keyId}-${index}`}>
+                  <Flex mr="12px" flexShrink={0} direction="column">
+                    {Object.entries(definition.item).map(([key, item]) => (
+                      <Field
+                        key={`${keyId}-${key}-${index}`}
+                        gap={gap}
+                        definition={item}
+                        field={key}
+                        listProperties={listProperties}
+                      />
+                    ))}
+                    <Flex h="42px" mt={`${gap}px`}>
+                      <Spacer />
+                      <Box
+                        as="button"
+                        w="32px"
+                        h="100%"
+                        p="4px"
+                        mx="4px"
+                        onClick={() => onDelete(index)}>
+                        <Image src={DeleteIcon} />
+                      </Box>
+                    </Flex>
+                  </Flex>
+                  {!isLast && (
+                    <Box mr="12px">
+                      <CFDivider my={`${gap}px`} />
+                    </Box>
+                  )}
+                </Fragment>
               );
             })}
           </Flex>
