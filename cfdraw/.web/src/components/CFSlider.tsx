@@ -123,7 +123,9 @@ const CFSlider: React.FC<ICFSlider> = ({
   }, [value]);
 
   useUnmount(() => {
-    handleInputBlur(+inputVal);
+    if (value.toString() !== inputVal) {
+      handleInputBlur(+inputVal);
+    }
   });
 
   const {
