@@ -61,7 +61,6 @@ export interface IPythonFieldsPlugin extends IPythonPlugin {
 
 export interface IPythonTextAreaPlugin extends IPythonPlugin {
   pluginInfo: IPythonPluginInfo & {
-    noLoading?: boolean;
     textAlign?: TextareaProps["textAlign"];
   };
 }

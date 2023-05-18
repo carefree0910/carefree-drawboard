@@ -14,8 +14,7 @@ import { socketFinishedEvent } from "./PluginWithSubmit";
 import { useOnMessage } from "./hooks";
 
 const PythonTextAreaPlugin = ({ pluginInfo, ...props }: IPythonTextAreaPlugin) => {
-  const { node, nodes, identifier, retryInterval, updateInterval, noLoading, textAlign } =
-    pluginInfo;
+  const { node, nodes, identifier, retryInterval, updateInterval, textAlign } = pluginInfo;
   const { id } = usePluginIds(`textArea_${identifier}`);
   const needRender = usePluginNeedRender(id);
   const [hash, setHash] = useState<string | undefined>(undefined);
