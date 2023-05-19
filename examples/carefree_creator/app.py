@@ -140,6 +140,8 @@ class Img2Img(CarefreeCreatorPlugin):
 
 
 class SR(CarefreeCreatorPlugin):
+    image_should_audit = False
+
     @property
     def settings(self) -> IPluginSettings:
         return IPluginSettings(
