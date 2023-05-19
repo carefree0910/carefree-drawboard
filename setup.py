@@ -29,6 +29,7 @@ setup(
         "charset-normalizer==2.1.0",
         "aiofiles",
         "regex",
+        "filelock",
     ],
     author="carefree0910",
     author_email="syameimaru.saki@gmail.com",

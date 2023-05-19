@@ -5,6 +5,8 @@ import json
 
 from typing import Any
 from typing import List
+from pathlib import Path
+from filelock import FileLock
 from pydantic import BaseModel
 from cftool.web import raise_err
 from cftool.web import get_responses
@@ -12,6 +14,7 @@ from cftool.misc import get_err_msg
 from cftool.misc import print_warning
 
 from cfdraw import constants
+from cfdraw.config import get_config
 from cfdraw.parsers import noli
 from cfdraw.app.schema import IApp
 from cfdraw.app.endpoints.base import IEndpoint
@@ -38,51 +41,55 @@ class SaveProjectResponse(BaseModel):
     message: str
 
 
+def get_project_folder(userId: str) -> Path:
+    folder = get_config().upload_project_folder / userId
+    if not folder.exists():
+        folder.mkdir(parents=True)
+    return folder
+
+
+def get_meta_lock(userId: str) -> FileLock:
+    return FileLock(get_project_folder(userId) / "maintain_meta.lock")
+
+
+def get_save_project_lock(userId: str) -> FileLock:
+    return FileLock(get_project_folder(userId) / "save_project.lock")
+
+
+def get_delete_project_lock(userId: str) -> FileLock:
+    return FileLock(get_project_folder(userId) / "delete_project.lock")
+
+
 def maintain_meta(app: IApp, userId: str) -> None:
-    upload_project_folder = app.config.upload_project_folder / userId
-    if not upload_project_folder.exists():
-        upload_project_folder.mkdir(parents=True)
-    existing_projects = [
-        path.absolute()
-        for path in upload_project_folder.iterdir()
-        if path.is_file() and path.suffix == suffix
-    ]
-    meta_path = upload_project_folder / constants.PROJECT_META_FILE
-    checked = False
-    if meta_path.is_file():
-        try:
-            with open(meta_path, "r") as f:
-                project_meta = json.load(f)
-            if len(project_meta) == len(existing_projects):
-                checked = True
-            else:
-                print_warning("project meta file is not up-to-date")
-        except Exception as err:
-            print_warning(f"failed to check project meta file: {get_err_msg(err)}")
-    if checked:
-        return
-    project_meta = {}
-    for path in existing_projects:
-        try:
-            with open(path, "r") as f:
-                d = json.load(f)
-            project_meta[d["uid"]] = dict(
-                uid=d["uid"],
-                name=d["name"],
-                createTime=d["createTime"],
-                updateTime=d["updateTime"],
-            )
-        except Exception as err:
-            buggy_folder = upload_project_folder / constants.BUGGY_PROJECT_FOLDER
-            buggy_folder.mkdir(parents=True, exist_ok=True)
-            backup_path = buggy_folder / path.name
-            print_warning(
-                f"failed to load project '{path}', it will be moved to '{backup_path}'"
-                f" ({get_err_msg(err)})"
-            )
-            path.rename(buggy_folder / path.name)
-    with open(meta_path, "w") as f:
-        json.dump(project_meta, f)
+    with get_meta_lock(userId):
+        upload_project_folder = get_project_folder(userId)
+        existing_projects = [
+            path.absolute()
+            for path in upload_project_folder.iterdir()
+            if path.is_file() and path.suffix == suffix
+        ]
+        project_meta = {}
+        for path in existing_projects:
+            try:
+                with open(path, "r") as f:
+                    d = json.load(f)
+                project_meta[d["uid"]] = dict(
+                    uid=d["uid"],
+                    name=d["name"],
+                    createTime=d["createTime"],
+                    updateTime=d["updateTime"],
+                )
+            except Exception as err:
+                buggy_folder = upload_project_folder / constants.BUGGY_PROJECT_FOLDER
+                buggy_folder.mkdir(parents=True, exist_ok=True)
+                backup_path = buggy_folder / path.name
+                print_warning(
+                    f"failed to load project '{path}', it will be moved to '{backup_path}'"
+                    f" ({get_err_msg(err)})"
+                )
+                path.rename(buggy_folder / path.name)
+        with open(upload_project_folder / constants.PROJECT_META_FILE, "w") as f:
+            json.dump(project_meta, f)
 
 
 def maintain_all_meta(app: IApp) -> None:
@@ -94,40 +101,25 @@ def maintain_all_meta(app: IApp) -> None:
 def add_project_managements(app: IApp) -> None:
     @app.api.post("/save_project", responses=get_responses(SaveProjectResponse))
     def save_project(data: ProjectModel) -> SaveProjectResponse:
-        upload_project_folder = app.config.upload_project_folder / data.userId
-        if not upload_project_folder.exists():
-            upload_project_folder.mkdir(parents=True)
-        try:
-            file = f"{data.uid}{suffix}"
-            with open(upload_project_folder / file, "w") as f:
-                json.dump(data.dict(), f)
-            # maintain meta
-            meta_path = upload_project_folder / constants.PROJECT_META_FILE
-            if not meta_path.is_file():
+        with get_save_project_lock(data.userId):
+            try:
+                upload_project_folder = get_project_folder(data.userId)
+                with open(upload_project_folder / f"{data.uid}{suffix}", "w") as f:
+                    json.dump(data.dict(), f)
                 maintain_meta(app, data.userId)
-            else:
-                with open(meta_path, "r") as f:
-                    meta = json.load(f)
-                meta[data.uid] = dict(
-                    uid=data.uid,
-                    name=data.name,
-                    createTime=data.createTime,
-                    updateTime=data.updateTime,
-                )
-                with open(meta_path, "w") as f:
-                    json.dump(meta, f)
-        except Exception as err:
-            err_msg = get_err_msg(err)
-            return SaveProjectResponse(success=False, message=err_msg)
+            except Exception as err:
+                err_msg = get_err_msg(err)
+                return SaveProjectResponse(success=False, message=err_msg)
         return SaveProjectResponse(success=True, message="")
 
     @app.api.get("/get_project/", responses=get_responses(ProjectModel))
     async def fetch_project(userId: str, uid: str) -> ProjectModel:  # type: ignore
         try:
-            upload_project_folder = app.config.upload_project_folder / userId
-            file = f"{uid}{suffix}"
-            with open(upload_project_folder / file, "r") as f:
-                d = json.load(f)
+            with get_save_project_lock(userId):
+                with get_delete_project_lock(userId):
+                    upload_project_folder = get_project_folder(userId)
+                    with open(upload_project_folder / f"{uid}{suffix}", "r") as f:
+                        d = json.load(f)
 
             # TODO: this kind of transformation should be included in the
             # migration stage, not runtime stage. Will be fixed in the future
@@ -152,37 +144,26 @@ def add_project_managements(app: IApp) -> None:
 
     @app.api.get("/all_projects/")
     async def fetch_all_projects(userId: str) -> List[ProjectMeta]:
-        upload_project_folder = app.config.upload_project_folder / userId
+        upload_project_folder = get_project_folder(userId)
         if not upload_project_folder.exists():
             return []
         meta_path = upload_project_folder / constants.PROJECT_META_FILE
         if not meta_path.is_file():
             maintain_meta(app, userId)
-        with open(meta_path, "r") as f:
-            meta = json.load(f)
+        with get_meta_lock(userId):
+            with open(meta_path, "r") as f:
+                meta = json.load(f)
         s = sorted([(v["updateTime"], k) for k, v in meta.items()], reverse=True)
         return [ProjectMeta(**meta[k]) for _, k in s]
 
     @app.api.delete("/projects/")
     async def delete_project(userId: str, uid: str) -> None:
-        upload_project_folder = app.config.upload_project_folder / userId
-        if not upload_project_folder.exists():
-            return
-        file = f"{uid}{suffix}"
-        path = upload_project_folder / file
-        if path.is_file():
-            path.unlink()
-        # maintain meta
-        meta_path = upload_project_folder / constants.PROJECT_META_FILE
-        if not meta_path.is_file():
+        with get_delete_project_lock(userId):
+            upload_project_folder = get_project_folder(userId)
+            path = upload_project_folder / f"{uid}{suffix}"
+            if path.is_file():
+                path.unlink()
             maintain_meta(app, userId)
-        else:
-            with open(meta_path, "r") as f:
-                meta = json.load(f)
-            if uid in meta:
-                meta.pop(uid)
-                with open(meta_path, "w") as f:
-                    json.dump(meta, f)
 
 
 class ProjectEndpoint(IEndpoint):
