@@ -63,12 +63,14 @@ def get_delete_project_lock(userId: str) -> FileLock:
 def move_to_buggy(path: Path, userId: str, err: Exception) -> None:
     buggy_folder = get_project_folder(userId) / constants.BUGGY_PROJECT_FOLDER
     buggy_folder.mkdir(parents=True, exist_ok=True)
-    backup_path = buggy_folder / path.name
-    print_warning(
-        f"failed to load project '{path}', it will be moved to '{backup_path}'"
-        f" ({get_err_msg(err)})"
-    )
-    path.rename(buggy_folder / path.name)
+    lock = FileLock(buggy_folder / "move_to_buggy.lock")
+    with lock:
+        backup_path = buggy_folder / path.name
+        print_warning(
+            f"failed to load project '{path}', it will be moved to '{backup_path}'"
+            f" ({get_err_msg(err)})"
+        )
+        path.rename(buggy_folder / path.name)
 
 
 def maintain_meta(app: IApp, userId: str) -> None:
