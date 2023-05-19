@@ -60,6 +60,17 @@ def get_delete_project_lock(userId: str) -> FileLock:
     return FileLock(get_project_folder(userId) / "delete_project.lock")
 
 
+def move_to_buggy(path: Path, userId: str, err: Exception) -> None:
+    buggy_folder = get_project_folder(userId) / constants.BUGGY_PROJECT_FOLDER
+    buggy_folder.mkdir(parents=True, exist_ok=True)
+    backup_path = buggy_folder / path.name
+    print_warning(
+        f"failed to load project '{path}', it will be moved to '{backup_path}'"
+        f" ({get_err_msg(err)})"
+    )
+    path.rename(buggy_folder / path.name)
+
+
 def maintain_meta(app: IApp, userId: str) -> None:
     with get_meta_lock(userId):
         upload_project_folder = get_project_folder(userId)
@@ -80,14 +91,7 @@ def maintain_meta(app: IApp, userId: str) -> None:
                     updateTime=d["updateTime"],
                 )
             except Exception as err:
-                buggy_folder = upload_project_folder / constants.BUGGY_PROJECT_FOLDER
-                buggy_folder.mkdir(parents=True, exist_ok=True)
-                backup_path = buggy_folder / path.name
-                print_warning(
-                    f"failed to load project '{path}', it will be moved to '{backup_path}'"
-                    f" ({get_err_msg(err)})"
-                )
-                path.rename(buggy_folder / path.name)
+                move_to_buggy(path, userId, err)
         with open(upload_project_folder / constants.PROJECT_META_FILE, "w") as f:
             json.dump(project_meta, f)
 
