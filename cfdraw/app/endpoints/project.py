@@ -122,8 +122,12 @@ def add_project_managements(app: IApp) -> None:
             with get_save_project_lock(userId):
                 with get_delete_project_lock(userId):
                     upload_project_folder = get_project_folder(userId)
-                    with open(upload_project_folder / f"{uid}{suffix}", "r") as f:
-                        d = json.load(f)
+                    path = upload_project_folder / f"{uid}{suffix}"
+                    try:
+                        with open(path, "r") as f:
+                            d = json.load(f)
+                    except Exception as err:
+                        move_to_buggy(path, userId, err)
 
             # TODO: this kind of transformation should be included in the
             # migration stage, not runtime stage. Will be fixed in the future
