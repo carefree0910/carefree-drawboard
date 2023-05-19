@@ -158,9 +158,16 @@ def add_project_managements(app: IApp) -> None:
         meta_path = upload_project_folder / constants.PROJECT_META_FILE
         if not meta_path.is_file():
             maintain_meta(app, userId)
-        with get_meta_lock(userId):
-            with open(meta_path, "r") as f:
-                meta = json.load(f)
+        try:
+            with get_meta_lock(userId):
+                with open(meta_path, "r") as f:
+                    meta = json.load(f)
+        except Exception as err:
+            print_warning(
+                f"failed to load project meta file '{meta_path}', "
+                f"will regenerate it ({get_err_msg(err)})"
+            )
+            maintain_meta(app, userId)
         s = sorted([(v["updateTime"], k) for k, v in meta.items()], reverse=True)
         return [ProjectMeta(**meta[k]) for _, k in s]
 
