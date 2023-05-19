@@ -52,6 +52,7 @@ class ImageUploader:
         contents: Union[bytes, Image.Image],
         meta: PngInfo,
         base_url: str,
+        audit: bool = True,
     ) -> ImageDataModel:
         """
         When this method is used in the:
@@ -76,6 +77,7 @@ def add_upload_image(app: IApp) -> None:
     async def upload_image(
         image: UploadFile = File(),
         userId: str = Form(),
+        audit: bool = Form(True),
         *,
         request: Request,
     ) -> UploadImageResponse:
@@ -84,7 +86,7 @@ def add_upload_image(app: IApp) -> None:
             contents = image.file.read()
             meta = PngInfo()
             meta.add_text("userId", userId)
-            data = await ImageUploader.upload_image(contents, meta, base_url)
+            data = await ImageUploader.upload_image(contents, meta, base_url, audit)
         except Exception as err:
             err_msg = get_err_msg(err)
             return UploadImageResponse(success=False, message=err_msg, data=None)
