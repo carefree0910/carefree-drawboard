@@ -52,7 +52,7 @@ class ImageUploader:
         contents: Union[bytes, Image.Image],
         meta: PngInfo,
         base_url: str,
-        audit: bool = True,
+        audit: bool,
     ) -> ImageDataModel:
         """
         When this method is used in the:
