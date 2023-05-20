@@ -40,10 +40,10 @@ interface ISelectLocalProperties {
   onlyFiles: boolean;
   defaultPlaceholder?: string;
 }
-export interface ISelectField<T> extends IBaseFields {
+export interface ISelectField extends IBaseFields {
   type: "select";
-  values: readonly T[];
-  default: T;
+  values: readonly IStr[];
+  default: IStr;
   isMulti?: boolean;
   localProperties?: ISelectLocalProperties;
 }
@@ -71,7 +71,7 @@ export type IFieldDefinition =
   | ITextField
   | IImageField
   | INumberField
-  | ISelectField<any>
+  | ISelectField
   | IBooleanField
   | IColorField
   | IListField

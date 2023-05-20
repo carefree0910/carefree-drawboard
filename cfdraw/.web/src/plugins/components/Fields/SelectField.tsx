@@ -4,6 +4,7 @@ import { Box, Flex } from "@chakra-ui/react";
 
 import { getHash } from "@carefree0910/core";
 
+import type { IStr } from "@/schema/misc";
 import type { IField } from "@/schema/plugins";
 import type { ISelectField } from "@/schema/fields";
 import { getBaseURL, titleCaseWord } from "@/utils/misc";
@@ -16,13 +17,13 @@ import { CFLabel } from "@/components/CFText";
 import { CFSrollableSelect } from "@/components/CFSelect";
 import { useDefaultFieldValue } from "./utils";
 
-function SelectField({ definition, ...fieldKeys }: IField<ISelectField<string>>) {
+function SelectField({ definition, ...fieldKeys }: IField<ISelectField>) {
   useDefaultFieldValue({ definition, ...fieldKeys });
   const userId = userStore.userId;
   const label = parseIStr(definition.label ?? titleCaseWord(fieldKeys.field));
   const tooltip = parseIStr(definition.tooltip ?? "");
   const [value, setValue] = useState(getMetaField(fieldKeys) ?? definition.default);
-  const [options, setOptions] = useState(definition.values as string[]);
+  const [options, setOptions] = useState(definition.values as IStr[]);
   const onMenuOpen = useCallback(() => {
     if (definition.localProperties) {
       const extraData = definition.localProperties;
@@ -50,8 +51,8 @@ function SelectField({ definition, ...fieldKeys }: IField<ISelectField<string>>)
     }
   }, [definition.localProperties]);
 
-  const selected = { value, label: value };
-  const selectOptions = options.map((value) => ({ value, label: value }));
+  const selected = { value, label: parseIStr(value) };
+  const selectOptions = options.map((value) => ({ value, label: parseIStr(value) }));
 
   return (
     <Flex w="100%" h="100%" align="center" {...definition.props}>
@@ -59,7 +60,7 @@ function SelectField({ definition, ...fieldKeys }: IField<ISelectField<string>>)
         <CFLabel label={label} />
       </CFTooltip>
       <Box w="8px" />
-      <CFSrollableSelect<string, false>
+      <CFSrollableSelect<IStr, false>
         height="40px"
         boxProps={{ flex: 1 }}
         value={selected}
