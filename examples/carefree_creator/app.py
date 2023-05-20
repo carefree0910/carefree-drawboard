@@ -17,6 +17,10 @@ def inject(self: IFieldsPlugin, data: ISocketRequest) -> ISocketRequest:
     if data.extraData["seed"] == -1:
         data.extraData["seed"] = new_seed()
     self.extra_responses["seed"] = data.extraData["seed"]
+    # version
+    version_i18n_d = data.extraData["version"]
+    version = get_version_from(version_i18n_d)
+    self.extra_responses["version"] = data.extraData["version"] = version
     # lora
     lora = data.extraData.pop("lora", [])
     lora_definition = lora_field.item

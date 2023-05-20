@@ -1,4 +1,5 @@
 from cfdraw import *
+from typing import Optional
 from pathlib import Path
 from collections import OrderedDict
 from cfcreator.common import SDSamplers
@@ -20,14 +21,30 @@ text = ITextField(
         en="The description of the image",
     ),
 )
+## sd version stuffs
+version_dict = {
+    SDVersions.v1_5: I18N(zh="基础模型", en="Base Model"),
+    SDVersions.ANIME_ANYTHING: I18N(zh="动漫模型", en="Anime Model"),
+    SDVersions.DREAMLIKE: I18N(zh="艺术模型", en="Art Model"),
+}
 version = ISelectField(
-    default=SDVersions.v1_5,
-    values=[version for version in SDVersions if version],
+    default=version_dict[SDVersions.v1_5],
+    values=list(version_dict.values()),
     label=I18N(
         zh="模型",
         en="Model",
     ),
 )
+
+
+def get_version_from(i18n_d: dict) -> Optional[SDVersions]:
+    i18n = I18N(**i18n_d)
+    for version, v_i18n in version_dict.items():
+        if i18n.en == v_i18n.en:
+            return version
+    return None
+
+
 sampler = ISelectField(
     default=SDSamplers.K_EULER,
     values=[sampler for sampler in SDSamplers],
@@ -255,6 +272,7 @@ variation_fields = OrderedDict(fidelity=img2img_fields["fidelity"])
 
 
 __all__ = [
+    "get_version_from",
     "common_styles",
     "common_group_styles",
     "lora_field",
