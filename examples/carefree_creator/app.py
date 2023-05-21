@@ -368,6 +368,8 @@ class Variation(CarefreeCreatorPlugin):
                     self.send_exception("cannot find a static seed")
                     return False
                 kw["seed"] = generated_seed
+            # [general] inject version
+            kw["version"] = extra["version"]
             # [img2img]       inject url
             # [sd.inpainting] inject url
             if task == Img2ImgKey or task == SDOutpaintingKey:
