@@ -64,6 +64,7 @@ export default defineConfig({
           "lottie-web": ["lottie-web"],
           "react-color": ["react-color"],
           "chakra-react-select": ["chakra-react-select"],
+          "react-markdown": ["react-markdown", "remark-gfm", "react-syntax-highlighter"],
           "@carefree0910/core": ["@carefree0910/core"],
           "@carefree0910/svg": ["@carefree0910/svg"],
           "@carefree0910/business": ["@carefree0910/business"],

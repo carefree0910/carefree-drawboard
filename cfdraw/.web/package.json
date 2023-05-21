@@ -40,7 +40,10 @@
     "react": "18.2.0",
     "react-color": "^2.19.3",
     "react-dom": "18.2.0",
+    "react-markdown": "^8.0.7",
     "react-select": "^5.7.3",
+    "react-syntax-highlighter": "^15.5.0",
+    "remark-gfm": "^3.0.1",
     "uuid": "^9.0.0"
   },
   "devDependencies": {
@@ -49,6 +52,7 @@
     "@types/react": "18.0.33",
     "@types/react-color": "^3.0.6",
     "@types/react-dom": "18.0.11",
+    "@types/react-syntax-highlighter": "^15.5.6",
     "@types/uuid": "^9.0.1",
     "@vitejs/plugin-react": "^3.1.0",
     "rollup-plugin-visualizer": "^5.9.0",
