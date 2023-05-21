@@ -9,7 +9,11 @@ interface ICFInput extends InputProps {
   useNumberInputProps?: UseNumberInputProps;
 }
 function CFInput({ tooltip, useNumberInputProps, ...props }: ICFInput) {
-  const { textColor, captionColor } = themeStore.styles;
+  const {
+    textColor,
+    captionColor,
+    inputColors: { activeBorderColor },
+  } = themeStore.styles;
   const numberInputProps = useNumberInput(useNumberInputProps).getInputProps();
 
   return (
@@ -17,7 +21,13 @@ function CFInput({ tooltip, useNumberInputProps, ...props }: ICFInput) {
       <Input
         {...numberInputProps}
         color={textColor}
+        borderWidth="1px"
+        borderRadius="0px"
         _placeholder={{ color: captionColor }}
+        _focusVisible={{
+          borderColor: activeBorderColor,
+          boxShadow: `0 0 0 1px ${activeBorderColor}`,
+        }}
         flexShrink={0}
         {...props}
       />

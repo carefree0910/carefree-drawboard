@@ -16,6 +16,10 @@ export type ThemeStyles = {
   captionColor: string;
   // color of the divider
   dividerColor: string;
+  // colors of the `CFInput` component
+  inputColors: {
+    activeBorderColor: string;
+  };
   // colors of the `CFSelect` component
   selectColors: {
     activeBorderColor: string;
@@ -59,6 +63,9 @@ export const allThemes: Record<ThemeType, ThemeStyles> = {
     textColor: "#333333",
     captionColor: "#888888",
     dividerColor: "#cccccc",
+    inputColors: {
+      activeBorderColor: "#3fc9a8",
+    },
     selectColors: {
       activeBorderColor: "#3fc9a8",
     },
@@ -97,6 +104,9 @@ export const allThemes: Record<ThemeType, ThemeStyles> = {
     textColor: "#333333",
     captionColor: "#888888",
     dividerColor: "#cccccc",
+    inputColors: {
+      activeBorderColor: "#3fc9a8",
+    },
     selectColors: {
       activeBorderColor: "#3fc9a8",
     },
