@@ -1,10 +1,11 @@
 import { observer } from "mobx-react-lite";
-import { Box, BoxProps } from "@chakra-ui/react";
+import { Box, BoxProps, Flex, FlexProps } from "@chakra-ui/react";
 import { GroupBase, OptionBase, Select } from "chakra-react-select";
 
 import { isUndefined } from "@carefree0910/core";
 
 import { themeStore, useScrollBarSx } from "@/stores/theme";
+import { CFLabel } from "./CFText";
 import CFTooltip from "./CFTooltip";
 
 interface SelectItem<T> extends OptionBase {
@@ -75,10 +76,22 @@ function CFSelect<T, isMulti extends boolean>({
   if (isUndefined(tooltip)) return _Select;
   return <CFTooltip label={tooltip}>{_Select}</CFTooltip>;
 }
+
+interface ICFScrollableSelect<T, isMulti extends boolean> extends ICFSelect<T, isMulti> {
+  label?: string;
+  flexProps?: FlexProps;
+}
 export const CFSrollableSelect = observer(
-  <T, isMulti extends boolean>({ chakraStyles, ...others }: ICFSelect<T, isMulti>) => {
-    return (
+  <T, isMulti extends boolean>({
+    label,
+    tooltip,
+    flexProps,
+    chakraStyles,
+    ...others
+  }: ICFScrollableSelect<T, isMulti>) => {
+    const Select = ({ tooltip }: { tooltip?: string }) => (
       <CFSelect
+        tooltip={tooltip}
         chakraStyles={{
           menuList: (provided) => ({
             ...provided,
@@ -90,6 +103,16 @@ export const CFSrollableSelect = observer(
         }}
         {...others}
       />
+    );
+    if (isUndefined(label)) return <Select tooltip={tooltip} />;
+    return (
+      <Flex w="100%" h="100%" align="center" {...flexProps}>
+        <CFTooltip label={tooltip}>
+          <CFLabel label={label} />
+        </CFTooltip>
+        <Box w="8px" />
+        <Select />
+      </Flex>
     );
   },
 );

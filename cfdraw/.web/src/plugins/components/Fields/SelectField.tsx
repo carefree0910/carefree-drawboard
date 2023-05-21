@@ -1,6 +1,5 @@
 import { useCallback, useState } from "react";
 import { observer } from "mobx-react-lite";
-import { Box, Flex } from "@chakra-ui/react";
 
 import { getHash } from "@carefree0910/core";
 
@@ -12,8 +11,6 @@ import { userStore } from "@/stores/user";
 import { runOneTimeSocketHook } from "@/stores/socket";
 import { getMetaField, setMetaField } from "@/stores/meta";
 import { parseIStr } from "@/actions/i18n";
-import CFTooltip from "@/components/CFTooltip";
-import { CFLabel } from "@/components/CFText";
 import { CFSrollableSelect } from "@/components/CFSelect";
 import { useDefaultFieldValue } from "./utils";
 
@@ -55,25 +52,22 @@ function SelectField({ definition, ...fieldKeys }: IField<ISelectField>) {
   const selectOptions = options.map((value) => ({ value, label: parseIStr(value) }));
 
   return (
-    <Flex w="100%" h="100%" align="center" {...definition.props}>
-      <CFTooltip label={tooltip}>
-        <CFLabel label={label} />
-      </CFTooltip>
-      <Box w="8px" />
-      <CFSrollableSelect<IStr, false>
-        height="40px"
-        boxProps={{ flex: 1 }}
-        value={selected}
-        options={selectOptions}
-        onMenuOpen={onMenuOpen}
-        onChange={(e) => {
-          if (!!e) {
-            setValue(e.value);
-            setMetaField(fieldKeys, e.value);
-          }
-        }}
-      />
-    </Flex>
+    <CFSrollableSelect<IStr, false>
+      label={label}
+      tooltip={tooltip}
+      flexProps={definition.props}
+      height="40px"
+      boxProps={{ flex: 1 }}
+      value={selected}
+      options={selectOptions}
+      onMenuOpen={onMenuOpen}
+      onChange={(e) => {
+        if (!!e) {
+          setValue(e.value);
+          setMetaField(fieldKeys, e.value);
+        }
+      }}
+    />
   );
 }
 
