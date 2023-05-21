@@ -1,14 +1,22 @@
-import { useCallback, useMemo } from "react";
+import { useCallback, useEffect, useMemo, useState } from "react";
 
-import { Dictionary, INode, isSingleNode, shallowCopy } from "@carefree0910/core";
+import { Dictionary, INode, getRandomHash, isSingleNode, shallowCopy } from "@carefree0910/core";
 import { langStore } from "@carefree0910/business";
 
 import type { IMeta } from "@/schema/meta";
 import type { IDefinitions } from "@/schema/fields";
-import type { IPythonOnPluginMessage, IUseOnPythonPluginMessage } from "@/schema/_python";
+import type {
+  IPythonOnPluginMessage,
+  IPythonPlugin,
+  IUseOnPythonPluginMessage,
+  OnPythonPluginMessage,
+} from "@/schema/_python";
 import { getMetaField } from "@/stores/meta";
-import { setPluginMessage } from "@/stores/pluginsInfo";
+import { setPluginMessage, usePluginIds, usePluginNeedRender } from "@/stores/pluginsInfo";
+import { useSocketPython } from "@/hooks/usePython";
 import { cleanupException, cleanupFinished, cleanupInterrupted } from "../utils/cleanup";
+import { socketFinishedEvent } from "./PluginWithSubmit";
+import { checkHasConstraint } from "../utils/renderFilters";
 
 export function useDefinitionsRequestDataFn(definitions: IDefinitions): () => Dictionary<any> {
   return useCallback(() => {
@@ -77,4 +85,56 @@ export function useOnMessage({
     },
     [id, lang, retryInterval, noErrorToast, onFinished],
   );
+}
+
+interface IUseTextTransfer {
+  key: string;
+  plugin: IPythonPlugin;
+}
+export function useTextTransfer({ key, plugin: { pluginInfo, ...props } }: IUseTextTransfer): {
+  id: string;
+  text: string;
+} {
+  const { node, nodes, identifier, retryInterval, updateInterval } = pluginInfo;
+  const { id } = usePluginIds(`${key}_${identifier}`);
+  const needRender = usePluginNeedRender(id);
+  const [hash, setHash] = useState<string | undefined>(undefined);
+  useEffect(() => {
+    if (needRender) {
+      setHash(getRandomHash().toString());
+    }
+  }, [needRender]);
+  useEffect(() => {
+    const { dispose } = socketFinishedEvent.on(({ id: incomingId }) => {
+      if (incomingId === id) {
+        setHash(undefined);
+      }
+    });
+    return dispose;
+  }, [id, setHash]);
+  const [value, setValue] = useState("");
+  const onFinished = useCallback<OnPythonPluginMessage>(
+    async ({ data: { final } }) => {
+      if (final?.type === "text") {
+        setValue(final.value[0].text);
+      }
+    },
+    [setValue],
+  );
+  const onMessage = useOnMessage({ id, pluginInfo, onFinished });
+  const hasConstraint = checkHasConstraint(props);
+
+  useSocketPython({
+    hash,
+    node,
+    nodes,
+    identifier,
+    isInvisible: props.renderInfo.isInvisible ?? false,
+    retryInterval,
+    updateInterval,
+    onMessage,
+    needExportNodeData: hasConstraint,
+  });
+
+  return { id, text: value };
 }
