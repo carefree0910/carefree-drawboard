@@ -104,11 +104,11 @@ export const allReactPlugins = [
   "brush",
 ] as const;
 export const allPythonPlugins = [
+  "_python.pluginGroup",
   "_python.fields",
   "_python.textArea",
   "_python.QA",
   "_python.chat",
-  "_python.pluginGroup",
 ] as const;
 export type ReactPlugins = (typeof allReactPlugins)[number];
 export type PythonPlugins = (typeof allPythonPlugins)[number];
@@ -134,11 +134,11 @@ export interface IPluginProps {
   multiEditor: IPlugin;
   brush: IPlugin;
   // python plugins
+  "_python.pluginGroup": IPythonPluginGroup;
   "_python.fields": IPythonFieldsPlugin;
   "_python.textArea": IPythonTextAreaPlugin;
   "_python.QA": IPythonQAPlugin;
   "_python.chat": IPythonChatPlugin;
-  "_python.pluginGroup": IPythonPluginGroup;
 }
 
 export interface IMakePlugin<T extends AllPlugins> {

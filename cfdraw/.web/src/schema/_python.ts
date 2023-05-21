@@ -45,6 +45,30 @@ export interface INodeData {
 
 // plugin
 
+export interface IPythonPluginGroup extends IPythonPlugin {
+  pluginInfo: IPythonPluginInfo & {
+    header?: IStr;
+    plugins: IMakePlugin<PythonPlugins>[];
+  };
+}
+
+export interface IUseOnPythonPluginMessage {
+  id: string;
+  pluginInfo: IPythonPluginInfo & IPythonPluginWithSubmitPluginInfo;
+  onIntermediate?: OnPythonPluginMessage;
+  onFinished: OnPythonPluginMessage;
+}
+export type OnPythonPluginMessage = (message: IPythonPluginMessage) => void;
+export interface IPythonSocketPluginWithSubmit
+  extends Omit<IPythonPlugin, "id" | "pluginInfo">,
+    Omit<IPythonSocketCallbacks<IPythonResults>, "getMessage" | "onMessage">,
+    IUseOnPythonPluginMessage {
+  id: string;
+  buttonText: string;
+  beforeSubmit?: () => void;
+  afterSubmit?: () => void;
+}
+
 interface IPythonPluginWithSubmitPluginInfo {
   closeOnSubmit?: boolean;
   toastOnSubmit?: boolean;
@@ -73,30 +97,6 @@ export interface IPythonChatPlugin extends IPythonPlugin {
   pluginInfo: IPythonPluginInfo & {
     initialText: IStr;
   };
-}
-
-export interface IPythonPluginGroup extends IPythonPlugin {
-  pluginInfo: IPythonPluginInfo & {
-    header?: IStr;
-    plugins: IMakePlugin<PythonPlugins>[];
-  };
-}
-
-export interface IUseOnPythonPluginMessage {
-  id: string;
-  pluginInfo: IPythonPluginInfo & IPythonPluginWithSubmitPluginInfo;
-  onIntermediate?: OnPythonPluginMessage;
-  onFinished: OnPythonPluginMessage;
-}
-export type OnPythonPluginMessage = (message: IPythonPluginMessage) => void;
-export interface IPythonSocketPluginWithSubmit
-  extends Omit<IPythonPlugin, "id" | "pluginInfo">,
-    Omit<IPythonSocketCallbacks<IPythonResults>, "getMessage" | "onMessage">,
-    IUseOnPythonPluginMessage {
-  id: string;
-  buttonText: string;
-  beforeSubmit?: () => void;
-  afterSubmit?: () => void;
 }
 
 // web

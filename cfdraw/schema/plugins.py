@@ -41,11 +41,11 @@ class PluginType(str, Enum):
     `cfdraw/.web/src/schema/plugins.ts`
     """
 
+    PLUGIN_GROUP = "_python.pluginGroup"
     FIELDS = "_python.fields"
     TEXT_AREA = "_python.textArea"
     QA = "_python.QA"
     CHAT = "_python.chat"
-    PLUGIN_GROUP = "_python.pluginGroup"
 
     # this type of plugins will not be rendered on the drawboard 🎨
     _INTERNAL = "_internal"
@@ -555,6 +555,11 @@ class ILogoSettings(IPluginSettings):
     h: int = Field(0, gt=0, description="Height of the expanded plugin")  # type: ignore
 
 
+class IPluginGroupInfo(IPluginInfo):
+    header: Optional[IStr] = Field(None, description="Header of the plugin group")
+    plugins: Dict[str, Type[IPlugin]] = Field(..., description="Plugins in the group")
+
+
 class IFieldsPluginInfo(IPluginInfo):
     """This should align with `IPythonFieldsPlugin` at `cfdraw/.web/src/schema/_python.ts`"""
 
@@ -594,11 +599,6 @@ class IChatPluginInfo(IPluginInfo):
     )
 
 
-class IPluginGroupInfo(IPluginInfo):
-    header: Optional[IStr] = Field(None, description="Header of the plugin group")
-    plugins: Dict[str, Type[IPlugin]] = Field(..., description="Plugins in the group")
-
-
 __all__ = [
     "ISend",
     "PluginType",
@@ -621,8 +621,8 @@ __all__ = [
     # bindings
     "ILogoPluginInfo",
     "ILogoSettings",
+    "IPluginGroupInfo",
     "ITextAreaPluginInfo",
     "IQAPluginInfo",
     "IChatPluginInfo",
-    "IPluginGroupInfo",
 ]

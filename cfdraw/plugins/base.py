@@ -8,7 +8,6 @@ from typing import Optional
 
 from cfdraw import constants
 from cfdraw.utils import server
-from cfdraw.utils.misc import deprecated
 from cfdraw.utils.misc import offload_run
 from cfdraw.schema.plugins import *
 from cfdraw.plugins.middlewares import *
@@ -95,6 +94,15 @@ class IInternalSocketPlugin(ISocketPlugin, metaclass=ABCMeta):
 # bindings
 
 
+class IPluginGroup(ISocketPlugin):
+    @property
+    def type(self) -> PluginType:
+        return PluginType.PLUGIN_GROUP
+
+    def process(self, data: ISocketRequest) -> Any:
+        return
+
+
 class IFieldsPlugin(ISocketPlugin):
     @property
     def type(self) -> PluginType:
@@ -119,21 +127,12 @@ class IChatPlugin(ISocketPlugin):
         return PluginType.CHAT
 
 
-class IPluginGroup(ISocketPlugin):
-    @property
-    def type(self) -> PluginType:
-        return PluginType.PLUGIN_GROUP
-
-    def process(self, data: ISocketRequest) -> Any:
-        return
-
-
 __all__ = [
     "ISocketPlugin",
     "IInternalSocketPlugin",
+    "IPluginGroup",
     "IFieldsPlugin",
     "ITextAreaPlugin",
     "IQAPlugin",
     "IChatPlugin",
-    "IPluginGroup",
 ]
