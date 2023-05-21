@@ -8,6 +8,7 @@ export enum UI_Words {
   "task-working-caption" = "task-working-caption",
   "list-field-empty-caption" = "list-field-empty-caption",
   "add-object-to-list-tooltip" = "add-object-to-list-tooltip",
+  "text-editor-align-label" = "text-editor-align-label",
 }
 
 export const uiLangRecords: Record<Lang, Record<UI_Words, string>> = {
@@ -19,6 +20,7 @@ export const uiLangRecords: Record<Lang, Record<UI_Words, string>> = {
     [UI_Words["task-working-caption"]]: "执行中",
     [UI_Words["list-field-empty-caption"]]: "无",
     [UI_Words["add-object-to-list-tooltip"]]: "添加",
+    [UI_Words["text-editor-align-label"]]: "对齐方式",
   },
   en: {
     [UI_Words["submit-task"]]: "Submit",
@@ -28,5 +30,6 @@ export const uiLangRecords: Record<Lang, Record<UI_Words, string>> = {
     [UI_Words["task-working-caption"]]: "Working",
     [UI_Words["list-field-empty-caption"]]: "Empty",
     [UI_Words["add-object-to-list-tooltip"]]: "Add",
+    [UI_Words["text-editor-align-label"]]: "Align",
   },
 };
