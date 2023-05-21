@@ -4,7 +4,7 @@ import { Input, InputProps, UseNumberInputProps, useNumberInput } from "@chakra-
 import { themeStore } from "@/stores/theme";
 import CFTooltip from "./CFTooltip";
 
-interface ICFInput extends InputProps {
+export interface ICFInput extends InputProps {
   tooltip?: string;
   useNumberInputProps?: UseNumberInputProps;
 }
