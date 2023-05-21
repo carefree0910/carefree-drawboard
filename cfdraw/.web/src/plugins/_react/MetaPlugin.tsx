@@ -1,11 +1,11 @@
 import { observer } from "mobx-react-lite";
-import { Textarea } from "@chakra-ui/react";
 
 import { useSelecting } from "@carefree0910/business";
 
 import type { IPlugin } from "@/schema/plugins";
 import { IMeta, getMetaTrace } from "@/schema/meta";
 import { usePluginIds } from "@/stores/pluginsInfo";
+import CFMarkdown from "@/components/CFMarkdown";
 import { drawboardPluginFactory } from "../utils/factory";
 import Render from "../components/Render";
 
@@ -27,15 +27,17 @@ const MetaPlugin = ({ pluginInfo, ...others }: IPlugin) => {
   if (!_meta) return null;
   const meta = _meta as IMeta;
   const history = getMetaTrace(meta).reverse().map(getMetaRepresentation).join(" -> ");
+  const jsonString = JSON.stringify(meta, null, 2);
+  const markdown = `**${history}**
+
+~~~json
+${jsonString}
+~~~
+`;
 
   return (
     <Render id={id} {...others}>
-      <Textarea
-        w="100%"
-        h="100%"
-        value={`${history}\n\n${JSON.stringify(meta, null, 4)}`}
-        readOnly
-      />
+      <CFMarkdown markdown={markdown} />
     </Render>
   );
 };
