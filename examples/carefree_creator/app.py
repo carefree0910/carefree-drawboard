@@ -373,6 +373,13 @@ class Variation(CarefreeCreatorPlugin):
                 kw["seed"] = generated_seed
             # [general] inject version
             kw["version"] = extra["version"]
+            # [general] inject lora
+            lora_paths = extra.get("lora_paths")
+            lora_scales = extra.get("lora_scales")
+            if lora_paths is not None:
+                kw["lora_paths"] = lora_paths
+            if lora_scales is not None:
+                kw["lora_scales"] = lora_scales
             # [img2img]       inject url
             # [sd.inpainting] inject url
             if task == Img2ImgKey or task == SDOutpaintingKey:
