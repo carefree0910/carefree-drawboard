@@ -138,7 +138,7 @@ interface IPack<R> {
 }
 function consumePythonFields({ type, metaData }: IImportMeta<"python.fields">): void {
   const success = async () => {
-    toastWord("success", Toast_Words["generate-image-success-message"]);
+    toastWord("success", Toast_Words["generate-success-message"]);
   };
   const failed = async (err: any) => {
     toastWord("error", Toast_Words["post-python-fields-plugin-error-message"], {
