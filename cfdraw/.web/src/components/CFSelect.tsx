@@ -1,5 +1,5 @@
 import { observer } from "mobx-react-lite";
-import { Box, BoxProps, Flex, FlexProps } from "@chakra-ui/react";
+import { Box, BoxProps, Flex, FlexProps, TextProps } from "@chakra-ui/react";
 import { GroupBase, OptionBase, Select } from "chakra-react-select";
 
 import { isUndefined } from "@carefree0910/core";
@@ -80,12 +80,14 @@ function CFSelect<T, isMulti extends boolean>({
 interface ICFScrollableSelect<T, isMulti extends boolean> extends ICFSelect<T, isMulti> {
   label?: string;
   flexProps?: FlexProps;
+  labelProps?: TextProps;
 }
 export const CFSrollableSelect = observer(
   <T, isMulti extends boolean>({
     label,
     tooltip,
     flexProps,
+    labelProps,
     chakraStyles,
     ...others
   }: ICFScrollableSelect<T, isMulti>) => {
@@ -108,7 +110,7 @@ export const CFSrollableSelect = observer(
     return (
       <Flex w="100%" h="100%" align="center" {...flexProps}>
         <CFTooltip label={tooltip}>
-          <CFLabel label={label} />
+          <CFLabel label={label} {...labelProps} />
         </CFTooltip>
         <Box w="8px" />
         <Select />
