@@ -46,6 +46,7 @@ class PluginType(str, Enum):
     TEXT_AREA = "_python.textArea"
     QA = "_python.QA"
     CHAT = "_python.chat"
+    MARKDOWN = "_python.markdown"
 
     # this type of plugins will not be rendered on the drawboard 🎨
     _INTERNAL = "_internal"

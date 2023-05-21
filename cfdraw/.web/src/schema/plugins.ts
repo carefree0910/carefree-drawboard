@@ -8,6 +8,7 @@ import type { IFieldDefinition } from "./fields";
 import type {
   IPythonChatPlugin,
   IPythonFieldsPlugin,
+  IPythonPlugin,
   IPythonPluginGroup,
   IPythonQAPlugin,
   IPythonTextAreaPlugin,
@@ -109,6 +110,7 @@ export const allPythonPlugins = [
   "_python.textArea",
   "_python.QA",
   "_python.chat",
+  "_python.markdown",
 ] as const;
 export type ReactPlugins = (typeof allReactPlugins)[number];
 export type PythonPlugins = (typeof allPythonPlugins)[number];
@@ -139,6 +141,7 @@ export interface IPluginProps {
   "_python.textArea": IPythonTextAreaPlugin;
   "_python.QA": IPythonQAPlugin;
   "_python.chat": IPythonChatPlugin;
+  "_python.markdown": IPythonPlugin;
 }
 
 export interface IMakePlugin<T extends AllPlugins> {

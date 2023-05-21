@@ -127,6 +127,12 @@ class IChatPlugin(ISocketPlugin):
         return PluginType.CHAT
 
 
+class IMarkdownPlugin(ISocketPlugin):
+    @property
+    def type(self) -> PluginType:
+        return PluginType.MARKDOWN
+
+
 __all__ = [
     "ISocketPlugin",
     "IInternalSocketPlugin",
@@ -135,4 +141,5 @@ __all__ = [
     "ITextAreaPlugin",
     "IQAPlugin",
     "IChatPlugin",
+    "IMarkdownPlugin",
 ]

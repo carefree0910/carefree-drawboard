@@ -26,6 +26,7 @@ export * from "./_python/FieldsPlugin";
 export * from "./_python/TextAreaPlugin";
 export * from "./_python/QAPlugin";
 export * from "./_python/ChatPlugin";
+export * from "./_python/MarkdownPlugin";
 
 function MakePlugin<T extends AllPlugins>({
   type,

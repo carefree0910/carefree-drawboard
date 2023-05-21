@@ -26,6 +26,7 @@ const _pluginsLangRecords: Record<Lang, Record<AllPlugins, string>> = {
     "_python.textArea": "Python 文本框",
     "_python.QA": "Python 问答",
     "_python.chat": "Python 对话",
+    "_python.markdown": "Python Markdown",
   },
   en: {
     meta: "Meta",
@@ -50,6 +51,7 @@ const _pluginsLangRecords: Record<Lang, Record<AllPlugins, string>> = {
     "_python.textArea": "Python TextArea",
     "_python.QA": "Python Q & A",
     "_python.chat": "Python Chat",
+    "_python.markdown": "Python Markdown",
   },
 };
 
