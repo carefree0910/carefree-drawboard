@@ -32,9 +32,9 @@ import Render from "../components/Render";
 
 const FrameWHInput = ({ onNewFrame, ...props }: ICFInput & { onNewFrame: () => void }) => (
   <CFInput
-    w="56px"
+    w="72px"
     h="36px"
-    p="8px"
+    p="12px"
     onKeyDown={(e) => {
       if (e.key === "Enter") {
         onNewFrame();
@@ -138,6 +138,7 @@ const AddPlugin = ({ pluginInfo, ...props }: IPlugin) => {
             onClick={onNewProject}
             {...commonProps}
           />
+          <CFDivider />
           <CFIconButton
             src={ADD_FRAME_ICON}
             tooltip={translate(Add_Words["add-frame-button"], lang)}
@@ -152,7 +153,7 @@ const AddPlugin = ({ pluginInfo, ...props }: IPlugin) => {
             useNumberInputProps={{ defaultValue: w, onChange: (value) => setW(+value) }}
           />
           <FrameWHInput
-            ml="8px"
+            ml="10px"
             tooltip={lang === "zh" ? "画框高度" : "Frame Height"}
             onNewFrame={onNewFrame}
             useNumberInputProps={{ defaultValue: h, onChange: (value) => setH(+value) }}
