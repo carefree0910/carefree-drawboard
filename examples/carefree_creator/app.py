@@ -360,7 +360,7 @@ class Variation(CarefreeCreatorPlugin):
         def callback(step: int, num_steps: int) -> bool:
             return self.send_progress(step / num_steps)
 
-        def inject() -> bool:
+        def inject_kw() -> bool:
             # [general] inject seed
             if kw["seed"] == -1:
                 generated_seed = extra.get("seed")
@@ -398,7 +398,7 @@ class Variation(CarefreeCreatorPlugin):
         else:
             kw = meta_data["parameters"]
             extra = meta_data["response"].get("extra", {})
-            if not inject():
+            if not inject_kw():
                 return []
         # inject varations
         strength = 1.0 - data.extraData["fidelity"]
