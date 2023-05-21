@@ -141,7 +141,7 @@ function consumePythonFields({ type, metaData }: IImportMeta<"python.fields">): 
     toastWord("success", Toast_Words["generate-image-success-message"]);
   };
   const failed = async (err: any) => {
-    toastWord("error", Toast_Words["post-python-http-fields-plugin-error-message"], {
+    toastWord("error", Toast_Words["post-python-fields-plugin-error-message"], {
       appendix: ` (${err})`,
     });
   };
