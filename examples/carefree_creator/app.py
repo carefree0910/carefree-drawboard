@@ -360,6 +360,33 @@ class Variation(CarefreeCreatorPlugin):
         def callback(step: int, num_steps: int) -> bool:
             return self.send_progress(step / num_steps)
 
+        def inject() -> bool:
+            # [general] inject seed
+            if kw["seed"] == -1:
+                generated_seed = extra.get("seed")
+                if generated_seed is None:
+                    self.send_exception("cannot find a static seed")
+                    return False
+                kw["seed"] = generated_seed
+            # [img2img]       inject url
+            # [sd.inpainting] inject url
+            if task == Img2ImgKey or task == SDOutpaintingKey:
+                url = extra.get("url")
+                if url is None:
+                    self.send_exception("cannot find `url`")
+                    return False
+                kw["url"] = url
+            # [outpainting] inject url & mask_url
+            elif task == SDInpaintingKey:
+                url = extra.get("url")
+                mask_url = extra.get("mask_url")
+                if url is None or mask_url is None:
+                    self.send_exception("cannot find `url` or `mask_url`")
+                    return False
+                kw["url"] = url
+                kw["mask_url"] = mask_url
+            return True
+
         meta_data = data.nodeData.meta["data"]
         task = meta_data["identifier"]
         if task == VariationKey:
@@ -369,26 +396,8 @@ class Variation(CarefreeCreatorPlugin):
         else:
             kw = meta_data["parameters"]
             extra = meta_data["response"].get("extra", {})
-            if kw["seed"] == -1:
-                generated_seed = extra.get("seed")
-                if generated_seed is None:
-                    self.send_exception("cannot find a static seed")
-                    return []
-                kw["seed"] = generated_seed
-            if task == Img2ImgKey or task == SDOutpaintingKey:
-                url = extra.get("url")
-                if url is None:
-                    self.send_exception("cannot find `url`")
-                    return []
-                kw["url"] = url
-            elif task == SDInpaintingKey:
-                url = extra.get("url")
-                mask_url = extra.get("mask_url")
-                if url is None or mask_url is None:
-                    self.send_exception("cannot find `url` or `mask_url`")
-                    return []
-                kw["url"] = url
-                kw["mask_url"] = mask_url
+            if not inject():
+                return []
         # inject varations
         strength = 1.0 - data.extraData["fidelity"]
         variations = kw.setdefault("variations", [])
