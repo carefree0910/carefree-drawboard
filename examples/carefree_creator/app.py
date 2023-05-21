@@ -6,7 +6,6 @@ from cfcreator.common import VariationModel
 from cflearn.misc.toolkit import new_seed
 
 from cfdraw import *
-from cfdraw.schema.plugins import IPluginSettings
 
 from utils import *
 from fields import *
