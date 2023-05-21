@@ -15,6 +15,7 @@ import {
   PROJECT_ICON,
   REDO_ICON,
   SETTINGS_ICON,
+  SHORTCUTS_ICON,
   TEXT_EDITOR_ICON,
   UNDO_ICON,
   WIKI_ICON,
@@ -242,6 +243,22 @@ export const reactPluginSettings: IMakePlugin<ReactPlugins>[] = [
     },
   },
   {
+    type: "email",
+    props: {
+      nodeConstraint: "none",
+      renderInfo: {
+        w: 0,
+        h: 0,
+        offsetX: -120,
+        src: EMAIL_ICON,
+        tooltip: "email-tooltip",
+        pivot: "rb",
+      },
+      pluginInfo: {},
+      noExpand: true,
+    },
+  },
+  {
     type: "github",
     props: {
       nodeConstraint: "none",
@@ -258,19 +275,17 @@ export const reactPluginSettings: IMakePlugin<ReactPlugins>[] = [
     },
   },
   {
-    type: "email",
+    type: "shortcuts",
     props: {
       nodeConstraint: "none",
       renderInfo: {
-        w: 0,
-        h: 0,
-        offsetX: -120,
-        src: EMAIL_ICON,
-        tooltip: "email-tooltip",
-        pivot: "rb",
+        w: 400,
+        h: 400,
+        src: SHORTCUTS_ICON,
+        tooltip: "shortcuts-tooltip",
+        pivot: "lb",
       },
       pluginInfo: {},
-      noExpand: true,
     },
   },
 ];

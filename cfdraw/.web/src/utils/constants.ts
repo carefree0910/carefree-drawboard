@@ -86,10 +86,12 @@ export const ARRANGE_ICON =
   "https://user-images.githubusercontent.com/15677328/234545341-870f888e-0dfc-4d8e-a79b-fcb9ddbe0977.svg";
 export const WIKI_ICON =
   "https://user-images.githubusercontent.com/15677328/234538371-88891a34-1b30-4c2b-bd2e-a80e2030210d.svg";
-export const GITHUB_ICON =
-  "https://user-images.githubusercontent.com/15677328/234538604-3017a411-e5f1-4564-8bc0-5090e973d86b.svg";
 export const EMAIL_ICON =
   "https://user-images.githubusercontent.com/15677328/234538781-b59b514f-99be-4ca2-859d-601f024cd7e0.svg";
+export const GITHUB_ICON =
+  "https://user-images.githubusercontent.com/15677328/234538604-3017a411-e5f1-4564-8bc0-5090e973d86b.svg";
+export const SHORTCUTS_ICON =
+  "https://github.com/carefree0910/carefree-drawboard/assets/15677328/f3eda420-1448-40a4-9db9-5ef198bb2a5a";
 
 export const ADD_TEXT_ICON =
   "https://user-images.githubusercontent.com/15677328/236501259-c84127ef-91f3-4dc7-a505-2112ca519e54.svg";

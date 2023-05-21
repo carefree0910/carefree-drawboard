@@ -12,8 +12,9 @@ export enum Tooltip_Words {
   "group-the-nodes-tooltip" = "group-the-nodes-tooltip",
   "auto-arrange-tooltip" = "auto-arrange-tooltip",
   "wiki-tooltip" = "wiki-tooltip",
-  "github-tooltip" = "github-tooltip",
   "email-tooltip" = "email-tooltip",
+  "github-tooltip" = "github-tooltip",
+  "shortcuts-tooltip" = "shortcuts-tooltip",
 }
 
 export const tooltipLangRecords: Record<Lang, Record<Tooltip_Words, string>> = {
@@ -29,8 +30,9 @@ export const tooltipLangRecords: Record<Lang, Record<Tooltip_Words, string>> = {
     [Tooltip_Words["group-the-nodes-tooltip"]]: "打组",
     [Tooltip_Words["auto-arrange-tooltip"]]: "自动排列",
     [Tooltip_Words["wiki-tooltip"]]: "Wiki",
-    [Tooltip_Words["github-tooltip"]]: "Github",
     [Tooltip_Words["email-tooltip"]]: "Email",
+    [Tooltip_Words["github-tooltip"]]: "Github",
+    [Tooltip_Words["shortcuts-tooltip"]]: "快捷键",
   },
   en: {
     [Tooltip_Words["settings-tooltip"]]: "Settings",
@@ -44,7 +46,8 @@ export const tooltipLangRecords: Record<Lang, Record<Tooltip_Words, string>> = {
     [Tooltip_Words["group-the-nodes-tooltip"]]: "Group the Nodes",
     [Tooltip_Words["auto-arrange-tooltip"]]: "Auto Arrange",
     [Tooltip_Words["wiki-tooltip"]]: "Wiki",
-    [Tooltip_Words["github-tooltip"]]: "Github",
     [Tooltip_Words["email-tooltip"]]: "Email",
+    [Tooltip_Words["github-tooltip"]]: "Github",
+    [Tooltip_Words["shortcuts-tooltip"]]: "Shortcuts",
   },
 };

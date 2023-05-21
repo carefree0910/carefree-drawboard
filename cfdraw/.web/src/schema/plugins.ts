@@ -98,6 +98,7 @@ export const allReactPlugins = [
   "wiki",
   "email",
   "github",
+  "shortcuts",
   "logo",
   "textEditor",
   "groupEditor",
@@ -130,6 +131,7 @@ export interface IPluginProps {
   wiki: IPlugin;
   email: IPlugin;
   github: IPlugin;
+  shortcuts: IPlugin;
   logo: ILogoPlugin;
   textEditor: IPlugin;
   groupEditor: IPlugin;

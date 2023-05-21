@@ -20,6 +20,7 @@ export * from "./_react/DeletePlugin";
 export * from "./_react/TextEditorPlugin";
 export * from "./_react/GroupPlugin";
 export * from "./_react/LinksPlugin";
+export * from "./_react/ShortcutsPlugin";
 export * from "./_react/BrushPlugin";
 export * from "./_python/PluginGroup";
 export * from "./_python/FieldsPlugin";
