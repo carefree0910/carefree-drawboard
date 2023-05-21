@@ -30,15 +30,17 @@ const TextEditorPlugin = ({ pluginInfo: { node }, ...props }: IPlugin) => {
     }
   }, [node]);
 
-  const onChange: ColorChangeHandler = (color) => {
+  const onChangeColor: ColorChangeHandler = (color) => {
     editColor({ trace: false })(color.hex);
   };
-  const onChangeComplete: ColorChangeHandler = (color) => {
+  const onChangeColorComplete: ColorChangeHandler = (color) => {
     console.log(">>> onChangeComplete");
     editColor({ trace: true })(color.hex);
   };
 
   if (node?.type !== "text" || !textParams) return null;
+
+  const textColor = textParams.color;
 
   return (
     <Render id={id} {...props}>
@@ -60,9 +62,9 @@ const TextEditorPlugin = ({ pluginInfo: { node }, ...props }: IPlugin) => {
             onBlur={() => editFontSize({ trace: true })(fontSize)}
           />
           <CFColorPicker
-            color={textParams.color}
-            onChange={onChange}
-            onChangeComplete={onChangeComplete}
+            color={textColor}
+            onChange={onChangeColor}
+            onChangeComplete={onChangeColorComplete}
             thumbnailProps={{ ml: "12px" }}
           />
         </Flex>
