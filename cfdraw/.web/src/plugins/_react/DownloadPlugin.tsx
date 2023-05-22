@@ -2,13 +2,13 @@ import { useCallback, useMemo, useState } from "react";
 import { observer } from "mobx-react-lite";
 import { Flex, Spacer } from "@chakra-ui/react";
 
-import { getRandomHash } from "@carefree0910/core";
 import { langStore, translate, useSelecting } from "@carefree0910/business";
 
 import type { IPlugin } from "@/schema/plugins";
 import { DownloadFormat, allDownloadFormat } from "@/schema/misc";
 import { Download_Words } from "@/lang/download";
 import { themeStore } from "@/stores/theme";
+import { usePluginIds } from "@/stores/pluginsInfo";
 import { downloadNodes } from "@/actions/download";
 import CFSelect, { CFSrollableSelect } from "@/components/CFSelect";
 import CFText from "@/components/CFText";
@@ -20,7 +20,7 @@ import { useClosePanel } from "../components/hooks";
 import Render from "../components/Render";
 
 const DownloadPlugin = ({ pluginInfo, ...props }: IPlugin) => {
-  const id = useMemo(() => `download_${getRandomHash()}`, []);
+  const id = usePluginIds("download").id;
   const lang = langStore.tgt;
   const { type, nodes } = useSelecting("raw");
   const { w, h, imgWH } = useSelecting("basic")({ fixed: 0 }) ?? {};

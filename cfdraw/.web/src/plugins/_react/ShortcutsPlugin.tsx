@@ -1,13 +1,13 @@
-import { useMemo } from "react";
 import { observer } from "mobx-react-lite";
 
+import { Lang } from "@carefree0910/core";
 import { langStore } from "@carefree0910/business";
 
 import type { IPythonPlugin } from "@/schema/_python";
 import { drawboardPluginFactory } from "@/plugins/utils/factory";
-import Render from "@/plugins/components/Render";
+import { usePluginIds } from "@/stores/pluginsInfo";
 import CFMarkdown from "@/components/CFMarkdown";
-import { Lang, getRandomHash } from "@carefree0910/core";
+import Render from "@/plugins/components/Render";
 
 const shortcutsMarkdown: Record<Lang, string> = {
   zh: `
@@ -44,7 +44,7 @@ const shortcutsMarkdown: Record<Lang, string> = {
 `,
 };
 const ShortcutsPlugin = ({ pluginInfo, ...props }: IPythonPlugin) => {
-  const id = useMemo(() => `shortcuts_${getRandomHash()}`, []);
+  const id = usePluginIds("shortcuts").id;
   const lang = langStore.tgt;
 
   return (

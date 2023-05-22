@@ -1,4 +1,4 @@
-import { useMemo, useState } from "react";
+import { useState } from "react";
 import { observer } from "mobx-react-lite";
 import { ButtonProps, Flex } from "@chakra-ui/react";
 
@@ -18,7 +18,7 @@ import {
 } from "@/utils/constants";
 import { Add_Words } from "@/lang/add";
 import { Toast_Words } from "@/lang/toast";
-import { usePluginIsExpanded } from "@/stores/pluginsInfo";
+import { usePluginIds, usePluginIsExpanded } from "@/stores/pluginsInfo";
 import { importMeta } from "@/actions/importMeta";
 import { getNewProject, loadLocalProject, saveCurrentProject } from "@/actions/manageProjects";
 import CFInput, { ICFInput } from "@/components/CFInput";
@@ -45,7 +45,7 @@ const FrameWHInput = ({ onNewFrame, ...props }: ICFInput & { onNewFrame: () => v
 );
 
 const AddPlugin = ({ pluginInfo, ...props }: IPlugin) => {
-  const id = useMemo(() => `add_${getRandomHash()}`, []);
+  const id = usePluginIds("add").id;
   const lang = langStore.tgt;
   const expand = usePluginIsExpanded(id);
   const [w, setW] = useState(512);

@@ -1,8 +1,8 @@
-import { useEffect, useMemo } from "react";
+import { useEffect } from "react";
 import { observer } from "mobx-react-lite";
 import { runInAction } from "mobx";
 
-import { IPathOptions, getRandomHash } from "@carefree0910/core";
+import { IPathOptions } from "@carefree0910/core";
 import {
   BoardStore,
   langStore,
@@ -18,7 +18,7 @@ import { Brush_Words } from "@/lang/brush";
 import { Toast_Words } from "@/lang/toast";
 import { themeStore } from "@/stores/theme";
 import { VisibleManager, uiStore } from "@/stores/ui";
-import { setPluginExpanded } from "@/stores/pluginsInfo";
+import { setPluginExpanded, usePluginIds } from "@/stores/pluginsInfo";
 import { hideAllPlugins } from "@/actions/managePlugins";
 import CFButton from "@/components/CFButton";
 import CFSlider from "@/components/CFSlider";
@@ -100,7 +100,8 @@ function SingleBrushEditor({ pathIndex, options }: { pathIndex: number; options:
 }
 
 const BrushPlugin = ({ pluginInfo, ...props }: IPlugin) => {
-  const id = useMemo(() => `brush_${getRandomHash()}`, []);
+  const id = usePluginIds("brush").id;
+
   const lang = langStore.tgt;
   const options = toolbarStore.allBrushOptions;
   const inBrushMode = toolbarStore.inBrushMode;

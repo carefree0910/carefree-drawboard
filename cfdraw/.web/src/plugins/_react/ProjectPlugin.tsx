@@ -3,7 +3,7 @@ import { observer } from "mobx-react-lite";
 import { useMemo, useState, useEffect, useCallback } from "react";
 import { Box, Flex, Image } from "@chakra-ui/react";
 
-import { Dictionary, Graph, INodePack, Logger, getRandomHash } from "@carefree0910/core";
+import { Dictionary, Graph, INodePack, Logger } from "@carefree0910/core";
 import { langStore, translate, useSafeExecute } from "@carefree0910/business";
 
 import type { IPlugin } from "@/schema/plugins";
@@ -21,7 +21,7 @@ import {
   updateCurrentProjectInfo,
   useCurrentProjectInfo,
 } from "@/stores/projects";
-import { usePluginIsExpanded } from "@/stores/pluginsInfo";
+import { usePluginIds, usePluginIsExpanded } from "@/stores/pluginsInfo";
 import {
   AUTO_SAVE_PREFIX,
   IProject,
@@ -46,7 +46,7 @@ import Render from "../components/Render";
 type IImportLocal = IProject | INodePack[];
 
 const ProjectPlugin = ({ pluginInfo, ...props }: IPlugin) => {
-  const id = useMemo(() => `project_${getRandomHash()}`, []);
+  const id = usePluginIds("project").id;
   const lang = langStore.tgt;
   const userId = userStore.userId;
   const expand = usePluginIsExpanded(id);

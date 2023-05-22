@@ -9,6 +9,7 @@ import { langStore, selectingNodesStore, translate, useEditText } from "@carefre
 import type { IPlugin } from "@/schema/plugins";
 import { UI_Words } from "@/lang/ui";
 import { NodeEditor_Words } from "@/lang/nodeEditor";
+import { usePluginIds } from "@/stores/pluginsInfo";
 import { CFSrollableSelect, ICFSelect } from "@/components/CFSelect";
 import CFSlider from "@/components/CFSlider";
 import CFDivider from "@/components/CFDivider";
@@ -25,7 +26,7 @@ const textAlignDict: Record<TextAlign, Record<Lang, string>> = {
 };
 
 const TextEditorPlugin = ({ pluginInfo: { node }, ...props }: IPlugin) => {
-  const id = useMemo(() => `textEditor_${getRandomHash()}`, []);
+  const id = usePluginIds("textEditor").id;
   const lang = langStore.tgt;
   const [content, setContent] = useState("");
   const [fontSize, setFontSize] = useState(0);

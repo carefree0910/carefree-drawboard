@@ -18,7 +18,7 @@ function getMetaRepresentation(meta: IMeta): string {
 }
 
 const MetaPlugin = ({ pluginInfo, ...others }: IPlugin) => {
-  const { id } = usePluginIds("meta");
+  const id = usePluginIds("meta").id;
   const info = useSelecting("raw");
   if (!info || info.type === "group" || info.type === "frame" || info.type === "multiple") {
     return null;

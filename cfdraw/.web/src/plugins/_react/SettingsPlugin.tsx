@@ -1,8 +1,7 @@
-import { useMemo } from "react";
 import { observer } from "mobx-react-lite";
 import { Box, Checkbox, Flex } from "@chakra-ui/react";
 
-import { getRandomHash, Lang } from "@carefree0910/core";
+import { Lang } from "@carefree0910/core";
 import {
   langDescriptions,
   langStore,
@@ -22,6 +21,7 @@ import {
   usePythonPluginIsVisible,
   setPythonPluginVisible,
   setReactPluginVisible,
+  usePluginIds,
 } from "@/stores/pluginsInfo";
 import { parseIStr } from "@/actions/i18n";
 import { hideAllPlugins, showAllPlugins } from "@/actions/managePlugins";
@@ -38,7 +38,7 @@ interface LangOption {
   label: string;
 }
 const SettingsPlugin = ({ pluginInfo, ...props }: IPlugin) => {
-  const id = useMemo(() => `settings_${getRandomHash()}`, []);
+  const id = usePluginIds("settings").id;
   const lang = langStore.tgt;
   const commonProps = { fontWeight: 400, size: "md" };
   const disablePluginSettings = uiStore.disablePluginSettings;
