@@ -5,7 +5,7 @@ import { Dictionary, getRandomHash, isUndefined } from "@carefree0910/core";
 import { ABCStore, useIsReady } from "@carefree0910/business";
 
 import type { IMeta } from "@/schema/meta";
-import type { ReactPlugins } from "@/schema/plugins";
+import { allReactPlugins, type ReactPlugins } from "@/schema/plugins";
 import type { IPythonPluginMessage } from "@/schema/_python";
 import { stripHashFromIdentifier } from "@/utils/misc";
 
@@ -105,14 +105,18 @@ class PluginsInfoStore extends ABCStore<IPluginsInfoStore> implements IPluginsIn
 
 const pluginsInfoStore = new PluginsInfoStore();
 // ids
-export const usePluginIds = (identifier: string): IDs => {
-  const pureIdentifier = stripHashFromIdentifier(identifier).replaceAll(".", "_");
+export function usePluginIds(plugin: ReactPlugins): IDs;
+export function usePluginIds(identifier: string): IDs;
+export function usePluginIds(input: ReactPlugins | string): IDs {
+  const pureIdentifier = allReactPlugins.includes(input)
+    ? input
+    : stripHashFromIdentifier(input).replaceAll(".", "_");
   return pluginsInfoStore.setDefault("ids", {
     key: pureIdentifier,
     hasEffect: true,
     getDefault: () => ({ id: `${pureIdentifier}_${getRandomHash()}`, pureIdentifier }),
   });
-};
+}
 // hashes
 export const usePluginHash = (id: string): string => {
   return pluginsInfoStore.setDefault("hashes", {
