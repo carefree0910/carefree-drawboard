@@ -1,9 +1,9 @@
 import type { ColorChangeHandler } from "react-color";
-import { useEffect, useMemo, useState } from "react";
+import { useEffect, useState } from "react";
 import { observer } from "mobx-react-lite";
-import { Flex, Textarea } from "@chakra-ui/react";
+import { Flex } from "@chakra-ui/react";
 
-import { Lang, TextAlign, allTextAlign, getRandomHash } from "@carefree0910/core";
+import { Lang, TextAlign, allTextAlign } from "@carefree0910/core";
 import { langStore, selectingNodesStore, translate, useEditText } from "@carefree0910/business";
 
 import type { IPlugin } from "@/schema/plugins";
@@ -14,6 +14,7 @@ import { CFSrollableSelect, ICFSelect } from "@/components/CFSelect";
 import CFSlider from "@/components/CFSlider";
 import CFDivider from "@/components/CFDivider";
 import CFHeading from "@/components/CFHeading";
+import CFTextarea from "@/components/CFTextarea";
 import CFColorPicker from "@/components/CFColorPicker";
 import { drawboardPluginFactory } from "../utils/factory";
 import Render from "../components/Render";
@@ -101,7 +102,7 @@ const TextEditorPlugin = ({ pluginInfo: { node }, ...props }: IPlugin) => {
           onChange={onChangeAlign}
         />
         <CFDivider />
-        <Textarea
+        <CFTextarea
           flex={1}
           value={content}
           onChange={(e) => {
