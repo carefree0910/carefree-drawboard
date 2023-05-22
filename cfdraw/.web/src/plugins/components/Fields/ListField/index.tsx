@@ -7,7 +7,7 @@ import { langStore, translate } from "@carefree0910/business";
 
 import "./index.scss";
 import AddIcon from "@/assets/plugin_icons/add.svg";
-import DeleteIcon from "@/assets/icons/delete.svg";
+import DeleteIcon from "@/assets/plugin_icons/delete.svg";
 
 import type { IField, IListProperties } from "@/schema/plugins";
 import type { IDefinitions, IListField } from "@/schema/fields";
