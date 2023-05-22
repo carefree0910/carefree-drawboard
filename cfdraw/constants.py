@@ -82,15 +82,17 @@ BUGGY_PROJECT_FOLDER = ".buggy"
 PROJECT_META_FILE = "_meta.json"
 
 # icons
-TEXT_TO_IMAGE_ICON = "https://user-images.githubusercontent.com/15677328/234642061-98636956-4e3b-44ef-a670-a478bc9eb4ca.svg"
-IMAGE_TO_IMAGE_ICON = "https://user-images.githubusercontent.com/15677328/234642045-0416300a-8475-4afa-8285-88c0eee93c07.svg"
-IMAGE_TO_TEXT_ICON = "https://user-images.githubusercontent.com/15677328/234642056-79e20fc9-0005-4e0e-8365-3285af8803ae.svg"
+TEXT_TO_IMAGE_ICON = "https://ailab-huawei-cdn.nolibox.com/upload/static/carefree-drawboard/icons/txt2img.svg"
+IMAGE_TO_IMAGE_ICON = "https://ailab-huawei-cdn.nolibox.com/upload/static/carefree-drawboard/icons/img2img.svg"
+IMAGE_TO_TEXT_ICON = "https://ailab-huawei-cdn.nolibox.com/upload/static/carefree-drawboard/icons/img2txt.svg"
 CONTROLNET_ICON = IMAGE_TO_IMAGE_ICON
-SD_INPAINTING_ICON = "https://user-images.githubusercontent.com/15677328/235569053-61e34aa8-d77c-4bee-8dc9-e055141c4afd.svg"
-SD_OUTPAINTING_ICON = "https://user-images.githubusercontent.com/15677328/235464888-9d99cf47-1533-4a81-b69d-2b0e18216e64.svg"
-SR_ICON = "https://user-images.githubusercontent.com/15677328/235443572-c4fb3900-2381-45bb-8df6-b39e4476f072.svg"
-SOD_ICON = "https://user-images.githubusercontent.com/15677328/235569055-197e85ed-b00a-467a-8552-a39a4123bb9e.svg"
-INPAINTING_ICON = "https://user-images.githubusercontent.com/15677328/235569047-75da87f3-977c-48ac-8c8d-8a85166369ae.svg"
-VARIATION_ICON = "https://user-images.githubusercontent.com/15677328/235648475-f7e18b37-f684-461b-a4b8-76f8096f06c2.svg"
-DEFAULT_PLUGIN_ICON = "https://user-images.githubusercontent.com/15677328/234536140-233d5f2d-b6fc-407b-b6df-59b5f37e0bcf.svg"
-DEFAULT_PLUGIN_GROUP_ICON = "https://user-images.githubusercontent.com/15677328/235428758-04e6783c-6eaf-47cb-ae4f-b446c9e65412.svg"
+SD_INPAINTING_ICON = "https://ailab-huawei-cdn.nolibox.com/upload/static/carefree-drawboard/icons/sd-inpainting.svg"
+SD_OUTPAINTING_ICON = "https://ailab-huawei-cdn.nolibox.com/upload/static/carefree-drawboard/icons/sd-outpainting.svg"
+SR_ICON = (
+    "https://ailab-huawei-cdn.nolibox.com/upload/static/carefree-drawboard/icons/sr.svg"
+)
+SOD_ICON = "https://ailab-huawei-cdn.nolibox.com/upload/static/carefree-drawboard/icons/sod.svg"
+INPAINTING_ICON = "https://ailab-huawei-cdn.nolibox.com/upload/static/carefree-drawboard/icons/inpainting.svg"
+VARIATION_ICON = "https://ailab-huawei-cdn.nolibox.com/upload/static/carefree-drawboard/icons/variation.svg"
+DEFAULT_PLUGIN_ICON = "https://ailab-huawei-cdn.nolibox.com/upload/static/carefree-drawboard/icons/default-plugin.svg"
+DEFAULT_PLUGIN_GROUP_ICON = "https://ailab-huawei-cdn.nolibox.com/upload/static/carefree-drawboard/icons/default-plugin-group.svg"
