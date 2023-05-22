@@ -187,3 +187,22 @@ export function useScrollBarSx(): ChakraProps["sx"] {
     },
   };
 }
+export function useInputProps(): ChakraProps {
+  const {
+    textColor,
+    captionColor,
+    inputColors: { activeBorderColor },
+  } = themeStore.styles;
+
+  return {
+    color: textColor,
+    borderWidth: "1px",
+    borderRadius: "0px",
+    flexShrink: 0,
+    _placeholder: { color: captionColor },
+    _focusVisible: {
+      borderColor: activeBorderColor,
+      boxShadow: `0 0 0 1px ${activeBorderColor}`,
+    },
+  };
+}
