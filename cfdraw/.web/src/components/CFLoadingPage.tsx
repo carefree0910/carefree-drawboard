@@ -4,7 +4,8 @@ import { Center, Flex, Spacer } from "@chakra-ui/react";
 
 import { useIsReady } from "@carefree0910/business";
 
-import loadingPage from "@/assets/loading-page.json";
+import loadingPage from "@/assets/lottie/loading-page.json";
+
 import { makeVisibilityTransitionProps } from "@/utils/constants";
 import { useSettingsSynced } from "@/stores/settings";
 import { themeStore } from "@/stores/theme";

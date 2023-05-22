@@ -2,7 +2,8 @@ import { observer } from "mobx-react-lite";
 import { useState, useCallback } from "react";
 import { Box, Button, ButtonProps, Image, ImageProps } from "@chakra-ui/react";
 
-import iconLoading from "@/assets/icon-loading.json";
+import iconLoading from "@/assets/lottie/icon-loading.json";
+
 import { Event } from "@/utils/event";
 import { makeVisibilityTransitionProps } from "@/utils/constants";
 import { themeStore } from "@/stores/theme";
