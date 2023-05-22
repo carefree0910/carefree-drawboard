@@ -105,15 +105,15 @@ class PluginsInfoStore extends ABCStore<IPluginsInfoStore> implements IPluginsIn
 
 const pluginsInfoStore = new PluginsInfoStore();
 // ids
-export function usePluginIds(plugin: ReactPlugins): IDs;
-export function usePluginIds(identifier: string): IDs;
-export function usePluginIds(input: ReactPlugins | string): IDs {
+export function usePluginIds(plugin: ReactPlugins, hasEffect?: boolean): IDs;
+export function usePluginIds(identifier: string, hasEffect?: boolean): IDs;
+export function usePluginIds(input: ReactPlugins | string, hasEffect: boolean = true): IDs {
   const pureIdentifier = allReactPlugins.includes(input)
     ? input
     : stripHashFromIdentifier(input).replaceAll(".", "_");
   return pluginsInfoStore.setDefault("ids", {
     key: pureIdentifier,
-    hasEffect: true,
+    hasEffect,
     getDefault: () => ({ id: `${pureIdentifier}_${getRandomHash()}`, pureIdentifier }),
   });
 }

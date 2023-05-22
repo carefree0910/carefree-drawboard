@@ -38,13 +38,13 @@ export function collapseAllPlugins(opt?: IExcepts) {
     Object.keys(usePluginsExpanded()).forEach((id) => {
       if (
         opt?.exceptReactPlugins &&
-        opt.exceptReactPlugins.some((type) => usePluginIds(type).id === id)
+        opt.exceptReactPlugins.some((type) => usePluginIds(type, false).id === id)
       ) {
         return;
       }
       if (
         opt?.exceptIdentifiers &&
-        opt.exceptIdentifiers.some((identifier) => usePluginIds(identifier).id === id)
+        opt.exceptIdentifiers.some((identifier) => usePluginIds(identifier, false).id === id)
       ) {
         return;
       }
