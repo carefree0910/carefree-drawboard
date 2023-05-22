@@ -53,7 +53,7 @@ const useSwitchBrushMode = () => async (): Promise<void> => {
     if (inBrushMode) {
       uiStore.disablePluginSettings = true;
       VisibleManager.updateVisibleBackup();
-      hideAllPlugins({ except: ["brush"] });
+      hideAllPlugins({ exceptReactPlugins: ["brush"] });
     } else {
       uiStore.disablePluginSettings = false;
       VisibleManager.restoreVisibleBackup();

@@ -1,6 +1,6 @@
 import { runInAction } from "mobx";
 
-import type { AllPlugins } from "@/schema/plugins";
+import type { ReactPlugins } from "@/schema/plugins";
 import { reactPluginSettings } from "@/_settings";
 import { usePythonPluginSettings } from "@/stores/settings";
 import {
@@ -8,37 +8,55 @@ import {
   usePluginsExpanded,
   setReactPluginVisible,
   setPythonPluginVisible,
+  usePluginIds,
 } from "@/stores/pluginsInfo";
 
-function setAllPluginVisible(visible: boolean, except?: AllPlugins[]) {
+interface IExcepts {
+  exceptReactPlugins?: ReactPlugins[];
+  exceptIdentifiers?: string[];
+}
+
+function setAllPluginVisible(visible: boolean, opt?: IExcepts) {
+  opt ??= {};
   runInAction(() => {
     reactPluginSettings.forEach(({ type }) => {
-      if (except?.includes(type)) return;
+      if (opt?.exceptReactPlugins?.includes(type)) return;
       if (!["settings", "undo", "redo"].includes(type)) {
         setReactPluginVisible(type, visible);
       }
     });
     usePythonPluginSettings().forEach(({ props }) => {
       const identifier = props.pluginInfo.identifier;
-      if (except?.includes(identifier)) return;
+      if (opt?.exceptIdentifiers?.includes(identifier)) return;
       setPythonPluginVisible(identifier, visible);
     });
   });
 }
 
-export function collapseAllPlugins(opt?: { except?: AllPlugins[] }) {
+export function collapseAllPlugins(opt?: IExcepts) {
   runInAction(() => {
     Object.keys(usePluginsExpanded()).forEach((id) => {
-      if (opt?.except && opt.except.some((e) => id.startsWith(e))) return;
+      if (
+        opt?.exceptReactPlugins &&
+        opt.exceptReactPlugins.some((type) => usePluginIds(type).id === id)
+      ) {
+        return;
+      }
+      if (
+        opt?.exceptIdentifiers &&
+        opt.exceptIdentifiers.some((identifier) => usePluginIds(identifier).id === id)
+      ) {
+        return;
+      }
       setPluginExpanded(id, false);
     });
   });
 }
-export function hideAllPlugins(opt?: { except?: AllPlugins[] }) {
+export function hideAllPlugins(opt?: IExcepts) {
   // collapse all plugins first
   collapseAllPlugins(opt);
   // then hide all plugins
-  setAllPluginVisible(false, opt?.except);
+  setAllPluginVisible(false, opt);
 }
 export function showAllPlugins() {
   setAllPluginVisible(true);
