@@ -1,5 +1,8 @@
 import type { BoxProps } from "@chakra-ui/react";
 
+import ImagePlaceholder from "@/assets/image-placeholder.svg";
+import NSFWImagePlaceholder from "@/assets/nsfw-placeholder.svg";
+
 export const IS_PROD = import.meta.env.PROD;
 
 export const BOARD_CONTAINER_ID = "board.container";
@@ -50,8 +53,6 @@ export const DEFAULT_PLUGIN_SETTINGS = {
   expandOffsetY: 8,
 };
 
-export const IMAGE_PLACEHOLDER =
-  "https://user-images.githubusercontent.com/15677328/236621223-e3b508b9-5a60-471c-8630-470b7e6e8cde.svg";
-export const NSFW_IMAGE_PLACEHOLDER =
-  "https://user-images.githubusercontent.com/15677328/235883103-9a3941c0-d5d9-4064-9e28-ba0f07f6921f.svg";
+export const IMAGE_PLACEHOLDER = ImagePlaceholder;
+export const NSFW_IMAGE_PLACEHOLDER = NSFWImagePlaceholder;
 export const DEFAULT_FONT_SIZE = 64;
