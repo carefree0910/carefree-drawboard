@@ -13,7 +13,7 @@ import { drawboardPluginFactory } from "@/plugins/utils/factory";
 import PythonPluginWithSubmit from "./PluginWithSubmit";
 
 const PythonChatPlugin = ({ pluginInfo, ...props }: IPythonQAPlugin) => {
-  const { id } = usePluginIds(`Chat_${pluginInfo.identifier}`);
+  const id = usePluginIds(`Chat_${pluginInfo.identifier}`).id;
   const [context, setContext] = useState(parseIStr(pluginInfo.initialText));
   const [userInput, setUserInput] = useState("");
   const lang = langStore.tgt;

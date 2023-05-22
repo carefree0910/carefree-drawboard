@@ -13,7 +13,7 @@ import { drawboardPluginFactory } from "@/plugins/utils/factory";
 import PythonPluginWithSubmit from "./PluginWithSubmit";
 
 const PythonQAPlugin = ({ pluginInfo, ...props }: IPythonQAPlugin) => {
-  const { id } = usePluginIds(`QA_${pluginInfo.identifier}`);
+  const id = usePluginIds(`QA_${pluginInfo.identifier}`).id;
   const [userInput, setUserInput] = useState("");
   const [serverText, setServerText] = useState(parseIStr(pluginInfo.initialText));
   const lang = langStore.tgt;

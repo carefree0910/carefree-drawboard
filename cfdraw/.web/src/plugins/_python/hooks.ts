@@ -96,7 +96,7 @@ export function useTextTransfer({ key, plugin: { pluginInfo, ...props } }: IUseT
   text: string;
 } {
   const { node, nodes, identifier, retryInterval, updateInterval } = pluginInfo;
-  const { id } = usePluginIds(`${key}_${identifier}`);
+  const id = usePluginIds(`${key}_${identifier}`).id;
   const needRender = usePluginNeedRender(id);
   const [hash, setHash] = useState<string | undefined>(undefined);
   useEffect(() => {
