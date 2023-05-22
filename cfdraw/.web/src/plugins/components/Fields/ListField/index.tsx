@@ -5,14 +5,16 @@ import { Box, Center, Flex, Image, Spacer } from "@chakra-ui/react";
 import { Dictionary, getRandomHash } from "@carefree0910/core";
 import { langStore, translate } from "@carefree0910/business";
 
+import "./index.scss";
+import AddIcon from "@/assets/plugin_icons/add.svg";
+import DeleteIcon from "@/assets/icons/delete.svg";
+
 import type { IField, IListProperties } from "@/schema/plugins";
 import type { IDefinitions, IListField } from "@/schema/fields";
-import "./index.scss";
-import DeleteIcon from "@/assets/icons/delete.svg";
 import { ReactComponent as ArrowDownIcon } from "@/assets/icons/arrow-down.svg";
 import { genBlock } from "@/utils/bem";
 import { titleCaseWord } from "@/utils/misc";
-import { ADD_ICON, EXPAND_TRANSITION } from "@/utils/constants";
+import { EXPAND_TRANSITION } from "@/utils/constants";
 import { UI_Words } from "@/lang/ui";
 import { themeStore, useScrollBarSx } from "@/stores/theme";
 import { getMetaField, setMetaField } from "@/stores/meta";
@@ -85,7 +87,7 @@ function ListField({ definition, gap, ...fieldKeys }: IField<IListField> & { gap
           </Flex>
         </CFTooltip>
         <CFTooltip label={translate(UI_Words["add-object-to-list-tooltip"], lang)}>
-          <Image w="34px" h="34px" p="6px" src={ADD_ICON} cursor="pointer" onClick={onAdd} />
+          <Image w="34px" h="34px" p="6px" src={AddIcon} cursor="pointer" onClick={onAdd} />
         </CFTooltip>
       </Flex>
       <Flex

@@ -1,25 +1,24 @@
 import type { ReactPlugins, IMakePlugin } from "@/schema/plugins";
 
+import SettingsIcon from "@/assets/plugin_icons/settings.svg";
+import ProjectIcon from "@/assets/plugin_icons/project.svg";
+import AddIcon from "@/assets/plugin_icons/add.svg";
+import BrushIcon from "@/assets/plugin_icons/brush.svg";
+import UndoIcon from "@/assets/plugin_icons/undo.svg";
+import RedoIcon from "@/assets/plugin_icons/redo.svg";
+import MetaIcon from "@/assets/plugin_icons/meta.svg";
+import DownloadIcon from "@/assets/plugin_icons/download.svg";
+import DeleteIcon from "@/assets/plugin_icons/delete.svg";
+import EditorIcon from "@/assets/plugin_icons/editor.svg";
+import GroupEditorIcon from "@/assets/plugin_icons/group-editor.svg";
+import MultiEditorIcon from "@/assets/plugin_icons/multi-editor.svg";
+import ArrangeIcon from "@/assets/plugin_icons/arrange.svg";
+import WikiIcon from "@/assets/plugin_icons/wiki.svg";
+import EmailIcon from "@/assets/plugin_icons/email.svg";
+import GitHubIcon from "@/assets/plugin_icons/github.svg";
+import ShortcutsIcon from "@/assets/plugin_icons/shortcuts.svg";
+
 import { settingsStore } from "./stores/settings";
-import {
-  ADD_ICON,
-  ARRANGE_ICON,
-  BRUSH_ICON,
-  DELETE_ICON,
-  DOWNLOAD_ICON,
-  EMAIL_ICON,
-  GITHUB_ICON,
-  GROUP_EDITOR_ICON,
-  META_ICON,
-  MULTI_EDITOR_ICON,
-  PROJECT_ICON,
-  REDO_ICON,
-  SETTINGS_ICON,
-  SHORTCUTS_ICON,
-  TEXT_EDITOR_ICON,
-  UNDO_ICON,
-  WIKI_ICON,
-} from "./utils/constants";
 
 export const reactPluginSettings: IMakePlugin<ReactPlugins>[] = [
   {
@@ -29,7 +28,7 @@ export const reactPluginSettings: IMakePlugin<ReactPlugins>[] = [
       renderInfo: {
         w: 300,
         h: 400,
-        src: SETTINGS_ICON,
+        src: SettingsIcon,
         tooltip: "settings-tooltip",
         pivot: "rt",
         follow: false,
@@ -45,7 +44,7 @@ export const reactPluginSettings: IMakePlugin<ReactPlugins>[] = [
         w: 300,
         h: 400,
         offsetY: 64,
-        src: PROJECT_ICON,
+        src: ProjectIcon,
         tooltip: "project-management-tooltip",
         pivot: "rt",
         follow: false,
@@ -61,7 +60,7 @@ export const reactPluginSettings: IMakePlugin<ReactPlugins>[] = [
         w: 256,
         h: 220,
         offsetY: 120,
-        src: ADD_ICON,
+        src: AddIcon,
         tooltip: "add-new-stuff-tooltip",
         pivot: "rt",
         follow: false,
@@ -77,7 +76,7 @@ export const reactPluginSettings: IMakePlugin<ReactPlugins>[] = [
         w: 300,
         h: 220,
         offsetY: 176,
-        src: BRUSH_ICON,
+        src: BrushIcon,
         tooltip: "enter-sketch-mode-tooltip",
         pivot: "rt",
         follow: false,
@@ -93,7 +92,7 @@ export const reactPluginSettings: IMakePlugin<ReactPlugins>[] = [
         w: 0,
         h: 0,
         offsetX: -28,
-        src: UNDO_ICON,
+        src: UndoIcon,
         tooltip: "undo-tooltip",
         pivot: "top",
       },
@@ -109,7 +108,7 @@ export const reactPluginSettings: IMakePlugin<ReactPlugins>[] = [
         w: 0,
         h: 0,
         offsetX: 28,
-        src: REDO_ICON,
+        src: RedoIcon,
         tooltip: "redo-tooltip",
         pivot: "top",
       },
@@ -125,7 +124,7 @@ export const reactPluginSettings: IMakePlugin<ReactPlugins>[] = [
         w: 400,
         h: 400,
         offsetY: 48,
-        src: META_ICON,
+        src: MetaIcon,
         pivot: "rt",
         follow: true,
         keepOpen: true,
@@ -141,7 +140,7 @@ export const reactPluginSettings: IMakePlugin<ReactPlugins>[] = [
         w: 240,
         h: 230,
         offsetY: -48,
-        src: DOWNLOAD_ICON,
+        src: DownloadIcon,
         pivot: "rb",
         follow: true,
         keepOpen: true,
@@ -157,7 +156,7 @@ export const reactPluginSettings: IMakePlugin<ReactPlugins>[] = [
         w: 0,
         h: 0,
         offsetY: -48,
-        src: DELETE_ICON,
+        src: DeleteIcon,
         pivot: "lb",
         follow: true,
       },
@@ -172,7 +171,7 @@ export const reactPluginSettings: IMakePlugin<ReactPlugins>[] = [
       renderInfo: {
         w: 300,
         h: 400,
-        src: TEXT_EDITOR_ICON,
+        src: EditorIcon,
         tooltip: "text-editor-tooltip",
         pivot: "right",
         follow: true,
@@ -187,7 +186,7 @@ export const reactPluginSettings: IMakePlugin<ReactPlugins>[] = [
       renderInfo: {
         w: 0,
         h: 0,
-        src: GROUP_EDITOR_ICON,
+        src: GroupEditorIcon,
         tooltip: "ungroup-the-nodes-tooltip",
         pivot: "rt",
         follow: true,
@@ -203,7 +202,7 @@ export const reactPluginSettings: IMakePlugin<ReactPlugins>[] = [
       renderInfo: {
         w: 0,
         h: 0,
-        src: MULTI_EDITOR_ICON,
+        src: MultiEditorIcon,
         tooltip: "group-the-nodes-tooltip",
         pivot: "rt",
         follow: true,
@@ -220,7 +219,7 @@ export const reactPluginSettings: IMakePlugin<ReactPlugins>[] = [
         w: 0,
         h: 0,
         offsetY: 48,
-        src: ARRANGE_ICON,
+        src: ArrangeIcon,
         tooltip: "auto-arrange-tooltip",
         pivot: "rt",
         follow: true,
@@ -236,7 +235,7 @@ export const reactPluginSettings: IMakePlugin<ReactPlugins>[] = [
       renderInfo: {
         w: 0,
         h: 0,
-        src: WIKI_ICON,
+        src: WikiIcon,
         tooltip: "wiki-tooltip",
         pivot: "rb",
       },
@@ -252,7 +251,7 @@ export const reactPluginSettings: IMakePlugin<ReactPlugins>[] = [
         w: 0,
         h: 0,
         offsetX: -120,
-        src: EMAIL_ICON,
+        src: EmailIcon,
         tooltip: "email-tooltip",
         pivot: "rb",
       },
@@ -268,7 +267,7 @@ export const reactPluginSettings: IMakePlugin<ReactPlugins>[] = [
         w: 0,
         h: 0,
         offsetX: -61,
-        src: GITHUB_ICON,
+        src: GitHubIcon,
         tooltip: "github-tooltip",
         pivot: "rb",
       },
@@ -283,7 +282,7 @@ export const reactPluginSettings: IMakePlugin<ReactPlugins>[] = [
       renderInfo: {
         w: 400,
         h: 400,
-        src: SHORTCUTS_ICON,
+        src: ShortcutsIcon,
         tooltip: "shortcuts-tooltip",
         pivot: "lb",
       },

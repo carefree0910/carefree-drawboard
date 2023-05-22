@@ -5,17 +5,16 @@ import { ButtonProps, Flex } from "@chakra-ui/react";
 import { Frame, getCenteredBBox, getRandomHash } from "@carefree0910/core";
 import { BoardStore, langStore, translate, useSafeExecute } from "@carefree0910/business";
 
+import AddTextIcon from "@/assets/plugin_icons/add-text.svg";
+import AddImageIcon from "@/assets/plugin_icons/add-image.svg";
+import AddBlankIcon from "@/assets/plugin_icons/add-blank.svg";
+import AddProjectIcon from "@/assets/plugin_icons/add-project.svg";
+import AddFrameIcon from "@/assets/plugin_icons/add-frame.svg";
+
 import type { IPlugin } from "@/schema/plugins";
 import { toastWord } from "@/utils/toast";
 import { globalEvent } from "@/utils/event";
-import {
-  ADD_BLANK_ICON,
-  ADD_FRAME_ICON,
-  ADD_IMAGE_ICON,
-  ADD_PROJECT_ICON,
-  ADD_TEXT_ICON,
-  DEFAULT_PLUGIN_SETTINGS,
-} from "@/utils/constants";
+import { DEFAULT_PLUGIN_SETTINGS } from "@/utils/constants";
 import { Add_Words } from "@/lang/add";
 import { Toast_Words } from "@/lang/toast";
 import { usePluginIds, usePluginIsExpanded } from "@/stores/pluginsInfo";
@@ -104,7 +103,7 @@ const AddPlugin = ({ pluginInfo, ...props }: IPlugin) => {
         <CFDivider />
         <Flex w="100%" flex={1} wrap="wrap" align="center" pointerEvents={expand ? "auto" : "none"}>
           <CFIconButton
-            src={ADD_TEXT_ICON}
+            src={AddTextIcon}
             tooltip={translate(Add_Words["add-text-button"], lang)}
             id={`${id}_text`}
             onClick={() => {
@@ -115,14 +114,14 @@ const AddPlugin = ({ pluginInfo, ...props }: IPlugin) => {
           />
           <CFImageUploader onUpload={closePanel}>
             <CFIconButton
-              src={ADD_IMAGE_ICON}
+              src={AddImageIcon}
               tooltip={translate(Add_Words["upload-image-button"], lang)}
               id={`${id}_image`}
               {...commonProps}
             />
           </CFImageUploader>
           <CFIconButton
-            src={ADD_BLANK_ICON}
+            src={AddBlankIcon}
             tooltip={translate(Add_Words["add-blank-button"], lang)}
             id={`${id}_blank`}
             onClick={() => {
@@ -132,7 +131,7 @@ const AddPlugin = ({ pluginInfo, ...props }: IPlugin) => {
             {...commonProps}
           />
           <CFIconButton
-            src={ADD_PROJECT_ICON}
+            src={AddProjectIcon}
             tooltip={translate(Add_Words["new-project-button"], lang)}
             id={`${id}_project`}
             onClick={onNewProject}
@@ -140,7 +139,7 @@ const AddPlugin = ({ pluginInfo, ...props }: IPlugin) => {
           />
           <CFDivider />
           <CFIconButton
-            src={ADD_FRAME_ICON}
+            src={AddFrameIcon}
             tooltip={translate(Add_Words["add-frame-button"], lang)}
             id={`${id}_frame`}
             onClick={onNewFrame}
