@@ -1,22 +1,22 @@
 import type { ReactPlugins, IMakePlugin } from "@/schema/plugins";
 
-import SettingsIcon from "@/assets/plugin_icons/settings.svg";
-import ProjectIcon from "@/assets/plugin_icons/project.svg";
-import AddIcon from "@/assets/plugin_icons/add.svg";
-import BrushIcon from "@/assets/plugin_icons/brush.svg";
-import UndoIcon from "@/assets/plugin_icons/undo.svg";
-import RedoIcon from "@/assets/plugin_icons/redo.svg";
-import MetaIcon from "@/assets/plugin_icons/meta.svg";
-import DownloadIcon from "@/assets/plugin_icons/download.svg";
-import DeleteIcon from "@/assets/plugin_icons/delete.svg";
-import EditorIcon from "@/assets/plugin_icons/editor.svg";
-import GroupEditorIcon from "@/assets/plugin_icons/group-editor.svg";
-import MultiEditorIcon from "@/assets/plugin_icons/multi-editor.svg";
-import ArrangeIcon from "@/assets/plugin_icons/arrange.svg";
-import WikiIcon from "@/assets/plugin_icons/wiki.svg";
-import EmailIcon from "@/assets/plugin_icons/email.svg";
-import GitHubIcon from "@/assets/plugin_icons/github.svg";
-import ShortcutsIcon from "@/assets/plugin_icons/shortcuts.svg";
+import SettingsIcon from "@/assets/icons/settings.svg";
+import ProjectIcon from "@/assets/icons/project.svg";
+import AddIcon from "@/assets/icons/add.svg";
+import BrushIcon from "@/assets/icons/brush.svg";
+import UndoIcon from "@/assets/icons/undo.svg";
+import RedoIcon from "@/assets/icons/redo.svg";
+import MetaIcon from "@/assets/icons/meta.svg";
+import DownloadIcon from "@/assets/icons/download.svg";
+import DeleteIcon from "@/assets/icons/delete.svg";
+import EditorIcon from "@/assets/icons/editor.svg";
+import GroupEditorIcon from "@/assets/icons/group-editor.svg";
+import MultiEditorIcon from "@/assets/icons/multi-editor.svg";
+import ArrangeIcon from "@/assets/icons/arrange.svg";
+import WikiIcon from "@/assets/icons/wiki.svg";
+import EmailIcon from "@/assets/icons/email.svg";
+import GitHubIcon from "@/assets/icons/github.svg";
+import ShortcutsIcon from "@/assets/icons/shortcuts.svg";
 
 import { settingsStore } from "./stores/settings";
 

@@ -6,7 +6,7 @@ import { Box, Flex, Image } from "@chakra-ui/react";
 import { Dictionary, Graph, INodePack, Logger } from "@carefree0910/core";
 import { langStore, translate, useSafeExecute } from "@carefree0910/business";
 
-import DeleteIcon from "@/assets/plugin_icons/delete.svg";
+import DeleteIcon from "@/assets/icons/delete.svg";
 
 import type { IPlugin } from "@/schema/plugins";
 import { toastWord } from "@/utils/toast";

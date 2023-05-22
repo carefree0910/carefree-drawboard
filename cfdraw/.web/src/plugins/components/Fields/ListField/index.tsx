@@ -6,12 +6,12 @@ import { Dictionary, getRandomHash } from "@carefree0910/core";
 import { langStore, translate } from "@carefree0910/business";
 
 import "./index.scss";
-import AddIcon from "@/assets/plugin_icons/add.svg";
-import DeleteIcon from "@/assets/plugin_icons/delete.svg";
+import AddIcon from "@/assets/icons/add.svg";
+import DeleteIcon from "@/assets/icons/delete.svg";
+import { ReactComponent as ArrowDownIcon } from "@/assets/icons/arrow-down.svg";
 
 import type { IField, IListProperties } from "@/schema/plugins";
 import type { IDefinitions, IListField } from "@/schema/fields";
-import { ReactComponent as ArrowDownIcon } from "@/assets/icons/arrow-down.svg";
 import { genBlock } from "@/utils/bem";
 import { titleCaseWord } from "@/utils/misc";
 import { EXPAND_TRANSITION } from "@/utils/constants";

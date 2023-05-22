@@ -5,11 +5,11 @@ import { ButtonProps, Flex } from "@chakra-ui/react";
 import { Frame, getCenteredBBox, getRandomHash } from "@carefree0910/core";
 import { BoardStore, langStore, translate, useSafeExecute } from "@carefree0910/business";
 
-import AddTextIcon from "@/assets/plugin_icons/add-text.svg";
-import AddImageIcon from "@/assets/plugin_icons/add-image.svg";
-import AddBlankIcon from "@/assets/plugin_icons/add-blank.svg";
-import AddProjectIcon from "@/assets/plugin_icons/add-project.svg";
-import AddFrameIcon from "@/assets/plugin_icons/add-frame.svg";
+import AddTextIcon from "@/assets/icons/add-text.svg";
+import AddImageIcon from "@/assets/icons/add-image.svg";
+import AddBlankIcon from "@/assets/icons/add-blank.svg";
+import AddProjectIcon from "@/assets/icons/add-project.svg";
+import AddFrameIcon from "@/assets/icons/add-frame.svg";
 
 import type { IPlugin } from "@/schema/plugins";
 import { toastWord } from "@/utils/toast";
