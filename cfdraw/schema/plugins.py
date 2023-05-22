@@ -228,6 +228,10 @@ Pivot of the plugin.
     offsetY: Optional[int] = Field(None, description="Y offset of the plugin button")
     bgOpacity: Optional[float] = Field(None, description="Opacity of the plugin button")
     useModal: bool = Field(False, description="Whether popup a modal for the plugin")
+    keepOpen: bool = Field(
+        False,
+        description="Whether should we keep the expanded panel of the plugin open, even when users already clicked on the drawboard.",
+    )
     modalOpacity: Optional[float] = Field(None, description="Opacity of the modal")
     expandProps: Optional[IChakra] = Field(
         None,

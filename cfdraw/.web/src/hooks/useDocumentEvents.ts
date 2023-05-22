@@ -4,6 +4,9 @@ import { makeObservable, observable } from "mobx";
 import { isUndefined } from "@carefree0910/core";
 import { ABCStore, BoardStore, useIsReady } from "@carefree0910/business";
 
+import type { ReactPlugins } from "@/schema/plugins";
+import { useReactPluginSettings } from "@/_settings";
+import { usePythonPluginSettings } from "@/stores/settings";
 import { setPluginExpanded, usePluginParent, usePluginsExpanded } from "@/stores/pluginsInfo";
 import { collapseAllPlugins } from "@/actions/managePlugins";
 
@@ -12,7 +15,16 @@ import { collapseAllPlugins } from "@/actions/managePlugins";
 function smartCollapse(): void {
   const currentExpanded = usePluginsExpanded();
   const expanding = Object.keys(currentExpanded).find((key) => currentExpanded[key]);
-  collapseAllPlugins({ exceptReactPlugins: ["brush"] });
+  collapseAllPlugins({
+    exceptReactPlugins: (["brush"] as ReactPlugins[]).concat(
+      useReactPluginSettings()
+        .filter((s) => s.props.renderInfo.keepOpen)
+        .map((s) => s.type),
+    ),
+    exceptIdentifiers: usePythonPluginSettings()
+      .filter((s) => s.props.renderInfo.keepOpen)
+      .map((s) => s.props.pluginInfo.identifier),
+  });
   if (!isUndefined(expanding)) {
     const parent = usePluginParent(expanding);
     if (!isUndefined(parent)) {
