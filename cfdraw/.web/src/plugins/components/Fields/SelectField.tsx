@@ -53,10 +53,10 @@ function SelectField({ definition, ...fieldKeys }: IField<ISelectField>) {
 
   return (
     <CFSrollableSelect<IStr, false>
+      fontSize="14px"
       label={label}
       tooltip={tooltip}
       flexProps={definition.props}
-      height="40px"
       boxProps={{ flex: 1 }}
       value={selected}
       options={selectOptions}

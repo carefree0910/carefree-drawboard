@@ -87,9 +87,8 @@ const TextEditorPlugin = ({ pluginInfo: { node }, ...props }: IPlugin) => {
         <CFDivider />
         <CFSrollableSelect<TextAlign, false>
           label={translate(UI_Words["text-editor-align-label"], lang)}
-          height="36px"
-          flexProps={{ h: "36px" }}
-          labelProps={{ mx: "6px" }}
+          flexProps={{ h: "42px" }}
+          labelProps={{ ml: "12px", mr: "4px", fontSize: "16px" }}
           boxProps={{ flex: 1 }}
           value={{
             value: textAlign,

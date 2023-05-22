@@ -75,6 +75,8 @@ const DownloadPlugin = ({ pluginInfo, ...props }: IPlugin) => {
         </Flex>
         <CFDivider />
         <CFSrollableSelect<DownloadFormat, false>
+          height="32px"
+          fontSize="14px"
           value={selectedDownloadFormat}
           options={downloadFormatOptions}
           onChange={(e) => {
@@ -84,6 +86,8 @@ const DownloadPlugin = ({ pluginInfo, ...props }: IPlugin) => {
           }}
         />
         <CFSelect<boolean, false>
+          height="32px"
+          fontSize="14px"
           boxProps={{ mt: "10px" }}
           value={selectedKeepOriginal}
           options={keepOriginalOptions}

@@ -24,8 +24,8 @@ function CFSelect<T, isMulti extends boolean>({
   chakraStyles,
   ...others
 }: ICFSelect<T, isMulti>) {
-  height ??= "32px";
-  fontSize ??= "14px";
+  height ??= "42px";
+  fontSize ??= "16px";
   const {
     textColor,
     selectColors: { activeBorderColor },
