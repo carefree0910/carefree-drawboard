@@ -4,7 +4,7 @@ import { useMemo, useState, useEffect, useCallback } from "react";
 import { Box, Flex, Image } from "@chakra-ui/react";
 
 import { Dictionary, Graph, INodePack, Logger } from "@carefree0910/core";
-import { langStore, translate, useSafeExecute } from "@carefree0910/business";
+import { BoardStore, langStore, translate, useSafeExecute } from "@carefree0910/business";
 
 import DeleteIcon from "@/assets/icons/delete.svg";
 
@@ -145,6 +145,10 @@ const ProjectPlugin = ({ pluginInfo, ...props }: IPlugin) => {
       return;
     }
     getLoadUid()
+      .then(async (uid) => {
+        await BoardStore.board.selectorPluginNullable?.destroyAll();
+        return uid;
+      })
       .then((uid) => loadProject(uid, onLoadProjectSuccess))
       .catch((err) =>
         toastWord("error", Toast_Words["load-project-error-message"], { appendix: ` - ${err}` }),
