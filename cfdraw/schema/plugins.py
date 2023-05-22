@@ -118,6 +118,44 @@ class IPluginInfo(BaseModel):
 
 
 class IPluginSettings(IChakra):
+    """
+    This should align with the `IPythonPlugin` locate at `cfdraw/.web/src/schema/_python.ts`,
+    but for the sake of accessibility, we 'flattened' the fields. Here's a detailed explanation:
+
+    --- IChakra --
+
+    > Fields of `IChakra`, except `w` & `h`, will be injected to the `chakraProps`.
+    >> `w` & `h` has special meanings so we need to skip them.
+    > Documents of `charaProps` is listed below (the --- React fields --- section).
+
+    --- required fields ---
+
+    * `w` and `h` are the width and height of the expanded plugin, respectively.
+    > Sometimes a plugin need not to be expanded, in this case, you can set `w` and `h` to `0`.
+    > These two fields will go to the `renderInfo` part of the `IRender`, locates at
+    `cfdraw/.web/src/schema/plugins.ts`.
+
+    --- node constraints ---
+
+    > These fields will go to the `NodeConstraintSettings` part of the `IRender`, locates at
+    `cfdraw/.web/src/schema/plugins.ts`.
+    > See Plugin Positioning (https://github.com/carefree0910/carefree-drawboard/wiki/Details#plugin-positioning)
+    for detailed explanations of these fields.
+
+    --- style fields ---
+
+    > These fields will go to the `renderInfo` part of the `IRender`, locates at
+    `cfdraw/.web/src/schema/plugins.ts`.
+    > Which means they should align with the `IRenderInfo` locates at the same file.
+
+    --- React fields ---
+
+    * the `pluginInfo` maps to `IPythonPluginInfo`, but the `identifier` is injected on the fly.
+    * the `chakraProps` is the universal fallback for you to inject any `ButtonProps` to the
+    plugin button. (see `cfdraw/.web/src/schema/plugins.ts`, where you can see
+    `export interface IFloating extends ButtonProps`)
+    """
+
     # required fields
     w: int = Field(..., gt=0, description="Width of the expanded plugin")  # type: ignore
     h: int = Field(..., gt=0, description="Height of the expanded plugin")  # type: ignore
