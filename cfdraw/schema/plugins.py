@@ -124,7 +124,7 @@ class IPluginSettings(IChakra):
 
     --- IChakra --
 
-    > Fields of `IChakra`, except `w` & `h`, will be injected to the `chakraProps`.
+    > Fields of `IChakra`, except `w` & `h`, will be injected to the `buttonProps`.
     >> `w` & `h` has special meanings so we need to skip them.
     > Documents of `charaProps` is listed below (the --- React fields --- section).
 
@@ -151,7 +151,7 @@ class IPluginSettings(IChakra):
     --- React fields ---
 
     * the `pluginInfo` maps to `IPythonPluginInfo`, but the `identifier` is injected on the fly.
-    * the `chakraProps` is the universal fallback for you to inject any `ButtonProps` to the
+    * the `buttonProps` is the universal fallback for you to inject any `ButtonProps` to the
     plugin button. (see `cfdraw/.web/src/schema/plugins.ts`, where you can see
     `export interface IFloating extends ButtonProps`)
     """
@@ -235,7 +235,10 @@ Pivot of the plugin.
     )
     # React fields
     pluginInfo: IPluginInfo = Field(IPluginInfo(), description="Plugin info")
-    chakraProps: Optional[Dict[str, Any]] = Field(None, description="Chakra props")
+    buttonProps: Optional[Dict[str, Any]] = Field(
+        None,
+        description="Chakra props for the plugin button.",
+    )
 
     def to_react(self, type: str, hash: str, identifier: str) -> Dict[str, Any]:
         d = self.dict(exclude={"pluginInfo"})
@@ -254,14 +257,14 @@ Pivot of the plugin.
         node_constraint = d.pop("nodeConstraint")
         node_constraint_rules = d.pop("nodeConstraintRules")
         node_constraint_validator = d.pop("nodeConstraintValidator")
-        chakra_props = d.pop("chakraProps", None) or {}
+        button_props = d.pop("buttonProps", None) or {}
         for field in IChakra.__fields__:
             # `w` and `h` are special fields, should not be included in `chakra_props`
             if field in ["w", "h"]:
                 continue
             chakra_value = d.pop(field)
             if chakra_value is not None:
-                chakra_props[field] = chakra_value
+                button_props[field] = chakra_value
         for k, v in list(d.items()):
             if v is None:
                 d.pop(k)
@@ -271,7 +274,7 @@ Pivot of the plugin.
         else:
             d.setdefault("src", constants.DEFAULT_PLUGIN_GROUP_ICON)
         # gather
-        props = dict(pluginInfo=plugin_info, renderInfo=d, **chakra_props)
+        props = dict(pluginInfo=plugin_info, renderInfo=d, **button_props)
         if node_constraint is not None:
             props["nodeConstraint"] = node_constraint
         if node_constraint_rules is not None:
