@@ -237,7 +237,7 @@ Pivot of the plugin.
     pluginInfo: IPluginInfo = Field(IPluginInfo(), description="Plugin info")
     buttonProps: Optional[Dict[str, Any]] = Field(
         None,
-        description="Chakra props for the plugin button.",
+        description="Extra (chakra) props of the plugin button",
     )
 
     def to_react(self, type: str, hash: str, identifier: str) -> Dict[str, Any]:
