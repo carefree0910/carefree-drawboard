@@ -23,8 +23,11 @@ export const CFFormLabel = observer(({ label, tooltip, ...others }: ICFFormLabel
     <CFTooltip {...tooltip}>
       <FormLabel
         mb="0"
+        minW="20%"
+        textAlign="center"
         color={textColor}
         fontSize={others.fontSize ?? "14px"}
+        flexShrink={0}
         userSelect="none"
         {...others}>
         {label}
