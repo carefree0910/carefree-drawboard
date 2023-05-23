@@ -1,6 +1,7 @@
 import { observer } from "mobx-react-lite";
 import { FormLabel, FormLabelProps, Tooltip, TooltipProps } from "@chakra-ui/react";
 
+import { isUndefined } from "@carefree0910/core";
 import { langStore, translate } from "@carefree0910/business";
 
 import { themeStore, useLabelProps } from "@/stores/theme";
@@ -13,12 +14,13 @@ function CFTooltip({ label, ...others }: TooltipProps) {
 }
 
 interface ICFFormLabel extends FormLabelProps {
-  label: string;
+  label?: string;
   tooltip?: Omit<TooltipProps, "children">;
 }
 export const CFFormLabel = observer(({ label, tooltip, ...others }: ICFFormLabel) => {
   const { textColor } = themeStore.styles;
 
+  if (isUndefined(label)) return null;
   return (
     <CFTooltip {...tooltip}>
       <FormLabel

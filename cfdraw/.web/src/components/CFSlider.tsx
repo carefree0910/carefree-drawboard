@@ -134,7 +134,7 @@ const CFSlider: React.FC<ICFSlider> = ({
 
   return (
     <Flex className={className} align="center" color={textColor} {...props}>
-      <CFFormLabel label={label ?? ""} tooltip={{ label: tooltip }} />
+      <CFFormLabel label={label} tooltip={{ label: tooltip }} />
       <Slider
         focusThumbOnChange={!iptFocused}
         flex={1}
