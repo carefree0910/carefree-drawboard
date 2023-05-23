@@ -15,7 +15,7 @@ import { useDefaultFieldValue } from "./utils";
 function TextField({ definition, ...fieldKeys }: IField<ITextField>) {
   useDefaultFieldValue({ definition, ...fieldKeys });
   const label = parseIStr(definition.label ?? titleCaseWord(fieldKeys.field));
-  const tooltip = parseIStr(definition.tooltip ?? "");
+  const tooltip = parseIStr(definition.tooltip ?? label);
   const defaultText = parseIStr(definition.default ?? "");
   const [value, setValue] = useState(getMetaField(fieldKeys) ?? defaultText);
   const isNumber = useMemo(() => !!definition.numberOptions, [definition.numberOptions]);
