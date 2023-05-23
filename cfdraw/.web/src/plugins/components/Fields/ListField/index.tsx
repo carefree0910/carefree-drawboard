@@ -118,7 +118,13 @@ function ListField({ definition, gap, ...fieldKeys }: IField<IListField> & { gap
               const listProperties: IListProperties = { listKey: field, listIndex: index };
               return (
                 <Fragment key={`${keyId}-${index}`}>
-                  <Flex mr="12px" flexShrink={0} direction="column" gap={`${gap}px`}>
+                  <Flex
+                    ml="8px"
+                    mr="12px"
+                    my="8px"
+                    flexShrink={0}
+                    direction="column"
+                    gap={`${gap}px`}>
                     {Object.entries(definition.item).map(([key, item]) => (
                       <Field
                         key={`${keyId}-${key}-${index}`}
