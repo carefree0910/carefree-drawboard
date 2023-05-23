@@ -2,7 +2,7 @@ import { forwardRef } from "react";
 import { observer } from "mobx-react-lite";
 import { Text, TextProps } from "@chakra-ui/react";
 
-import { themeStore } from "@/stores/theme";
+import { themeStore, useLabelProps } from "@/stores/theme";
 
 const CFText = forwardRef(function (props: TextProps, ref) {
   const { textColor } = themeStore.styles;
@@ -14,7 +14,7 @@ export const CFLabel = observer(
     return (
       <>
         {label && (
-          <CFText minW="20%" align="center" fontSize="14px" flexShrink={0} {...props} ref={ref}>
+          <CFText {...useLabelProps()} {...props} ref={ref}>
             {label}
           </CFText>
         )}

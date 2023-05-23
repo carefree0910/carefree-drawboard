@@ -206,3 +206,11 @@ export function useInputProps(): ChakraProps {
     },
   };
 }
+export function useLabelProps(fontSize?: ChakraProps["fontSize"]): ChakraProps {
+  return {
+    minW: "20%",
+    fontSize: fontSize ?? "14px",
+    textAlign: "center",
+    flexShrink: 0,
+  };
+}

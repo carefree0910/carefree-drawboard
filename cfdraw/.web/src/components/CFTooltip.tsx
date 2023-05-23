@@ -3,7 +3,7 @@ import { FormLabel, FormLabelProps, Tooltip, TooltipProps } from "@chakra-ui/rea
 
 import { langStore, translate } from "@carefree0910/business";
 
-import { themeStore } from "@/stores/theme";
+import { themeStore, useLabelProps } from "@/stores/theme";
 
 function CFTooltip({ label, ...others }: TooltipProps) {
   if (typeof label === "string") {
@@ -23,12 +23,9 @@ export const CFFormLabel = observer(({ label, tooltip, ...others }: ICFFormLabel
     <CFTooltip {...tooltip}>
       <FormLabel
         mb="0"
-        minW="20%"
-        textAlign="center"
         color={textColor}
-        fontSize={others.fontSize ?? "14px"}
-        flexShrink={0}
         userSelect="none"
+        {...useLabelProps(others.fontSize)}
         {...others}>
         {label}
       </FormLabel>
