@@ -82,7 +82,9 @@ function ListField({ definition, gap, ...fieldKeys }: IField<IListField> & { gap
               fillbyCurrentColor
               transition={EXPAND_TRANSITION}
             />
-            <CFText ml="6px">{label}</CFText>
+            <CFText ml="6px" fontWeight={500}>
+              {label}
+            </CFText>
             <Spacer />
           </Flex>
         </CFTooltip>
