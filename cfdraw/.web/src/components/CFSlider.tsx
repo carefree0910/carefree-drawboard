@@ -13,9 +13,8 @@ import React, { useCallback, useEffect, useState } from "react";
 import { BoardStore, useGlobalTransform, useIsReady } from "@carefree0910/business";
 
 import { themeStore } from "@/stores/theme";
-import { CFLabel } from "./CFText";
+import { CFFormLabel } from "./CFTooltip";
 import CFInput from "./CFInput";
-import CFTooltip from "./CFTooltip";
 
 export interface ICFSlider extends FlexProps {
   className?: string;
@@ -135,9 +134,7 @@ const CFSlider: React.FC<ICFSlider> = ({
 
   return (
     <Flex className={className} align="center" color={textColor} {...props}>
-      <CFTooltip label={tooltip}>
-        <CFLabel label={label} />
-      </CFTooltip>
+      <CFFormLabel label={label ?? ""} tooltip={{ label: tooltip }} />
       <Slider
         focusThumbOnChange={!iptFocused}
         flex={1}

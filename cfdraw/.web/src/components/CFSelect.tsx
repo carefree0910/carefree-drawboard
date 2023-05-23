@@ -1,12 +1,11 @@
 import { observer } from "mobx-react-lite";
-import { Box, BoxProps, Flex, FlexProps, TextProps } from "@chakra-ui/react";
+import { Box, BoxProps, Flex, FlexProps, FormLabelProps } from "@chakra-ui/react";
 import { GroupBase, OptionBase, Select } from "chakra-react-select";
 
 import { isUndefined } from "@carefree0910/core";
 
 import { themeStore, useScrollBarSx } from "@/stores/theme";
-import { CFLabel } from "./CFText";
-import CFTooltip from "./CFTooltip";
+import CFTooltip, { CFFormLabel } from "./CFTooltip";
 
 interface SelectItem<T> extends OptionBase {
   value: T;
@@ -80,7 +79,7 @@ function CFSelect<T, isMulti extends boolean>({
 interface ICFScrollableSelect<T, isMulti extends boolean> extends ICFSelect<T, isMulti> {
   label?: string;
   flexProps?: FlexProps;
-  labelProps?: TextProps;
+  labelProps?: FormLabelProps;
 }
 export const CFSrollableSelect = observer(
   <T, isMulti extends boolean>({
@@ -109,9 +108,7 @@ export const CFSrollableSelect = observer(
     if (isUndefined(label)) return <Select tooltip={tooltip} />;
     return (
       <Flex w="100%" h="100%" align="center" {...flexProps}>
-        <CFTooltip label={tooltip}>
-          <CFLabel label={label} {...labelProps} />
-        </CFTooltip>
+        <CFFormLabel label={label} tooltip={{ label: tooltip }} {...labelProps} />
         <Box w="8px" />
         <Select />
       </Flex>
