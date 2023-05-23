@@ -304,7 +304,17 @@ function useCheckIconLoaded() {
   const reactPlugins = useReactPluginSettings();
 
   useEffect(() => {
+    let timer: any;
+    const onLoad = (message: string) => {
+      Logger.debug(`${message} (loaded: ${loaded.current.join(", ")})`);
+      setupStore.updateProperty("iconLoaded", true);
+      bypassIconLoadedEvent = true;
+      clearTimeout(timer);
+    };
+    // check whether all icons have loaded
+    let bypassIconLoadedEvent = false;
     const { dispose } = iconLoadedEvent.on(({ id }) => {
+      if (bypassIconLoadedEvent) return;
       loaded.current.push(id);
       if (
         reactPlugins.every(
@@ -316,12 +326,17 @@ function useCheckIconLoaded() {
           }) => follow || loaded.current.some((id) => id.startsWith(type)),
         )
       ) {
-        Logger.debug(`all icons loaded: ${loaded.current.join(", ")}}`);
-        setupStore.updateProperty("iconLoaded", true);
-        dispose();
+        onLoad("all icons loaded");
       }
     });
-    return dispose;
+    // set timeout to load the page anyway
+    timer = setTimeout(() => {
+      onLoad("load the page anyway after 1 seconds");
+    }, 1000);
+    return () => {
+      dispose();
+      clearTimeout(timer);
+    };
   }, [reactPlugins]);
 }
 
