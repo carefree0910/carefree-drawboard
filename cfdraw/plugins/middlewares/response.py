@@ -37,6 +37,7 @@ class ResponseMiddleWare(IMiddleWare):
                 )
             )
         meta = PngInfo()
+        meta.add_text("userId", self.request.userId)
         meta.add_text("request", self.request.json())
         t = time.time()
         audit = self.plugin.image_should_audit
