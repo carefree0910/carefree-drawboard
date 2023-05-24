@@ -20,7 +20,7 @@ definitions = dict(
         tooltip="label1",
     ),
     label2=IImageField(
-        default="https://ailab-huawei-cdn.nolibox.com/aigc/images/cfdraw-demo/e9a76231ae474c2098b2d7b44843b409.png",
+        default="",
         label="label2",
         tooltip="label2",
     ),

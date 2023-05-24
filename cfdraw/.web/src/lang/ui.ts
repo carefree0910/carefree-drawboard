@@ -9,7 +9,12 @@ export enum UI_Words {
   "list-field-empty-caption" = "list-field-empty-caption",
   "add-object-to-list-tooltip" = "add-object-to-list-tooltip",
   "text-editor-align-label" = "text-editor-align-label",
+  "image-field-url-placeholder" = "image-field-url-placeholder",
+  "image-field-image-picker-tooltip" = "image-field-image-picker-tooltip",
   "image-field-image-picker" = "image-field-image-picker",
+  "image-field-import-image-caption" = "image-field-import-image-caption",
+  "image-field-loading-caption" = "image-field-loading-caption",
+  "image-field-no-more-caption" = "image-field-no-more-caption",
 }
 
 export const uiLangRecords: Record<Lang, Record<UI_Words, string>> = {
@@ -22,7 +27,12 @@ export const uiLangRecords: Record<Lang, Record<UI_Words, string>> = {
     [UI_Words["list-field-empty-caption"]]: "无",
     [UI_Words["add-object-to-list-tooltip"]]: "添加",
     [UI_Words["text-editor-align-label"]]: "对齐方式",
+    [UI_Words["image-field-url-placeholder"]]: "请选择目标图片",
+    [UI_Words["image-field-image-picker-tooltip"]]: "请用右边的图片选择器选择目标图片",
     [UI_Words["image-field-image-picker"]]: "选择目标图片",
+    [UI_Words["image-field-import-image-caption"]]: "导入",
+    [UI_Words["image-field-loading-caption"]]: "加载中...",
+    [UI_Words["image-field-no-more-caption"]]: "没有更多了",
   },
   en: {
     [UI_Words["submit-task"]]: "Submit",
@@ -33,6 +43,12 @@ export const uiLangRecords: Record<Lang, Record<UI_Words, string>> = {
     [UI_Words["list-field-empty-caption"]]: "Empty",
     [UI_Words["add-object-to-list-tooltip"]]: "Add",
     [UI_Words["text-editor-align-label"]]: "Align",
+    [UI_Words["image-field-image-picker-tooltip"]]:
+      "Please use the image picker on the right to pick an image",
+    [UI_Words["image-field-url-placeholder"]]: "Please pick an image",
     [UI_Words["image-field-image-picker"]]: "Pick an image",
+    [UI_Words["image-field-import-image-caption"]]: "Import",
+    [UI_Words["image-field-loading-caption"]]: "Loading...",
+    [UI_Words["image-field-no-more-caption"]]: "No more",
   },
 };
