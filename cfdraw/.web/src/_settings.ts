@@ -128,6 +128,10 @@ export const reactPluginSettings: IMakePlugin<ReactPlugins>[] = [
         pivot: "rt",
         follow: true,
         keepOpen: true,
+        tooltip: {
+          zh: "显示 Meta 数据",
+          en: "Show Meta Data",
+        },
       },
       pluginInfo: {},
     },
