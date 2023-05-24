@@ -498,7 +498,7 @@ class ImageFollowers(IPluginGroup):
         )
 
 
-class InpaintingFollowers(IPluginGroup):
+class ImageAndMaskFollowers(IPluginGroup):
     @property
     def settings(self) -> IPluginSettings:
         return IPluginSettings(
@@ -517,11 +517,11 @@ class InpaintingFollowers(IPluginGroup):
             pluginInfo=IPluginGroupInfo(
                 name=I18N(
                     zh="蒙版工具箱",
-                    en="Inpainting Toolbox",
+                    en="Image & Mask Toolbox",
                 ),
                 header=I18N(
                     zh="蒙版工具箱",
-                    en="Inpainting Toolbox",
+                    en="Image & Mask Toolbox",
                 ),
                 plugins={
                     InpaintingKey: Inpainting,
@@ -569,6 +569,6 @@ class CanvasFollowers(IPluginGroup):
 # get_apis()
 register_plugin("static")(StaticPlugins)
 register_plugin("image_followers")(ImageFollowers)
-register_plugin("inpainting_followers")(InpaintingFollowers)
+register_plugin("image_and_mask_followers")(ImageAndMaskFollowers)
 register_plugin("canvas_followers")(CanvasFollowers)
 app = App(notification)
