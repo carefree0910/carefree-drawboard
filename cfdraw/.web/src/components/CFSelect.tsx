@@ -4,7 +4,7 @@ import { GroupBase, OptionBase, Select } from "chakra-react-select";
 
 import { isUndefined } from "@carefree0910/core";
 
-import { themeStore, useScrollBarSx } from "@/stores/theme";
+import { themeStore, useActiveBorderProps, useScrollBarSx } from "@/stores/theme";
 import CFTooltip, { CFFormLabel } from "./CFTooltip";
 
 interface SelectItem<T> extends OptionBase {
@@ -53,10 +53,7 @@ function CFSelect<T, isMulti extends boolean>({
             borderRadius: "0px",
             borderColor: "transparent",
             fontSize,
-            _focus: {
-              borderColor: activeBorderColor,
-              boxShadow: `0 0 0 1px ${activeBorderColor}`,
-            },
+            _focus: useActiveBorderProps(activeBorderColor),
           }),
           menu: (provided) => ({
             ...provided,

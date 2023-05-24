@@ -200,10 +200,7 @@ export function useInputProps(): ChakraProps {
     borderRadius: "0px",
     flexShrink: 0,
     _placeholder: { color: captionColor },
-    _focusVisible: {
-      borderColor: activeBorderColor,
-      boxShadow: `0 0 0 1px ${activeBorderColor}`,
-    },
+    _focusVisible: useActiveBorderProps(activeBorderColor),
   };
 }
 export function useLabelProps(fontSize?: ChakraProps["fontSize"]): ChakraProps {
@@ -212,5 +209,11 @@ export function useLabelProps(fontSize?: ChakraProps["fontSize"]): ChakraProps {
     fontSize: fontSize ?? "14px",
     textAlign: "center",
     flexShrink: 0,
+  };
+}
+export function useActiveBorderProps(activeBorderColor: string): ChakraProps {
+  return {
+    borderColor: activeBorderColor,
+    boxShadow: `0 0 0 1px ${activeBorderColor}`,
   };
 }
