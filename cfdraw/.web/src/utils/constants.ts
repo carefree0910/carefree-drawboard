@@ -36,6 +36,7 @@ export function useVisibilityTransitionProps({
   const transition = !!extraTransitions ? `${baseTransition}, ${extraTransitions}` : baseTransition;
   return { visibility: visible ? "visible" : "hidden", transition, opacity: visible ? opacity : 0 };
 }
+export const BG_TRANSITION = `background ${useCubicBezier(0.3)}`;
 const expand_cubic_bezier = useCubicBezier(0.3);
 export const EXPAND_TRANSITION = `height ${expand_cubic_bezier}, transform ${expand_cubic_bezier}, margin-top ${expand_cubic_bezier}`;
 
