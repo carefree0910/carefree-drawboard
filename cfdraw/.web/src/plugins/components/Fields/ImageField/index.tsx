@@ -19,6 +19,7 @@ import { BoardStore, langStore, translate, useIsReady, useSelecting } from "@car
 
 import "./index.scss";
 import ImageIcon from "@/assets/icons/image.svg";
+import { ReactComponent as DeleteIcon } from "@/assets/icons/delete.svg";
 import { ReactComponent as ImportIcon } from "@/assets/icons/import.svg";
 import { ReactComponent as ArrowDownIcon } from "@/assets/icons/arrow-down.svg";
 
@@ -80,6 +81,33 @@ const GalleryUpload = observer(({ onSelectUrl }: IOnSelectUrl) => {
         </Flex>
       </GalleryContainer>
     </CFImageUploader>
+  );
+});
+const GalleryClear = observer(({ onSelectUrl }: IOnSelectUrl) => {
+  const lang = langStore.tgt;
+  const { alertCaptionColor } = themeStore.styles;
+
+  return (
+    <GalleryContainer
+      borderWidth="3px"
+      borderStyle="dashed"
+      borderRadius="16px"
+      borderColor={alertCaptionColor}
+      onClick={() => onSelectUrl("")}>
+      <Flex
+        w="100%"
+        h="100%"
+        gap="4px"
+        align="center"
+        justifyContent="center"
+        color={alertCaptionColor}
+        direction="column">
+        <CFIcon squared={false} svg={DeleteIcon} strokeByCurrentColor />
+        <CFText color={alertCaptionColor}>
+          {translate(UI_Words["image-field-clear-image-caption"], lang)}
+        </CFText>
+      </Flex>
+    </GalleryContainer>
   );
 });
 interface IGalleryItem extends ImageProps, IOnSelectUrl {
@@ -235,6 +263,7 @@ function ImageField({ definition, ...fieldKeys }: IField<IImageField>) {
               overflow="hidden"
               sx={useScrollBarSx()}>
               <GalleryUpload onSelectUrl={onSelectUrl} />
+              {value && <GalleryClear onSelectUrl={onSelectUrl} />}
               {imageNodes.map((node, i) => {
                 const src = node.renderParams.src;
                 const active = src === value;

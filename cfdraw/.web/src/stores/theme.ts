@@ -16,6 +16,8 @@ export type ThemeStyles = {
   captionColor: string;
   // color of the divider
   dividerColor: string;
+  // color of alert captions
+  alertCaptionColor: string;
   // colors of the `CFInput` component
   inputColors: {
     activeBorderColor: string;
@@ -63,6 +65,7 @@ export const allThemes: Record<ThemeType, ThemeStyles> = {
     textColor: "#333333",
     captionColor: "#888888",
     dividerColor: "#cccccc",
+    alertCaptionColor: "#e63333",
     inputColors: {
       activeBorderColor: "#3fc9a8",
     },
@@ -104,6 +107,7 @@ export const allThemes: Record<ThemeType, ThemeStyles> = {
     textColor: "#333333",
     captionColor: "#888888",
     dividerColor: "#cccccc",
+    alertCaptionColor: "#e63333",
     inputColors: {
       activeBorderColor: "#3fc9a8",
     },

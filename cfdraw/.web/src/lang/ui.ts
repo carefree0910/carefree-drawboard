@@ -13,6 +13,7 @@ export enum UI_Words {
   "image-field-image-picker-tooltip" = "image-field-image-picker-tooltip",
   "image-field-image-picker" = "image-field-image-picker",
   "image-field-import-image-caption" = "image-field-import-image-caption",
+  "image-field-clear-image-caption" = "image-field-clear-image-caption",
   "image-field-loading-caption" = "image-field-loading-caption",
   "image-field-no-more-caption" = "image-field-no-more-caption",
 }
@@ -31,6 +32,7 @@ export const uiLangRecords: Record<Lang, Record<UI_Words, string>> = {
     [UI_Words["image-field-image-picker-tooltip"]]: "请用右边的图片选择器选择目标图片",
     [UI_Words["image-field-image-picker"]]: "选择目标图片",
     [UI_Words["image-field-import-image-caption"]]: "导入",
+    [UI_Words["image-field-clear-image-caption"]]: "清除",
     [UI_Words["image-field-loading-caption"]]: "加载中...",
     [UI_Words["image-field-no-more-caption"]]: "没有更多了",
   },
@@ -48,6 +50,7 @@ export const uiLangRecords: Record<Lang, Record<UI_Words, string>> = {
     [UI_Words["image-field-url-placeholder"]]: "Please pick an image",
     [UI_Words["image-field-image-picker"]]: "Pick an image",
     [UI_Words["image-field-import-image-caption"]]: "Import",
+    [UI_Words["image-field-clear-image-caption"]]: "Clear",
     [UI_Words["image-field-loading-caption"]]: "Loading...",
     [UI_Words["image-field-no-more-caption"]]: "No more",
   },
