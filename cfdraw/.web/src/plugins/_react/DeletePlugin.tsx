@@ -10,7 +10,9 @@ import Render from "../components/Render";
 const DeletePlugin = ({ pluginInfo, ...props }: IPlugin) => {
   const id = usePluginIds("delete").id;
   const { type, nodes } = useSelecting("raw");
-  if (type === "none") return null;
+  if (type === "none") {
+    props.renderInfo.isInvisible = true;
+  }
   function onDelete(): void {
     useSafeExecute("remove", null, true)(nodes.map((node) => node.alias));
   }

@@ -54,10 +54,14 @@ const TextEditorPlugin = ({ pluginInfo: { node }, ...props }: IPlugin) => {
     }
   };
 
-  if (node?.type !== "text" || !textParams) return null;
-
-  const textColor = textParams.color;
-  const textAlign = textParams.align ?? "left";
+  let textColor: string | undefined;
+  let textAlign: TextAlign = "left";
+  if (node?.type !== "text" || !textParams) {
+    props.renderInfo.isInvisible = true;
+  } else {
+    textColor = textParams.color;
+    textAlign = textParams.align ?? "left";
+  }
 
   return (
     <Render id={id} {...props}>

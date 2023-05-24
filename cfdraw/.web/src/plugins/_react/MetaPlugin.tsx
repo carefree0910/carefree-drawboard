@@ -20,14 +20,19 @@ function getMetaRepresentation(meta: IMeta): string {
 const MetaPlugin = ({ pluginInfo, ...others }: IPlugin) => {
   const id = usePluginIds("meta").id;
   const info = useSelecting("raw");
+  let meta: IMeta | undefined;
   if (!info || info.type === "group" || info.type === "frame" || info.type === "multiple") {
-    return null;
+    others.renderInfo.isInvisible = true;
+  } else {
+    const _meta = info.displayNode?.params.meta;
+    if (!_meta) {
+      others.renderInfo.isInvisible = true;
+    } else {
+      meta = _meta as IMeta;
+    }
   }
-  const _meta = info.displayNode?.params.meta;
-  if (!_meta) return null;
-  const meta = _meta as IMeta;
-  const history = getMetaTrace(meta).reverse().map(getMetaRepresentation).join(" -> ");
-  const jsonString = JSON.stringify(meta, null, 2);
+  const history = meta ? getMetaTrace(meta).reverse().map(getMetaRepresentation).join(" -> ") : "";
+  const jsonString = JSON.stringify(meta ?? {}, null, 2);
   const markdown = `**${history}**
 
 ~~~json

@@ -60,8 +60,6 @@ const DownloadPlugin = ({ pluginInfo, ...props }: IPlugin) => {
     label: getWord(keepOriginal),
   }));
 
-  if (!nodes) return null;
-
   return (
     <Render id={id} {...props}>
       <Flex w="100%" h="100%" direction="column">

@@ -21,7 +21,7 @@ import {
   useSelecting,
 } from "@carefree0910/business";
 
-import type { IExpandPositionInfo, IRender } from "@/schema/plugins";
+import type { IExpandPositionInfo, IRender, IRenderInfo } from "@/schema/plugins";
 import { DEFAULT_PLUGIN_SETTINGS } from "@/utils/constants";
 import {
   addPluginChild,
@@ -184,7 +184,7 @@ const Render = (({
       ? -DEFAULT_PLUGIN_SETTINGS.expandOffsetY
       : DEFAULT_PLUGIN_SETTINGS.expandOffsetY;
 
-  const updatedRenderInfo = {
+  const updatedRenderInfo: IRenderInfo = {
     ...renderInfo,
     w,
     h,
@@ -194,6 +194,7 @@ const Render = (({
     follow,
     expandOffsetX,
     expandOffsetY,
+    isInvisible: !needRender ? true : renderInfo.isInvisible,
   };
 
   const deps = [
@@ -354,8 +355,6 @@ const Render = (({
       window.removeEventListener("resize", updater);
     };
   }, [updater, _id, inGroup, isReady, needRender, follow, hasConstraint]);
-
-  if (!needRender) return null;
 
   return (
     <Floating
