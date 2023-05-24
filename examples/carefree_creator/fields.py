@@ -4,6 +4,7 @@ from pathlib import Path
 from collections import OrderedDict
 from cfcreator.common import SDSamplers
 from cflearn.api.cv.diffusion import SDVersions
+from cflearn.api.cv.diffusion import ControlNetHints
 
 
 # common styles
@@ -38,6 +39,21 @@ h_field = INumberField(
     tooltip=I18N(
         zh="生成图片的高度",
         en="The height of the generated image",
+    ),
+)
+max_wh_field = INumberField(
+    default=1024,
+    min=256,
+    max=2048,
+    step=64,
+    isInt=True,
+    label=I18N(
+        zh="最大宽高",
+        en="Max WH",
+    ),
+    tooltip=I18N(
+        zh="把图片传给模型处理前，会先把图片限制在这个尺寸内",
+        en="Before passing the image to the model, the image will be ensured to be within this size",
     ),
 )
 text = ITextField(
@@ -271,10 +287,91 @@ inpainting_fields = OrderedDict(
 )
 # variation fields
 variation_fields = OrderedDict(fidelity=img2img_fields["fidelity"])
+# controlnet stuffs
+## controlnet hints
+controlnet_dict = {
+    ControlNetHints.CANNY: I18N(zh="Canny 边缘", en="Canny Edge"),
+    ControlNetHints.DEPTH: I18N(zh="深度图", en="Depth Image"),
+    ControlNetHints.MLSD: I18N(zh="MLSD 边缘", en="MLSD Edge"),
+    ControlNetHints.POSE: I18N(zh="人体姿态", en="Human Pose"),
+}
+controlnet_hint_fields = ISelectField(
+    default=controlnet_dict[ControlNetHints.CANNY],
+    options=list(controlnet_dict.values()),
+    label=I18N(
+        zh="参考图类型",
+        en="Hint Type",
+    ),
+)
+
+
+def get_hint_type_from(hint_d: dict) -> Optional[ControlNetHints]:
+    hint = I18N(**hint_d)
+    for h, h_i18n in controlnet_dict.items():
+        if hint.en == h_i18n.en:
+            return h
+    return None
+
+
+## multi ControNet
+controlnet_fields = OrderedDict(
+    type=controlnet_hint_fields,
+    hint_url=IImageField(default="", label=I18N(zh="参考图", en="Hint Image")),
+    bypass_annotator=IBooleanField(
+        default=False,
+        label=I18N(zh="跳过预处理器", en="Bypass Annotator"),
+        tooltip=I18N(
+            zh="跳过 ControlNet 的预处理步骤，适用于选择的图片已经是参考图的情况",
+            en="Bypass the ControlNet annotator, useful when you have already selected the hint image",
+        ),
+    ),
+    hint_start=INumberField(
+        default=0.0,
+        min=0.0,
+        max=1.0,
+        step=0.01,
+        label=I18N(zh="参考图生效时机", en="Hint Start"),
+    ),
+    control_strength=INumberField(
+        default=1.0,
+        min=0.0,
+        max=2.0,
+        step=0.01,
+        label=I18N(zh="参考强度", en="Control Strength"),
+    ),
+)
+multi_controlnet_field = IListField(
+    label="ControlNet",
+    tooltip=I18N(zh="配置 multi ControlNet", en="Setup multi ControlNet"),
+    item=controlnet_fields,
+)
+multi_controlnet_prompt = text.copy()
+multi_controlnet_prompt.numRows = 4
+multi_controlnet_negative_prompt = negative_prompt.copy()
+multi_controlnet_negative_prompt.numRows = 4
+multi_controlnet_fields = OrderedDict(
+    prompt=multi_controlnet_prompt,
+    url=IImageField(
+        default="",
+        label=I18N(zh="初始图", en="Init Image"),
+        tooltip=I18N(zh="可选项，不选也没问题", en="This is optional, you can leave it blank"),
+    ),
+    fidelity=fidelity,
+    max_wh=max_wh_field,
+    base_model=version,
+    negative_prompt=multi_controlnet_negative_prompt,
+    sampler=sampler,
+    num_steps=num_steps,
+    guidance_scale=guidance_scale,
+    seed=seed,
+    lora=lora_field,
+    controls=multi_controlnet_field,
+)
 
 
 __all__ = [
     "get_version_from",
+    "get_hint_type_from",
     "common_styles",
     "common_group_styles",
     "lora_field",
@@ -284,4 +381,6 @@ __all__ = [
     "inpainting_fields",
     "sd_inpainting_fields",
     "variation_fields",
+    "controlnet_hint_fields",
+    "multi_controlnet_fields",
 ]

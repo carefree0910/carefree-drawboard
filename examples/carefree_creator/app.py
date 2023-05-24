@@ -11,15 +11,19 @@ from utils import *
 from fields import *
 
 
-def inject(self: IFieldsPlugin, data: ISocketRequest) -> ISocketRequest:
+def inject(
+    self: IFieldsPlugin,
+    data: ISocketRequest,
+    version_key: str = "version",
+) -> ISocketRequest:
     # seed
     if data.extraData["seed"] == -1:
         data.extraData["seed"] = new_seed()
     self.extra_responses["seed"] = data.extraData["seed"]
     # version
-    version_i18n_d = data.extraData["version"]
+    version_i18n_d = data.extraData[version_key]
     version = get_version_from(version_i18n_d)
-    self.extra_responses["version"] = data.extraData["version"] = version
+    self.extra_responses[version_key] = data.extraData[version_key] = version
     # lora
     lora = data.extraData.pop("lora", [])
     lora_definition = lora_field.item
@@ -59,6 +63,8 @@ InpaintingKey = "inpainting"
 SDInpaintingKey = "sd_inpainting"
 SDOutpaintingKey = "sd_outpainting"
 VariationKey = "variation"
+ControlNetHintKey = "control_net_hint"
+MultiControlNetKey = "multi_control_net"
 
 
 notification = """
@@ -77,8 +83,11 @@ notification = """
 """
 
 
+# plugins
+
+
 class CarefreeCreatorPlugin(IFieldsPlugin):
-    requirements = ["carefree-creator>=0.2.6"]
+    requirements = ["carefree-creator>=0.2.7"]
 
 
 class Txt2Img(CarefreeCreatorPlugin):
@@ -438,6 +447,74 @@ class Variation(CarefreeCreatorPlugin):
         return []
 
 
+class ControlHints(CarefreeCreatorPlugin):
+    @property
+    def settings(self) -> IPluginSettings:
+        return IPluginSettings(
+            w=320,
+            h=180,
+            src=constants.CONTROLNET_HINT_ICON,
+            tooltip=I18N(
+                zh="生成 ControlNet 的参考图",
+                en="Generate hint image for ControlNet",
+            ),
+            pluginInfo=IFieldsPluginInfo(
+                header=I18N(
+                    zh="参考图生成",
+                    en="Hint Generation",
+                ),
+                definitions=dict(hint_type=controlnet_hint_fields),
+            ),
+        )
+
+    async def process(self, data: ISocketRequest) -> List[Image.Image]:
+        url = data.nodeData.src
+        hint_type = get_hint_type_from(data.extraData["hint_type"])
+        return await get_apis().get_control_hint(hint_type, url=url)
+
+
+class MultiControlNet(CarefreeCreatorPlugin):
+    @property
+    def settings(self) -> IPluginSettings:
+        return IPluginSettings(
+            w=800,
+            h=640,
+            useModal=True,
+            keepOpen=True,
+            src=constants.CONTROLNET_ICON,
+            tooltip=I18N(
+                zh="使用 (multi) ControlNet 生成图片",
+                en="Generate image with (multi) ControlNet",
+            ),
+            pluginInfo=IFieldsPluginInfo(
+                header=I18N(
+                    zh="ControlNet 生成",
+                    en="ControlNet",
+                ),
+                numColumns=2,
+                definitions=multi_controlnet_fields,
+            ),
+        )
+
+    async def process(self, data: ISocketRequest) -> List[Image.Image]:
+        def callback(step: int, num_steps: int) -> bool:
+            return self.send_progress(step / num_steps)
+
+        def parse_control(control: dict) -> dict:
+            t = control.pop("type")
+            return dict(type=get_hint_type_from(t), data=control)
+
+        kw = inject(self, data, "base_model").extraData
+        if not kw["url"]:
+            kw.pop("url")
+        kw["controls"] = list(map(parse_control, kw.pop("controls")))
+        model = ControlMultiModel(**kw)
+        return await get_apis().run_multi_controlnet(model, step_callback=callback)
+
+
+# groups
+
+
 class StaticPlugins(IPluginGroup):
     @property
     def settings(self) -> IPluginSettings:
@@ -460,6 +537,8 @@ class StaticPlugins(IPluginGroup):
                 ),
                 plugins={
                     Txt2ImgKey: Txt2Img,
+                    MultiControlNetKey: MultiControlNet,
+                    ImageHarmonizationKey: ImageHarmonization,
                 },
             ),
         )
@@ -492,6 +571,7 @@ class ImageFollowers(IPluginGroup):
                     SODKey: SOD,
                     Img2ImgKey: Img2Img,
                     CaptioningKey: Captioning,
+                    ControlNetHintKey: ControlHints,
                     VariationKey: Variation,
                 },
             ),
