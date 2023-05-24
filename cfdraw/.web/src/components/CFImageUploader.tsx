@@ -7,12 +7,12 @@ import { langStore } from "@carefree0910/business";
 import { toastWord } from "@/utils/toast";
 import { Toast_Words } from "@/lang/toast";
 import { importMeta } from "@/actions/importMeta";
-import { uploadImage } from "@/actions/uploadImage";
+import { IUploadImageResponseData, uploadImage } from "@/actions/uploadImage";
 
 export interface CFImageUploaderProps {
   className?: string;
   children: ReactNode;
-  onUpload?: (url: string) => void;
+  onUpload?: (res: IUploadImageResponseData) => void;
   addToBoard?: boolean;
 }
 
@@ -34,7 +34,7 @@ const CFImageUploader: React.FC<CFImageUploaderProps> = ({
         const blob = file as Blob;
         const uploadRes = await uploadImage(blob, { failed });
         if (!uploadRes) return;
-        onUpload?.(uploadRes.url);
+        onUpload?.(uploadRes);
         if (!addToBoard) return;
         importMeta({
           lang: langStore.tgt,

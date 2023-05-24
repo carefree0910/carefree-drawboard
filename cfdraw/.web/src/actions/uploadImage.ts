@@ -9,7 +9,7 @@ type UploadImageOptions = {
   failed: (e: any) => Promise<void>;
 };
 
-interface IUploadImageResponseData {
+export interface IUploadImageResponseData {
   w: number;
   h: number;
   url: string;
