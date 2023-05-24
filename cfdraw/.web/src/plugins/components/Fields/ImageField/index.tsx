@@ -176,6 +176,7 @@ function ImageField({ definition, ...fieldKeys }: IField<IImageField>) {
   const { isOpen, onToggle, onClose } = useDisclosure({ onOpen: fetchImages });
   const onSelectUrl = (url: string) => {
     setValueAndMeta(url);
+    onClose();
   };
 
   return (
