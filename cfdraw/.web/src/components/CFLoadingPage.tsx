@@ -6,7 +6,7 @@ import { useIsReady } from "@carefree0910/business";
 
 import loadingPage from "@/assets/lottie/loading-page.json";
 
-import { makeVisibilityTransitionProps } from "@/utils/constants";
+import { useVisibilityTransitionProps } from "@/utils/constants";
 import { useSettingsSynced } from "@/stores/settings";
 import { themeStore } from "@/stores/theme";
 import { useIsAllReady } from "@/hooks/useSetup";
@@ -29,7 +29,7 @@ const CFLoadingPage: React.FC<PropsWithChildren> = ({ children }) => {
           position="absolute"
           direction="column"
           alignContent="center"
-          {...makeVisibilityTransitionProps({ visible: !isReady, second: 0.5 })}>
+          {...useVisibilityTransitionProps({ visible: !isReady, second: 0.5 })}>
           <Spacer />
           <Center>
             <CFLottie hide={!isSynced} animationData={loadingPage} />

@@ -7,11 +7,11 @@ export const IS_PROD = import.meta.env.PROD;
 
 export const BOARD_CONTAINER_ID = "board.container";
 
-function makeCubicBezier(second: number) {
+function useCubicBezier(second: number) {
   return `${second}s cubic-bezier(.08,.52,.52,1)`;
 }
-function makeVisiblilityTransition(second: number) {
-  const cubic_bezier = makeCubicBezier(second);
+function useVisiblilityTransition(second: number) {
+  const cubic_bezier = useCubicBezier(second);
   return `opacity ${cubic_bezier}, visibility ${cubic_bezier}`;
 }
 interface IMakeVisibilityTransitionProps {
@@ -20,7 +20,7 @@ interface IMakeVisibilityTransitionProps {
   opacity?: BoxProps["opacity"];
   extraTransitions?: string;
 }
-export function makeVisibilityTransitionProps({
+export function useVisibilityTransitionProps({
   visible,
   second,
   opacity,
@@ -32,11 +32,11 @@ export function makeVisibilityTransitionProps({
 } {
   second ??= 0.3;
   opacity ??= 1.0;
-  const baseTransition = makeVisiblilityTransition(second);
+  const baseTransition = useVisiblilityTransition(second);
   const transition = !!extraTransitions ? `${baseTransition}, ${extraTransitions}` : baseTransition;
   return { visibility: visible ? "visible" : "hidden", transition, opacity: visible ? opacity : 0 };
 }
-const expand_cubic_bezier = makeCubicBezier(0.3);
+const expand_cubic_bezier = useCubicBezier(0.3);
 export const EXPAND_TRANSITION = `height ${expand_cubic_bezier}, transform ${expand_cubic_bezier}, margin-top ${expand_cubic_bezier}`;
 
 export const DEFAULT_PLUGIN_SETTINGS = {
