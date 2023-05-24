@@ -42,10 +42,10 @@ import CFImageUploader from "@/components/CFImageUploader";
 import { useDefaultFieldValue } from "../utils";
 
 const GalleryContainer = (props: ButtonProps) => <Box as="button" w="100px" h="120px" {...props} />;
-interface IGalleryUpload {
-  setValueAndMeta: (url: string) => void;
+interface IOnSelectUrl {
+  onSelectUrl: (url: string) => void;
 }
-const GalleryUpload = observer(({ setValueAndMeta }: IGalleryUpload) => {
+const GalleryUpload = observer(({ onSelectUrl }: IOnSelectUrl) => {
   const lang = langStore.tgt;
   const { captionColor, dividerColor } = themeStore.styles;
 
@@ -55,7 +55,7 @@ const GalleryUpload = observer(({ setValueAndMeta }: IGalleryUpload) => {
       onUpload={(res) => {
         if (res.safe) {
           toastWord("success", Toast_Words["upload-image-success-message"]);
-          setValueAndMeta(res.url);
+          onSelectUrl(res.url);
         } else {
           toastWord("warning", Toast_Words["nsfw-image-detected-warning-message"], {
             appendix: ` (${res.reason})`,
@@ -82,12 +82,11 @@ const GalleryUpload = observer(({ setValueAndMeta }: IGalleryUpload) => {
     </CFImageUploader>
   );
 });
-interface IGalleryItem extends ImageProps {
+interface IGalleryItem extends ImageProps, IOnSelectUrl {
   src: string;
   active: boolean;
-  setValueAndMeta: (url: string) => void;
 }
-const GalleryItem = observer(({ src, active, setValueAndMeta, ...others }: IGalleryItem) => {
+const GalleryItem = observer(({ src, active, onSelectUrl, ...others }: IGalleryItem) => {
   const {
     selectColors: { activeBorderColor },
   } = themeStore.styles;
@@ -97,7 +96,7 @@ const GalleryItem = observer(({ src, active, setValueAndMeta, ...others }: IGall
       p="2px"
       borderWidth="1px"
       _hover={{ borderColor: activeBorderColor }}
-      onClick={() => setValueAndMeta(src)}
+      onClick={() => onSelectUrl(src)}
       {...(active ? useActiveBorderProps(activeBorderColor) : {})}>
       <Image
         w="100%"
@@ -175,6 +174,9 @@ function ImageField({ definition, ...fieldKeys }: IField<IImageField>) {
     };
   }, [loader]);
   const { isOpen, onToggle, onClose } = useDisclosure({ onOpen: fetchImages });
+  const onSelectUrl = (url: string) => {
+    setValueAndMeta(url);
+  };
 
   return (
     <Flex w="100%" align="center" {...definition.props}>
@@ -228,7 +230,7 @@ function ImageField({ definition, ...fieldKeys }: IField<IImageField>) {
               alignContent="flex-start"
               overflow="hidden"
               sx={useScrollBarSx()}>
-              <GalleryUpload setValueAndMeta={setValueAndMeta} />
+              <GalleryUpload onSelectUrl={onSelectUrl} />
               {imageNodes.map((node, i) => {
                 const src = node.renderParams.src;
                 const active = src === value;
@@ -236,7 +238,7 @@ function ImageField({ definition, ...fieldKeys }: IField<IImageField>) {
                   <GalleryItem
                     src={node.renderParams.src}
                     active={active}
-                    setValueAndMeta={setValueAndMeta}
+                    onSelectUrl={onSelectUrl}
                     key={`gallery-item-${i}`}
                   />
                 );
