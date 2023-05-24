@@ -10,6 +10,36 @@ from cflearn.api.cv.diffusion import SDVersions
 common_styles = dict(w=600, h=510, useModal=True)
 common_group_styles = dict(w=230, h=110)
 # common diffusion fields
+w_field = INumberField(
+    default=512,
+    min=64,
+    max=1024,
+    step=64,
+    isInt=True,
+    label=I18N(
+        zh="宽",
+        en="Width",
+    ),
+    tooltip=I18N(
+        zh="生成图片的宽度",
+        en="The width of the generated image",
+    ),
+)
+h_field = INumberField(
+    default=512,
+    min=64,
+    max=1024,
+    step=64,
+    isInt=True,
+    label=I18N(
+        zh="高",
+        en="Height",
+    ),
+    tooltip=I18N(
+        zh="生成图片的高度",
+        en="The height of the generated image",
+    ),
+)
 text = ITextField(
     label=I18N(
         zh="提示词",
@@ -154,36 +184,8 @@ lora_field = IListField(
 )
 # txt2img
 txt2img_fields = OrderedDict(
-    w=INumberField(
-        default=512,
-        min=64,
-        max=1024,
-        step=64,
-        isInt=True,
-        label=I18N(
-            zh="宽",
-            en="Width",
-        ),
-        tooltip=I18N(
-            zh="生成图片的宽度",
-            en="The width of the generated image",
-        ),
-    ),
-    h=INumberField(
-        default=512,
-        min=64,
-        max=1024,
-        step=64,
-        isInt=True,
-        label=I18N(
-            zh="高",
-            en="Height",
-        ),
-        tooltip=I18N(
-            zh="生成图片的高度",
-            en="The height of the generated image",
-        ),
-    ),
+    w=w_field,
+    h=h_field,
     text=text,
     version=version,
     sampler=sampler,
