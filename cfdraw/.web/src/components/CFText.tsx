@@ -9,5 +9,12 @@ const CFText = forwardRef(function (props: TextProps, ref) {
 
   return <Text ref={ref} color={textColor} {...props} />;
 });
+export const CFCaption = observer(
+  forwardRef(function (props: TextProps, ref) {
+    const { captionColor } = themeStore.styles;
+
+    return <CFText color={captionColor} {...props} ref={ref} />;
+  }),
+);
 
 export default observer(CFText);

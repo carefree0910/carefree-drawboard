@@ -16,11 +16,11 @@ import { genBlock } from "@/utils/bem";
 import { titleCaseWord } from "@/utils/misc";
 import { EXPAND_TRANSITION } from "@/utils/constants";
 import { UI_Words } from "@/lang/ui";
-import { themeStore, useScrollBarSx } from "@/stores/theme";
+import { useScrollBarSx } from "@/stores/theme";
 import { getMetaField, setMetaField } from "@/stores/meta";
 import { parseIStr } from "@/actions/i18n";
 import CFIcon from "@/components/CFIcon";
-import CFText from "@/components/CFText";
+import CFText, { CFCaption } from "@/components/CFText";
 import CFDivider from "@/components/CFDivider";
 import CFTooltip from "@/components/CFTooltip";
 import { getFieldH, useDefaultFieldValue } from "../utils";
@@ -44,7 +44,6 @@ function ListField({ definition, gap, ...fieldKeys }: IField<IListField> & { gap
   const [expanded, setExpanded] = useState(false);
 
   const lang = langStore.tgt;
-  const { captionColor } = themeStore.styles;
   const values: any[] | undefined = getMetaField(fieldKeys);
 
   if (!values) return null;
@@ -101,9 +100,7 @@ function ListField({ definition, gap, ...fieldKeys }: IField<IListField> & { gap
         transition={EXPAND_TRANSITION}>
         {values.length === 0 ? (
           <Center>
-            <CFText color={captionColor}>
-              {translate(UI_Words["list-field-empty-caption"], lang)}
-            </CFText>
+            <CFCaption>{translate(UI_Words["list-field-empty-caption"], lang)}</CFCaption>
           </Center>
         ) : (
           <Flex

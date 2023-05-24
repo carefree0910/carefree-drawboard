@@ -7,11 +7,10 @@ import { langStore, translate, useSelecting } from "@carefree0910/business";
 import type { IPlugin } from "@/schema/plugins";
 import { DownloadFormat, allDownloadFormat } from "@/schema/misc";
 import { Download_Words } from "@/lang/download";
-import { themeStore } from "@/stores/theme";
 import { usePluginIds } from "@/stores/pluginsInfo";
 import { downloadNodes } from "@/actions/download";
 import CFSelect, { CFSrollableSelect } from "@/components/CFSelect";
-import CFText from "@/components/CFText";
+import CFText, { CFCaption } from "@/components/CFText";
 import CFButton from "@/components/CFButton";
 import CFDivider from "@/components/CFDivider";
 import CFHeading from "@/components/CFHeading";
@@ -24,7 +23,6 @@ const DownloadPlugin = ({ pluginInfo, ...props }: IPlugin) => {
   const lang = langStore.tgt;
   const { type, nodes } = useSelecting("raw");
   const { w, h, imgWH } = useSelecting("basic")({ fixed: 0 }) ?? {};
-  const { captionColor } = themeStore.styles;
   const [format, setFormat] = useState<DownloadFormat>("PNG");
   const [keepOriginal, setKeepOriginal] = useState(true);
   const sizeString = useMemo(() => {
@@ -99,9 +97,7 @@ const DownloadPlugin = ({ pluginInfo, ...props }: IPlugin) => {
         />
         <Flex mt="8px" pr="6px">
           <Spacer />
-          <CFText color={captionColor} fontSize="sm">
-            {sizeString}
-          </CFText>
+          <CFCaption fontSize="sm">{sizeString}</CFCaption>
         </Flex>
         <CFButton mt="12px" onClick={onDownload}>
           {translate(Download_Words["download-button"], lang)}
