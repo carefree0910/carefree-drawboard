@@ -71,7 +71,7 @@ class INumberField(IBaseField):
 
 
 class ISelectField(IBaseField):
-    values: List[IStr] = Field(..., description="The values of the field")
+    options: List[IStr] = Field(..., description="The options of the field")
     default: IStr = Field(..., description="The default value of the field")
     isMulti: Optional[bool] = Field(None, description="Whether use multi-select")
     type: FieldType = Field(FieldType.SELECT, description="Type", const=True)
@@ -122,10 +122,10 @@ class ISelectLocalField(IBaseField):
             onlyFiles=d.pop("onlyFiles"),
             defaultPlaceholder=d.pop("defaultPlaceholder"),
         )
-        values = self.get_options(**kw)
-        d["values"] = values
+        options = self.get_options(**kw)
+        d["options"] = options
         if d["default"] is None:
-            d["default"] = values[0]
+            d["default"] = options[0]
         d["isLocal"] = True
         d["localProperties"] = kw
         return d

@@ -102,12 +102,12 @@ dict(
     ),
     version=ISelectField(
         default="v1.5",
-        values=allSDVersions,
+        options=allSDVersions,
         label="Model",
     ),
     sampler=ISelectField(
         default="k_euler",
-        values=allSDSamplers,
+        options=allSDSamplers,
         label="Sampler",
     ),
     num_steps=INumberField(

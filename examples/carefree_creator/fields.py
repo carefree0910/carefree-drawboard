@@ -29,7 +29,7 @@ version_dict = {
 }
 version = ISelectField(
     default=version_dict[SDVersions.v1_5],
-    values=list(version_dict.values()),
+    options=list(version_dict.values()),
     label=I18N(
         zh="模型",
         en="Model",
@@ -47,7 +47,7 @@ def get_version_from(i18n_d: dict) -> Optional[SDVersions]:
 
 sampler = ISelectField(
     default=SDSamplers.K_EULER,
-    values=[sampler for sampler in SDSamplers],
+    options=[sampler for sampler in SDSamplers],
     label=I18N(
         zh="采样器",
         en="Sampler",
@@ -253,7 +253,7 @@ sr_fields = OrderedDict(
 inpainting_fields = OrderedDict(
     model=ISelectField(
         default="lama",
-        values=["sd", "lama"],
+        options=["sd", "lama"],
         label=I18N(
             zh="模型",
             en="Model",

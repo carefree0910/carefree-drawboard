@@ -42,7 +42,7 @@ interface ISelectLocalProperties {
 }
 export interface ISelectField extends IBaseFields {
   type: "select";
-  values: readonly IStr[];
+  options: readonly IStr[];
   default: IStr;
   isMulti?: boolean;
   localProperties?: ISelectLocalProperties;

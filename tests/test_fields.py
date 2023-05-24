@@ -6,7 +6,7 @@ from cfdraw import *
 definitions = dict(
     label0=ISelectField(
         default="option0",
-        values=["option0", "option1", "option2"],
+        options=["option0", "option1", "option2"],
         label="label0",
         tooltip="label0",
     ),
@@ -46,7 +46,7 @@ definitions = dict(
     ),
     label7=ISelectField(
         default="option0",
-        values=["option0", "option1", "option2"],
+        options=["option0", "option1", "option2"],
         label="label7",
         tooltip="label7",
     ),

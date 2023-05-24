@@ -20,7 +20,7 @@ function SelectField({ definition, ...fieldKeys }: IField<ISelectField>) {
   const label = parseIStr(definition.label ?? titleCaseWord(fieldKeys.field));
   const tooltip = parseIStr(definition.tooltip ?? "");
   const [value, setValue] = useState(getMetaField(fieldKeys) ?? definition.default);
-  const [options, setOptions] = useState(definition.values as IStr[]);
+  const [options, setOptions] = useState(definition.options as IStr[]);
   const onMenuOpen = useCallback(() => {
     if (definition.localProperties) {
       const extraData = definition.localProperties;
