@@ -65,6 +65,7 @@ SDOutpaintingKey = "sd_outpainting"
 VariationKey = "variation"
 ControlNetHintKey = "control_net_hint"
 MultiControlNetKey = "multi_control_net"
+ImageHarmonizationKey = "image_harmonization"
 
 
 notification = """
@@ -79,7 +80,10 @@ notification = """
 7. Inpainting (Erase).
 8. Stable Diffusion Inpainting (Erase & Replace).
 9. Stable Diffusion Outpainting.
-10. And much more to come!
+10. Image Harmonization.
+11. ControlNet Hints.
+12. Multi ControlNet.
+13. And much more to come!
 """
 
 
@@ -510,6 +514,32 @@ class MultiControlNet(CarefreeCreatorPlugin):
         kw["controls"] = list(map(parse_control, kw.pop("controls")))
         model = ControlMultiModel(**kw)
         return await get_apis().run_multi_controlnet(model, step_callback=callback)
+
+
+class ImageHarmonization(CarefreeCreatorPlugin):
+    @property
+    def settings(self) -> IPluginSettings:
+        return IPluginSettings(
+            w=400,
+            h=300,
+            keepOpen=True,
+            src=constants.HARMONIZATION_ICON,
+            tooltip=I18N(
+                zh="将前景区域与背景图进行风格一致化",
+                en="Harmonize the foreground area with the background image",
+            ),
+            pluginInfo=IFieldsPluginInfo(
+                header=I18N(
+                    zh="风格一致化",
+                    en="Image Harmonization",
+                ),
+                definitions=harmonization_fields,
+            ),
+        )
+
+    async def process(self, data: ISocketRequest) -> List[Image.Image]:
+        model = Img2ImgHarmonizationModel(**data.extraData)
+        return await get_apis().harmonization(model)
 
 
 # groups

@@ -21,4 +21,5 @@ __all__ = [
     "Txt2ImgSDOutpaintingModel",
     "ControlNetHints",
     "ControlMultiModel",
+    "Img2ImgHarmonizationModel",
 ]

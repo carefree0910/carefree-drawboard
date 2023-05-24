@@ -95,5 +95,6 @@ SR_ICON = (
 SOD_ICON = "https://ailab-huawei-cdn.nolibox.com/upload/static/carefree-drawboard/icons/sod.svg"
 INPAINTING_ICON = "https://ailab-huawei-cdn.nolibox.com/upload/static/carefree-drawboard/icons/inpainting.svg"
 VARIATION_ICON = "https://ailab-huawei-cdn.nolibox.com/upload/static/carefree-drawboard/icons/variation.svg"
+HARMONIZATION_ICON = "https://ailab-huawei-cdn.nolibox.com/upload/static/carefree-drawboard/icons/sparkle.svg"
 DEFAULT_PLUGIN_ICON = "https://ailab-huawei-cdn.nolibox.com/upload/static/carefree-drawboard/icons/default-plugin.svg"
 DEFAULT_PLUGIN_GROUP_ICON = "https://ailab-huawei-cdn.nolibox.com/upload/static/carefree-drawboard/icons/default-plugin-group.svg"

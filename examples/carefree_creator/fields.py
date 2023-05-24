@@ -367,6 +367,26 @@ multi_controlnet_fields = OrderedDict(
     lora=lora_field,
     controls=multi_controlnet_field,
 )
+# image harmonization
+harmonization_fields = OrderedDict(
+    url=IImageField(
+        default="",
+        label=I18N(zh="原图", en="Image"),
+        tooltip=I18N(zh="想要进行风格融合的原图", en="The original image to be harmonized"),
+    ),
+    mask_url=IImageField(
+        default="",
+        label=I18N(zh="前景", en="Foreground"),
+        tooltip=I18N(zh="想要进行风格融合的前景区域", en="The foreground area to be harmonized"),
+    ),
+    strength=INumberField(
+        default=1.0,
+        min=0.0,
+        max=2.0,
+        step=0.01,
+        label=I18N(zh="融合强度", en="Strength"),
+    ),
+)
 
 
 __all__ = [
@@ -383,4 +403,5 @@ __all__ = [
     "variation_fields",
     "controlnet_hint_fields",
     "multi_controlnet_fields",
+    "harmonization_fields",
 ]

@@ -12,7 +12,10 @@ This example migrates `carefree-creator`'s functionalities to `carefree-drawboar
 7. Inpainting (Erase).
 8. Stable Diffusion Inpainting (Erase & Replace).
 9. Stable Diffusion Outpainting.
-10. And much more to come!
+10. Image Harmonization.
+11. ControlNet Hints.
+12. Multi ControlNet.
+13. And much more to come!
 
 > See [Details](#Details) for more details!
 
