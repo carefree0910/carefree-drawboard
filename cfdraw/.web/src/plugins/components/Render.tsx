@@ -31,6 +31,8 @@ import {
   usePluginNeedRender,
   setPluginUpdater,
   usePluginUpdater,
+  setPluginIsFollow,
+  usePluginIsFollow,
 } from "@/stores/pluginsInfo";
 import { checkHasConstraint, hashInfo, useNodeFilter } from "../utils/renderFilters";
 import Floating, { getExpandId } from "./Floating";
@@ -55,6 +57,7 @@ function getExpandPosition(
 ): Coordinate {
   // check group
   if (!isUndefined(groupId)) {
+    follow = usePluginIsFollow(groupId);
     const group = document.getElementById(groupId);
     if (group) {
       const rect = group.getBoundingClientRect();
@@ -169,6 +172,7 @@ const Render = (({
   pivot ??= DEFAULT_PLUGIN_SETTINGS.pivot as PivotType;
   follow ??= DEFAULT_PLUGIN_SETTINGS.follow;
   follow = follow || inGroup;
+  setPluginIsFollow(_id, follow);
   expandOffsetX ??=
     renderInfo.useModal || ["top", "center", "bottom"].includes(pivot)
       ? 0

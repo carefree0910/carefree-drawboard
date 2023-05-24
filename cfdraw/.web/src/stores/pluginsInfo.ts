@@ -28,6 +28,7 @@ export interface IPluginsInfoStore {
   needRender: Dictionary<boolean>;
   hierarchy: Dictionary<string[]>;
   updaters: Dictionary<(e: any) => Promise<void>>;
+  follows: Dictionary<boolean>;
 }
 type IPluginCollection = keyof IPluginsInfoStore;
 type IPluginCollectionValue<T extends IPluginCollection> = IPluginsInfoStore[T][string];
@@ -47,6 +48,7 @@ class PluginsInfoStore extends ABCStore<IPluginsInfoStore> implements IPluginsIn
   needRender: Dictionary<boolean> = {};
   hierarchy: Dictionary<string[]> = {};
   updaters: Dictionary<(e: any) => Promise<void>> = {};
+  follows: Dictionary<boolean> = {};
 
   constructor() {
     super();
@@ -61,6 +63,7 @@ class PluginsInfoStore extends ABCStore<IPluginsInfoStore> implements IPluginsIn
       needRender: observable,
       hierarchy: observable,
       updaters: observable,
+      follows: observable,
       set: action,
       setDefault: action,
       remove: action,
@@ -213,3 +216,7 @@ export const usePluginUpdater = (id: string) => {
 export const setPluginUpdater = (id: string, updater: (e: any) => Promise<void>) => {
   pluginsInfoStore.set("updaters", id, updater);
 };
+// follows
+export const usePluginIsFollow = (id: string) => pluginsInfoStore.follows[id];
+export const setPluginIsFollow = (id: string, follow: boolean) =>
+  pluginsInfoStore.set("follows", id, follow);
