@@ -4,6 +4,7 @@ import { IBoardOptions, Lang } from "@carefree0910/core";
 import { ABCStore } from "@carefree0910/business";
 
 import type { ReactPlugins, PythonPlugins, IMakePlugin } from "@/schema/plugins";
+import type { IPythonPluginGroup } from "@/schema/_python";
 import type { IProject } from "@/actions/manageProjects";
 import { ThemeType, ThemeStyles } from "./theme";
 
@@ -58,4 +59,12 @@ class SettingsStore extends ABCStore<ISettingsStore> implements ISettingsStore {
 
 export const settingsStore = new SettingsStore();
 export const usePythonPluginSettings = () => settingsStore.pluginSettings;
+export const useFlattenedPythonPluginSettings = () => {
+  const flatten = (p: IMakePlugin<PythonPlugins>): IMakePlugin<PythonPlugins>[] => {
+    if (p.type !== "_python.pluginGroup") return [p];
+    const pluginInfo = p.props.pluginInfo as IPythonPluginGroup["pluginInfo"];
+    return pluginInfo.plugins.flatMap((p) => flatten(p));
+  };
+  return settingsStore.pluginSettings.flatMap(flatten);
+};
 export const useSettingsSynced = () => !!settingsStore.boardSettings;
