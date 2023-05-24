@@ -6,8 +6,13 @@ import { ABCStore, BoardStore, useIsReady } from "@carefree0910/business";
 
 import type { ReactPlugins } from "@/schema/plugins";
 import { useReactPluginSettings } from "@/_settings";
-import { usePythonPluginSettings } from "@/stores/settings";
-import { setPluginExpanded, usePluginParent, usePluginsExpanded } from "@/stores/pluginsInfo";
+import { useFlattenedPythonPluginSettings } from "@/stores/settings";
+import {
+  setPluginExpanded,
+  usePluginIsExpanded,
+  usePluginParent,
+  usePluginsExpanded,
+} from "@/stores/pluginsInfo";
 import { collapseAllPlugins } from "@/actions/managePlugins";
 
 // helpers
@@ -21,13 +26,13 @@ function smartCollapse(): void {
         .filter((s) => s.props.renderInfo.keepOpen)
         .map((s) => s.type),
     ),
-    exceptIdentifiers: usePythonPluginSettings()
+    exceptIdentifiers: useFlattenedPythonPluginSettings()
       .filter((s) => s.props.renderInfo.keepOpen)
       .map((s) => s.props.pluginInfo.identifier),
   });
   if (!isUndefined(expanding)) {
     const parent = usePluginParent(expanding);
-    if (!isUndefined(parent)) {
+    if (!isUndefined(parent) && !usePluginIsExpanded(expanding)) {
       setPluginExpanded(parent, true);
     }
   }
