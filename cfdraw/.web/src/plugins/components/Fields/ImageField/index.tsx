@@ -198,7 +198,9 @@ function ImageField({ definition, ...fieldKeys }: IField<IImageField>) {
             {value}
           </CFText>
         ) : (
-          <CFCaption flex={1}>{translate(UI_Words["image-field-url-placeholder"], lang)}</CFCaption>
+          <CFCaption flex={1} noOfLines={1}>
+            {translate(UI_Words["image-field-url-placeholder"], lang)}
+          </CFCaption>
         )}
       </CFTooltip>
       <Popover isOpen={isOpen} onClose={onClose}>
