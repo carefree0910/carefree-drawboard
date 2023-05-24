@@ -90,27 +90,22 @@ export const CFSrollableSelect = observer(
     chakraStyles,
     ...others
   }: ICFScrollableSelect<T, isMulti>) => {
-    const Select = ({ tooltip }: { tooltip?: string }) => (
-      <CFSelect
-        tooltip={tooltip}
-        chakraStyles={{
-          menuList: (provided) => ({
-            ...provided,
-            p: "0px",
-            maxH: "116px",
-            ...useScrollBarSx(),
-          }),
-          ...chakraStyles,
-        }}
-        {...others}
-      />
-    );
-    if (isUndefined(label)) return <Select tooltip={tooltip} />;
+    const menuList = (provided: any) => ({
+      ...provided,
+      p: "0px",
+      maxH: "116px",
+      ...useScrollBarSx(),
+    });
+    if (isUndefined(label)) {
+      return (
+        <CFSelect tooltip={tooltip} chakraStyles={{ menuList, ...chakraStyles }} {...others} />
+      );
+    }
     return (
       <Flex w="100%" h="100%" align="center" {...flexProps}>
         <CFFormLabel label={label} tooltip={{ label: tooltip }} {...labelProps} />
         <Box w="8px" />
-        <Select />
+        <CFSelect chakraStyles={{ menuList, ...chakraStyles }} {...others} />
       </Flex>
     );
   },
