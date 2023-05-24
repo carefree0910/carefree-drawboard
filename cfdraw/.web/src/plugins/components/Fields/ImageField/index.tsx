@@ -8,6 +8,11 @@ import {
   Popover,
   PopoverContent,
   PopoverTrigger,
+  Box,
+  ImageProps,
+  ButtonProps,
+  PopoverArrow,
+  useDisclosure,
 } from "@chakra-ui/react";
 
 import { getRandomHash } from "@carefree0910/core";
@@ -40,11 +45,7 @@ function ImageField({ definition, ...fieldKeys }: IField<IImageField>) {
   const lang = langStore.tgt;
   const { panelBg } = themeStore.styles;
   const [value, setValue] = useState(getMetaField(fieldKeys) ?? definition.default);
-  const [expanded, setExpanded] = useState(false);
-
-  const onExpand = () => {
-    setExpanded(!expanded);
-  };
+  const { isOpen, onToggle, onClose } = useDisclosure();
 
   return (
     <Flex w="100%" align="center" {...definition.props}>
@@ -54,16 +55,16 @@ function ImageField({ definition, ...fieldKeys }: IField<IImageField>) {
           {value}
         </CFText>
       </CFTooltip>
-      <Popover>
+      <Popover isOpen={isOpen} onClose={onClose}>
         <PopoverTrigger>
-          <Center as="button" h="100%" position="relative" onClick={onExpand}>
+          <Center as="button" h="100%" position="relative" onClick={onToggle}>
             <CFTooltip label={translate(UI_Words["image-field-image-picker"], lang)}>
               <Flex>
                 <Image src={ImageIcon} />
                 <CFIcon
                   svg={ArrowDownIcon}
                   squared={false}
-                  className={block({ e: "icon", m: expanded ? "expanded" : "folded" })}
+                  className={block({ e: "icon", m: isOpen ? "expanded" : "folded" })}
                   fillbyCurrentColor
                   transition={EXPAND_TRANSITION}
                 />
