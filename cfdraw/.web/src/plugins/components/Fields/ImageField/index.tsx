@@ -46,6 +46,11 @@ const GalleryContainer = (props: ButtonProps) => <Box as="button" w="100px" h="1
 interface IOnSelectUrl {
   onSelectUrl: (url: string) => void;
 }
+const specialGalleryItemProps: ButtonProps = {
+  borderWidth: "3px",
+  borderStyle: "dashed",
+  borderRadius: "16px",
+};
 const GalleryUpload = observer(({ onSelectUrl }: IOnSelectUrl) => {
   const lang = langStore.tgt;
   const { captionColor, dividerColor } = themeStore.styles;
@@ -63,11 +68,7 @@ const GalleryUpload = observer(({ onSelectUrl }: IOnSelectUrl) => {
           });
         }
       }}>
-      <GalleryContainer
-        borderWidth="3px"
-        borderStyle="dashed"
-        borderRadius="16px"
-        borderColor={dividerColor}>
+      <GalleryContainer {...specialGalleryItemProps} borderColor={dividerColor}>
         <Flex
           w="100%"
           h="100%"
@@ -89,9 +90,7 @@ const GalleryClear = observer(({ onSelectUrl }: IOnSelectUrl) => {
 
   return (
     <GalleryContainer
-      borderWidth="3px"
-      borderStyle="dashed"
-      borderRadius="16px"
+      {...specialGalleryItemProps}
       borderColor={alertCaptionColor}
       onClick={() => onSelectUrl("")}>
       <Flex
