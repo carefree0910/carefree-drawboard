@@ -15,7 +15,7 @@ import {
   useDisclosure,
 } from "@chakra-ui/react";
 
-import { BoardStore, langStore, translate, useSelecting } from "@carefree0910/business";
+import { BoardStore, langStore, translate, useIsReady, useSelecting } from "@carefree0910/business";
 
 import "./index.scss";
 import ImageIcon from "@/assets/icons/image.svg";
@@ -126,6 +126,7 @@ function ImageField({ definition, ...fieldKeys }: IField<IImageField>) {
   const [hasMore, setHasMore] = useState(true);
   const numFetchEvery = 5;
   const fetchImages = () => {
+    if (!useIsReady()) return;
     // fetch current image nodes
     const { type, nodes: selectingNodes } = useSelecting("raw");
     const selectingAliases = new Set(selectingNodes.map((n) => n.alias));
