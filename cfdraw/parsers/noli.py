@@ -26,6 +26,9 @@ class I18N(BaseModel):
     zh: str = Field(..., description="Chinese")
     en: str = Field(..., description="English")
 
+    def __eq__(self, other: "I18N") -> bool:
+        return self.zh == other.zh and self.en == other.en
+
 
 IStr = Union[str, I18N]
 
