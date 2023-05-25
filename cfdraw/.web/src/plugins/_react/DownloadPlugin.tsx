@@ -25,6 +25,16 @@ const DownloadPlugin = ({ pluginInfo, ...props }: IPlugin) => {
   const { w, h, imgWH } = useSelecting("basic")({ fixed: 0 }) ?? {};
   const [format, setFormat] = useState<DownloadFormat>("PNG");
   const [keepOriginal, setKeepOriginal] = useState(true);
+  const tooltip = useMemo(
+    () =>
+      translate(
+        keepOriginal
+          ? Download_Words["download-original-image-tooltip"]
+          : Download_Words["download-drawboard-image-tooltip"],
+        lang,
+      ),
+    [lang, keepOriginal],
+  );
   const sizeString = useMemo(() => {
     if (!type || type === "none") return null;
     if (type === "multiple") return translate(Download_Words["download-multiple-caption"], lang);
@@ -36,8 +46,8 @@ const DownloadPlugin = ({ pluginInfo, ...props }: IPlugin) => {
     (keepOriginal: boolean) =>
       translate(
         keepOriginal
-          ? Download_Words["download-image-size-original"]
-          : Download_Words["download-image-size-drawboard"],
+          ? Download_Words["download-original-image"]
+          : Download_Words["download-drawboard-image"],
         lang,
       ),
     [lang],
@@ -82,6 +92,8 @@ const DownloadPlugin = ({ pluginInfo, ...props }: IPlugin) => {
           }}
         />
         <CFSelect<boolean, false>
+          tooltip={tooltip}
+          tooltipProps={{ placement: "top" }}
           height="32px"
           fontSize="14px"
           boxProps={{ mt: "10px" }}
