@@ -19,19 +19,19 @@ function checkConstraint(
   if (constraint === "singleNode") return !["group", "multiple", "none"].includes(info.type);
   return info.type === constraint;
 }
-async function checkRules(
+function checkRules(
   rules: NodeConstraintSettings["nodeConstraintRules"],
   info?: IResponse,
-): Promise<boolean> {
+): boolean {
   if (rules?.some) {
     for (const nodeConstraint of rules.some) {
-      if (await useNodeFilter({ nodeConstraint })(info)) return true;
+      if (checkConstraint(nodeConstraint, info)) return true;
     }
     return false;
   }
   if (rules?.every) {
     for (const nodeConstraint of rules.every) {
-      if (!(await useNodeFilter({ nodeConstraint })(info))) return false;
+      if (!checkConstraint(nodeConstraint, info)) return false;
     }
     return true;
   }
@@ -98,7 +98,7 @@ export function useNodeFilter(
 ): (info?: IResponse) => Promise<boolean> {
   return useCallback(async (info) => {
     if (!checkConstraint(settings.nodeConstraint, info)) return false;
-    if (!(await checkRules(settings.nodeConstraintRules, info))) return false;
+    if (!checkRules(settings.nodeConstraintRules, info)) return false;
     if (!(await checkValidator(settings.nodeConstraintValidator, info))) return false;
     return true;
   }, useConstraintDeps(settings));
