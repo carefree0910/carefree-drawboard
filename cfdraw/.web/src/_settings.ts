@@ -169,6 +169,24 @@ export const reactPluginSettings: IMakePlugin<ReactPlugins>[] = [
     },
   },
   {
+    type: "basicEditor",
+    props: {
+      nodeConstraintRules: {
+        some: ["svg", "image", "path", "rectangle", "group"],
+      },
+      renderInfo: {
+        w: 280,
+        h: 210,
+        src: EditorIcon,
+        tooltip: "basic-editor-tooltip",
+        pivot: "right",
+        follow: true,
+        keepOpen: true,
+      },
+      pluginInfo: {},
+    },
+  },
+  {
     type: "textEditor",
     props: {
       nodeConstraint: "text",

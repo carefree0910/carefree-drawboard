@@ -101,6 +101,7 @@ export const allReactPlugins = [
   "github",
   "shortcuts",
   "logo",
+  "basicEditor",
   "textEditor",
   "groupEditor",
   "multiEditor",
@@ -134,6 +135,7 @@ export interface IPluginProps {
   github: IPlugin;
   shortcuts: IPlugin;
   logo: ILogoPlugin;
+  basicEditor: IPlugin;
   textEditor: IPlugin;
   groupEditor: IPlugin;
   multiEditor: IPlugin;

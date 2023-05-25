@@ -17,6 +17,7 @@ export * from "./_react/ArrangePlugin";
 export * from "./_react/UndoRedoPlugin";
 export * from "./_react/DownloadPlugin";
 export * from "./_react/DeletePlugin";
+export * from "./_react/BasicEditorPlugin";
 export * from "./_react/TextEditorPlugin";
 export * from "./_react/GroupPlugin";
 export * from "./_react/LinksPlugin";
