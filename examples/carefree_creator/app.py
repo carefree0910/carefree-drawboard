@@ -3,6 +3,7 @@ from typing import List
 from typing import Optional
 from pathlib import Path
 from cftool.misc import shallow_copy_dict
+from cfcreator.common import InpaintingMode
 from cfcreator.common import VariationModel
 from cflearn.misc.toolkit import new_seed
 
@@ -279,7 +280,7 @@ class SDInpainting(CarefreeCreatorPlugin):
     def settings(self) -> IPluginSettings:
         return IPluginSettings(
             w=common_styles["w"],
-            h=common_styles["h"] - 160,
+            h=common_styles["h"] - 100,
             useModal=True,
             src=constants.SD_INPAINTING_ICON,
             tooltip=I18N(
@@ -303,8 +304,15 @@ class SDInpainting(CarefreeCreatorPlugin):
         url = self.filter(data.nodeDataList, SingleNodeType.IMAGE)[0].src
         mask_url = self.filter(data.nodeDataList, SingleNodeType.PATH)[0].src
         kw = inject(self, data).extraData
-        self.extra_responses.update(url=url, mask_url=mask_url)
+        focus_mode = kw.pop("focus_mode")
         model = Txt2ImgSDInpaintingModel(url=url, mask_url=mask_url, **kw)
+        if focus_mode:
+            model.inpainting_mode = InpaintingMode.MASKED
+        self.extra_responses.update(
+            url=url,
+            mask_url=mask_url,
+            inpainting_mode=model.inpainting_mode.value,
+        )
         return await get_apis().sd_inpainting(model, step_callback=callback)
 
 
@@ -407,15 +415,18 @@ class Variation(CarefreeCreatorPlugin):
                     self.send_exception("cannot find `url`")
                     return False
                 kw["url"] = url
-            # [sd.inpainting] inject url & mask_url
+            # [sd.inpainting] inject url & mask_url & inpainting_mode
             elif task == SDInpaintingKey:
                 url = extra.get("url")
                 mask_url = extra.get("mask_url")
+                inpainting_mode = extra.get("inpainting_mode")
                 if url is None or mask_url is None:
                     self.send_exception("cannot find `url` or `mask_url`")
                     return False
                 kw["url"] = url
                 kw["mask_url"] = mask_url
+                if inpainting_mode is not None:
+                    kw["inpainting_mode"] = inpainting_mode
             return True
 
         meta_data = data.nodeData.meta["data"]

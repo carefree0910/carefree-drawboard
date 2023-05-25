@@ -199,13 +199,23 @@ txt2img_fields = OrderedDict(
     lora=lora_field,
 )
 # sd_inpainting / sd_outpainting fields
+sd_inpainting_prompt = text.copy()
+sd_inpainting_prompt.numRows = 3
 sd_inpainting_fields = OrderedDict(
-    text=text,
+    text=sd_inpainting_prompt,
     sampler=sampler,
     num_steps=num_steps,
-    negative_prompt=negative_prompt,
     guidance_scale=guidance_scale,
+    negative_prompt=negative_prompt,
     seed=seed,
+    focus_mode=IBooleanField(
+        default=False,
+        label=I18N(zh="聚焦模式", en="Focus Mode"),
+        tooltip=I18N(
+            zh="启用聚焦模式时，模型会仅关注蒙版区域及周边的一些像素，此时生成的效果通常会富有更多的细节",
+            en="When enabled, the model will only focus on the masked region and some surrounding pixels, which usually results in more detailed images",
+        ),
+    ),
 )
 # img2img fields
 fidelity = INumberField(
