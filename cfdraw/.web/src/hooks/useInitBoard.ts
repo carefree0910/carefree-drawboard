@@ -73,7 +73,7 @@ export function useInitBoard(): void {
           node.renderParams.placeholder = IMAGE_PLACEHOLDER;
         }
       });
-      await unittest.renderGraph(graph, undefined, onEvents);
+      await unittest.renderGraph(graph, null, onEvents);
     }
 
     // setup options
