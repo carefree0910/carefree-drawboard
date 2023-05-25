@@ -203,10 +203,9 @@ sd_inpainting_fields = OrderedDict(
     text=text,
     sampler=sampler,
     num_steps=num_steps,
-    guidance_scale=guidance_scale,
     negative_prompt=negative_prompt,
+    guidance_scale=guidance_scale,
     seed=seed,
-    use_circular=use_circular,
 )
 # img2img fields
 fidelity = INumberField(

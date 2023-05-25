@@ -278,7 +278,9 @@ class SDInpainting(CarefreeCreatorPlugin):
     @property
     def settings(self) -> IPluginSettings:
         return IPluginSettings(
-            **common_styles,
+            w=common_styles["w"],
+            h=common_styles["h"] - 160,
+            useModal=True,
             src=constants.SD_INPAINTING_ICON,
             tooltip=I18N(
                 zh="在蒙版区域内填充符合描述的内容",
