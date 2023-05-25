@@ -399,15 +399,15 @@ class Variation(CarefreeCreatorPlugin):
                 kw["lora_paths"] = lora_paths
             if lora_scales is not None:
                 kw["lora_scales"] = lora_scales
-            # [img2img]       inject url
-            # [sd.inpainting] inject url
+            # [img2img]     inject url
+            # [outpainting] inject url
             if task == Img2ImgKey or task == SDOutpaintingKey:
                 url = extra.get("url")
                 if url is None:
                     self.send_exception("cannot find `url`")
                     return False
                 kw["url"] = url
-            # [outpainting] inject url & mask_url
+            # [sd.inpainting] inject url & mask_url
             elif task == SDInpaintingKey:
                 url = extra.get("url")
                 mask_url = extra.get("mask_url")
