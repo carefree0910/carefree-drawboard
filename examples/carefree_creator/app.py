@@ -22,7 +22,7 @@ def inject(
     self.extra_responses["seed"] = data.extraData["seed"]
     # version
     version_i18n_d = data.extraData[version_key]
-    version = get_version_from(version_i18n_d)
+    version = version_field.parse(version_i18n_d)
     self.extra_responses[version_key] = data.extraData[version_key] = version
     # lora
     lora = data.extraData.pop("lora", [])
@@ -473,7 +473,7 @@ class ControlHints(CarefreeCreatorPlugin):
 
     async def process(self, data: ISocketRequest) -> List[Image.Image]:
         url = data.nodeData.src
-        hint_type = get_hint_type_from(data.extraData["hint_type"])
+        hint_type = controlnet_hint_fields.parse(data.extraData["hint_type"])
         return await get_apis().get_control_hint(hint_type, url=url)
 
 
@@ -505,8 +505,8 @@ class MultiControlNet(CarefreeCreatorPlugin):
             return self.send_progress(step / num_steps)
 
         def parse_control(control: dict) -> dict:
-            t = control.pop("type")
-            return dict(type=get_hint_type_from(t), data=control)
+            t = controlnet_hint_fields.parse(control.pop("type"))
+            return dict(type=t, data=control)
 
         kw = inject(self, data, "base_model").extraData
         if not kw["url"]:

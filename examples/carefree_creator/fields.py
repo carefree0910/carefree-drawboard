@@ -67,30 +67,15 @@ text = ITextField(
         en="The description of the image",
     ),
 )
-## sd version stuffs
-version_dict = {
-    SDVersions.v1_5: I18N(zh="基础模型", en="Base Model"),
-    SDVersions.ANIME_ANYTHING: I18N(zh="动漫模型", en="Anime Model"),
-    SDVersions.DREAMLIKE: I18N(zh="艺术模型", en="Art Model"),
-}
-version = ISelectField(
-    default=version_dict[SDVersions.v1_5],
-    options=list(version_dict.values()),
-    label=I18N(
-        zh="模型",
-        en="Model",
-    ),
+version_field = I18NSelectField(
+    mapping={
+        SDVersions.v1_5: I18N(zh="基础模型", en="Base Model"),
+        SDVersions.ANIME_ANYTHING: I18N(zh="动漫模型", en="Anime Model"),
+        SDVersions.DREAMLIKE: I18N(zh="艺术模型", en="Art Model"),
+    },
+    default=SDVersions.v1_5,
+    label=I18N(zh="模型", en="Model"),
 )
-
-
-def get_version_from(i18n_d: dict) -> Optional[SDVersions]:
-    i18n = I18N(**i18n_d)
-    for version, v_i18n in version_dict.items():
-        if i18n.en == v_i18n.en:
-            return version
-    return None
-
-
 sampler = ISelectField(
     default=SDSamplers.K_EULER,
     options=[sampler for sampler in SDSamplers],
@@ -203,7 +188,7 @@ txt2img_fields = OrderedDict(
     w=w_field,
     h=h_field,
     text=text,
-    version=version,
+    version=version_field,
     sampler=sampler,
     negative_prompt=negative_prompt,
     num_steps=num_steps,
@@ -243,7 +228,7 @@ img2img_prompt.numRows = 3
 img2img_fields = OrderedDict(
     text=img2img_prompt,
     fidelity=fidelity,
-    version=version,
+    version=version_field,
     sampler=sampler,
     negative_prompt=negative_prompt,
     num_steps=num_steps,
@@ -289,30 +274,16 @@ inpainting_fields = OrderedDict(
 variation_fields = OrderedDict(fidelity=img2img_fields["fidelity"])
 # controlnet stuffs
 ## controlnet hints
-controlnet_dict = {
-    ControlNetHints.CANNY: I18N(zh="Canny 边缘", en="Canny Edge"),
-    ControlNetHints.DEPTH: I18N(zh="深度图", en="Depth Image"),
-    ControlNetHints.MLSD: I18N(zh="MLSD 边缘", en="MLSD Edge"),
-    ControlNetHints.POSE: I18N(zh="人体姿态", en="Human Pose"),
-}
-controlnet_hint_fields = ISelectField(
-    default=controlnet_dict[ControlNetHints.CANNY],
-    options=list(controlnet_dict.values()),
-    label=I18N(
-        zh="参考图类型",
-        en="Hint Type",
-    ),
+controlnet_hint_fields = I18NSelectField(
+    mapping={
+        ControlNetHints.CANNY: I18N(zh="Canny 边缘", en="Canny Edge"),
+        ControlNetHints.DEPTH: I18N(zh="深度图", en="Depth Image"),
+        ControlNetHints.MLSD: I18N(zh="MLSD 边缘", en="MLSD Edge"),
+        ControlNetHints.POSE: I18N(zh="人体姿态", en="Human Pose"),
+    },
+    default=ControlNetHints.CANNY,
+    label=I18N(zh="参考图类型", en="Hint Type"),
 )
-
-
-def get_hint_type_from(hint_d: dict) -> Optional[ControlNetHints]:
-    hint = I18N(**hint_d)
-    for h, h_i18n in controlnet_dict.items():
-        if hint.en == h_i18n.en:
-            return h
-    return None
-
-
 ## multi ControNet
 controlnet_fields = OrderedDict(
     type=controlnet_hint_fields,
@@ -358,7 +329,7 @@ multi_controlnet_fields = OrderedDict(
     ),
     fidelity=fidelity,
     max_wh=max_wh_field,
-    base_model=version,
+    base_model=version_field,
     negative_prompt=multi_controlnet_negative_prompt,
     sampler=sampler,
     num_steps=num_steps,
@@ -390,11 +361,10 @@ harmonization_fields = OrderedDict(
 
 
 __all__ = [
-    "get_version_from",
-    "get_hint_type_from",
     "common_styles",
     "common_group_styles",
     "lora_field",
+    "version_field",
     "txt2img_fields",
     "img2img_fields",
     "sr_fields",

@@ -12,6 +12,7 @@ from pydantic import Field
 from pydantic import BaseModel
 
 from cfdraw.parsers.noli import IStr
+from cfdraw.parsers.noli import I18N
 from cfdraw.parsers.chakra import IChakra
 
 
@@ -23,6 +24,7 @@ class FieldType(str, Enum):
     IMAGE = "image"
     NUMBER = "number"
     SELECT = "select"
+    I18N_SELECT = "i18n_select"
     SELECT_LOCAL = "select_local"
     BOOLEAN = "boolean"
     COLOR = "color"
@@ -75,6 +77,34 @@ class ISelectField(IBaseField):
     default: IStr = Field(..., description="The default value of the field")
     isMulti: Optional[bool] = Field(None, description="Whether use multi-select")
     type: FieldType = Field(FieldType.SELECT, description="Type", const=True)
+
+
+class I18NSelectField(IBaseField):
+    mapping: Dict[str, I18N] = Field(
+        ...,
+        description=(
+            "The mapping of the options. "
+            "The key is the 'actual' option, and the value is the i18n object to be displayed"
+        ),
+    )
+    default: str = Field(..., description="The default 'actual' option of the field")
+    isMulti: Optional[bool] = Field(None, description="Whether use multi-select")
+    type: FieldType = Field(FieldType.I18N_SELECT, description="Type", const=True)
+
+    def dict(self, **kwargs: Any) -> Dict[str, Any]:
+        d = super().dict(**kwargs)
+        d["type"] = FieldType.SELECT.value
+        mapping, default = map(d.pop, ["mapping", "default"])
+        d["options"] = list(mapping.values())
+        d["default"] = mapping[default]
+        return d
+
+    def parse(self, i18n_d: Dict[str, str]) -> Optional[str]:
+        i18n = I18N(**i18n_d)
+        for k, v in self.mapping.items():
+            if i18n == v:
+                return k
+        return None
 
 
 class ISelectLocalField(IBaseField):
@@ -165,6 +195,7 @@ IFieldDefinition = Union[
     IImageField,
     INumberField,
     ISelectField,
+    I18NSelectField,
     ISelectLocalField,
     IBooleanField,
     IColorField,
@@ -182,6 +213,7 @@ __all__ = [
     "NumberScale",
     "INumberField",
     "ISelectField",
+    "I18NSelectField",
     "ISelectLocalField",
     "IBooleanField",
     "IColorField",
