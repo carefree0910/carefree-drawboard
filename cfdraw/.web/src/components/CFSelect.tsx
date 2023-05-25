@@ -1,5 +1,5 @@
 import { observer } from "mobx-react-lite";
-import { Box, BoxProps, Flex, FlexProps, FormLabelProps } from "@chakra-ui/react";
+import { Box, BoxProps, Flex, FlexProps, FormLabelProps, TooltipProps } from "@chakra-ui/react";
 import { GroupBase, OptionBase, Select } from "chakra-react-select";
 
 import { isUndefined } from "@carefree0910/core";
@@ -13,13 +13,20 @@ interface SelectItem<T> extends OptionBase {
 }
 export type ICFSelect<T, isMulti extends boolean> = Parameters<
   typeof Select<SelectItem<T>, isMulti, GroupBase<SelectItem<T>>>
->[0] & { tooltip?: string; height?: string; fontSize?: string; boxProps?: BoxProps };
+>[0] & {
+  tooltip?: string;
+  height?: string;
+  fontSize?: string;
+  boxProps?: BoxProps;
+  tooltipProps?: Omit<TooltipProps, "children">;
+};
 
 function CFSelect<T, isMulti extends boolean>({
   tooltip,
   height,
   fontSize,
   boxProps,
+  tooltipProps,
   chakraStyles,
   ...others
 }: ICFSelect<T, isMulti>) {
@@ -70,7 +77,11 @@ function CFSelect<T, isMulti extends boolean>({
     </Box>
   );
   if (isUndefined(tooltip)) return _Select;
-  return <CFTooltip label={tooltip}>{_Select}</CFTooltip>;
+  return (
+    <CFTooltip label={tooltip} {...tooltipProps}>
+      {_Select}
+    </CFTooltip>
+  );
 }
 
 interface ICFScrollableSelect<T, isMulti extends boolean> extends ICFSelect<T, isMulti> {
