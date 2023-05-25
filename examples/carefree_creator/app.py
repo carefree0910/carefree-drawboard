@@ -1,5 +1,6 @@
 from PIL import Image
 from typing import List
+from typing import Optional
 from pathlib import Path
 from cftool.misc import shallow_copy_dict
 from cfcreator.common import VariationModel
@@ -14,16 +15,17 @@ from fields import *
 def inject(
     self: IFieldsPlugin,
     data: ISocketRequest,
-    version_key: str = "version",
+    version_key: Optional[str] = None,
 ) -> ISocketRequest:
     # seed
     if data.extraData["seed"] == -1:
         data.extraData["seed"] = new_seed()
     self.extra_responses["seed"] = data.extraData["seed"]
     # version
-    version_i18n_d = data.extraData[version_key]
-    version = version_field.parse(version_i18n_d)
-    self.extra_responses[version_key] = data.extraData[version_key] = version
+    if version_key is not None:
+        version_i18n_d = data.extraData[version_key]
+        version = version_field.parse(version_i18n_d)
+        self.extra_responses[version_key] = data.extraData[version_key] = version
     # lora
     lora = data.extraData.pop("lora", [])
     lora_definition = lora_field.item
@@ -118,7 +120,7 @@ class Txt2Img(CarefreeCreatorPlugin):
         def callback(step: int, num_steps: int) -> bool:
             return self.send_progress(step / num_steps)
 
-        kw = inject(self, data).extraData
+        kw = inject(self, data, "version").extraData
         model = Txt2ImgSDModel(**kw)
         if kw["use_highres"]:
             model.highres_info = HighresModel()
@@ -150,7 +152,7 @@ class Img2Img(CarefreeCreatorPlugin):
             return self.send_progress(step / num_steps)
 
         url = data.nodeData.src
-        kw = dict(url=url, **inject(self, data).extraData)
+        kw = dict(url=url, **inject(self, data, "version").extraData)
         model = Img2ImgSDModel(**kw)
         if kw["use_highres"]:
             model.highres_info = HighresModel()
@@ -385,7 +387,9 @@ class Variation(CarefreeCreatorPlugin):
                     return False
                 kw["seed"] = generated_seed
             # [general] inject version
-            kw["version"] = extra["version"]
+            version = extra.get("version")
+            if version is not None:
+                kw["version"] = version
             # [general] inject lora
             lora_paths = extra.get("lora_paths")
             lora_scales = extra.get("lora_scales")
