@@ -1,6 +1,7 @@
 import json
 
 from cfdraw import *
+from pathlib import Path
 
 
 definitions = dict(
@@ -44,21 +45,31 @@ definitions = dict(
         label="label6",
         tooltip="label6",
     ),
-    label7=ISelectField(
+    label7=I18NSelectField(
+        mapping={
+            "option0": I18N(zh="zh_选项0", en="en_option0"),
+            "option1": I18N(zh="zh_选项1", en="en_option1"),
+            "option2": I18N(zh="zh_选项2", en="en_option2"),
+        },
         default="option0",
-        options=["option0", "option1", "option2"],
         label="label7",
         tooltip="label7",
     ),
+    label8=ISelectLocalField(
+        path=str(Path(__file__).parent / "assets"),
+        defaultPlaceholder="None",
+        label="label8",
+        tooltip="label8",
+    ),
 )
-list_definition = IListField(label="label8", tooltip="label8", item=definitions)
+list_definition = IListField(label="label9", tooltip="label9", item=definitions)
 
 
 class Plugin(IFieldsPlugin):
     @property
     def settings(self) -> IPluginSettings:
         od = definitions.copy()
-        od["label8"] = list_definition
+        od["label9"] = list_definition
         return IPluginSettings(
             w=800,
             h=800,
@@ -73,7 +84,9 @@ class Plugin(IFieldsPlugin):
         )
 
     async def process(self, data: ISocketRequest) -> str:
-        return json.dumps(data.extraData, indent=2)
+        label7 = data.extraData["label7"]
+        data.extraData["label7"] = definitions["label7"].parse(label7)
+        return json.dumps(data.extraData, indent=2, ensure_ascii=False)
 
 
 register_plugin("fields")(Plugin)
