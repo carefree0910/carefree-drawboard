@@ -191,8 +191,8 @@ export const reactPluginSettings: IMakePlugin<ReactPlugins>[] = [
     props: {
       nodeConstraint: "text",
       renderInfo: {
-        w: 300,
-        h: 400,
+        w: 400,
+        h: 420,
         src: EditorIcon,
         tooltip: "text-editor-tooltip",
         pivot: "right",

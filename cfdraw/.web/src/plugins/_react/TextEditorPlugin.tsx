@@ -17,6 +17,7 @@ import CFHeading from "@/components/CFHeading";
 import CFTextarea from "@/components/CFTextarea";
 import CFColorPicker from "@/components/CFColorPicker";
 import { drawboardPluginFactory } from "../utils/factory";
+import BasicEditor from "./components/BasicEditor";
 import Render from "../components/Render";
 
 const textAlignDict: Record<TextAlign, Record<Lang, string>> = {
@@ -66,6 +67,8 @@ const TextEditorPlugin = ({ pluginInfo: { node }, ...props }: IPlugin) => {
   return (
     <Render id={id} {...props}>
       <CFHeading>{translate(NodeEditor_Words["text-editor-plugin-header"], lang)}</CFHeading>
+      <CFDivider />
+      <BasicEditor />
       <CFDivider />
       <Flex direction="column" w="100%" h="100%">
         <Flex w="100%">
