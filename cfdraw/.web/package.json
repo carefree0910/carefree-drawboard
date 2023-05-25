@@ -10,10 +10,10 @@
     "build:preview": "tsc && vite build && vite preview"
   },
   "dependencies": {
-    "@carefree0910/business": "~0.5.1-alpha.13",
-    "@carefree0910/core": "~0.5.1-alpha.13",
-    "@carefree0910/native": "~0.5.1-alpha.13",
-    "@carefree0910/svg": "~0.5.1-alpha.13",
+    "@carefree0910/business": "~0.5.1-alpha.14",
+    "@carefree0910/core": "~0.5.1-alpha.14",
+    "@carefree0910/native": "~0.5.1-alpha.14",
+    "@carefree0910/svg": "~0.5.1-alpha.14",
     "@chakra-ui/icons": "^2.0.4",
     "@chakra-ui/react": "^2.2.4",
     "@emotion/react": "^11.9.3",
