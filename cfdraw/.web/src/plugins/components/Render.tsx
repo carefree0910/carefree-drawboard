@@ -201,9 +201,8 @@ const Render = (({
     isInvisible: !needRender ? true : renderInfo.isInvisible,
   };
 
-  const deps = [
+  const updateFloatingDeps = [
     _id,
-    needRender,
     ...infoDeps,
     groupId,
     iconW,
@@ -217,7 +216,6 @@ const Render = (({
     JSON.stringify(props),
   ];
   const updateFloating = useCallback(async (e: any) => {
-    if (!needRender) return;
     const _iconW = iconW!;
     const _iconH = iconH!;
     const _pivot = pivot!;
@@ -318,7 +316,7 @@ const Render = (({
       expandOffsetY: expandOffsetY!,
     });
     domFloatingExpand.style.transform = `matrix(1,0,0,1,${ex},${ey})`;
-  }, deps);
+  }, updateFloatingDeps);
 
   const updater = usePluginUpdater(_id);
   useEffect(() => {
