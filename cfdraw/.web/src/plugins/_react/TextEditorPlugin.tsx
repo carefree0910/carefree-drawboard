@@ -102,10 +102,12 @@ const TextEditorPlugin = ({ pluginInfo: { node }, ...props }: IPlugin) => {
             value: textAlign,
             label: textAlignDict[textAlign][lang],
           }}
-          options={allTextAlign.map((align) => ({
-            value: align,
-            label: textAlignDict[align][lang],
-          }))}
+          options={allTextAlign
+            .filter((align) => align !== "justify")
+            .map((align) => ({
+              value: align,
+              label: textAlignDict[align][lang],
+            }))}
           onChange={onChangeAlign}
         />
         <CFDivider />
