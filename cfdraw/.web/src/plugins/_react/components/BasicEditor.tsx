@@ -24,9 +24,14 @@ const FieldInput = ({
   setValue: (value: number) => void;
 }) => {
   const [iv, setIv] = useState(value);
+  const safeSetValue = () => {
+    if (iv !== value) {
+      setValue(iv);
+    }
+  };
 
   useEffect(() => setIv(value), [value]);
-  useUnmount(() => setValue(iv));
+  useUnmount(safeSetValue);
 
   return (
     <Flex align="center">
@@ -45,7 +50,7 @@ const FieldInput = ({
         useNumberInputProps={{
           value: iv,
           onChange: (value) => setIv(+value),
-          onBlur: () => setValue(iv),
+          onBlur: safeSetValue,
         }}
         {...props}
       />
