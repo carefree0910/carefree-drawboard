@@ -1,5 +1,6 @@
 import {
   RectangleShapeNode,
+  getAutoWH,
   getRandomHash,
   isGroupNode,
   isUndefined,
@@ -30,14 +31,6 @@ function updateElapsedTimes(alias: string): void {
   if (!node || isGroupNode(node) || !node.params.meta?.data) return;
   node.params.meta.data.elapsedTimes = { endTime: Date.now() };
   updateMeta(alias, node.params.meta);
-}
-
-function getWHFromContent(content: string, fontSize: number): { w: number; h: number } {
-  const numChars = content.length;
-  const ratio = Math.sqrt(0.75 * numChars);
-  const h = Math.ceil(fontSize * ratio);
-  const w = h * 2;
-  return { w, h };
 }
 
 // consumers
@@ -96,7 +89,7 @@ function consumeAddText({ lang, type, metaData }: IImportMeta<"add.text">): void
   metaData.alias = newAlias;
   const content = useDefaultTextContent(lang);
   const fontSize = DEFAULT_FONT_SIZE;
-  const { w, h } = getWHFromContent(content, fontSize);
+  const { w, h } = getAutoWH({ content, fontSize });
   addText({ trace: true })({
     alias: newAlias,
     initColor: textColor,
@@ -212,7 +205,7 @@ function consumePythonFields({ type, metaData }: IImportMeta<"python.fields">): 
     const fontSize = DEFAULT_FONT_SIZE;
     const packs = gatherPacks(metaData.response, ({ text }) => ({
       autoFit: true,
-      wh: getWHFromContent(text, fontSize),
+      wh: getAutoWH({ content: text, fontSize }),
     }));
     const targets = getArrangements(packs.map(({ rectangle }) => rectangle)).targets;
     packs.forEach(({ res: { text }, alias, metaData }, i) => {
