@@ -1,3 +1,5 @@
+import json
+
 from io import BytesIO
 from PIL import Image
 from typing import Union
@@ -50,6 +52,7 @@ class ImageUploader:
     @staticmethod
     async def upload_image(
         contents: Union[bytes, Image.Image],
+        userJson: str,
         meta: PngInfo,
         base_url: str,
         audit: bool,
@@ -60,6 +63,7 @@ class ImageUploader:
         * `FieldsMiddleWare`, `contents` will be an `Image.Image` object.
         """
 
+        meta.add_text("userJson", userJson)
         if isinstance(contents, Image.Image):
             image = contents
         else:
@@ -77,6 +81,7 @@ def add_upload_image(app: IApp) -> None:
     async def upload_image(
         image: UploadFile = File(),
         userId: str = Form(),
+        userJson: Optional[str] = Form(None),
         audit: bool = Form(True),
         *,
         request: Request,
@@ -84,9 +89,10 @@ def add_upload_image(app: IApp) -> None:
         try:
             base_url = str(request.base_url)
             contents = image.file.read()
-            meta = PngInfo()
-            meta.add_text("userId", userId)
-            data = await ImageUploader.upload_image(contents, meta, base_url, audit)
+            if userJson is None:
+                userJson = json.dumps(dict(userId=userId))
+            args = contents, userJson, PngInfo(), base_url, audit
+            data = await ImageUploader.upload_image(*args)
         except Exception as err:
             err_msg = get_err_msg(err)
             return UploadImageResponse(success=False, message=err_msg, data=None)

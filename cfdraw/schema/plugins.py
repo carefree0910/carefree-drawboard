@@ -1,3 +1,4 @@
+import json
 import time
 
 from abc import abstractmethod
@@ -362,6 +363,7 @@ class ISocketRequest(BaseModel):
 
     hash: str = Field(..., description="The hash of the request")
     userId: str = Field(..., description="The id of the user")
+    userJson: Optional[str] = Field(None, description="Full json of the user info")
     baseURL: str = Field(..., description="The base url of the request")
     identifier: str = Field(..., description="The identifier of the plugin")
     nodeData: INodeData = Field(
@@ -380,6 +382,11 @@ List of data extracted from `nodes`.
     )
     extraData: Dict[str, Any] = Field(..., description="Extra data of each plugin")
     isInternal: bool = Field(False, description="Whether the request is internal")
+
+    def get_user_json(self) -> str:
+        if self.userJson is not None:
+            return self.userJson
+        return json.dumps(dict(userId=self.userId))
 
 
 class SocketStatus(str, Enum):

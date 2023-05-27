@@ -27,7 +27,11 @@ export async function uploadImage(
         success: boolean;
         message: string;
         data: IUploadImageResponseData;
-      }>("_python", "/upload_image", { image: blob, userId: userStore.userId });
+      }>("_python", "/upload_image", {
+        image: blob,
+        userId: userStore.userId,
+        userJson: userStore.json,
+      });
       if (!res.success) {
         toastWord("warning", Toast_Words["upload-image-error-message"], {
           appendix: ` - ${res.message}`,

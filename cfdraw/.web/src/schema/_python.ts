@@ -104,6 +104,7 @@ export interface IPythonChatPlugin extends IPythonPlugin {
 export interface IPythonSocketRequest {
   hash: string;
   userId: string;
+  userJson?: string;
   baseURL: string;
   identifier: string;
   nodeData: INodeData;

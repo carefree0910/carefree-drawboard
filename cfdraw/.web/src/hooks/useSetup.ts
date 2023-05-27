@@ -193,11 +193,13 @@ const updateSettings = (data: ISettingsStore): boolean => {
 function useSyncPython() {
   const hash = "0";
   const userId = userStore.userId;
+  const userJson = userStore.json;
   const getMessage = useCallback(
     (): Promise<IPythonSocketRequest> =>
       Promise.resolve({
         hash,
-        userId: userStore.userId,
+        userId,
+        userJson,
         baseURL: getBaseURL(),
         identifier: "sync",
         nodeData: {},
@@ -205,7 +207,7 @@ function useSyncPython() {
         extraData: {},
         isInternal: true,
       }),
-    [],
+    [userId, userJson],
   );
   const onMessage = useCallback<IPythonOnSocketMessage<ISettingsStore>>(
     async ({ status, total, pending, message, data: { final } }) => {

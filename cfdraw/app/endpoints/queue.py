@@ -35,6 +35,7 @@ class RequestQueue(IRequestQueue):
             print("~" * 50)
             print("> push.uid", uid)
             print("> push.userId", data.request.userId)
+            print("> push.userJson", data.request.userJson)
             print("> push.hash", data.request.hash)
         return uid
 

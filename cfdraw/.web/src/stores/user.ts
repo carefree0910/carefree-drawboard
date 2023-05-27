@@ -1,4 +1,4 @@
-import { makeObservable, observable } from "mobx";
+import { computed, makeObservable, observable } from "mobx";
 
 import { ABCStore } from "@carefree0910/business";
 
@@ -12,11 +12,16 @@ class UserStore extends ABCStore<IUserStore> implements IUserStore {
     super();
     makeObservable(this, {
       userId: observable,
+      json: computed,
     });
   }
 
   get info(): IUserStore {
     return this;
+  }
+
+  get json(): string {
+    return JSON.stringify(this.info);
   }
 }
 

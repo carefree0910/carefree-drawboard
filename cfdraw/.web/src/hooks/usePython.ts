@@ -122,6 +122,7 @@ export async function getPythonRequest({
     !needExportNodeData || nodes.length <= 1 ? [] : await getNodeDataList(nodes, getNodeDataOpt);
   return {
     userId: userStore.userId,
+    userJson: userStore.json,
     baseURL: getBaseURL(),
     identifier,
     nodeData,

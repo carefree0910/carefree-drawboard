@@ -17,6 +17,7 @@ import { useDefaultFieldValue } from "./utils";
 function SelectField({ definition, ...fieldKeys }: IField<ISelectField>) {
   useDefaultFieldValue({ definition, ...fieldKeys });
   const userId = userStore.userId;
+  const userJson = userStore.json;
   const label = parseIStr(definition.label ?? titleCaseWord(fieldKeys.field));
   const tooltip = parseIStr(definition.tooltip ?? "");
   const [value, setValue] = useState(getMetaField(fieldKeys) ?? definition.default);
@@ -32,6 +33,7 @@ function SelectField({ definition, ...fieldKeys }: IField<ISelectField>) {
           getMessage: async () => ({
             hash,
             userId,
+            userJson,
             baseURL: getBaseURL(),
             identifier: "sync_local_select",
             nodeData: {},
