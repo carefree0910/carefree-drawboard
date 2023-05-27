@@ -2,8 +2,6 @@ import { makeObservable, observable } from "mobx";
 
 import { ABCStore } from "@carefree0910/business";
 
-import { debugStore } from "./debug";
-
 export interface IUserStore {
   userId: string;
 }

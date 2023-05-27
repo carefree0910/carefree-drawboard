@@ -1,11 +1,8 @@
 import { useEffect } from "react";
 
+import type { IUserStore } from "@/stores/user";
 import { Event } from "@/utils/event";
 import { cleanURL, getEnv } from "@/utils/misc";
-
-type Message = {
-  userId: string;
-};
 
 const allowedOrigins = ["http://127.0.0.1:5123", "http://localhost:5123"];
 const allowedOriginRegexList = [/^http:\/\/localhost(:\d+)?$/];
@@ -21,16 +18,16 @@ function isAllowedOrigin(origin: string): boolean {
   return allowedOriginRegexList.some((regex) => regex.test(origin));
 }
 
-export const authEvent = new Event<Message>();
+export const authEvent = new Event<IUserStore>();
 export const useAuth = () => {
   useEffect(() => {
-    const onMessage = (e: MessageEvent<Partial<Message>>) => {
+    const onMessage = (e: MessageEvent<IUserStore | any>) => {
       if (!isAllowedOrigin(e.origin)) {
         console.error(`unauthorized origin: ${e.origin}`);
         return;
       }
       if (e.data.userId) {
-        authEvent.emit({ userId: e.data.userId });
+        authEvent.emit(e.data);
       }
     };
 

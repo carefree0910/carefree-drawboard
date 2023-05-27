@@ -98,9 +98,9 @@ const postPseduoUserId = async (): Promise<void> => {
 };
 const useUserInitialization = () => {
   useEffect(() => {
-    const { dispose } = authEvent.on(({ userId }) => {
-      Logger.debug(`user id: ${userId}`);
-      userStore.updateProperty("userId", userId);
+    const { dispose } = authEvent.on((data) => {
+      Logger.debug(`user data: ${JSON.stringify(data)}`);
+      userStore.updateProperty(data);
     });
     if (debugStore.postPseduoUserId) {
       postPseduoUserId();
