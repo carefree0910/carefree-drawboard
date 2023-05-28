@@ -34,7 +34,13 @@ import { toastWord } from "@/utils/toast";
 import { titleCaseWord } from "@/utils/misc";
 import { EXPAND_TRANSITION, IMAGE_PLACEHOLDER } from "@/utils/constants";
 import { themeStore, useActiveBorderProps, useScrollBarSx } from "@/stores/theme";
-import { getMetaField, setMetaField } from "@/stores/meta";
+import {
+  IMetaInjection,
+  getMetaField,
+  makeMetaInjectionFrom,
+  setMetaField,
+  setMetaInjection,
+} from "@/stores/meta";
 import { parseIStr } from "@/actions/i18n";
 import CFIcon from "@/components/CFIcon";
 import CFText, { CFCaption } from "@/components/CFText";
@@ -44,7 +50,7 @@ import { useDefaultFieldValue } from "../utils";
 
 const GalleryContainer = (props: ButtonProps) => <Box as="button" w="100px" h="120px" {...props} />;
 interface IOnSelectUrl {
-  onSelectUrl: (url: string) => void;
+  onSelectUrl: (url: string, injection: IMetaInjection | undefined) => void;
 }
 const specialGalleryItemProps: ButtonProps = {
   borderWidth: "3px",
@@ -61,7 +67,7 @@ const GalleryUpload = observer(({ onSelectUrl }: IOnSelectUrl) => {
       onUpload={(res) => {
         if (res.safe) {
           toastWord("success", Toast_Words["upload-image-success-message"]);
-          onSelectUrl(res.url);
+          onSelectUrl(res.url, { meta: { type: "upload", data: {} } });
         } else {
           toastWord("warning", Toast_Words["nsfw-image-detected-warning-message"], {
             appendix: ` (${res.reason})`,
@@ -92,7 +98,7 @@ const GalleryClear = observer(({ onSelectUrl }: IOnSelectUrl) => {
     <GalleryContainer
       {...specialGalleryItemProps}
       borderColor={alertCaptionColor}
-      onClick={() => onSelectUrl("")}>
+      onClick={() => onSelectUrl("", undefined)}>
       <Flex
         w="100%"
         h="100%"
@@ -109,11 +115,12 @@ const GalleryClear = observer(({ onSelectUrl }: IOnSelectUrl) => {
     </GalleryContainer>
   );
 });
-interface IGalleryItem extends ImageProps, IOnSelectUrl {
-  src: string;
+interface IGalleryItem extends Omit<ImageProps, "src">, IOnSelectUrl {
+  node: IImageNode;
   active: boolean;
 }
-const GalleryItem = observer(({ src, active, onSelectUrl, ...others }: IGalleryItem) => {
+const GalleryItem = observer(({ node, active, onSelectUrl, ...others }: IGalleryItem) => {
+  const src = node.renderParams.src;
   const {
     selectColors: { activeBorderColor },
   } = themeStore.styles;
@@ -123,7 +130,7 @@ const GalleryItem = observer(({ src, active, onSelectUrl, ...others }: IGalleryI
       p="2px"
       borderWidth="1px"
       _hover={{ borderColor: activeBorderColor }}
-      onClick={() => onSelectUrl(src)}
+      onClick={() => onSelectUrl(src, makeMetaInjectionFrom(node))}
       {...(active ? useActiveBorderProps(activeBorderColor) : {})}>
       <Image
         w="100%"
@@ -145,9 +152,10 @@ function ImageField({ definition, ...fieldKeys }: IField<IImageField>) {
   const lang = langStore.tgt;
   const { panelBg } = themeStore.styles;
   const [value, setValue] = useState(getMetaField(fieldKeys) ?? definition.default);
-  const setValueAndMeta = (value: string) => {
+  const setValueAndMeta = (value: string, injection: IMetaInjection | undefined) => {
     setValue(value);
     setMetaField(fieldKeys, value);
+    setMetaInjection(fieldKeys, injection);
   };
   const [imageNodes, setImageNodes] = useState<IImageNode[]>([]);
   const [hasMore, setHasMore] = useState(true);
@@ -202,8 +210,8 @@ function ImageField({ definition, ...fieldKeys }: IField<IImageField>) {
     };
   }, [loader]);
   const { isOpen, onToggle, onClose } = useDisclosure({ onOpen: fetchImages });
-  const onSelectUrl = (url: string) => {
-    setValueAndMeta(url);
+  const onSelectUrl = (url: string, injection: IMetaInjection | undefined) => {
+    setValueAndMeta(url, injection);
     onClose();
   };
 
@@ -264,11 +272,10 @@ function ImageField({ definition, ...fieldKeys }: IField<IImageField>) {
               <GalleryUpload onSelectUrl={onSelectUrl} />
               {value && <GalleryClear onSelectUrl={onSelectUrl} />}
               {imageNodes.map((node, i) => {
-                const src = node.renderParams.src;
-                const active = src === value;
+                const active = node.renderParams.src === value;
                 return (
                   <GalleryItem
-                    src={node.renderParams.src}
+                    node={node}
                     active={active}
                     onSelectUrl={onSelectUrl}
                     key={`gallery-item-${i}`}

@@ -5,8 +5,10 @@ import { Dictionary, getRandomHash, isUndefined } from "@carefree0910/core";
 import { ABCStore, useIsReady } from "@carefree0910/business";
 
 import type { IMeta } from "@/schema/meta";
-import { allReactPlugins, type ReactPlugins } from "@/schema/plugins";
+import type { ReactPlugins } from "@/schema/plugins";
 import type { IPythonPluginMessage } from "@/schema/_python";
+import type { IMetaInjections } from "./meta";
+import { allReactPlugins } from "@/schema/plugins";
 import { stripHashFromIdentifier } from "@/utils/misc";
 
 interface IDs {
@@ -15,6 +17,7 @@ interface IDs {
 }
 interface ITaskCache {
   currentMeta?: IMeta;
+  injections?: IMetaInjections;
 }
 export interface IPluginsInfoStore {
   ids: Dictionary<IDs>;

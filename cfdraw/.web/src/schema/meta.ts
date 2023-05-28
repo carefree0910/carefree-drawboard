@@ -1,5 +1,7 @@
 import type { Dictionary, Lang } from "@carefree0910/core";
 
+import type { IMetaInjections } from "@/stores/meta";
+
 export interface IElapsedTimes {
   createTime?: number;
   startTime?: number;
@@ -49,6 +51,7 @@ export type IPythonResults = (
 export type IPythonFieldsMetaData = ICommonMetaData & {
   identifier: string;
   response: IPythonResults & { index?: number };
+  injections?: IMetaInjections;
 };
 
 export interface IMetaData {

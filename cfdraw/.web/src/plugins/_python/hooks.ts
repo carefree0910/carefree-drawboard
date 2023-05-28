@@ -4,14 +4,19 @@ import { Dictionary, INode, getRandomHash, isSingleNode, shallowCopy } from "@ca
 import { langStore } from "@carefree0910/business";
 
 import type { IMeta } from "@/schema/meta";
-import type { IDefinitions } from "@/schema/fields";
+import type { IDefinitions, IFieldDefinition } from "@/schema/fields";
 import type {
   IPythonOnPluginMessage,
   IPythonPlugin,
   IUseOnPythonPluginMessage,
   OnPythonPluginMessage,
 } from "@/schema/_python";
-import { getMetaField } from "@/stores/meta";
+import {
+  IMetaInjections,
+  getMetaField,
+  getMetaInjection,
+  metaInjectionsStore,
+} from "@/stores/meta";
 import { setPluginMessage, usePluginIds, usePluginNeedRender } from "@/stores/pluginsInfo";
 import { useSocketPython } from "@/hooks/usePython";
 import { cleanupException, cleanupFinished, cleanupInterrupted } from "../utils/cleanup";
@@ -25,6 +30,30 @@ export function useDefinitionsRequestDataFn(definitions: IDefinitions): () => Di
       data[field] = getMetaField({ field });
     });
     return data;
+  }, [definitions]);
+}
+export function useDefinitionsGetInjectionsFn(definitions: IDefinitions): () => IMetaInjections {
+  return useCallback(() => {
+    const _inject = (prefix: string, field: string, definition: IFieldDefinition) => {
+      const key = !!prefix ? `${prefix}.${field}` : field;
+      if (definition.type !== "list") {
+        const injection = getMetaInjection(key);
+        if (!!injection) {
+          injections[key] = injection;
+        }
+      } else {
+        const definitionValues = getMetaField({ field });
+        if (!Array.isArray(definitionValues)) return;
+        definitionValues.forEach((_, i) => {
+          Object.entries(definition.item).forEach(([itemField, itemDefinition]) => {
+            _inject(`${key}.${i}`, itemField, itemDefinition);
+          });
+        });
+      }
+    };
+    const injections: IMetaInjections = {};
+    Object.entries(definitions).forEach(([field, definition]) => _inject("", field, definition));
+    return injections;
   }, [definitions]);
 }
 export function useCurrentMeta(node: INode | null, nodes: INode[]): IMeta | undefined {

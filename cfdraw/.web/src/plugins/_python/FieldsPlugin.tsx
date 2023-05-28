@@ -17,7 +17,7 @@ import CFHeading from "@/components/CFHeading";
 import { drawboardPluginFactory } from "@/plugins/utils/factory";
 import { useClosePanel } from "../components/hooks";
 import { Definitions } from "../components/Fields";
-import { useDefinitionsRequestDataFn } from "./hooks";
+import { useDefinitionsGetInjectionsFn, useDefinitionsRequestDataFn } from "./hooks";
 import PythonPluginWithSubmit from "./PluginWithSubmit";
 
 const PythonFieldsPlugin = ({ pluginInfo, ...props }: IPythonFieldsPlugin) => {
@@ -25,6 +25,7 @@ const PythonFieldsPlugin = ({ pluginInfo, ...props }: IPythonFieldsPlugin) => {
   const lang = langStore.tgt;
   const { definitions } = pluginInfo;
   const getExtraRequestData = useDefinitionsRequestDataFn(definitions);
+  const getInjections = useDefinitionsGetInjectionsFn(definitions);
   const emitClose = useClosePanel(id);
   const taskCache = usePluginTaskCache(id);
 
@@ -41,6 +42,7 @@ const PythonFieldsPlugin = ({ pluginInfo, ...props }: IPythonFieldsPlugin) => {
           metaData: {
             identifier: pureIdentifier,
             response: final,
+            injections: taskCache?.injections ?? {},
             elapsedTimes,
             from: taskCache?.currentMeta,
           },
@@ -60,11 +62,12 @@ const PythonFieldsPlugin = ({ pluginInfo, ...props }: IPythonFieldsPlugin) => {
   return (
     <PythonPluginWithSubmit
       id={id}
+      pluginInfo={pluginInfo}
       buttonText={translate(UI_Words["submit-task"], lang)}
-      getExtraRequestData={getExtraRequestData}
       onFinished={onFinished}
       onSocketError={onSocketError}
-      pluginInfo={pluginInfo}
+      getExtraRequestData={getExtraRequestData}
+      getInjections={getInjections}
       {...props}>
       <Flex>
         <CFHeading>{header}</CFHeading>

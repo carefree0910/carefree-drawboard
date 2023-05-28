@@ -1,5 +1,6 @@
-import { Fragment, useState } from "react";
 import { observer } from "mobx-react-lite";
+import { runInAction } from "mobx";
+import { Fragment, useState } from "react";
 import { Box, Center, Flex, Image, Spacer } from "@chakra-ui/react";
 
 import { Dictionary, getRandomHash } from "@carefree0910/core";
@@ -17,7 +18,7 @@ import { titleCaseWord } from "@/utils/misc";
 import { EXPAND_TRANSITION } from "@/utils/constants";
 import { UI_Words } from "@/lang/ui";
 import { useScrollBarSx } from "@/stores/theme";
-import { getMetaField, setMetaField } from "@/stores/meta";
+import { getMetaField, setMetaField, setMetaInjection } from "@/stores/meta";
 import { parseIStr } from "@/actions/i18n";
 import CFIcon from "@/components/CFIcon";
 import CFText, { CFCaption } from "@/components/CFText";
@@ -37,6 +38,9 @@ function getDefaults(item: IDefinitions): Dictionary<any> {
 
 const block = genBlock("c-list-field");
 function ListField({ definition, gap, ...fieldKeys }: IField<IListField> & { gap: number }) {
+  if (!!fieldKeys.listProperties) {
+    throw Error("should not use `ListField` inside another `ListField`");
+  }
   useDefaultFieldValue({ definition, ...fieldKeys });
   const field = fieldKeys.field;
   const label = parseIStr(definition.label ?? titleCaseWord(field));
@@ -62,6 +66,14 @@ function ListField({ definition, gap, ...fieldKeys }: IField<IListField> & { gap
     const newValues = [...values];
     newValues.splice(index, 1);
     setMetaField(fieldKeys, newValues);
+    runInAction(() => {
+      Object.keys(definition.item).forEach((key) => {
+        setMetaInjection(
+          { field: key, listProperties: { listKey: field, listIndex: index } },
+          undefined,
+        );
+      });
+    });
   };
 
   return (

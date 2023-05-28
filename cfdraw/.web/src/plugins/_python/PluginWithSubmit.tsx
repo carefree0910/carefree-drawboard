@@ -33,6 +33,7 @@ function PythonPluginWithSubmit({
   onFinished,
   onSocketError,
   getExtraRequestData,
+  getInjections,
   children,
   ...props
 }: IPythonSocketPluginWithSubmit) {
@@ -58,7 +59,7 @@ function PythonPluginWithSubmit({
     setBusy(true);
     setHash(usePluginHash(id));
     if (!taskCache) {
-      setPluginTaskCache(id, { currentMeta });
+      setPluginTaskCache(id, { currentMeta, injections: getInjections?.() ?? {} });
     }
     if (closeOnSubmit) {
       if (isUndefined(props.groupId)) {
@@ -84,6 +85,7 @@ function PythonPluginWithSubmit({
     toastMessageOnSubmit,
     busy,
     currentMeta,
+    getInjections,
   ]);
   const onMessage = useOnMessage({ id, pluginInfo, onIntermediate, onFinished });
 

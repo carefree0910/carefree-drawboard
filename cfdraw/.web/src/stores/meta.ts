@@ -1,6 +1,6 @@
 import { makeObservable, observable, runInAction } from "mobx";
 
-import { Logger } from "@carefree0910/core";
+import { ISingleNode, Logger, Matrix2DFields } from "@carefree0910/core";
 import { ABCStore } from "@carefree0910/business";
 
 import type { ICommonMetaData, IMeta } from "@/schema/meta";
@@ -36,7 +36,7 @@ export function getMetaField<T extends IMetaKey | IGeneralKey>({
 }: IGetMetaField<T>): any {
   if (!listProperties) return metaStore.data[field];
   const list = metaStore.data[listProperties.listKey] as any[];
-  if (list.length <= listProperties.listIndex) return undefined;
+  if (list.length <= listProperties.listIndex) return;
   return list[listProperties.listIndex][field];
 }
 interface ISetMetaField<T extends IMetaKey | IGeneralKey> {
@@ -62,4 +62,51 @@ export function setMetaField<T extends IMetaKey | IGeneralKey>(
       runInAction(() => (list[listProperties.listIndex][field] = value));
     }
   }
+}
+
+export interface IMetaInjection {
+  meta: IMeta;
+  bboxFields?: Matrix2DFields;
+}
+export type IMetaInjections = Partial<Record<IMetaKey | IGeneralKey, IMetaInjection>>;
+class MetaInjectionsStore extends ABCStore<IMetaInjections> {
+  injections: IMetaInjections = {};
+
+  constructor() {
+    super();
+    makeObservable(this, {
+      injections: observable,
+    });
+  }
+
+  get info(): IMetaInjections {
+    return this.injections;
+  }
+}
+
+export const metaInjectionsStore = new MetaInjectionsStore();
+export function getListInjectionKey({ field, listProperties }: ISetMetaField<string>) {
+  if (!listProperties) return field;
+  return `${listProperties.listKey}.${listProperties.listIndex}.${field}`;
+}
+export function makeMetaInjectionFrom(node: ISingleNode): IMetaInjection | undefined {
+  return { meta: node.meta as IMeta, bboxFields: node.bboxFields };
+}
+export function getMetaInjection(key: string): IMetaInjection | undefined {
+  return metaInjectionsStore.injections[key];
+}
+// injection: undefined means remove the corresponding injection
+export function setMetaInjection<T extends IMetaKey>(
+  fieldKeys: ISetMetaField<T>,
+  injection: IMetaInjection | undefined,
+): void;
+export function setMetaInjection<T extends IGeneralKey>(
+  fieldKeys: ISetMetaField<T>,
+  injection: IMetaInjection | undefined,
+): void;
+export function setMetaInjection<T extends IMetaKey | IGeneralKey>(
+  fieldKeys: ISetMetaField<T>,
+  injection: IMetaInjection | undefined,
+): void {
+  metaInjectionsStore.updateProperty(getListInjectionKey(fieldKeys), injection);
 }

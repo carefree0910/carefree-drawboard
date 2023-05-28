@@ -2,6 +2,7 @@ import type { TextareaProps } from "@chakra-ui/react";
 
 import type { Dictionary, INode, Matrix2DFields } from "@carefree0910/core";
 
+import type { IMetaInjections } from "@/stores/meta";
 import type { IElapsedTimes, IMeta, IPythonResults } from "./meta";
 import type { PythonPlugins, IMakePlugin, IPlugin, IPluginInfo } from "./plugins";
 import type { IDefinitions } from "./fields";
@@ -67,6 +68,7 @@ export interface IPythonSocketPluginWithSubmit
   buttonText: string;
   beforeSubmit?: () => void;
   afterSubmit?: () => void;
+  getInjections?: () => IMetaInjections;
 }
 
 interface IPythonPluginWithSubmitPluginInfo {
