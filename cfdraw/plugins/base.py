@@ -80,6 +80,9 @@ class ISocketPlugin(IPlugin, metaclass=ABCMeta):
         message = ISocketMessage.make_exception(self.task_hash, message)
         return offload_run(self.send_message(message))
 
+    def set_extra_response(self, key: str, value: Any) -> None:
+        self.extra_responses[key] = value
+
 
 class IInternalSocketPlugin(ISocketPlugin, metaclass=ABCMeta):
     @property

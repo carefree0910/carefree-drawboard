@@ -66,7 +66,7 @@ def inject(
     # inject data model
     data_model_d = data_model.dict()
     data_model_d.pop("tome_info", None)
-    self.extra_responses[DATA_MODEL_KEY] = data_model_d
+    self.set_extra_response(DATA_MODEL_KEY, data_model_d)
     # return
     return data_model
 
@@ -406,8 +406,8 @@ class Variation(CarefreeCreatorPlugin):
         variations = data_model_d.setdefault("variations", [])
         variations.append(dict(seed=new_seed(), strength=strength))
         # inject extra response
-        self.extra_responses["task"] = task
-        self.extra_responses[DATA_MODEL_KEY] = shallow_copy_dict(data_model_d)
+        self.set_extra_response("task", task)
+        self.set_extra_response(DATA_MODEL_KEY, shallow_copy_dict(data_model_d))
         # switch case
         if task == Txt2ImgKey:
             model = Txt2ImgSDModel(**data_model_d)
