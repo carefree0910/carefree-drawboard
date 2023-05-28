@@ -1,7 +1,12 @@
 from PIL import Image
+from typing import Any
+from typing import Dict
 from typing import List
+from typing import Type
+from typing import TypeVar
 from typing import Optional
 from pathlib import Path
+from pydantic import BaseModel
 from cftool.misc import shallow_copy_dict
 from cfcreator.common import InpaintingMode
 from cfcreator.common import VariationModel
@@ -13,20 +18,25 @@ from utils import *
 from fields import *
 
 
+TDataModel = TypeVar("TDataModel", bound="BaseModel")
+DATA_MODEL_KEY = "$data_model"
+
+
 def inject(
     self: IFieldsPlugin,
     data: ISocketRequest,
+    data_model_type: Type[TDataModel],
     version_key: Optional[str] = None,
-) -> ISocketRequest:
+    extra: Optional[Dict[str, Any]] = None,
+) -> TDataModel:
     # seed
     if data.extraData["seed"] == -1:
         data.extraData["seed"] = new_seed()
-    self.extra_responses["seed"] = data.extraData["seed"]
     # version
     if version_key is not None:
         version_i18n_d = data.extraData[version_key]
         version = version_field.parse(version_i18n_d)
-        self.extra_responses[version_key] = data.extraData[version_key] = version
+        data.extraData[version_key] = version
     # lora
     lora = data.extraData.pop("lora", [])
     lora_definition = lora_field.item
@@ -48,13 +58,17 @@ def inject(
             data.extraData["lora_paths"] = lora_paths
         if lora_scales:
             data.extraData["lora_scales"] = lora_scales
-    lora_paths = data.extraData.get("lora_paths")
-    lora_scales = data.extraData.get("lora_scales")
-    if lora_paths is not None:
-        self.extra_responses["lora_paths"] = lora_paths
-    if lora_scales is not None:
-        self.extra_responses["lora_scales"] = lora_scales
-    return data
+    # collect
+    kw = shallow_copy_dict(data.extraData)
+    if extra is not None:
+        kw.update(extra)
+    data_model = data_model_type(**kw)
+    # inject data model
+    data_model_d = data_model.dict()
+    data_model_d.pop("tome_info", None)
+    self.extra_responses[DATA_MODEL_KEY] = data_model_d
+    # return
+    return data_model
 
 
 Txt2ImgKey = "txt2img"
@@ -121,10 +135,10 @@ class Txt2Img(CarefreeCreatorPlugin):
         def callback(step: int, num_steps: int) -> bool:
             return self.send_progress(step / num_steps)
 
-        kw = inject(self, data, "version").extraData
-        model = Txt2ImgSDModel(**kw)
-        if kw["use_highres"]:
-            model.highres_info = HighresModel()
+        extra = {}
+        if data.extraData.get("use_highres", False):
+            extra["highres_info"] = HighresModel().dict()
+        model = inject(self, data, Txt2ImgSDModel, "version", extra)
         return await get_apis().txt2img(model, step_callback=callback)
 
 
@@ -153,11 +167,10 @@ class Img2Img(CarefreeCreatorPlugin):
             return self.send_progress(step / num_steps)
 
         url = data.nodeData.src
-        kw = dict(url=url, **inject(self, data, "version").extraData)
-        model = Img2ImgSDModel(**kw)
-        if kw["use_highres"]:
-            model.highres_info = HighresModel()
-        self.extra_responses["url"] = url
+        extra = dict(url=url)
+        if data.extraData.get("use_highres", False):
+            extra["highres_info"] = HighresModel().dict()
+        model = inject(self, data, Img2ImgSDModel, "version", extra)
         return await get_apis().img2img(model, step_callback=callback)
 
 
@@ -303,16 +316,10 @@ class SDInpainting(CarefreeCreatorPlugin):
 
         url = self.filter(data.nodeDataList, SingleNodeType.IMAGE)[0].src
         mask_url = self.filter(data.nodeDataList, SingleNodeType.PATH)[0].src
-        kw = inject(self, data).extraData
-        focus_mode = kw.pop("focus_mode")
-        model = Txt2ImgSDInpaintingModel(url=url, mask_url=mask_url, **kw)
-        if focus_mode:
-            model.inpainting_mode = InpaintingMode.MASKED
-        self.extra_responses.update(
-            url=url,
-            mask_url=mask_url,
-            inpainting_mode=model.inpainting_mode.value,
-        )
+        focus_mode = data.extraData.get("focus_mode", False)
+        inpainting_mode = InpaintingMode.MASKED if focus_mode else InpaintingMode.NORMAL
+        extra = dict(url=url, mask_url=mask_url, inpainting_mode=inpainting_mode.value)
+        model = inject(self, data, Txt2ImgSDInpaintingModel, extra=extra)
         return await get_apis().sd_inpainting(model, step_callback=callback)
 
 
@@ -341,9 +348,7 @@ class SDOutpainting(CarefreeCreatorPlugin):
             return self.send_progress(step / num_steps)
 
         url = data.nodeData.src
-        kw = inject(self, data).extraData
-        self.extra_responses.update(url=url)
-        model = Txt2ImgSDOutpaintingModel(url=url, **kw)
+        model = inject(self, data, Txt2ImgSDOutpaintingModel, extra=dict(url=url))
         return await get_apis().sd_outpainting(model, step_callback=callback)
 
 
@@ -358,8 +363,10 @@ variation_targets = {
 
 @register_node_validator("variation")
 def validate_variation(data: ISocketRequest) -> bool:
-    identifier = data.nodeData.meta["data"].get("identifier")
-    return identifier in variation_targets
+    meta_data = data.nodeData.meta["data"]
+    identifier = meta_data.get("identifier")
+    extra = meta_data.get("response", {}).get("extra", {})
+    return identifier in variation_targets and DATA_MODEL_KEY in extra
 
 
 class Variation(CarefreeCreatorPlugin):
@@ -388,81 +395,31 @@ class Variation(CarefreeCreatorPlugin):
         def callback(step: int, num_steps: int) -> bool:
             return self.send_progress(step / num_steps)
 
-        def inject_kw() -> bool:
-            # [general] inject seed
-            if kw["seed"] == -1:
-                generated_seed = extra.get("seed")
-                if generated_seed is None:
-                    self.send_exception("cannot find a static seed")
-                    return False
-                kw["seed"] = generated_seed
-            # [general] inject version
-            version = extra.get("version")
-            if version is not None:
-                kw["version"] = version
-            # [general] inject lora
-            lora_paths = extra.get("lora_paths")
-            lora_scales = extra.get("lora_scales")
-            if lora_paths is not None:
-                kw["lora_paths"] = lora_paths
-            if lora_scales is not None:
-                kw["lora_scales"] = lora_scales
-            # [img2img]     inject url
-            # [outpainting] inject url
-            if task == Img2ImgKey or task == SDOutpaintingKey:
-                url = extra.get("url")
-                if url is None:
-                    self.send_exception("cannot find `url`")
-                    return False
-                kw["url"] = url
-            # [sd.inpainting] inject url & mask_url & inpainting_mode
-            elif task == SDInpaintingKey:
-                url = extra.get("url")
-                mask_url = extra.get("mask_url")
-                inpainting_mode = extra.get("inpainting_mode")
-                if url is None or mask_url is None:
-                    self.send_exception("cannot find `url` or `mask_url`")
-                    return False
-                kw["url"] = url
-                kw["mask_url"] = mask_url
-                if inpainting_mode is not None:
-                    kw["inpainting_mode"] = inpainting_mode
-            return True
-
         meta_data = data.nodeData.meta["data"]
         task = meta_data["identifier"]
+        extra = meta_data["response"]["extra"]
         if task == VariationKey:
-            extra = meta_data["response"]["extra"]
             task = extra["task"]
-            kw = extra["request"]
-        else:
-            kw = meta_data["parameters"]
-            extra = meta_data["response"].get("extra", {})
-            if not inject_kw():
-                return []
+        data_model_d = extra[DATA_MODEL_KEY]
         # inject varations
         strength = 1.0 - data.extraData["fidelity"]
-        variations = kw.setdefault("variations", [])
-        variations.append(VariationModel(seed=new_seed(), strength=strength))
+        variations = data_model_d.setdefault("variations", [])
+        variations.append(dict(seed=new_seed(), strength=strength))
         # inject extra response
         self.extra_responses["task"] = task
-        self.extra_responses["request"] = shallow_copy_dict(kw)
+        self.extra_responses[DATA_MODEL_KEY] = shallow_copy_dict(data_model_d)
         # switch case
         if task == Txt2ImgKey:
-            model = Txt2ImgSDModel(**kw)
-            if kw["use_highres"]:
-                model.highres_info = HighresModel()
+            model = Txt2ImgSDModel(**data_model_d)
             return await get_apis().txt2img(model, step_callback=callback)
         if task == Img2ImgKey:
-            model = Img2ImgSDModel(**kw)
-            if kw["use_highres"]:
-                model.highres_info = HighresModel()
+            model = Img2ImgSDModel(**data_model_d)
             return await get_apis().img2img(model, step_callback=callback)
         if task == SDInpaintingKey:
-            model = Txt2ImgSDInpaintingModel(**kw)
+            model = Txt2ImgSDInpaintingModel(**data_model_d)
             return await get_apis().sd_inpainting(model, step_callback=callback)
         if task == SDOutpaintingKey:
-            model = Txt2ImgSDOutpaintingModel(**kw)
+            model = Txt2ImgSDOutpaintingModel(**data_model_d)
             return await get_apis().sd_outpainting(model, step_callback=callback)
         self.send_exception(f"unknown task: {task}")
         return []
