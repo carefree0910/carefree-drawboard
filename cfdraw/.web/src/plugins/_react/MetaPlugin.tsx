@@ -34,10 +34,18 @@ const MetaPlugin = ({ pluginInfo, ...others }: IPlugin) => {
     }
   }
   meta = shallowCopy(meta);
-  if (!!meta && IS_PROD) {
-    delete meta.data.response["extra"];
-    delete meta.data["injections"];
-  }
+  const trimMeta = (meta: IMeta | undefined) => {
+    if (!!meta && IS_PROD) {
+      if (!!meta.data?.response?.extra) {
+        delete meta.data.response.extra;
+      }
+      if (!!meta.data?.injections) {
+        delete meta.data.injections;
+      }
+      trimMeta(meta.data?.from);
+    }
+  };
+  trimMeta(meta);
   const history = meta ? getMetaTrace(meta).reverse().map(getMetaRepresentation).join(" -> ") : "";
   const jsonString = JSON.stringify(meta ?? {}, null, 2);
   const markdown = `**${history}**
