@@ -15,7 +15,6 @@ interface IDs {
 }
 interface ITaskCache {
   currentMeta?: IMeta;
-  parameters: Dictionary<any>;
 }
 export interface IPluginsInfoStore {
   ids: Dictionary<IDs>;

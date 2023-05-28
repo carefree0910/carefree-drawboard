@@ -58,7 +58,7 @@ function PythonPluginWithSubmit({
     setBusy(true);
     setHash(usePluginHash(id));
     if (!taskCache) {
-      setPluginTaskCache(id, { currentMeta, parameters: getExtraRequestData?.() ?? {} });
+      setPluginTaskCache(id, { currentMeta });
     }
     if (closeOnSubmit) {
       if (isUndefined(props.groupId)) {
@@ -84,7 +84,6 @@ function PythonPluginWithSubmit({
     toastMessageOnSubmit,
     busy,
     currentMeta,
-    getExtraRequestData,
   ]);
   const onMessage = useOnMessage({ id, pluginInfo, onIntermediate, onFinished });
 

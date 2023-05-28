@@ -40,7 +40,6 @@ const PythonFieldsPlugin = ({ pluginInfo, ...props }: IPythonFieldsPlugin) => {
           type: "python.fields",
           metaData: {
             identifier: pureIdentifier,
-            parameters: taskCache?.parameters ?? {},
             response: final,
             elapsedTimes,
             from: taskCache?.currentMeta,
