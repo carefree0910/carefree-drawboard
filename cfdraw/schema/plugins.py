@@ -357,6 +357,14 @@ Image url of the node, will be `None` if the node is not intended to be converte
         ),
     )
 
+    @property
+    def identifier(self) -> Optional[str]:
+        return self.meta.get("data", {}).get("identifier")
+
+    @property
+    def extra_responses(self) -> Optional[Dict[str, Any]]:
+        return self.meta.get("data", {}).get("response", {}).get("extra")
+
 
 class ISocketRequest(BaseModel):
     """This should align with `IPythonSocketRequest` at `src/schema/_python.ts`"""

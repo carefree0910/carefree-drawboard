@@ -363,10 +363,13 @@ variation_targets = {
 
 @register_node_validator("variation")
 def validate_variation(data: ISocketRequest) -> bool:
-    meta_data = data.nodeData.meta["data"]
-    identifier = meta_data.get("identifier")
-    extra = meta_data.get("response", {}).get("extra", {})
-    return identifier in variation_targets and DATA_MODEL_KEY in extra
+    identifier = data.nodeData.identifier
+    if identifier is None or identifier not in variation_targets:
+        return False
+    extra_responses = data.nodeData.extra_responses
+    if extra_responses is None:
+        return False
+    return DATA_MODEL_KEY in extra_responses
 
 
 class Variation(CarefreeCreatorPlugin):
@@ -395,9 +398,10 @@ class Variation(CarefreeCreatorPlugin):
         def callback(step: int, num_steps: int) -> bool:
             return self.send_progress(step / num_steps)
 
-        meta_data = data.nodeData.meta["data"]
-        task = meta_data["identifier"]
-        extra = meta_data["response"]["extra"]
+        task = data.nodeData.identifier
+        extra = data.nodeData.extra_responses
+        if task is None or extra is None:
+            return []
         if task == VariationKey:
             task = extra["task"]
         data_model_d = extra[DATA_MODEL_KEY]
