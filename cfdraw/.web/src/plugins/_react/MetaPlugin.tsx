@@ -1,8 +1,10 @@
 import { observer } from "mobx-react-lite";
 
+import { shallowCopy } from "@carefree0910/core";
 import { useSelecting } from "@carefree0910/business";
 
 import type { IPlugin } from "@/schema/plugins";
+import { IS_PROD } from "@/utils/constants";
 import { IMeta, getMetaTrace } from "@/schema/meta";
 import { usePluginIds } from "@/stores/pluginsInfo";
 import CFMarkdown from "@/components/CFMarkdown";
@@ -30,6 +32,11 @@ const MetaPlugin = ({ pluginInfo, ...others }: IPlugin) => {
     } else {
       meta = _meta as IMeta;
     }
+  }
+  meta = shallowCopy(meta);
+  if (!!meta && IS_PROD) {
+    delete meta.data.response["extra"];
+    delete meta.data["injections"];
   }
   const history = meta ? getMetaTrace(meta).reverse().map(getMetaRepresentation).join(" -> ") : "";
   const jsonString = JSON.stringify(meta ?? {}, null, 2);
