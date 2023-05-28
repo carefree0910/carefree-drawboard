@@ -48,7 +48,7 @@ export type IPythonResults = (
 ) & { extra?: Dictionary<any> };
 export type IPythonFieldsMetaData = ICommonMetaData & {
   identifier: string;
-  response: IPythonResults;
+  response: IPythonResults & { index?: number };
 };
 
 export interface IMetaData {

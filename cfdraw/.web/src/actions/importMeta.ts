@@ -147,6 +147,7 @@ function consumePythonFields({ type, metaData }: IImportMeta<"python.fields">): 
     results.value.forEach((res, i) => {
       const newAlias = getNewAlias();
       let iMetaData = shallowCopy(metaData);
+      iMetaData.response.index = i;
       iMetaData.response.value = metaData.response.value[i] as any;
       iMetaData.alias = newAlias;
       if (!res.safe) {
