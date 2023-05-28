@@ -486,11 +486,11 @@ class MultiControlNet(CarefreeCreatorPlugin):
             t = controlnet_hint_fields.parse(control.pop("type"))
             return dict(type=t, data=control)
 
-        kw = inject(self, data, "base_model").extraData
-        if not kw["url"]:
-            kw.pop("url")
-        kw["controls"] = list(map(parse_control, kw.pop("controls")))
-        model = ControlMultiModel(**kw)
+        if not data.extraData["url"]:
+            data.extraData.pop("url")
+        controls = list(map(parse_control, data.extraData.pop("controls")))
+        data.extraData["controls"] = controls
+        model = inject(self, data, ControlMultiModel, "base_model")
         return await get_apis().run_multi_controlnet(model, step_callback=callback)
 
 
