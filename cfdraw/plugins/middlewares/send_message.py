@@ -21,6 +21,7 @@ class SendSocketMessageMiddleWare(IMiddleWare):
             if response.data.final is None:
                 response.data.final = {}
             response.data.final["extra"] = self.plugin.extra_responses
+            response.data.injections = self.plugin.injections
         await self.plugin.send_message(response)
         return response
 

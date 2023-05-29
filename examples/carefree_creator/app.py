@@ -151,6 +151,7 @@ class Img2Img(CarefreeCreatorPlugin):
             return self.send_progress(step / num_steps)
 
         url = data.nodeData.src
+        self.set_injection("url", data.nodeData)
         extra = dict(url=url)
         if data.extraData.get("use_highres", False):
             extra["highres_info"] = HighresModel().dict()
@@ -181,6 +182,7 @@ class SR(CarefreeCreatorPlugin):
         )
 
     async def process(self, data: ISocketRequest) -> List[Image.Image]:
+        self.set_injection("url", data.nodeData)
         kw = dict(url=data.nodeData.src, **data.extraData)
         return await get_apis().sr(Img2ImgSRModel(**kw))
 
@@ -206,6 +208,7 @@ class SOD(CarefreeCreatorPlugin):
         )
 
     async def process(self, data: ISocketRequest) -> List[Image.Image]:
+        self.set_injection("url", data.nodeData)
         return await get_apis().sod(Img2ImgSODModel(url=data.nodeData.src))
 
 
@@ -230,6 +233,7 @@ class Captioning(CarefreeCreatorPlugin):
         )
 
     async def process(self, data: ISocketRequest) -> List[str]:
+        self.set_injection("url", data.nodeData)
         return await get_apis().image_captioning(Img2TxtModel(url=data.nodeData.src))
 
 
@@ -259,8 +263,12 @@ class Inpainting(CarefreeCreatorPlugin):
             counter += 1.0
             return self.send_progress(min(1.0, counter / total_steps))
 
-        url = self.filter(data.nodeDataList, SingleNodeType.IMAGE)[0].src
-        mask_url = self.filter(data.nodeDataList, SingleNodeType.PATH)[0].src
+        url_node = self.filter(data.nodeDataList, SingleNodeType.IMAGE)[0]
+        mask_node = self.filter(data.nodeDataList, SingleNodeType.PATH)[0]
+        url = url_node.src
+        mask_url = mask_node.src
+        self.set_injection("url", url_node)
+        self.set_injection("mask_url", mask_node)
         model = Img2ImgInpaintingModel(url=url, mask_url=mask_url, **data.extraData)
         if model.model == "sd":
             model.use_pipeline = True
@@ -298,8 +306,12 @@ class SDInpainting(CarefreeCreatorPlugin):
         def callback(step: int, num_steps: int) -> bool:
             return self.send_progress(step / num_steps)
 
-        url = self.filter(data.nodeDataList, SingleNodeType.IMAGE)[0].src
-        mask_url = self.filter(data.nodeDataList, SingleNodeType.PATH)[0].src
+        url_node = self.filter(data.nodeDataList, SingleNodeType.IMAGE)[0]
+        mask_node = self.filter(data.nodeDataList, SingleNodeType.PATH)[0]
+        url = url_node.src
+        mask_url = mask_node.src
+        self.set_injection("url", url_node)
+        self.set_injection("mask_url", mask_node)
         focus_mode = data.extraData.get("focus_mode", False)
         inpainting_mode = InpaintingMode.MASKED if focus_mode else InpaintingMode.NORMAL
         extra = dict(url=url, mask_url=mask_url, inpainting_mode=inpainting_mode.value)
@@ -331,7 +343,9 @@ class SDOutpainting(CarefreeCreatorPlugin):
         def callback(step: int, num_steps: int) -> bool:
             return self.send_progress(step / num_steps)
 
-        url = data.nodeData.src
+        url_node = self.filter(data.nodeDataList, SingleNodeType.IMAGE)[0]
+        url = url_node.src
+        self.set_injection("url", url_node)
         model = inject(self, data, Txt2ImgSDOutpaintingModel, extra=dict(url=url))
         return await get_apis().sd_outpainting(model, step_callback=callback)
 
@@ -435,6 +449,7 @@ class ControlHints(CarefreeCreatorPlugin):
 
     async def process(self, data: ISocketRequest) -> List[Image.Image]:
         url = data.nodeData.src
+        self.set_injection("url", data.nodeData)
         hint_type = controlnet_hint_fields.parse(data.extraData["hint_type"])
         return await get_apis().get_control_hint(hint_type, url=url)
 

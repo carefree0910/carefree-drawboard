@@ -438,6 +438,7 @@ class ISocketResponse(BaseModel):
         description="Intermediate responses, if any",
     )
     final: Optional[Dict[str, Any]] = Field(None, description="Final response, if any")
+    injections: Optional[Dict[str, Any]] = Field(None, description="Injections, if any")
     elapsedTimes: Optional[ElapsedTimes] = Field(None, description="Elapsed times.")
 
 
@@ -501,6 +502,7 @@ class IPlugin(ABC):
     send_message: ISend
     elapsed_times: ElapsedTimes
     extra_responses: Dict[str, Any]
+    injections: Dict[str, Any]
     # internal
     _in_group: bool = False
 

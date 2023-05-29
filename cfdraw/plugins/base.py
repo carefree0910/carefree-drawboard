@@ -5,6 +5,7 @@ from typing import Any
 from typing import Dict
 from typing import List
 from typing import Optional
+from cftool.misc import shallow_copy_dict
 
 from cfdraw import constants
 from cfdraw.utils import server
@@ -32,6 +33,7 @@ class ISocketPlugin(IPlugin, metaclass=ABCMeta):
         ]
 
     async def __call__(self, data: ISocketRequest) -> ISocketMessage:
+        self.injections = {}
         self.extra_responses = {}
         middlewares = self.middlewares
         for middleware in middlewares:
@@ -82,6 +84,12 @@ class ISocketPlugin(IPlugin, metaclass=ABCMeta):
 
     def set_extra_response(self, key: str, value: Any) -> None:
         self.extra_responses[key] = value
+
+    def set_injection(self, key: str, node: INodeData) -> None:
+        self.injections[key] = dict(
+            meta=shallow_copy_dict(node.meta),
+            bboxFields=None if node.transform is None else node.transform.dict(),
+        )
 
 
 class IInternalSocketPlugin(ISocketPlugin, metaclass=ABCMeta):

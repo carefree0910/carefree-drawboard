@@ -30,7 +30,7 @@ const PythonFieldsPlugin = ({ pluginInfo, ...props }: IPythonFieldsPlugin) => {
   const taskCache = usePluginTaskCache(id);
 
   const onFinished = useCallback<OnPythonPluginMessage>(
-    ({ data: { final, elapsedTimes } }) => {
+    ({ data: { final, injections, elapsedTimes } }) => {
       if (!final) {
         toastWord("success", Toast_Words["submit-task-finished-message"], {
           appendix: ` (${pureIdentifier})`,
@@ -42,7 +42,7 @@ const PythonFieldsPlugin = ({ pluginInfo, ...props }: IPythonFieldsPlugin) => {
           metaData: {
             identifier: pureIdentifier,
             response: final,
-            injections: taskCache?.injections ?? {},
+            injections: { ...taskCache?.injections, ...injections },
             elapsedTimes,
             from: taskCache?.currentMeta,
           },

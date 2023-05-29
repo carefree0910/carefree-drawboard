@@ -148,6 +148,7 @@ export interface IPythonSocketResponse<R> {
   progress?: number; // progress of current task, should be within [0, 1]
   intermediate?: IPythonSocketIntermediate;
   final?: R;
+  injections?: IMetaInjections;
   elapsedTimes?: IElapsedTimes;
 }
 export interface IPythonSocketMessage<R> {
