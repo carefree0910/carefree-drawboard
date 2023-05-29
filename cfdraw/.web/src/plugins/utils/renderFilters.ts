@@ -64,7 +64,7 @@ export function hashInfo(info?: IResponse): string {
 }
 function checkValidator(validator?: string, info?: IResponse): Promise<boolean> {
   if (isUndefined(validator)) return Promise.resolve(true);
-  const hash = hashInfo(info);
+  const hash = `${validator}-${hashInfo(info)}`;
   const getMessage = (): Promise<IPythonSocketRequest> => {
     return getPythonRequest({
       node: info?.displayNode ?? null,
