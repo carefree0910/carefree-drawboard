@@ -27,8 +27,6 @@ function PythonPluginWithSubmit({
   id,
   pluginInfo,
   buttonText,
-  beforeSubmit,
-  afterSubmit,
   onIntermediate,
   onFinished,
   onSocketError,
@@ -55,7 +53,6 @@ function PythonPluginWithSubmit({
   const currentMeta = hasConstraint ? useCurrentMeta(node, nodes) : undefined;
   const onClick = useCallback(() => {
     if (busy) return;
-    beforeSubmit?.();
     setBusy(true);
     setHash(usePluginHash(id));
     if (!taskCache) {
@@ -76,7 +73,6 @@ function PythonPluginWithSubmit({
         ),
       );
     }
-    afterSubmit?.();
   }, [
     id,
     lang,

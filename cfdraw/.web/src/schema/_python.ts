@@ -66,8 +66,6 @@ export interface IPythonSocketPluginWithSubmit
     IUseOnPythonPluginMessage {
   id: string;
   buttonText: string;
-  beforeSubmit?: () => void;
-  afterSubmit?: () => void;
   getInjections?: () => IMetaInjections;
 }
 
