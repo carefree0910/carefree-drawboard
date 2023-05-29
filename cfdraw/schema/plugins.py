@@ -359,10 +359,14 @@ Image url of the node, will be `None` if the node is not intended to be converte
 
     @property
     def identifier(self) -> Optional[str]:
+        if self.meta is None:
+            return None
         return self.meta.get("data", {}).get("identifier")
 
     @property
     def extra_responses(self) -> Optional[Dict[str, Any]]:
+        if self.meta is None:
+            return None
         return self.meta.get("data", {}).get("response", {}).get("extra")
 
 
