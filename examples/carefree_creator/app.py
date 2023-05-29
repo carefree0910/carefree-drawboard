@@ -9,7 +9,6 @@ from pathlib import Path
 from pydantic import BaseModel
 from cftool.misc import shallow_copy_dict
 from cfcreator.common import InpaintingMode
-from cfcreator.common import VariationModel
 from cflearn.misc.toolkit import new_seed
 
 from cfdraw import *

@@ -1,5 +1,4 @@
 from cfdraw import *
-from typing import Optional
 from pathlib import Path
 from collections import OrderedDict
 from cfcreator.common import SDSamplers

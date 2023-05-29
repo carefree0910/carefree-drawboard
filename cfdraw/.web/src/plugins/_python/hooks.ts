@@ -11,12 +11,7 @@ import type {
   IUseOnPythonPluginMessage,
   OnPythonPluginMessage,
 } from "@/schema/_python";
-import {
-  IMetaInjections,
-  getMetaField,
-  getMetaInjection,
-  metaInjectionsStore,
-} from "@/stores/meta";
+import { IMetaInjections, getMetaField, getMetaInjection } from "@/stores/meta";
 import { setPluginMessage, usePluginIds, usePluginNeedRender } from "@/stores/pluginsInfo";
 import { useSocketPython } from "@/hooks/usePython";
 import { cleanupException, cleanupFinished, cleanupInterrupted } from "../utils/cleanup";
