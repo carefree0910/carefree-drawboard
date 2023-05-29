@@ -26,6 +26,7 @@ import {
   usePluginIsExpanded,
   setPluginExpanded,
   usePluginGroupIsExpanded,
+  usePluginChildren,
 } from "@/stores/pluginsInfo";
 import { isInteractingWithBoard } from "@/hooks/useDocumentEvents";
 import { parseIStr } from "@/actions/i18n";
@@ -54,7 +55,6 @@ const Floating = forwardRef(function (
       tooltip,
       offsetY,
       bgOpacity,
-      useModal,
       modalOpacity,
       expandProps,
       isInvisible,
@@ -174,6 +174,8 @@ const Floating = forwardRef(function (
   modalOpacity ??= DEFAULT_PLUGIN_SETTINGS.expandOpacity;
   const modalOpacityHex = Math.round(modalOpacity * 255).toString(16);
   const expandBg = `${panelBg}${modalOpacityHex}`;
+  // set expand render condition
+  const renderExpand = expand || usePluginChildren(id).length > 0;
 
   return (
     <>
@@ -236,7 +238,7 @@ const Floating = forwardRef(function (
             bg={expandBg}
             sx={useScrollBarSx()}
             {...parsedExpandProps}>
-            {children}
+            {renderExpand && children}
           </Flex>
         </Portal>
       )}
