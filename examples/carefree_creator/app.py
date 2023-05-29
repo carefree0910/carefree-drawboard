@@ -18,7 +18,6 @@ from fields import *
 
 
 TDataModel = TypeVar("TDataModel", bound="BaseModel")
-DATA_MODEL_KEY = "$data_model"
 
 
 def inject(
@@ -68,20 +67,6 @@ def inject(
     self.set_extra_response(DATA_MODEL_KEY, data_model_d)
     # return
     return data_model
-
-
-Txt2ImgKey = "txt2img"
-Img2ImgKey = "img2img"
-SRKey = "sr"
-SODKey = "sod"
-CaptioningKey = "captioning"
-InpaintingKey = "inpainting"
-SDInpaintingKey = "sd_inpainting"
-SDOutpaintingKey = "sd_outpainting"
-VariationKey = "variation"
-ControlNetHintKey = "control_net_hint"
-MultiControlNetKey = "multi_control_net"
-ImageHarmonizationKey = "image_harmonization"
 
 
 notification = """
