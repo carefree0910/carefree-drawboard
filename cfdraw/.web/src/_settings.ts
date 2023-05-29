@@ -172,7 +172,7 @@ export const reactPluginSettings: IMakePlugin<ReactPlugins>[] = [
     type: "basicEditor",
     props: {
       nodeConstraintRules: {
-        some: ["svg", "image", "path", "rectangle", "group"],
+        some: ["svg", "image", "path", "rectangle", "group", "frame"],
       },
       renderInfo: {
         w: 280,
