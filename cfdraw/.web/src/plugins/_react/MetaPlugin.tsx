@@ -19,6 +19,7 @@ function getMetaRepresentation(meta: IMeta): string {
   return type;
 }
 
+const DEBUG_META = false;
 const MetaPlugin = ({ pluginInfo, ...others }: IPlugin) => {
   const id = usePluginIds("meta").id;
   const info = useSelecting("raw");
@@ -35,12 +36,19 @@ const MetaPlugin = ({ pluginInfo, ...others }: IPlugin) => {
   }
   meta = shallowCopy(meta);
   const trimMeta = (meta: IMeta | undefined) => {
-    if (!!meta && IS_PROD) {
+    if (!!meta && (IS_PROD || !DEBUG_META)) {
       if (!!meta.data?.response?.extra) {
         delete meta.data.response.extra;
       }
       if (!!meta.data?.injections) {
         delete meta.data.injections;
+      }
+      if (!!meta.data?.elapsedTimes) {
+        meta.data.elapsedTimes = {
+          pending: meta.data.elapsedTimes.pending,
+          executing: meta.data.elapsedTimes.executing,
+          total: meta.data.elapsedTimes.total,
+        };
       }
       trimMeta(meta.data?.from);
     }
