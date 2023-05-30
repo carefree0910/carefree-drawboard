@@ -1,8 +1,10 @@
+import time
+
 from cfdraw import *
+from lorem_text import lorem
 
 
 class ChatPlugin(IChatPlugin):
-    requirements = ["lorem-text"]
     notification = "A plugin that generates lorem ipsum chat."
 
     @property
@@ -20,9 +22,6 @@ class ChatPlugin(IChatPlugin):
         )
 
     async def process(self, data: ISocketRequest) -> str:
-        import time
-        from lorem_text import lorem
-
         request = data.extraData
         context = request["context"]
         userInput = request["userInput"]

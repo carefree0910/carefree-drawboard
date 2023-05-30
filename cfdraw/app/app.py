@@ -1,7 +1,3 @@
-import sys
-import subprocess
-import pkg_resources
-
 from typing import List
 from typing import Type
 from typing import Optional
@@ -40,26 +36,12 @@ class App(IApp):
 
             info(f"🚀 Starting Backend Server at {self.config.api_url} ...")
             info("🔨 Compiling Plugins & Endpoints...")
-            requirements = []
             tplugin_with_notification: List[Type[IPlugin]] = []
             for tplugin in self.plugins.values():
                 tplugin.hash = self.hash
                 tplugin.http_session = self.http_session
-                if tplugin.requirements is not None:
-                    for req in tplugin.requirements:
-                        if req not in requirements:
-                            requirements.append(req)
                 if tplugin.notification is not None:
                     tplugin_with_notification.append(tplugin)
-            if requirements:
-                try:
-                    pkg_resources.require(requirements)
-                except Exception as err:
-                    info(f"📦 Installing Requirements... ({err})")
-                    enclosed = lambda s: f'"{s}"'
-                    requirements_string = " ".join(map(enclosed, requirements))
-                    cmd = f"{sys.executable} -m pip install {requirements_string}"
-                    subprocess.run(cmd, shell=True)
             if tplugin_with_notification or notification is not None:
                 console.rule("")
                 info(f"📣 Notifications:")

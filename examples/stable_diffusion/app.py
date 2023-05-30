@@ -54,8 +54,6 @@ img2img_fields["strength"] = INumberField(default=0.8, min=0.0, max=1.0, step=0.
 
 
 class TextToImagePlugin(IFieldsPlugin):
-    requirements = ["transformers>=4.26.1", "diffusers[torch]>=0.14.0"]
-
     @property
     def settings(self) -> IPluginSettings:
         return IPluginSettings(
@@ -80,8 +78,6 @@ class TextToImagePlugin(IFieldsPlugin):
 
 
 class ImageToImagePlugin(IFieldsPlugin):
-    requirements = ["transformers>=4.26.1", "diffusers[torch]>=0.14.0"]
-
     @property
     def settings(self) -> IPluginSettings:
         return IPluginSettings(

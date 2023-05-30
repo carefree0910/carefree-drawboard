@@ -1,6 +1,8 @@
 import os
 import sys
 import typer
+import subprocess
+import pkg_resources
 
 from pathlib import Path
 from cftool.misc import print_info
@@ -40,6 +42,21 @@ def run(
             prod = True
     constants.set_env(constants.Env.PROD if prod else constants.Env.DEV)
     constants.set_unified(unified)
+    # install requirements
+    requirements_path = Path("./") / "requirements.txt"
+    if requirements_path.is_file():
+        with open(requirements_path, "r") as f:
+            requirements = [line.strip() for line in f]
+        if requirements:
+            try:
+                pkg_resources.require(requirements)
+            except Exception as err:
+                console.rule("📦 Installing Requirements")
+                print_info(f"Reason : {err}")
+                enclosed = lambda s: f'"{s}"'
+                requirements_string = " ".join(map(enclosed, requirements))
+                cmd = f"{sys.executable} -m pip install {requirements_string}"
+                subprocess.run(cmd, shell=True)
     # fetch config
     config = get_config()
     # fetch module

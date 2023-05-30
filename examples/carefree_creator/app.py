@@ -91,11 +91,7 @@ notification = """
 # plugins
 
 
-class CarefreeCreatorPlugin(IFieldsPlugin):
-    requirements = ["carefree-creator>=0.2.7"]
-
-
-class Txt2Img(CarefreeCreatorPlugin):
+class Txt2Img(IFieldsPlugin):
     @property
     def settings(self) -> IPluginSettings:
         return IPluginSettings(
@@ -126,7 +122,7 @@ class Txt2Img(CarefreeCreatorPlugin):
         return await get_apis().txt2img(model, step_callback=callback)
 
 
-class Img2Img(CarefreeCreatorPlugin):
+class Img2Img(IFieldsPlugin):
     @property
     def settings(self) -> IPluginSettings:
         return IPluginSettings(
@@ -159,7 +155,7 @@ class Img2Img(CarefreeCreatorPlugin):
         return await get_apis().img2img(model, step_callback=callback)
 
 
-class SR(CarefreeCreatorPlugin):
+class SR(IFieldsPlugin):
     image_should_audit = False
 
     @property
@@ -187,7 +183,7 @@ class SR(CarefreeCreatorPlugin):
         return await get_apis().sr(Img2ImgSRModel(**kw))
 
 
-class SOD(CarefreeCreatorPlugin):
+class SOD(IFieldsPlugin):
     @property
     def settings(self) -> IPluginSettings:
         return IPluginSettings(
@@ -212,7 +208,7 @@ class SOD(CarefreeCreatorPlugin):
         return await get_apis().sod(Img2ImgSODModel(url=data.nodeData.src))
 
 
-class Captioning(CarefreeCreatorPlugin):
+class Captioning(IFieldsPlugin):
     @property
     def settings(self) -> IPluginSettings:
         return IPluginSettings(
@@ -237,7 +233,7 @@ class Captioning(CarefreeCreatorPlugin):
         return await get_apis().image_captioning(Img2TxtModel(url=data.nodeData.src))
 
 
-class Inpainting(CarefreeCreatorPlugin):
+class Inpainting(IFieldsPlugin):
     @property
     def settings(self) -> IPluginSettings:
         return IPluginSettings(
@@ -280,7 +276,7 @@ class Inpainting(CarefreeCreatorPlugin):
         return await get_apis().inpainting(model, step_callback=callback)
 
 
-class SDInpainting(CarefreeCreatorPlugin):
+class SDInpainting(IFieldsPlugin):
     @property
     def settings(self) -> IPluginSettings:
         return IPluginSettings(
@@ -319,7 +315,7 @@ class SDInpainting(CarefreeCreatorPlugin):
         return await get_apis().sd_inpainting(model, step_callback=callback)
 
 
-class SDOutpainting(CarefreeCreatorPlugin):
+class SDOutpainting(IFieldsPlugin):
     @property
     def settings(self) -> IPluginSettings:
         return IPluginSettings(
@@ -370,7 +366,7 @@ def validate_variation(data: ISocketRequest) -> bool:
     return DATA_MODEL_KEY in extra_responses
 
 
-class Variation(CarefreeCreatorPlugin):
+class Variation(IFieldsPlugin):
     @property
     def settings(self) -> IPluginSettings:
         return IPluginSettings(
@@ -427,7 +423,7 @@ class Variation(CarefreeCreatorPlugin):
         return []
 
 
-class ControlHints(CarefreeCreatorPlugin):
+class ControlHints(IFieldsPlugin):
     @property
     def settings(self) -> IPluginSettings:
         return IPluginSettings(
@@ -454,7 +450,7 @@ class ControlHints(CarefreeCreatorPlugin):
         return await get_apis().get_control_hint(hint_type, url=url)
 
 
-class MultiControlNet(CarefreeCreatorPlugin):
+class MultiControlNet(IFieldsPlugin):
     @property
     def settings(self) -> IPluginSettings:
         return IPluginSettings(
@@ -493,7 +489,7 @@ class MultiControlNet(CarefreeCreatorPlugin):
         return await get_apis().run_multi_controlnet(model, step_callback=callback)
 
 
-class ImageHarmonization(CarefreeCreatorPlugin):
+class ImageHarmonization(IFieldsPlugin):
     @property
     def settings(self) -> IPluginSettings:
         return IPluginSettings(

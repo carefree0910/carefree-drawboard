@@ -37,8 +37,6 @@ inpainting_fields = dict(
 
 
 class InpaintingPlugin(IFieldsPlugin):
-    requirements = ["transformers>=4.26.1", "diffusers[torch]>=0.14.0"]
-
     @property
     def settings(self) -> IPluginSettings:
         return IPluginSettings(
