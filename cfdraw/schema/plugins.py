@@ -244,6 +244,16 @@ Pivot of the plugin.
         None,
         description="Extra (chakra) props of the plugin button",
     )
+    # internal fields
+    no_offload: bool = Field(
+        False,
+        description=(
+            "Whether not to offload the plugin to sub-thread when it is executed, "
+            "useful when you know the plugin is fast enough.\n"
+            "> This is introduced mainly because some libraries (e.g., `matplotlib`) "
+            "need to be executed in the main thread."
+        ),
+    )
 
     def to_react(self, type: str, hash: str, identifier: str) -> Dict[str, Any]:
         d = self.dict(exclude={"pluginInfo"})
