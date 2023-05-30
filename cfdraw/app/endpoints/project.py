@@ -98,12 +98,6 @@ def maintain_meta(app: IApp, userId: str) -> None:
             json.dump(project_meta, f)
 
 
-def maintain_all_meta(app: IApp) -> None:
-    for user_folder in app.config.upload_project_folder.iterdir():
-        if user_folder.is_dir():
-            maintain_meta(app, user_folder.name)
-
-
 def add_project_managements(app: IApp) -> None:
     @app.api.post("/save_project", responses=get_responses(SaveProjectResponse))
     def save_project(data: ProjectModel) -> SaveProjectResponse:
@@ -186,9 +180,6 @@ def add_project_managements(app: IApp) -> None:
 class ProjectEndpoint(IEndpoint):
     def register(self) -> None:
         add_project_managements(self.app)
-
-    async def on_startup(self) -> None:
-        maintain_all_meta(self.app)
 
 
 __all__ = [
