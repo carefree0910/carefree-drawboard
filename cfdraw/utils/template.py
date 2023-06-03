@@ -20,8 +20,8 @@ class Plugin(IFieldsPlugin):
             h=180,
             tooltip="Apply Gaussian Blur to the image",
             nodeConstraint=NodeConstraints.IMAGE,
-            pivot=PivotType.RT,
             follow=True,
+            pivot=PivotType.RT,
             pluginInfo=IFieldsPluginInfo(
                 definitions=dict(
                     size=INumberField(
