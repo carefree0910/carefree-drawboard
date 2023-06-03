@@ -1,6 +1,6 @@
 # carefree-drawboard 🎨
 
-![Stable Diffusion](examples/assets/stable-diffusion.png)
+![Carefree Drawboard][socialify-image]
 
 <div align="center">
 
@@ -156,3 +156,5 @@ My final goal is to make `carefree-drawboard` 🎨 a platform which can be used 
 - [Diffusers](https://github.com/huggingface/diffusers), the adopted library for the [Stable Diffusion](https://github.com/carefree0910/carefree-drawboard/tree/dev/examples/stable_diffusion) example.
 - [@liujs1](https://github.com/liujs1), who provides me the nice looking icons.
 - And You! Thank you for watching!
+
+[socialify-image]: https://socialify.git.ci/carefree0910/carefree-drawboard/image?description=1&descriptionEditable=Infinite%20Drawboard%20in%20Python%20🐍&forks=1&issues=1&logo=https%3A%2F%2Fem-content.zobj.net%2Fthumbs%2F240%2Fmicrosoft%2F319%2Fartist-palette_1f3a8.png&name=1&pattern=Floating%20Cogs&stargazers=1&theme=Auto
