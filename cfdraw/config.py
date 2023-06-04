@@ -25,9 +25,9 @@ class Config:
     # upload
     upload_root: str = field(default_factory=constants.get_upload_root)
     # board
-    board_settings: BoardSettings = BoardSettings()
+    board_settings: BoardSettings = field(default_factory=BoardSettings)
     # extra plugins
-    extra_plugins: ExtraPlugins = ExtraPlugins()
+    extra_plugins: ExtraPlugins = field(default_factory=ExtraPlugins)
     # misc
     use_react_strict_mode: bool = False
 
