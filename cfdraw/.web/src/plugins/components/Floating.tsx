@@ -55,7 +55,7 @@ const Floating = forwardRef(function (
       tooltip,
       offsetY,
       bgOpacity,
-      modalOpacity,
+      expandOpacity,
       expandProps,
       isInvisible,
     },
@@ -171,9 +171,9 @@ const Floating = forwardRef(function (
     }
   });
   // convert float to hex
-  modalOpacity ??= DEFAULT_PLUGIN_SETTINGS.expandOpacity;
-  const modalOpacityHex = Math.round(modalOpacity * 255).toString(16);
-  const expandBg = `${panelBg}${modalOpacityHex}`;
+  expandOpacity ??= DEFAULT_PLUGIN_SETTINGS.expandOpacity;
+  const expandOpacityHex = Math.round(expandOpacity * 255).toString(16);
+  const expandBg = `${panelBg}${expandOpacityHex}`;
   // set expand render condition
   const renderExpand = expand || usePluginChildren(id).length > 0;
 

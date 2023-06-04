@@ -233,7 +233,7 @@ Pivot of the plugin.
         False,
         description="Whether should we keep the expanded panel of the plugin open, even when users already clicked on the drawboard.",
     )
-    modalOpacity: Optional[float] = Field(None, description="Opacity of the modal")
+    expandOpacity: Optional[float] = Field(None, description="Opacity of the modal")
     expandProps: Optional[IChakra] = Field(
         None,
         description="Extra (chakra) props of the plugin's expanded panel",

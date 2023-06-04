@@ -45,7 +45,7 @@ export interface IRenderInfo extends IExpandPositionInfo {
   bgOpacity?: number;
   useModal?: boolean;
   keepOpen?: boolean;
-  modalOpacity?: number;
+  expandOpacity?: number;
   expandProps?: FlexProps;
   isInvisible?: boolean;
 }
