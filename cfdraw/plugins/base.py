@@ -102,55 +102,7 @@ class IInternalSocketPlugin(ISocketPlugin, metaclass=ABCMeta):
         return IPluginSettings(w=1, h=1)
 
 
-# bindings
-
-
-class IPluginGroup(ISocketPlugin):
-    @property
-    def type(self) -> PluginType:
-        return PluginType.PLUGIN_GROUP
-
-    def process(self, data: ISocketRequest) -> Any:
-        return
-
-
-class IFieldsPlugin(ISocketPlugin):
-    @property
-    def type(self) -> PluginType:
-        return PluginType.FIELDS
-
-
-class ITextAreaPlugin(ISocketPlugin):
-    @property
-    def type(self) -> PluginType:
-        return PluginType.TEXT_AREA
-
-
-class IQAPlugin(ISocketPlugin):
-    @property
-    def type(self) -> PluginType:
-        return PluginType.QA
-
-
-class IChatPlugin(ISocketPlugin):
-    @property
-    def type(self) -> PluginType:
-        return PluginType.CHAT
-
-
-class IMarkdownPlugin(ISocketPlugin):
-    @property
-    def type(self) -> PluginType:
-        return PluginType.MARKDOWN
-
-
 __all__ = [
     "ISocketPlugin",
     "IInternalSocketPlugin",
-    "IPluginGroup",
-    "IFieldsPlugin",
-    "ITextAreaPlugin",
-    "IQAPlugin",
-    "IChatPlugin",
-    "IMarkdownPlugin",
 ]
