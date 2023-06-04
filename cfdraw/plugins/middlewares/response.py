@@ -7,14 +7,14 @@ from PIL.Image import Image
 from PIL.PngImagePlugin import PngInfo
 
 from cfdraw.schema.plugins import PluginType
-from cfdraw.schema.plugins import IMiddleWare
+from cfdraw.schema.plugins import IMiddleware
 from cfdraw.schema.plugins import Subscription
 from cfdraw.schema.plugins import ISocketMessage
 from cfdraw.schema.plugins import ISocketRequest
 from cfdraw.app.endpoints.upload import ImageUploader
 
 
-class ResponseMiddleWare(IMiddleWare):
+class ResponseMiddleware(IMiddleware):
     @property
     def subscriptions(self) -> Union[List[PluginType], Subscription]:
         return Subscription.ALL
@@ -50,5 +50,5 @@ class ResponseMiddleWare(IMiddleWare):
 
 
 __all__ = [
-    "ResponseMiddleWare",
+    "ResponseMiddleware",
 ]

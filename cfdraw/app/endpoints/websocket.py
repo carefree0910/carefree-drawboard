@@ -53,7 +53,7 @@ def add_websocket(app: IApp) -> None:
                     target_plugin = app.plugins.make(identifier)
                 if target_plugin is not None:
                     # `send_message` should be handled by the plugin itself, or by
-                    # the `SendSocketMessageMiddleWare` which will provide a default handling
+                    # the `SendSocketMessageMiddleware` which will provide a default handling
                     target_plugin.task_hash = data.hash
                     target_plugin.send_message = send_message
                     target_plugin.elapsed_times = ElapsedTimes()

@@ -60,7 +60,7 @@ class ImageUploader:
         """
         When this method is used in the:
         * `upload_image` endpoint, `contents` will be a `bytes` object.
-        * `FieldsMiddleWare`, `contents` will be an `Image.Image` object.
+        * `FieldsMiddleware`, `contents` will be an `Image.Image` object.
         """
 
         meta.add_text("userJson", userJson)

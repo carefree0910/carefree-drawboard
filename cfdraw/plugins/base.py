@@ -25,11 +25,11 @@ class ISocketPlugin(IPlugin, metaclass=ABCMeta):
     # internal APIs
 
     @property
-    def middlewares(self) -> List[IMiddleWare]:
+    def middlewares(self) -> List[IMiddleware]:
         return [
-            ResponseMiddleWare(self),
-            TimerMiddleWare(self),
-            SendSocketMessageMiddleWare(self),
+            ResponseMiddleware(self),
+            TimerMiddleware(self),
+            SendSocketMessageMiddleware(self),
         ]
 
     async def __call__(self, data: ISocketRequest) -> ISocketMessage:

@@ -2,12 +2,12 @@ from typing import List
 from typing import Union
 
 from cfdraw.schema.plugins import PluginType
-from cfdraw.schema.plugins import IMiddleWare
+from cfdraw.schema.plugins import IMiddleware
 from cfdraw.schema.plugins import Subscription
 from cfdraw.schema.plugins import ISocketMessage
 
 
-class SendSocketMessageMiddleWare(IMiddleWare):
+class SendSocketMessageMiddleware(IMiddleware):
     @property
     def subscriptions(self) -> Union[List[PluginType], Subscription]:
         return Subscription.ALL
@@ -27,5 +27,5 @@ class SendSocketMessageMiddleWare(IMiddleWare):
 
 
 __all__ = [
-    "SendSocketMessageMiddleWare",
+    "SendSocketMessageMiddleware",
 ]

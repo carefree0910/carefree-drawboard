@@ -1,11 +1,11 @@
 from typing import List
 
 from cfdraw.schema.plugins import PluginType
-from cfdraw.schema.plugins import IMiddleWare
+from cfdraw.schema.plugins import IMiddleware
 from cfdraw.schema.plugins import ISocketMessage
 
 
-class TimerMiddleWare(IMiddleWare):
+class TimerMiddleware(IMiddleware):
     @property
     def can_handle_message(self) -> bool:
         return True
@@ -21,5 +21,5 @@ class TimerMiddleWare(IMiddleWare):
 
 
 __all__ = [
-    "TimerMiddleWare",
+    "TimerMiddleware",
 ]

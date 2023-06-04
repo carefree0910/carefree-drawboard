@@ -566,7 +566,7 @@ class Subscription(str, Enum):
     ALL = "__all__"
 
 
-class IMiddleWare(ABC):
+class IMiddleware(ABC):
     hash: str
     plugin: IPlugin
 
@@ -691,7 +691,7 @@ __all__ = [
     "ISocketMessage",
     # plugin interface
     "IPlugin",
-    "IMiddleWare",
+    "IMiddleware",
     "IFieldsPluginInfo",
     # bindings
     "ILogoPluginInfo",
