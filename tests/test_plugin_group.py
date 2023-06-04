@@ -1,5 +1,4 @@
 from cfdraw import *
-from cfdraw.schema.plugins import IPluginSettings
 
 
 class Plugin(IFieldsPlugin):
