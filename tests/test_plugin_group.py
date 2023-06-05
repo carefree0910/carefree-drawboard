@@ -22,7 +22,8 @@ class PluginGroup(IPluginGroup):
         return IPluginSettings(
             w=200,
             h=110,
-            pivot=PivotType.RIGHT,
+            pivot=PivotType.LEFT,
+            tooltip="A plugin group",
             pluginInfo=IPluginGroupInfo(plugins=dict(bar=Plugin)),
         )
 

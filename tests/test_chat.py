@@ -16,6 +16,7 @@ class ChatPlugin(IChatPlugin):
             tooltip="Pseudo Chat",
             pivot=PivotType.RIGHT,
             pluginInfo=IChatPluginInfo(
+                initialText="Bot: Hello, can I help you?",
                 closeOnSubmit=False,
                 toastOnSubmit=False,
             ),
