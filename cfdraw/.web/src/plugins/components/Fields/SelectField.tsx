@@ -50,11 +50,14 @@ function SelectField({ definition, ...fieldKeys }: IField<ISelectField>) {
     }
   }, [definition.localProperties]);
 
-  const selected = { value, label: parseIStr(value) };
-  const selectOptions = options.map((value) => ({ value, label: parseIStr(value) }));
+  const selected = { value: JSON.stringify(value), label: parseIStr(value) };
+  const selectOptions = options.map((value) => ({
+    value: JSON.stringify(value),
+    label: parseIStr(value),
+  }));
 
   return (
-    <CFSrollableSelect<IStr, false>
+    <CFSrollableSelect<string, false>
       fontSize="14px"
       label={label}
       tooltip={tooltip}
@@ -65,8 +68,9 @@ function SelectField({ definition, ...fieldKeys }: IField<ISelectField>) {
       onMenuOpen={onMenuOpen}
       onChange={(e) => {
         if (!!e) {
-          setValue(e.value);
-          setMetaField(fieldKeys, e.value);
+          const value = JSON.parse(e.value);
+          setValue(value);
+          setMetaField(fieldKeys, value);
         }
       }}
     />
