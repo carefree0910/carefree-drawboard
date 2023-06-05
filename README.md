@@ -15,7 +15,7 @@
 ![Checks](https://github.com/carefree0910/carefree-drawboard/actions/workflows/checks.yml/badge.svg)
 [![License](https://img.shields.io/badge/License-Apache_2.0-yellowgreen.svg)](https://opensource.org/licenses/Apache-2.0)
 
-### [Wiki](https://github.com/carefree0910/carefree-drawboard/wiki) | [Examples](https://github.com/carefree0910/carefree-drawboard/tree/dev/examples) | [Carefree Creator](https://github.com/carefree0910/carefree-drawboard/tree/dev/examples/carefree_creator) | [Caption & Diffusion](https://github.com/carefree0910/carefree-drawboard/tree/dev/examples/caption_and_diffusion) | [Inpainting](https://github.com/carefree0910/carefree-drawboard/tree/dev/examples/stable_diffusion_inpainting) | [ControlNet](https://github.com/carefree0910/carefree-drawboard/tree/dev/examples/stable_diffusion_controlnet)
+### [Documentation](https://carefree0910.me/carefree-drawboard-doc/) | [Examples](https://github.com/carefree0910/carefree-drawboard/tree/dev/examples)
 
 <div align="left">
 
