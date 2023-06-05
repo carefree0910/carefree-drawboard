@@ -14,15 +14,24 @@ import type {
 import { IMetaInjections, getMetaField, getMetaInjection } from "@/stores/meta";
 import { setPluginMessage, usePluginIds, usePluginNeedRender } from "@/stores/pluginsInfo";
 import { useSocketPython } from "@/hooks/usePython";
+import { ID_KEY } from "../components/Fields/ListField";
+import { checkHasConstraint } from "../utils/renderFilters";
 import { cleanupException, cleanupFinished, cleanupInterrupted } from "../utils/cleanup";
 import { socketFinishedEvent } from "./PluginWithSubmit";
-import { checkHasConstraint } from "../utils/renderFilters";
 
 export function useDefinitionsRequestDataFn(definitions: IDefinitions): () => Dictionary<any> {
   return useCallback(() => {
     const data: Dictionary<any> = {};
     Object.keys(definitions).forEach((field) => {
-      data[field] = getMetaField({ field });
+      const value = getMetaField({ field });
+      if (Array.isArray(value)) {
+        value.forEach((obj: any) => {
+          if (!!obj[ID_KEY]) {
+            delete obj[ID_KEY];
+          }
+        });
+      }
+      data[field] = value;
     });
     return data;
   }, [definitions]);

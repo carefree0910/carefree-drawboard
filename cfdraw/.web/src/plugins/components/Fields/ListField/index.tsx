@@ -27,7 +27,7 @@ import CFTooltip from "@/components/CFTooltip";
 import { getFieldH, useDefaultFieldValue } from "../utils";
 import { Field } from "../Field";
 
-const ID_KEY = "^_^__id__^_^";
+export const ID_KEY = "^_^__id__^_^";
 function getDefaults(item: IDefinitions): Dictionary<any> {
   const defaults: Dictionary<any> = { [ID_KEY]: getRandomHash() };
   for (const [key, value] of Object.entries(item)) {
