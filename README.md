@@ -15,7 +15,7 @@
 ![Checks](https://github.com/carefree0910/carefree-drawboard/actions/workflows/checks.yml/badge.svg)
 [![License](https://img.shields.io/badge/License-Apache_2.0-yellowgreen.svg)](https://opensource.org/licenses/Apache-2.0)
 
-### [Documentation](https://carefree0910.me/carefree-drawboard-doc/) | [Examples](https://github.com/carefree0910/carefree-drawboard/tree/dev/examples)
+### [Documentation](https://carefree0910.me/carefree-drawboard-doc/docs/getting-started) | [Examples](https://github.com/carefree0910/carefree-drawboard/tree/dev/examples)
 
 <div align="left">
 
