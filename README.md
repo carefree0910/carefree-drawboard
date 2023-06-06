@@ -81,10 +81,6 @@ And you should see your app running at http://localhost:5123. Now you can play w
 * [Stable Diffusion ControlNet](https://github.com/carefree0910/carefree-drawboard/tree/dev/examples/stable_diffusion_controlnet), which shows how can we decouple complicated workflows like `ControlNet` into separate, lightweight, and reusable plugins very easily.
 * [**Carefree Creator**](https://github.com/carefree0910/carefree-drawboard/tree/dev/examples/carefree_creator), which contains a free, public-available [demo](https://drawboard-demo.nolibox.com/) of the real world business ready product we are selling. It is a web app with tons of AI magics, but still remains easy for `carefree-drawboard` 🎨 to implement them.
 
-## Documentation
-
-Check the [Wiki](https://github.com/carefree0910/carefree-drawboard/wiki) page for documentation!
-
 ## Status
 
 `carefree-drawboard` 🎨 is at a VERY early stage (it is launched in April 2023), so although it could be production ready (see [here](https://github.com/carefree0910/carefree-drawboard/wiki/Production) for more details), it does not have many real world use cases (yet).
@@ -93,14 +89,8 @@ But we will rapidly update this project and launch new features every week (or, 
 
 ## Contributing
 
-Contributions are truly welcomed! Here are some good (common) ways to get started:
-
-* **GitHub Discussions**: Currently the best way to chat around.
-* **GitHub Issues**: Bugs! Fixes! PRs!.
-
-Apart from these:
-* It might be the best to start from the [Contributing](https://github.com/carefree0910/carefree-drawboard/wiki/Contributing) Wiki page.
-* If you are truly an enthusiast, you may check out our [Roadmap](https://github.com/carefree0910/carefree-drawboard/wiki/Roadmap), pick up what you are interested, and create the corresponding PR!
+* It might be the best to start from the [Contributing](https://carefree0910.me/carefree-drawboard-doc/docs/contributing-guides/contributing) page.
+* If you are truly an enthusiast, you may check out our [Roadmap](https://carefree0910.me/carefree-drawboard-doc/docs/about/roadmap), pick up what you are interested, and create the corresponding PR!
 
 ### Style Guide
 
