@@ -33,7 +33,7 @@ cfdraw run --module advanced
 
 1. We used `follow=True` and `nodeConstraint=NodeConstraints.IMAGE` for all plugins, so they will and only will be displayed when the selected `Node` is an image.
 
-> See [Plugin Positioning](https://github.com/carefree0910/carefree-drawboard/wiki/Details#plugin-positioning) for more details.
+> See [Plugin Positioning](https://carefree0910.me/carefree-drawboard-doc/docs/plugins/#plugin-positioning) for more details.
 
 2. If you run image processing consecutively, you will find a `from` field in the `meta` data. This can be used to track the process history of every `Node`.
 3. We changed the `GrayScale` plugin's background color to `light green`, to show how we can specify the style of the plugin's expanded panel.
@@ -56,7 +56,7 @@ pluginInfo=IFieldsPluginInfo(
 
 * `definitions` is a dictionary, where the key is the name of the parameter, and the value is an `IFieldDefinition` object. Since we want to create a slider for the `size` parameter, we use `INumberField` with `min` & `max` specified here.
 
-> See [`IFieldDefinition`](https://github.com/carefree0910/carefree-drawboard/wiki/PythonFieldsPlugin#ifielddefinition) for more details.
+> See [`IFieldDefinition`](https://carefree0910.me/carefree-drawboard-doc/docs/api-reference/Types#ifielddefinition) for more details.
 
 * The name of the parameter is `size`, so we can use `size` in the `process` function to get the value of the slider.
 

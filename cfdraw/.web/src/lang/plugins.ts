@@ -40,7 +40,7 @@ const _pluginsLangRecords: Record<Lang, Record<AllPlugins, string>> = {
     redo: "Redo",
     download: "Download",
     delete: "Delete",
-    wiki: "Wiki",
+    wiki: "Documentation",
     email: "Email",
     github: "Github",
     shortcuts: "Shortcuts",

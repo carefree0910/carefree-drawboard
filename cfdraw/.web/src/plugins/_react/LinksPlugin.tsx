@@ -7,7 +7,7 @@ import { Link } from "../components/Link";
 
 const WikiPlugin = (props: IPlugin) => {
   const id = usePluginIds("wiki").id;
-  return <Link id={id} url="https://github.com/carefree0910/carefree-drawboard/wiki" {...props} />;
+  return <Link id={id} url="https://carefree0910.me/carefree-drawboard-doc/" {...props} />;
 };
 const EmailPlugin = (props: IPlugin) => {
   const id = usePluginIds("email").id;

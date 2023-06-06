@@ -6,8 +6,8 @@ Contributions are truly welcomed! Here are some good (common) ways to get starte
 * **GitHub Issues**: Bugs! Fixes! PRs!.
 
 Apart from these:
-* It might be the best to start from the [Contributing](https://github.com/carefree0910/carefree-drawboard/wiki/Contributing) Wiki page.
-* If you are truly an enthusiast, you may check out our [Roadmap](https://github.com/carefree0910/carefree-drawboard/wiki/Roadmap), pick up what you are interested, and create the corresponding PR!
+* It might be the best to start from the [Contributing](https://carefree0910.me/carefree-drawboard-doc/docs/contributing-guides/contributing) Wiki page.
+* If you are truly an enthusiast, you may check out our [Roadmap](https://carefree0910.me/carefree-drawboard-doc/docs/about/roadmap), pick up what you are interested, and create the corresponding PR!
 
 ## Style Guide
 

@@ -49,13 +49,13 @@ nodeConstraintRules=NodeConstraintRules(
 ```
 , so the plugin will and only will be displayed when (exactly) an `ImageNode` & a `PathNode` are selected.
 
-> See [Plugin Positioning](https://github.com/carefree0910/carefree-drawboard/wiki/Details#plugin-positioning) for more details.
+> See [Plugin Positioning](https://carefree0910.me/carefree-drawboard-doc/docs/plugins/#plugin-positioning) for more details.
 
 3. We specified `useModal=True` for the plugin, so it will always popup as a modal.
 
 4. We specified lots of `definitions`, in order to align with the parameters exposed by the `diffusers` library.
 
-> See [`IFieldDefinition`](https://github.com/carefree0910/carefree-drawboard/wiki/PythonFieldsPlugin#ifielddefinition) for more details.
+> See [`IFieldDefinition`](https://carefree0910.me/carefree-drawboard-doc/docs/api-reference/Types#ifielddefinition) for more details.
 
 5. We used a special internal method: `filter` in the first two lines of the `process` method:
 

@@ -73,7 +73,7 @@ And you should see your app running at http://localhost:5123. Now you can play w
 
 ## Examples
 
-* [**Getting Started**](https://github.com/carefree0910/carefree-drawboard/wiki/Getting-Started), which is a more detailed tutorial to guide you step by step.
+* [**Getting Started**](https://carefree0910.me/carefree-drawboard-doc/docs/getting-started), which is a more detailed tutorial to guide you step by step.
 * [Image Processing](https://github.com/carefree0910/carefree-drawboard/tree/dev/examples/image_processing), which implements three common image processing plugins. It also shows how to use the `IPluginGroup` in `carefree-drawboard` 🎨 to group the plugins together and make the UI cleaner.
 * [Stable Diffusion](https://github.com/carefree0910/carefree-drawboard/tree/dev/examples/stable_diffusion), which utilizes the famous `diffusers` library and implements two common SD plugins.
 * [**Caption & Diffusion**](https://github.com/carefree0910/carefree-drawboard/tree/dev/examples/caption_and_diffusion), which shows how can we combine two different kinds of models (`Image Captioning` & `Stable Diffusion`) and make them work together.
@@ -83,7 +83,7 @@ And you should see your app running at http://localhost:5123. Now you can play w
 
 ## Status
 
-`carefree-drawboard` 🎨 is at a VERY early stage (it is launched in April 2023), so although it could be production ready (see [here](https://github.com/carefree0910/carefree-drawboard/wiki/Production) for more details), it does not have many real world use cases (yet).
+`carefree-drawboard` 🎨 is at a VERY early stage (it is launched in April 2023), so although it could be production ready (see [here](https://carefree0910.me/carefree-drawboard-doc/docs/user-guides/production) for more details), it does not have many real world use cases (yet).
 
 But we will rapidly update this project and launch new features every week (or, even everyday), so ⭐ star and 👀 watch this repository to stay up to date!
 
@@ -122,7 +122,7 @@ Many thanks to [JSDu](https://github.com/JamesBonddu), who created a [Discord ch
 
 ### Why do you build this project?
 
-> Also check [Design Philosophy](https://github.com/carefree0910/carefree-drawboard/wiki/Design-Philosophy).
+> Also check [Design Philosophy](https://carefree0910.me/carefree-drawboard-doc/docs/reference/design-philosophy).
 
 In short, I believe that:
 * Infinite Drawboard can unleash Infinite possibilities.
@@ -132,7 +132,7 @@ So here comes the `carefree-drawboard` 🎨, which is a `Python` interactible/cu
 
 My another motivation is that I love HuggingFace 🤗 models, and would love to use most if not all of them in one, single, integrated space. This actually inspires me the following idea: to build an 'AI Operation System' which can drive all the 'Softwares' (the AI models) and make them work together seamlessly.
 
-> See [Brainstorm 🧠](https://github.com/carefree0910/carefree-drawboard/wiki/Brainstorm-%F0%9F%A7%A0) for more details!
+> See [Brainstorm](https://carefree0910.me/carefree-drawboard-doc/docs/reference/brainstorm) for more details!
 
 My final goal is to make `carefree-drawboard` 🎨 a platform which can be used to build all kinds of AI applications. I know it will be a long journey but it is definitely worth trying.
 

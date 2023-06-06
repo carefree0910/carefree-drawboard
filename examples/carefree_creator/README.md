@@ -33,7 +33,7 @@ cfdraw run
 
 This might be the best to demonstrate why `carefree-drawboard` 🎨 is so powerful and flexible!
 
-> You can use <kbd>[</kbd> to move the blank canvas to the bottom. See [Keyboard Shortcuts](https://github.com/carefree0910/carefree-drawboard/wiki/Features#keyboard-shortcuts) for more details.
+> You can use <kbd>[</kbd> to move the blank canvas to the bottom. See [Keyboard Shortcuts](https://carefree0910.me/carefree-drawboard-doc/docs/user-guides/keyboard-shortcuts) for more details.
 
 [Stable Diffusion Outpainting](https://github.com/carefree0910/carefree-drawboard/assets/15677328/3cdaa9d7-f279-4478-b8fb-5f0196c93c97)
 
@@ -73,9 +73,9 @@ With the help of `cache_resource`, you can use `get_apis` everywhere casually an
 
 > [examples/carefree_creator/fields.py](https://github.com/carefree0910/carefree-drawboard/blob/dev/examples/carefree_creator/fields.py)
 
-In `carefree-drawboard` 🎨, (currently) the most commonly used plugin is the [`PythonFieldsPlugin`](https://github.com/carefree0910/carefree-drawboard/wiki/Details#pythonfieldsplugin). It assumes that your APIs require a bunch of `key-value` pairs as input, so it will generate a form for you to fill in the values.
+In `carefree-drawboard` 🎨, (currently) the most commonly used plugin is the [`IFieldsPlugin`](https://carefree0910.me/carefree-drawboard-doc/docs/plugins/IFieldsPlugin). It assumes that your APIs require a bunch of `key-value` pairs as input, so it will generate a form for you to fill in the values.
 
-Here's a typical implementation of the `PythonFieldsPlugin`:
+Here's a typical implementation of the `IFieldsPlugin`:
 
 ```python
 class MyFancyPlugin(IFieldsPlugin):
@@ -89,7 +89,7 @@ class MyFancyPlugin(IFieldsPlugin):
 
 So the key part is the `definitions` in `IFieldsPluginInfo`, which is a `dict` that holds all the definitions of the fields you are going to use in the plugin. The `key` of the `dict` should be the `key` of the input, and the `value` of the `dict` should be one of the `IFieldDefinition`s. The `IFieldDefinition` is used to define the type/properties of the input, so users can interact with it as you expected.
 
-> See [`IFieldDefinition`](https://github.com/carefree0910/carefree-drawboard/wiki/Details#ifielddefinition) for more details.
+> See [`IFieldDefinition`](https://carefree0910.me/carefree-drawboard-doc/docs/api-reference/Types#ifielddefinition) for more details.
 
 To demonstrate how to use `IFieldDefinition`, let's take a look at the (simplified) `diffusion_fields` we used in this example:
 

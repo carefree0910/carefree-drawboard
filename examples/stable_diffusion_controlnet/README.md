@@ -44,13 +44,13 @@ cfdraw run --module advanced
    * At production stage, we can call the initialization function at the very beginning to pre-load the models.
 2. We used `follow=True` and `nodeConstraint=NodeConstraints.MULTI_NODE`, so the plugin will and only will be displayed when the multiple `Node`s are selected.
 
-> See [Plugin Positioning](https://github.com/carefree0910/carefree-drawboard/wiki/Details#plugin-positioning) for more details.
+> See [Plugin Positioning](https://carefree0910.me/carefree-drawboard-doc/docs/plugins/#plugin-positioning) for more details.
 
 3. We specified `useModal=True` for the plugin, so it will always popup as a modal.
 
 4. We specified lots of `definitions`, in order to align with the parameters exposed by the `diffusers` library.
 
-> See [`IFieldDefinition`](https://github.com/carefree0910/carefree-drawboard/wiki/PythonFieldsPlugin#ifielddefinition) for more details.
+> See [`IFieldDefinition`](https://carefree0910.me/carefree-drawboard-doc/docs/api-reference/Types#ifielddefinition) for more details.
 
 5. We used a special internal method: `filter` in the first two lines of the `process` method:
 

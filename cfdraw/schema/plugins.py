@@ -140,7 +140,7 @@ class IPluginSettings(IChakra):
 
     > These fields will go to the `NodeConstraintSettings` part of the `IRender`, locates at
     `cfdraw/.web/src/schema/plugins.ts`.
-    > See Plugin Positioning (https://github.com/carefree0910/carefree-drawboard/wiki/Details#plugin-positioning)
+    > See Plugin Positioning (https://carefree0910.me/carefree-drawboard-doc/docs/plugins/#plugin-positioning)
     for detailed explanations of these fields.
 
     --- style fields ---
