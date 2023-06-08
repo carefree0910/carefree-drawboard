@@ -576,8 +576,11 @@ class DrawWorkflow(IFieldsPlugin):
             no_offload=True,
         )
 
-    async def process(self, data: ISocketRequest) -> List[Image.Image]:
+    async def process(self, data: ISocketRequest) -> Optional[List[Image.Image]]:
         workflow = trace_workflow(data.nodeData.meta)
+        if workflow.last is None:
+            self.send_exception("Workflow is empty")
+            return None
         self.set_extra_response(WORKFLOW_KEY, workflow.to_json())
         return [workflow.render()]
 
