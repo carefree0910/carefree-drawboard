@@ -351,6 +351,7 @@ class SDOutpainting(IFieldsPlugin):
 
 variation_targets = {
     Txt2ImgKey,
+    Txt2ImgWithTextKey,
     Img2ImgKey,
     VariationKey,
     SDInpaintingKey,
@@ -543,6 +544,38 @@ class PromptEnhance(IFieldsPlugin):
         data_model = PromptEnhanceModel(text=data.nodeData.text, **data.extraData)
         self.set_extra_response(DATA_MODEL_KEY, data_model.dict())
         return await get_apis().prompt_enhance(data_model)
+
+
+class Txt2ImgWithText(IFieldsPlugin):
+    @property
+    def settings(self) -> IPluginSettings:
+        return IPluginSettings(
+            **common_styles,
+            src=constants.TEXT_TO_IMAGE_ICON,
+            tooltip=I18N(
+                zh="生成符合文本节点内容的图片",
+                en="Text to Image",
+            ),
+            pluginInfo=IFieldsPluginInfo(
+                header=I18N(
+                    zh="文本生成图片",
+                    en="Text to Image",
+                ),
+                numColumns=2,
+                definitions=txt2img_text_fields,
+            ),
+        )
+
+    async def process(self, data: ISocketRequest) -> List[Image.Image]:
+        def callback(step: int, num_steps: int) -> bool:
+            return self.send_progress(step / num_steps)
+
+        self.set_injection("text", data.nodeData)
+        extra = dict(text=data.nodeData.text)
+        if data.extraData.get("use_highres", False):
+            extra["highres_info"] = HighresModel().dict()
+        model = inject(self, data, Txt2ImgSDModel, "version", extra)
+        return await get_apis().txt2img(model, step_callback=callback)
 
 
 # workflow
@@ -787,6 +820,7 @@ class TextFollowers(IPluginGroup):
                 ),
                 plugins={
                     PromptEnhanceKey: PromptEnhance,
+                    Txt2ImgWithTextKey: Txt2ImgWithText,
                     f"{DrawWorkflowKey}_1": DrawWorkflow,
                 },
             ),

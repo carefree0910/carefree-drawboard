@@ -15,6 +15,7 @@ UPLOAD_META_TYPE = "upload"
 PYTHON_FIELDS_META_TYPE = "python.fields"
 
 Txt2ImgKey = "txt2img"
+Txt2ImgWithTextKey = "txt2img_text"
 Img2ImgKey = "img2img"
 SRKey = "sr"
 SODKey = "sod"
@@ -32,6 +33,7 @@ ExecuteWorkflowKey = "execute_workflow"
 
 key2endpoints = {
     Txt2ImgKey: txt2img_sd_endpoint,
+    Txt2ImgWithTextKey: txt2img_sd_endpoint,
     Img2ImgKey: img2img_sd_endpoint,
     SRKey: img2img_sr_endpoint,
     SODKey: img2img_sod_endpoint,
@@ -147,6 +149,7 @@ __all__ = [
     "WORKFLOW_KEY",
     "DATA_MODEL_KEY",
     "Txt2ImgKey",
+    "Txt2ImgWithTextKey",
     "Img2ImgKey",
     "SRKey",
     "SODKey",

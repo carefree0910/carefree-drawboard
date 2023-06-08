@@ -197,6 +197,19 @@ txt2img_fields = OrderedDict(
     seed=seed,
     lora=lora_field,
 )
+txt2img_text_fields = OrderedDict(
+    w=w_field,
+    h=h_field,
+    negative_prompt=negative_prompt,
+    version=version_field,
+    sampler=sampler,
+    num_steps=num_steps,
+    guidance_scale=guidance_scale,
+    use_circular=use_circular,
+    use_highres=use_highres,
+    seed=seed,
+    lora=lora_field,
+)
 # sd_inpainting / sd_outpainting fields
 sd_inpainting_prompt = text.copy()
 sd_inpainting_prompt.numRows = 3
@@ -386,6 +399,7 @@ __all__ = [
     "lora_field",
     "version_field",
     "txt2img_fields",
+    "txt2img_text_fields",
     "img2img_fields",
     "sr_fields",
     "inpainting_fields",
