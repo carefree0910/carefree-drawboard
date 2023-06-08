@@ -26,6 +26,7 @@ VariationKey = "variation"
 ControlNetHintKey = "control_net_hint"
 MultiControlNetKey = "multi_control_net"
 ImageHarmonizationKey = "image_harmonization"
+PromptEnhanceKey = "prompt_enhance"
 DrawWorkflowKey = "draw_workflow"
 ExecuteWorkflowKey = "execute_workflow"
 
@@ -41,6 +42,7 @@ key2endpoints = {
     ControlNetHintKey: CONTROL_HINT_ENDPOINT,
     MultiControlNetKey: new_control_multi_endpoint,
     ImageHarmonizationKey: img2img_harmonization_endpoint,
+    PromptEnhanceKey: txt2txt_prompt_enhance_endpoint,
 }
 
 
@@ -156,6 +158,7 @@ __all__ = [
     "ControlNetHintKey",
     "MultiControlNetKey",
     "ImageHarmonizationKey",
+    "PromptEnhanceKey",
     "DrawWorkflowKey",
     "ExecuteWorkflowKey",
     "get_apis",
@@ -173,4 +176,5 @@ __all__ = [
     "ControlNetHints",
     "ControlMultiModel",
     "Img2ImgHarmonizationModel",
+    "PromptEnhanceModel",
 ]

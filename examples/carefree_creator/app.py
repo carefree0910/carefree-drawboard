@@ -516,6 +516,33 @@ class ImageHarmonization(IFieldsPlugin):
         return await get_apis().harmonization(model)
 
 
+class PromptEnhance(IFieldsPlugin):
+    @property
+    def settings(self) -> IPluginSettings:
+        return IPluginSettings(
+            w=240,
+            h=180,
+            src=constants.PROMPT_ENHANCE_ICON,
+            tooltip=I18N(
+                zh="提示词增强",
+                en="Prompt Enhancement",
+            ),
+            pluginInfo=IFieldsPluginInfo(
+                header=I18N(
+                    zh="提示词增强",
+                    en="Prompt Enhancement",
+                ),
+                definitions=prompt_enhance_fields,
+            ),
+        )
+
+    async def process(self, data: ISocketRequest) -> List[str]:
+        self.set_injection("text", data.nodeData)
+        kw = data.extraData
+        kw["text"] = data.nodeData.text
+        return await get_apis().prompt_enhance(PromptEnhanceModel(**kw))
+
+
 # workflow
 
 
@@ -731,11 +758,42 @@ class CanvasFollowers(IPluginGroup):
         )
 
 
+class TextFollowers(IPluginGroup):
+    @property
+    def settings(self) -> IPluginSettings:
+        return IPluginSettings(
+            w=common_group_styles["w"],
+            h=164,
+            tooltip=I18N(
+                zh="一组将 AI 技术应用于当前文字的插件",
+                en="A set of plugins that apply AI techniques to the given text",
+            ),
+            nodeConstraint=NodeConstraints.TEXT,
+            pivot=PivotType.RT,
+            follow=True,
+            pluginInfo=IPluginGroupInfo(
+                name=I18N(
+                    zh="文字工具箱",
+                    en="Text Toolbox",
+                ),
+                header=I18N(
+                    zh="文字工具箱",
+                    en="Text Toolbox",
+                ),
+                plugins={
+                    PromptEnhanceKey: PromptEnhance,
+                    f"{DrawWorkflowKey}_1": DrawWorkflow,
+                },
+            ),
+        )
+
+
 # uncomment this line to pre-load the models
 # get_apis()
 register_plugin("static")(StaticPlugins)
 register_plugin("image_followers")(ImageFollowers)
 register_plugin("image_and_mask_followers")(ImageAndMaskFollowers)
 register_plugin("canvas_followers")(CanvasFollowers)
+register_plugin("text_followers")(TextFollowers)
 register_plugin(ExecuteWorkflowKey)(ExecuteWorkflow)
 app = App(notification)

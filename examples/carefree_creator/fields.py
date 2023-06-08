@@ -366,6 +366,18 @@ harmonization_fields = OrderedDict(
         label=I18N(zh="融合强度", en="Strength"),
     ),
 )
+# prompt enhance
+prompt_enhance_fields = OrderedDict(
+    num_return_sequences=INumberField(
+        default=1,
+        min=1,
+        max=3,
+        step=1,
+        isInt=True,
+        label=I18N(zh="数量", en="Num Returns"),
+        tooltip=I18N(zh="返回的结果数量", en="The number of results to return"),
+    ),
+)
 
 
 __all__ = [
@@ -382,4 +394,5 @@ __all__ = [
     "controlnet_hint_fields",
     "multi_controlnet_fields",
     "harmonization_fields",
+    "prompt_enhance_fields",
 ]
