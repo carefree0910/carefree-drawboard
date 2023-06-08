@@ -231,7 +231,9 @@ class Captioning(IFieldsPlugin):
 
     async def process(self, data: ISocketRequest) -> List[str]:
         self.set_injection("url", data.nodeData)
-        return await get_apis().image_captioning(Img2TxtModel(url=data.nodeData.src))
+        data_model = Img2TxtModel(url=data.nodeData.src)
+        self.set_extra_response(DATA_MODEL_KEY, data_model.dict())
+        return await get_apis().image_captioning(data_model)
 
 
 class Inpainting(IFieldsPlugin):
@@ -538,9 +540,9 @@ class PromptEnhance(IFieldsPlugin):
 
     async def process(self, data: ISocketRequest) -> List[str]:
         self.set_injection("text", data.nodeData)
-        kw = data.extraData
-        kw["text"] = data.nodeData.text
-        return await get_apis().prompt_enhance(PromptEnhanceModel(**kw))
+        data_model = PromptEnhanceModel(text=data.nodeData.text, **data.extraData)
+        self.set_extra_response(DATA_MODEL_KEY, data_model.dict())
+        return await get_apis().prompt_enhance(data_model)
 
 
 # workflow
