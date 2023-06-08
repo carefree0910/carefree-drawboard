@@ -1,4 +1,5 @@
 import asyncio
+import logging
 
 from typing import Dict
 from typing import Tuple
@@ -169,6 +170,7 @@ class RequestQueue(IRequestQueue):
         return success
 
     async def _broadcast_exception(self, uid: str, message: str) -> bool:
+        logging.exception(message)
         sender_pack = self._senders.get(uid)
         if sender_pack is None:
             return False
