@@ -46,17 +46,7 @@ key2endpoints = {
 
 @cache_resource
 def get_apis() -> APIs:
-    return APIs(
-        focuses_endpoints=[
-            txt2img_sd_endpoint,
-            img2img_sd_endpoint,
-            new_control_multi_endpoint,
-            # control_canny_hint_endpoint,
-            # control_pose_hint_endpoint,
-            # img2img_harmonization_endpoint,
-            # txt2img_sd_inpainting_endpoint,
-        ],
-    )
+    return APIs()
 
 
 def trace_workflow(meta: Dict[str, Any]) -> Workflow:
