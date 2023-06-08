@@ -32,7 +32,7 @@ class ISocketPlugin(IPlugin, metaclass=ABCMeta):
             SendSocketMessageMiddleware(self),
         ]
 
-    async def __call__(self, data: ISocketRequest) -> ISocketMessage:
+    async def __call__(self, data: ISocketRequest) -> None:
         self.injections = {}
         self.extra_responses = {}
         middlewares = self.middlewares
@@ -41,7 +41,6 @@ class ISocketPlugin(IPlugin, metaclass=ABCMeta):
         response = await self.process(data)
         for middleware in middlewares:
             response = await middleware(response)
-        return response
 
     def to_react(self) -> Dict[str, Any]:
         return self.settings.to_react(

@@ -578,7 +578,7 @@ class IMiddleware(ABC):
         pass
 
     @abstractmethod
-    async def process(self, response: Any) -> ISocketMessage:
+    async def process(self, response: Any) -> Any:
         """
         If `can_handle_message` is `False`, the `response` here could be anything except
         `ISocketMessage`, because in this case if `response` is already an `ISocketMessage`,
@@ -599,7 +599,7 @@ class IMiddleware(ABC):
     def __init__(self, plugin: IPlugin) -> None:
         self.plugin = plugin
 
-    async def __call__(self, response: Any) -> ISocketMessage:
+    async def __call__(self, response: Any) -> Any:
         if (
             self.subscriptions != Subscription.ALL
             and self.plugin.type not in self.subscriptions

@@ -3,6 +3,7 @@ import asyncio
 
 from typing import List
 from typing import Union
+from typing import Optional
 from PIL.Image import Image
 from PIL.PngImagePlugin import PngInfo
 
@@ -25,8 +26,10 @@ class ResponseMiddleware(IMiddleware):
 
     async def process(
         self,
-        response: Union[str, List[str], Image, List[Image]],
-    ) -> ISocketMessage:
+        response: Optional[Union[str, List[str], Image, List[Image]]],
+    ) -> Optional[ISocketMessage]:
+        if response is None:
+            return None
         if not isinstance(response, list):
             response = [response]
         if isinstance(response[0], str):
