@@ -257,7 +257,7 @@ function ImageField({ definition, ...fieldKeys }: IField<IImageField>) {
           </Center>
         </PopoverTrigger>
         <Portal>
-          <PopoverContent w="358px" h="320px" bg={`${panelBg}cc`}>
+          <PopoverContent w="366px" h="320px" bg={`${panelBg}cc`}>
             <PopoverArrow />
             <Flex
               w="100%"
