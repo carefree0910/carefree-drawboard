@@ -10,6 +10,7 @@ from pydantic import BaseModel
 from cftool.misc import shallow_copy_dict
 from cfcreator.common import InpaintingMode
 from cflearn.misc.toolkit import new_seed
+from cfcreator.sdks.apis import Workflow
 
 from cfdraw import *
 
@@ -515,6 +516,87 @@ class ImageHarmonization(IFieldsPlugin):
         return await get_apis().harmonization(model)
 
 
+# workflow
+
+
+@register_node_validator("draw_workflow")
+def validate_draw_workflow(data: ISocketRequest) -> bool:
+    identifier = data.nodeData.identifier
+    if identifier is None or identifier not in key2endpoints:
+        return False
+    return True
+
+
+class DrawWorkflow(IFieldsPlugin):
+    @property
+    def settings(self) -> IPluginSettings:
+        return IPluginSettings(
+            w=240,
+            h=110,
+            src=constants.WORKFLOW_ICON,
+            nodeConstraintValidator="draw_workflow",
+            tooltip=I18N(
+                zh="绘制工作流",
+                en="Draw Workflow",
+            ),
+            pluginInfo=IFieldsPluginInfo(
+                header=I18N(
+                    zh="绘制工作流",
+                    en="Draw Workflow",
+                ),
+                definitions={},
+            ),
+            no_offload=True,
+        )
+
+    async def process(self, data: ISocketRequest) -> List[Image.Image]:
+        workflow = trace_workflow(data.nodeData.meta)
+        self.set_extra_response(WORKFLOW_KEY, workflow.to_json())
+        return [workflow.render()]
+
+
+@register_node_validator("workflow")
+def validate_workflow(data: ISocketRequest) -> bool:
+    if data.nodeData.extra_responses is None:
+        return False
+    return WORKFLOW_KEY in data.nodeData.extra_responses
+
+
+class ExecuteWorkflow(IFieldsPlugin):
+    @property
+    def settings(self) -> IPluginSettings:
+        return IPluginSettings(
+            w=240,
+            h=110,
+            src=constants.EXECUTE_WORKFLOW_ICON,
+            pivot=PivotType.BOTTOM,
+            follow=True,
+            nodeConstraintValidator="workflow",
+            tooltip=I18N(
+                zh="执行工作流",
+                en="Execute Workflow",
+            ),
+            pluginInfo=IFieldsPluginInfo(
+                header=I18N(
+                    zh="工作流",
+                    en="Workflow",
+                ),
+                numColumns=2,
+                definitions={},
+            ),
+        )
+
+    async def process(self, data: ISocketRequest) -> List[Image.Image]:
+        def callback(step: int, num_steps: int) -> bool:
+            return self.send_progress(step / num_steps)
+
+        kw = dict(step_callback=callback)
+        workflow_json = data.nodeData.extra_responses[WORKFLOW_KEY]
+        workflow = Workflow.from_json(workflow_json)
+        results = await get_apis().execute(workflow, workflow.last.key, **kw)
+        return results[workflow.last.key]
+
+
 # groups
 
 
@@ -576,6 +658,7 @@ class ImageFollowers(IPluginGroup):
                     CaptioningKey: Captioning,
                     ControlNetHintKey: ControlHints,
                     VariationKey: Variation,
+                    DrawWorkflowKey: DrawWorkflow,
                 },
             ),
         )
@@ -654,4 +737,5 @@ register_plugin("static")(StaticPlugins)
 register_plugin("image_followers")(ImageFollowers)
 register_plugin("image_and_mask_followers")(ImageAndMaskFollowers)
 register_plugin("canvas_followers")(CanvasFollowers)
+register_plugin(ExecuteWorkflowKey)(ExecuteWorkflow)
 app = App(notification)
