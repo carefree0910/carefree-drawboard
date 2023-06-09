@@ -10,6 +10,7 @@ from pydantic import BaseModel
 from cftool.misc import shallow_copy_dict
 from cfcreator.common import InpaintingMode
 from cflearn.misc.toolkit import new_seed
+from cfcreator.sdks.apis import ALL_LATENCIES_KEY
 
 from cfdraw import *
 
@@ -652,8 +653,14 @@ class ExecuteWorkflow(IWorkflowPlugin):
             return
         for k, v in data.extraData.items():
             workflow.get(k).data.data["url"] = v
-        results = await get_apis().execute(workflow, workflow.last.key, **kw)
-        return results[workflow.last.key]
+        target_key = workflow.last.key
+        results = await get_apis().execute(workflow, target_key, **kw)
+        for k, v in results.items():
+            if k == target_key or k == ALL_LATENCIES_KEY:
+                continue
+            if isinstance(v[0], str):
+                self.set_extra_response(k, v)
+        return results[target_key]
 
 
 # groups
