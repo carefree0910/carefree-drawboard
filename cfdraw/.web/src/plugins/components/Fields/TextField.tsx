@@ -9,7 +9,7 @@ import type { IField } from "@/schema/plugins";
 import type { ITextField } from "@/schema/fields";
 import { UI_Words } from "@/lang/ui";
 import { titleCaseWord } from "@/utils/misc";
-import { themeStore } from "@/stores/theme";
+import { themeStore, useScrollBarSx } from "@/stores/theme";
 import {
   IMetaInjection,
   getListInjectionKey,
@@ -40,6 +40,7 @@ const TextGalleryItem = observer(({ node, active, onSelectText, ...others }: ITe
       objectFit="contain"
       value={node.params.content}
       cursor="pointer"
+      sx={useScrollBarSx()}
       {...others}
     />
   </GalleryItem>
