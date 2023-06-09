@@ -81,7 +81,12 @@ UPLOAD_PROJECT_FOLDER_NAME = ".projects"
 BUGGY_PROJECT_FOLDER = ".buggy"
 PROJECT_META_FILE = "_meta.json"
 
-# icons
+# plugin
+
+## keys
+WORKFLOW_KEY = "$workflow"
+
+## icons
 TEXT_TO_IMAGE_ICON = "https://ailab-huawei-cdn.nolibox.com/upload/static/carefree-drawboard/icons/txt2img.svg"
 IMAGE_TO_IMAGE_ICON = "https://ailab-huawei-cdn.nolibox.com/upload/static/carefree-drawboard/icons/img2img.svg"
 IMAGE_TO_TEXT_ICON = "https://ailab-huawei-cdn.nolibox.com/upload/static/carefree-drawboard/icons/img2txt.svg"

@@ -3,12 +3,12 @@ from typing import Dict
 from cfdraw import cache_resource
 from collections import defaultdict
 from cftool.misc import random_hash
+from cftool.data_structures import Workflow
 from cfcreator.workflow import *
 from cfcreator.endpoints import *
 from cfcreator.sdks.apis import *
 
 
-WORKFLOW_KEY = "$workflow"
 DATA_MODEL_KEY = "$data_model"
 
 UPLOAD_META_TYPE = "upload"
@@ -146,7 +146,6 @@ def trace_workflow(meta: Dict[str, Any]) -> Workflow:
 
 
 __all__ = [
-    "WORKFLOW_KEY",
     "DATA_MODEL_KEY",
     "Txt2ImgKey",
     "Txt2ImgWithTextKey",

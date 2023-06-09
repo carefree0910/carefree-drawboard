@@ -6,6 +6,7 @@ from typing import Dict
 from typing import List
 from typing import Optional
 from cftool.misc import shallow_copy_dict
+from cftool.data_structures import Workflow
 
 from cfdraw import constants
 from cfdraw.utils import server
@@ -83,6 +84,9 @@ class ISocketPlugin(IPlugin, metaclass=ABCMeta):
 
     def set_extra_response(self, key: str, value: Any) -> None:
         self.extra_responses[key] = value
+
+    def set_workflow(self, workflow: Workflow) -> None:
+        self.set_extra_response(constants.WORKFLOW_KEY, workflow.to_json())
 
     def set_injection(self, key: str, node: INodeData) -> None:
         self.injections[key] = dict(

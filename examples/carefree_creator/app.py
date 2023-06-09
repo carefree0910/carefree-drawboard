@@ -10,7 +10,6 @@ from pydantic import BaseModel
 from cftool.misc import shallow_copy_dict
 from cfcreator.common import InpaintingMode
 from cflearn.misc.toolkit import new_seed
-from cfcreator.sdks.apis import Workflow
 
 from cfdraw import *
 
@@ -616,15 +615,8 @@ class DrawWorkflow(IFieldsPlugin):
         if workflow.last is None:
             self.send_exception("Workflow is empty")
             return None
-        self.set_extra_response(WORKFLOW_KEY, workflow.to_json())
+        self.set_workflow(workflow)
         return [workflow.render()]
-
-
-@register_node_validator("workflow")
-def validate_workflow(data: ISocketRequest) -> bool:
-    if data.nodeData.extra_responses is None:
-        return False
-    return WORKFLOW_KEY in data.nodeData.extra_responses
 
 
 class ExecuteWorkflow(IFieldsPlugin):

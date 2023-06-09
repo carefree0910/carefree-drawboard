@@ -17,9 +17,9 @@ from typing import Coroutine
 from aiohttp import ClientSession
 from pydantic import Field
 from pydantic import BaseModel
+from cftool.data_structures import Workflow
 
 from cfdraw import constants
-from cfdraw.utils.misc import deprecated
 from cfdraw.schema.fields import IFieldDefinition
 from cfdraw.parsers.noli import IStr
 from cfdraw.parsers.noli import Matrix2D
@@ -366,6 +366,13 @@ Image url of the node, will be `None` if the node is not intended to be converte
         if self.meta is None:
             return None
         return self.meta.get("data", {}).get("response", {}).get("extra")
+
+    @property
+    def workflow(self) -> Optional[Workflow]:
+        workflow_json = self.extra_responses.get(constants.WORKFLOW_KEY)
+        if workflow_json is None:
+            return None
+        return Workflow.from_json(workflow_json)
 
 
 class ISocketRequest(BaseModel):
