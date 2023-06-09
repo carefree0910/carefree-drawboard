@@ -3,7 +3,9 @@ from typing import Dict
 from cfdraw import cache_resource
 from collections import defaultdict
 from cftool.misc import random_hash
+from cftool.data_structures import WorkNode
 from cftool.data_structures import Workflow
+from cftool.data_structures import InjectionPack
 from cfcreator.workflow import *
 from cfcreator.endpoints import *
 from cfcreator.sdks.apis import *
