@@ -44,6 +44,7 @@ class PluginType(str, Enum):
 
     PLUGIN_GROUP = "_python.pluginGroup"
     FIELDS = "_python.fields"
+    WORKFLOW = "_python.workflow"
     TEXT_AREA = "_python.textArea"
     QA = "_python.QA"
     CHAT = "_python.chat"
@@ -630,14 +631,10 @@ class IPluginGroupInfo(IPluginInfo):
     plugins: Dict[str, Type[IPlugin]] = Field(..., description="Plugins in the group")
 
 
-class IFieldsPluginInfo(IPluginInfo):
-    """This should align with `IPythonFieldsPlugin` at `cfdraw/.web/src/schema/_python.ts`"""
+class IWorkflowPluginInfo(IPluginInfo):
+    """This should align with `IPythonWorkflowPlugin` at `cfdraw/.web/src/schema/_python.ts`"""
 
     header: Optional[IStr] = Field(None, description="Header of the plugin")
-    definitions: Dict[str, IFieldDefinition] = Field(
-        ...,
-        description="Field definitions",
-    )
     numColumns: Optional[int] = Field(None, description="Number of columns")
     closeOnSubmit: Optional[bool] = Field(
         None,
@@ -650,6 +647,15 @@ class IFieldsPluginInfo(IPluginInfo):
     toastMessageOnSubmit: Optional[IStr] = Field(
         None,
         description="The message of the toast, only take effect when `toastOnSubmit` is `True`",
+    )
+
+
+class IFieldsPluginInfo(IWorkflowPluginInfo):
+    """This should align with `IPythonFieldsPlugin` at `cfdraw/.web/src/schema/_python.ts`"""
+
+    definitions: Dict[str, IFieldDefinition] = Field(
+        ...,
+        description="Field definitions",
     )
 
 
@@ -698,11 +704,12 @@ __all__ = [
     # plugin interface
     "IPlugin",
     "IMiddleware",
-    "IFieldsPluginInfo",
     # bindings
     "ILogoPluginInfo",
     "ILogoSettings",
     "IPluginGroupInfo",
+    "IFieldsPluginInfo",
+    "IWorkflowPluginInfo",
     "ITextAreaPluginInfo",
     "IQAPluginInfo",
     "IChatPluginInfo",

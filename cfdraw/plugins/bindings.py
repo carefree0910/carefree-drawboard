@@ -20,6 +20,12 @@ class IFieldsPlugin(ISocketPlugin):
         return PluginType.FIELDS
 
 
+class IWorkflowPlugin(ISocketPlugin):
+    @property
+    def type(self) -> PluginType:
+        return PluginType.WORKFLOW
+
+
 class ITextAreaPlugin(ISocketPlugin):
     @property
     def type(self) -> PluginType:
@@ -47,6 +53,7 @@ class IMarkdownPlugin(ISocketPlugin):
 __all__ = [
     "IPluginGroup",
     "IFieldsPlugin",
+    "IWorkflowPlugin",
     "ITextAreaPlugin",
     "IQAPlugin",
     "IChatPlugin",

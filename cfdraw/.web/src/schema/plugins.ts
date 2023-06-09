@@ -12,6 +12,7 @@ import type {
   IPythonPluginGroup,
   IPythonQAPlugin,
   IPythonTextAreaPlugin,
+  IPythonWorkflowPlugin,
 } from "./_python";
 
 // general
@@ -110,6 +111,7 @@ export const allReactPlugins = [
 export const allPythonPlugins = [
   "_python.pluginGroup",
   "_python.fields",
+  "_python.workflow",
   "_python.textArea",
   "_python.QA",
   "_python.chat",
@@ -143,6 +145,7 @@ export interface IPluginProps {
   // python plugins
   "_python.pluginGroup": IPythonPluginGroup;
   "_python.fields": IPythonFieldsPlugin;
+  "_python.workflow": IPythonWorkflowPlugin;
   "_python.textArea": IPythonTextAreaPlugin;
   "_python.QA": IPythonQAPlugin;
   "_python.chat": IPythonChatPlugin;

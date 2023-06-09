@@ -82,7 +82,9 @@ export interface IPythonFieldsPlugin extends IPythonPlugin {
       numColumns?: number;
     };
 }
-
+export interface IPythonWorkflowPlugin extends IPythonPlugin {
+  pluginInfo: Omit<IPythonFieldsPlugin["pluginInfo"], "definitions">;
+}
 export interface IPythonTextAreaPlugin extends IPythonPlugin {
   pluginInfo: IPythonPluginInfo & {
     textAlign?: TextareaProps["textAlign"];

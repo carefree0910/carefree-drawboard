@@ -619,37 +619,39 @@ class DrawWorkflow(IFieldsPlugin):
         return [workflow.render()]
 
 
-class ExecuteWorkflow(IFieldsPlugin):
+class ExecuteWorkflow(IWorkflowPlugin):
     @property
     def settings(self) -> IPluginSettings:
         return IPluginSettings(
-            w=240,
-            h=110,
+            w=400,
+            h=200,
             src=constants.EXECUTE_WORKFLOW_ICON,
             pivot=PivotType.BOTTOM,
             follow=True,
-            nodeConstraintValidator="workflow",
+            nodeConstraintValidator=constants.WORKFLOW_KEY,
             tooltip=I18N(
                 zh="执行工作流",
                 en="Execute Workflow",
             ),
-            pluginInfo=IFieldsPluginInfo(
+            pluginInfo=IWorkflowPluginInfo(
                 header=I18N(
                     zh="工作流",
                     en="Workflow",
                 ),
-                numColumns=2,
-                definitions={},
             ),
         )
 
-    async def process(self, data: ISocketRequest) -> List[Image.Image]:
+    async def process(self, data: ISocketRequest) -> Optional[List[Image.Image]]:
         def callback(step: int, num_steps: int) -> bool:
             return self.send_progress(step / num_steps)
 
         kw = dict(step_callback=callback)
-        workflow_json = data.nodeData.extra_responses[WORKFLOW_KEY]
-        workflow = Workflow.from_json(workflow_json)
+        workflow = data.nodeData.workflow
+        if workflow is None:
+            self.send_exception("No workflow found")
+            return
+        for k, v in data.extraData.items():
+            workflow.get(k).data.data["url"] = v
         results = await get_apis().execute(workflow, workflow.last.key, **kw)
         return results[workflow.last.key]
 
