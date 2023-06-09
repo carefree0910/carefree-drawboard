@@ -9,7 +9,7 @@ import type { IField } from "@/schema/plugins";
 import type { ITextField } from "@/schema/fields";
 import { UI_Words } from "@/lang/ui";
 import { titleCaseWord } from "@/utils/misc";
-import { themeStore, useActiveBorderProps } from "@/stores/theme";
+import { themeStore } from "@/stores/theme";
 import {
   IMetaInjection,
   getListInjectionKey,
@@ -23,38 +23,27 @@ import { parseIStr } from "@/actions/i18n";
 import CFInput from "@/components/CFInput";
 import CFTextarea from "@/components/CFTextarea";
 import { useDefaultFieldValue } from "./utils";
-import NodePicker, { GalleryContainer, nodePickerEvent } from "../NodePicker";
+import NodePicker, { GalleryItem, IGalleryItem, nodePickerEvent } from "../NodePicker";
 
-interface IGalleryItem extends TextareaProps {
-  node: ITextNode;
-  active: boolean;
+interface ITextGalleryItem extends Omit<IGalleryItem<ITextNode>, "onItemClick">, TextareaProps {
   onSelectText: (content: string, injection: IMetaInjection | undefined) => void;
 }
-const GalleryItem = observer(({ node, active, onSelectText, ...others }: IGalleryItem) => {
-  const content = node.params.content;
-  const {
-    selectColors: { activeBorderColor },
-  } = themeStore.styles;
-
-  return (
-    <GalleryContainer
-      p="2px"
-      borderWidth="1px"
-      _hover={{ borderColor: activeBorderColor }}
-      onClick={() => onSelectText(content, makeMetaInjectionFrom(node))}
-      {...(active ? useActiveBorderProps(activeBorderColor) : {})}>
-      <CFTextarea
-        isReadOnly
-        w="100%"
-        h="100%"
-        objectFit="contain"
-        value={content}
-        cursor="pointer"
-        {...others}
-      />
-    </GalleryContainer>
-  );
-});
+const TextGalleryItem = observer(({ node, active, onSelectText, ...others }: ITextGalleryItem) => (
+  <GalleryItem
+    node={node}
+    active={active}
+    onItemClick={(node) => onSelectText(node.params.content, makeMetaInjectionFrom(node))}>
+    <CFTextarea
+      isReadOnly
+      w="100%"
+      h="100%"
+      objectFit="contain"
+      value={node.params.content}
+      cursor="pointer"
+      {...others}
+    />
+  </GalleryItem>
+));
 
 function TextField({ definition, ...fieldKeys }: IField<ITextField>) {
   useDefaultFieldValue({ definition, ...fieldKeys });
@@ -137,7 +126,7 @@ function TextField({ definition, ...fieldKeys }: IField<ITextField>) {
           gallerItemBuilder={(node, i) => {
             const active = node.params.content === value;
             return (
-              <GalleryItem
+              <TextGalleryItem
                 key={i}
                 node={node}
                 active={active}

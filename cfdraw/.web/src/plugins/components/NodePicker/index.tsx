@@ -1,4 +1,4 @@
-import { ReactElement, useEffect, useState } from "react";
+import { PropsWithChildren, ReactElement, useEffect, useState } from "react";
 import { observer } from "mobx-react-lite";
 import {
   Center,
@@ -27,7 +27,7 @@ import { INode, checkEqual } from "@carefree0910/core";
 import { UI_Words } from "@/lang/ui";
 import { genBlock } from "@/utils/bem";
 import { EXPAND_TRANSITION } from "@/utils/constants";
-import { themeStore, useScrollBarSx } from "@/stores/theme";
+import { themeStore, useActiveBorderProps, useScrollBarSx } from "@/stores/theme";
 import CFIcon from "@/components/CFIcon";
 import CFText, { CFCaption } from "@/components/CFText";
 import CFTooltip from "@/components/CFTooltip";
@@ -63,6 +63,29 @@ export const GalleryClear = observer(({ onClear }: { onClear: () => void }) => {
     </SpecialGalleryContainer>
   );
 });
+export interface IGalleryItem<T extends INode> extends PropsWithChildren {
+  node: T;
+  active: boolean;
+  onItemClick: (node: T) => void;
+}
+export const GalleryItem = observer(
+  <T extends INode>({ node, active, onItemClick, children }: IGalleryItem<T>) => {
+    const {
+      selectColors: { activeBorderColor },
+    } = themeStore.styles;
+
+    return (
+      <GalleryContainer
+        p="2px"
+        borderWidth="1px"
+        _hover={{ borderColor: activeBorderColor }}
+        onClick={() => onItemClick(node)}
+        {...(active ? useActiveBorderProps(activeBorderColor) : {})}>
+        {children}
+      </GalleryContainer>
+    );
+  },
+);
 export const nodePickerEvent = new Event<{ type: "close" }>();
 
 // main

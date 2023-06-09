@@ -16,7 +16,7 @@ import { Toast_Words } from "@/lang/toast";
 import { toastWord } from "@/utils/toast";
 import { titleCaseWord } from "@/utils/misc";
 import { IMAGE_PLACEHOLDER } from "@/utils/constants";
-import { themeStore, useActiveBorderProps } from "@/stores/theme";
+import { themeStore } from "@/stores/theme";
 import {
   IMetaInjection,
   getMetaField,
@@ -31,7 +31,8 @@ import CFTooltip, { CFFormLabel } from "@/components/CFTooltip";
 import CFImageUploader from "@/components/CFImageUploader";
 import { useDefaultFieldValue } from "./utils";
 import NodePicker, {
-  GalleryContainer,
+  GalleryItem,
+  IGalleryItem,
   SpecialGalleryContainer,
   nodePickerEvent,
 } from "../NodePicker";
@@ -39,7 +40,7 @@ import NodePicker, {
 interface IOnSelectUrl {
   onSelectUrl: (url: string, injection: IMetaInjection | undefined) => void;
 }
-const GalleryUpload = observer(({ onSelectUrl }: IOnSelectUrl) => {
+const ImageGalleryUpload = observer(({ onSelectUrl }: IOnSelectUrl) => {
   const lang = langStore.tgt;
   const { captionColor, dividerColor } = themeStore.styles;
 
@@ -72,34 +73,25 @@ const GalleryUpload = observer(({ onSelectUrl }: IOnSelectUrl) => {
     </CFImageUploader>
   );
 });
-interface IGalleryItem extends Omit<ImageProps, "src">, IOnSelectUrl {
-  node: IImageNode;
-  active: boolean;
-}
-const GalleryItem = observer(({ node, active, onSelectUrl, ...others }: IGalleryItem) => {
-  const src = node.renderParams.src;
-  const {
-    selectColors: { activeBorderColor },
-  } = themeStore.styles;
-
-  return (
-    <GalleryContainer
-      p="2px"
-      borderWidth="1px"
-      _hover={{ borderColor: activeBorderColor }}
-      onClick={() => onSelectUrl(src, makeMetaInjectionFrom(node))}
-      {...(active ? useActiveBorderProps(activeBorderColor) : {})}>
-      <Image
-        w="100%"
-        h="100%"
-        objectFit="contain"
-        src={src}
-        fallbackSrc={IMAGE_PLACEHOLDER}
-        {...others}
-      />
-    </GalleryContainer>
-  );
-});
+interface IImageGalleryItem
+  extends Omit<IGalleryItem<IImageNode>, "onItemClick">,
+    Omit<ImageProps, "src">,
+    IOnSelectUrl {}
+const ImageGalleryItem = observer(({ node, active, onSelectUrl, ...others }: IImageGalleryItem) => (
+  <GalleryItem
+    node={node}
+    active={active}
+    onItemClick={(node) => onSelectUrl(node.renderParams.src, makeMetaInjectionFrom(node))}>
+    <Image
+      w="100%"
+      h="100%"
+      objectFit="contain"
+      src={node.renderParams.src}
+      fallbackSrc={IMAGE_PLACEHOLDER}
+      {...others}
+    />
+  </GalleryItem>
+));
 
 function ImageField({ definition, ...fieldKeys }: IField<IImageField>) {
   useDefaultFieldValue({ definition, ...fieldKeys });
@@ -149,7 +141,7 @@ function ImageField({ definition, ...fieldKeys }: IField<IImageField>) {
         gallerItemBuilder={(node, i) => {
           const active = node.renderParams.src === value;
           return (
-            <GalleryItem
+            <ImageGalleryItem
               key={i}
               node={node}
               active={active}
@@ -159,7 +151,7 @@ function ImageField({ definition, ...fieldKeys }: IField<IImageField>) {
           );
         }}
         onClear={!!value ? () => onSelectUrl("", undefined) : undefined}
-        specialGalleryItem={<GalleryUpload onSelectUrl={onSelectUrl} />}
+        specialGalleryItem={<ImageGalleryUpload onSelectUrl={onSelectUrl} />}
       />
     </Flex>
   );
