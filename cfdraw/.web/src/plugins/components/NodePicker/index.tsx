@@ -12,6 +12,8 @@ import {
   ButtonProps,
   PopoverArrow,
   useDisclosure,
+  ImageProps,
+  ChakraProps,
 } from "@chakra-ui/react";
 
 import { BoardStore, langStore, translate, useIsReady, useSelecting } from "@carefree0910/business";
@@ -66,13 +68,15 @@ export const nodePickerEvent = new Event<{ type: "close" }>();
 // main
 
 const block = genBlock("c-node-picker");
-interface INodePicker<T extends INode> {
+interface INodePicker<T extends INode> extends ButtonProps {
   src: string;
   targetType: T["type"];
   tooltipWord: string;
   gallerItemBuilder: (node: T, i: number) => ReactElement;
   onClear?: () => void;
   specialGalleryItem?: ReactElement;
+  imageProps?: Omit<ImageProps, "src">;
+  iconProps?: ChakraProps;
 }
 function NodePicker<T extends INode>({
   src,
@@ -81,6 +85,9 @@ function NodePicker<T extends INode>({
   gallerItemBuilder,
   onClear,
   specialGalleryItem,
+  imageProps,
+  iconProps,
+  ...props
 }: INodePicker<T>) {
   const numFetchEvery = 5;
   const fetchNodes = () => {
@@ -153,16 +160,23 @@ function NodePicker<T extends INode>({
   return (
     <Popover isOpen={isOpen} onClose={onClose}>
       <PopoverTrigger>
-        <Center as="button" h="100%" position="relative" onClick={onToggle}>
+        <Center
+          as="button"
+          h="100%"
+          position="relative"
+          onClick={onToggle}
+          _focus={{ outline: "none" }}
+          {...props}>
           <CFTooltip label={translate(tooltipWord, lang)}>
-            <Flex>
-              <Image src={src} />
+            <Flex align="center">
+              <Image src={src} {...imageProps} />
               <CFIcon
                 svg={ArrowDownIcon}
                 squared={false}
                 className={block({ e: "icon", m: isOpen ? "expanded" : "folded" })}
                 fillbyCurrentColor
                 transition={EXPAND_TRANSITION}
+                {...iconProps}
               />
             </Flex>
           </CFTooltip>
