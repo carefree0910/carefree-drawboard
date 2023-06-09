@@ -88,12 +88,12 @@ def hash_identifier(hash: str, identifier: str) -> str:
 class IPluginInfo(BaseModel):
     """
     This should align with the following interfaces locate at `cfdraw/.web/src/schema/_python.ts`:
-    * `IPythonPluginInfo`: `name`
+    * `IPythonPluginInfo`: `name`, `noErrorToast`
     * `IPythonSocketIntervals`: `retryInterval`, `updateInterval`
-    * `IPythonPluginWithSubmitPluginInfo`: `closeOnSubmit`, `toastOnSubmit`, `toastMessageOnSubmit`
     """
 
     name: Optional[IStr] = Field(None, description="The name of the plugin")
+    noErrorToast: Optional[bool] = Field(None, description="Whether not to toast error")
     retryInterval: Optional[int] = Field(
         None,
         ge=0,
@@ -103,18 +103,6 @@ class IPluginInfo(BaseModel):
         None,
         gt=0,
         description="If not None, the plugin will be called every `updateInterval` ms",
-    )
-    closeOnSubmit: Optional[bool] = Field(
-        None,
-        description="Whether close the expanded panel when the submit button is clicked",
-    )
-    toastOnSubmit: Optional[bool] = Field(
-        None,
-        description="Whether trigger a toast message when the submit button is clicked",
-    )
-    toastMessageOnSubmit: Optional[IStr] = Field(
-        None,
-        description="The message of the toast, only take effect when `toastOnSubmit` is `True`",
     )
 
 
@@ -644,7 +632,18 @@ class IFieldsPluginInfo(IPluginInfo):
         description="Field definitions",
     )
     numColumns: Optional[int] = Field(None, description="Number of columns")
-    noErrorToast: Optional[bool] = Field(None, description="Whether not to toast error")
+    closeOnSubmit: Optional[bool] = Field(
+        None,
+        description="Whether close the expanded panel when the submit button is clicked",
+    )
+    toastOnSubmit: Optional[bool] = Field(
+        None,
+        description="Whether trigger a toast message when the submit button is clicked",
+    )
+    toastMessageOnSubmit: Optional[IStr] = Field(
+        None,
+        description="The message of the toast, only take effect when `toastOnSubmit` is `True`",
+    )
 
 
 class ITextAreaPluginInfo(IPluginInfo):
