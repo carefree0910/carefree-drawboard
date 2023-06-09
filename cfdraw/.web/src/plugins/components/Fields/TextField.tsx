@@ -37,10 +37,14 @@ const TextGalleryItem = observer(({ node, active, onSelectText, ...others }: ITe
       isReadOnly
       w="100%"
       h="100%"
+      p="4px"
       objectFit="contain"
       value={node.params.content}
       cursor="pointer"
       sx={useScrollBarSx()}
+      border="0px"
+      fontSize="10px"
+      resize="none"
       {...others}
     />
   </GalleryItem>
