@@ -20,7 +20,7 @@ import { Definitions } from "../components/Fields";
 import { useDefinitionsGetInjectionsFn, useDefinitionsRequestDataFn } from "./hooks";
 import PythonPluginWithSubmit from "./PluginWithSubmit";
 
-const PythonFieldsPlugin = ({ pluginInfo, ...props }: IPythonFieldsPlugin) => {
+const BasePythonFieldsPlugin = ({ pluginInfo, ...props }: IPythonFieldsPlugin) => {
   const { id, pureIdentifier } = usePluginIds(pluginInfo.identifier);
   const lang = langStore.tgt;
   const { definitions } = pluginInfo;
@@ -79,4 +79,5 @@ const PythonFieldsPlugin = ({ pluginInfo, ...props }: IPythonFieldsPlugin) => {
   );
 };
 
-drawboardPluginFactory.registerPython("_python.fields", true)(observer(PythonFieldsPlugin));
+export const PythonFieldsPlugin = observer(BasePythonFieldsPlugin);
+drawboardPluginFactory.registerPython("_python.fields", true)(PythonFieldsPlugin);
