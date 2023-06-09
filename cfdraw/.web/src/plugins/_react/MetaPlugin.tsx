@@ -9,6 +9,7 @@ import { IMeta, getMetaTrace } from "@/schema/meta";
 import { usePluginIds } from "@/stores/pluginsInfo";
 import CFMarkdown from "@/components/CFMarkdown";
 import { drawboardPluginFactory } from "../utils/factory";
+import { WORKFLOW_KEY } from "../_python/WorkflowPlugin";
 import Render from "../components/Render";
 
 function getMetaRepresentation(meta: IMeta): string {
@@ -20,6 +21,7 @@ function getMetaRepresentation(meta: IMeta): string {
 }
 
 const DEBUG_META = false;
+const DATA_MODEL_KEY = "$data_model";
 const MetaPlugin = ({ pluginInfo, ...others }: IPlugin) => {
   const id = usePluginIds("meta").id;
   const info = useSelecting("raw");
@@ -38,7 +40,12 @@ const MetaPlugin = ({ pluginInfo, ...others }: IPlugin) => {
   const trimMeta = (meta: IMeta | undefined) => {
     if (!!meta && (IS_PROD || !DEBUG_META)) {
       if (!!meta.data?.response?.extra) {
-        delete meta.data.response.extra;
+        if (!!meta.data.response.extra[WORKFLOW_KEY]) {
+          delete meta.data.response.extra[WORKFLOW_KEY];
+        }
+        if (!!meta.data.response.extra[DATA_MODEL_KEY]) {
+          delete meta.data.response.extra[DATA_MODEL_KEY];
+        }
       }
       if (!!meta.data?.injections) {
         delete meta.data.injections;

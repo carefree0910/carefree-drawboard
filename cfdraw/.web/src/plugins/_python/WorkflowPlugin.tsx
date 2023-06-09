@@ -7,7 +7,7 @@ import type { IPythonWorkflowPlugin } from "@/schema/_python";
 import { drawboardPluginFactory } from "@/plugins/utils/factory";
 import { PythonFieldsPlugin } from "./FieldsPlugin";
 
-const WORKFLOW_KEY = "$workflow";
+export const WORKFLOW_KEY = "$workflow";
 
 type UploadNodeKey = "$upload";
 type IWorkNode =
