@@ -16,6 +16,7 @@ export enum UI_Words {
   "image-field-image-picker" = "image-field-image-picker",
   "image-field-import-image-caption" = "image-field-import-image-caption",
   "image-field-loading-caption" = "image-field-loading-caption",
+  "text-field-text-picker" = "text-field-text-picker",
 }
 
 export const uiLangRecords: Record<Lang, Record<UI_Words, string>> = {
@@ -35,6 +36,7 @@ export const uiLangRecords: Record<Lang, Record<UI_Words, string>> = {
     [UI_Words["image-field-image-picker"]]: "选择目标图片",
     [UI_Words["image-field-import-image-caption"]]: "导入",
     [UI_Words["image-field-loading-caption"]]: "加载中...",
+    [UI_Words["text-field-text-picker"]]: "选择目标文本",
   },
   en: {
     [UI_Words["submit-task"]]: "Submit",
@@ -53,5 +55,6 @@ export const uiLangRecords: Record<Lang, Record<UI_Words, string>> = {
     [UI_Words["image-field-image-picker"]]: "Pick an image",
     [UI_Words["image-field-import-image-caption"]]: "Import",
     [UI_Words["image-field-loading-caption"]]: "Loading...",
+    [UI_Words["text-field-text-picker"]]: "Pick a text",
   },
 };
