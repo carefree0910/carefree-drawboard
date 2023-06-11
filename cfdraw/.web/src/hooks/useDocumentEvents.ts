@@ -4,7 +4,7 @@ import { makeObservable, observable } from "mobx";
 import { isUndefined } from "@carefree0910/core";
 import { ABCStore, BoardStore, useIsReady } from "@carefree0910/business";
 
-import type { ReactPlugins } from "@/schema/plugins";
+import type { IPythonPluginGroup } from "@/schema/_python";
 import { useReactPluginSettings } from "@/_settings";
 import { useFlattenedPythonPluginSettings } from "@/stores/settings";
 import {
@@ -21,10 +21,14 @@ function smartCollapse(): void {
   const currentExpanded = usePluginsExpanded();
   const expanding = Object.keys(currentExpanded).find((key) => currentExpanded[key]);
   collapseAllPlugins({
-    exceptReactPlugins: (["brush"] as ReactPlugins[]).concat(
+    exceptReactPlugins: ["brush"].concat(
       useReactPluginSettings()
         .filter((s) => s.props.renderInfo.keepOpen)
-        .map((s) => s.type),
+        .map((s) =>
+          s.type === "_python.pluginGroup"
+            ? (s.props.pluginInfo as IPythonPluginGroup["pluginInfo"]).identifier
+            : s.type,
+        ),
     ),
     exceptIdentifiers: useFlattenedPythonPluginSettings()
       .filter((s) => s.props.renderInfo.keepOpen)

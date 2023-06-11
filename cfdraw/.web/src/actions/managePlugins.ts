@@ -13,7 +13,7 @@ import {
 } from "@/stores/pluginsInfo";
 
 interface IExcepts {
-  exceptReactPlugins?: ReactPlugins[];
+  exceptReactPlugins?: (ReactPlugins | string)[];
   exceptIdentifiers?: string[];
 }
 

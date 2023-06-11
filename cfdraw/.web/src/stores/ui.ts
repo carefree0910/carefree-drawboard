@@ -42,7 +42,10 @@ export class VisibleManager {
     this.pythonVisibleBackup = {};
     for (const { type } of reactPluginSettings) {
       if (type !== "settings") {
-        this.visibleBackup[type] = useReactPluginIsVisible(type);
+        this.visibleBackup[type] =
+          type === "_python.pluginGroup"
+            ? usePythonPluginIsVisible(type)
+            : useReactPluginIsVisible(type);
       }
     }
     for (const {
