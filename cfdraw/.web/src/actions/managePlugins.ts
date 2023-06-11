@@ -1,6 +1,7 @@
 import { runInAction } from "mobx";
 
 import type { ReactPlugins } from "@/schema/plugins";
+import type { IPythonPluginGroup } from "@/schema/_python";
 import { reactPluginSettings } from "@/_settings";
 import { usePythonPluginSettings } from "@/stores/settings";
 import {
@@ -19,9 +20,14 @@ interface IExcepts {
 function setAllPluginVisible(visible: boolean, opt?: IExcepts) {
   opt ??= {};
   runInAction(() => {
-    reactPluginSettings.forEach(({ type }) => {
+    reactPluginSettings.forEach(({ type, props: { pluginInfo } }) => {
       if (opt?.exceptReactPlugins?.includes(type)) return;
-      if (!["settings", "undo", "redo"].includes(type)) {
+      if (type === "_python.pluginGroup") {
+        setPythonPluginVisible(
+          (pluginInfo as IPythonPluginGroup["pluginInfo"]).identifier,
+          visible,
+        );
+      } else if (!["settings", "undo", "redo"].includes(type)) {
         setReactPluginVisible(type, visible);
       }
     });
