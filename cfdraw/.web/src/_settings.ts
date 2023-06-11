@@ -20,7 +20,7 @@ import ShortcutsIcon from "@/assets/icons/shortcuts.svg";
 
 import { settingsStore } from "./stores/settings";
 
-export const reactPluginSettings: IMakePlugin<ReactPlugins>[] = [
+export const reactPluginSettings: IMakePlugin<ReactPlugins | "_python.pluginGroup">[] = [
   {
     type: "settings",
     props: {
