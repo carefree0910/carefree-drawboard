@@ -370,7 +370,10 @@ Image url of the node, will be `None` if the node is not intended to be converte
 
     @property
     def workflow(self) -> Optional[Workflow]:
-        workflow_json = self.extra_responses.get(constants.WORKFLOW_KEY)
+        extra_responses = self.extra_responses
+        if extra_responses is None:
+            return None
+        workflow_json = extra_responses.get(constants.WORKFLOW_KEY)
         if workflow_json is None:
             return None
         return Workflow.from_json(workflow_json)
@@ -525,7 +528,7 @@ class IPlugin(ABC):
         pass
 
     @abstractmethod
-    async def __call__(self, data: ISocketRequest) -> ISocketMessage:
+    async def __call__(self, data: ISocketRequest) -> None:
         pass
 
     @abstractmethod
