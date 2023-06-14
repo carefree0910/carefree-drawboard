@@ -22,7 +22,7 @@ import "./index.scss";
 import { ReactComponent as DeleteIcon } from "@/assets/icons/delete.svg";
 import { ReactComponent as ArrowDownIcon } from "@/assets/icons/arrow-down.svg";
 
-import { INode, checkEqual } from "@carefree0910/core";
+import { INode, checkEqual, sortBy } from "@carefree0910/core";
 
 import { UI_Words } from "@/lang/ui";
 import { genBlock } from "@/utils/bem";
@@ -124,20 +124,24 @@ function NodePicker<T extends INode>({
     const currentNodes = (type === "none" ? [] : selectingNodes)
       .concat(allRenderNodes)
       .filter((node) => node.type === targetType) as T[];
+    const sorted = sortBy(
+      currentNodes,
+      currentNodes.map((n) => n.zIndex),
+    );
     // set new nodes
     setNodes((prevNodes) => {
       if (
         checkEqual(
           prevNodes.map((n) => n.alias),
-          currentNodes.map((n) => n.alias),
+          sorted.map((n) => n.alias),
         )
       ) {
         setHasMore(false);
         return prevNodes;
       }
       setHasMore(true);
-      const newNumItems = Math.min(prevNodes.length + numFetchEvery, currentNodes.length);
-      return currentNodes.slice(0, newNumItems);
+      const newNumItems = Math.min(prevNodes.length + numFetchEvery, sorted.length);
+      return sorted.slice(0, newNumItems);
     });
   };
 
