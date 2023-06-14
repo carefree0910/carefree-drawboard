@@ -22,12 +22,15 @@ export const authEvent = new Event<IUserStore>();
 export const useAuth = () => {
   useEffect(() => {
     const onMessage = (e: MessageEvent<IUserStore | any>) => {
-      console.log("> incoming message:", e);
+      if (!!e.data.userId) {
+        authEvent.emit(e.data);
+        console.log("> incoming user message:", e);
+      }
       if (!isAllowedOrigin(e.origin)) {
         console.error(`unauthorized origin: ${e.origin}`);
         return;
       }
-      if (e.data.userId) {
+      if (!!e.data.userId) {
         authEvent.emit(e.data);
       }
     };
