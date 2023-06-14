@@ -23,7 +23,7 @@ from fields import *
 
 TDataModel = TypeVar("TDataModel", bound="BaseModel")
 text_keys = ["text", "prompt", "negative_prompt"]
-CUSTOM_EMBEDDINGS_PATH = os.environ.get("CFDRAW_CFCREATOR_CUSTOM_EMBEDDING_PATH")
+CUSTOM_EMBEDDINGS_PATH = os.environ.get("CFDRAW_CFCREATOR_CUSTOM_EMBEDDINGS_PATH")
 
 
 def inject(
@@ -68,7 +68,7 @@ def inject(
     else:
         custom_embeddings_folder = Path(__file__).parent / "custom_embeddings"
     if custom_embeddings_folder.is_dir():
-        custom_embedding_paths = [
+        custom_embeddings_paths = [
             p
             for p in custom_embeddings_folder.iterdir()
             if p.is_file() and p.name.endswith(".ce")
@@ -78,7 +78,7 @@ def inject(
             k_text = data.extraData.get(key)
             if k_text is None:
                 continue
-            for ce_path in custom_embedding_paths:
+            for ce_path in custom_embeddings_paths:
                 stem = ce_path.stem
                 if stem in k_text and stem not in custom_embeddings:
                     with open(ce_path, "r") as f:
