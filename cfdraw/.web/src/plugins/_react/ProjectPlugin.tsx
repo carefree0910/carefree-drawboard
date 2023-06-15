@@ -76,7 +76,7 @@ const ProjectPlugin = ({ pluginInfo, ...props }: IPlugin) => {
         return newProject.uid;
       });
     });
-  }, [userId, selectedUid]);
+  }, [userId, selectedUid, isSelectingAutoSave]);
 
   const updateUids = useCallback(() => {
     getAllProjectInfo()
@@ -95,7 +95,7 @@ const ProjectPlugin = ({ pluginInfo, ...props }: IPlugin) => {
         Logger.warn(`[ProjectPlugin] updateUids failed: ${err}, retrying...`);
         setTimeout(updateUids, 1000);
       });
-  }, []);
+  }, [uid]);
 
   useEffect(() => {
     const { dispose } = globalEvent.on(({ type }) => {
@@ -104,7 +104,7 @@ const ProjectPlugin = ({ pluginInfo, ...props }: IPlugin) => {
       }
     });
     return dispose;
-  }, [id]);
+  }, []);
 
   useEffect(() => {
     if (expand) {
