@@ -152,7 +152,7 @@ def inject(
 async def call_api(self: IFieldsPlugin, fn: str, model: BaseModel, **kw: Any) -> Any:
     model_d = model.dict()
     self.set_extra_response(DATA_MODEL_KEY, model_d)
-    return await getattr(get_apis(), fn)(model_d, **kw)
+    return await getattr(get_apis(), fn)(model, **kw)
 
 
 notification = """
