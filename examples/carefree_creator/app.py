@@ -540,6 +540,7 @@ class ControlHints(IFieldsPlugin):
         self.set_injection("url", data.nodeData)
         hint_type = controlnet_hint_fields.parse(data.extraData["hint_type"])
         data = dict(hint_type=hint_type, url=url)
+        self.set_extra_response(DATA_MODEL_KEY, data)
         return await get_apis().get_control_hint(hint_type, data)
 
 
