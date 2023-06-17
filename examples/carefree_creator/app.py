@@ -149,6 +149,12 @@ def inject(
     return data_model
 
 
+async def call_api(self: IFieldsPlugin, fn: str, model: BaseModel, **kw: Any) -> Any:
+    model_d = model.dict()
+    self.set_extra_response(DATA_MODEL_KEY, model_d)
+    return await getattr(get_apis(), fn)(model_d, **kw)
+
+
 notification = """
 * This demo requires 16GB GPU memory.
 * This demo migrates `carefree-creator`'s functionalities to `carefree-drawboard` 🎨:
@@ -311,8 +317,7 @@ class Captioning(IFieldsPlugin):
     async def process(self, data: ISocketRequest) -> List[str]:
         self.set_injection("url", data.nodeData)
         data_model = Img2TxtModel(url=data.nodeData.src)
-        self.set_extra_response(DATA_MODEL_KEY, data_model.dict())
-        return await get_apis().image_captioning(data_model)
+        return await call_api(self, "image_captioning", data_model)
 
 
 class Inpainting(IFieldsPlugin):
@@ -625,8 +630,7 @@ class PromptEnhance(IFieldsPlugin):
     async def process(self, data: ISocketRequest) -> List[str]:
         self.set_injection("text", data.nodeData)
         data_model = PromptEnhanceModel(text=data.nodeData.text, **data.extraData)
-        self.set_extra_response(DATA_MODEL_KEY, data_model.dict())
-        return await get_apis().prompt_enhance(data_model)
+        return await call_api(self, "prompt_enhance", data_model)
 
 
 class Txt2ImgWithText(IFieldsPlugin):
