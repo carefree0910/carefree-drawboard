@@ -43,6 +43,7 @@ key2endpoints = {
     InpaintingKey: img2img_inpainting_endpoint,
     SDInpaintingKey: txt2img_sd_inpainting_endpoint,
     SDOutpaintingKey: txt2img_sd_outpainting_endpoint,
+    VariationKey: None,
     ControlNetHintKey: CONTROL_HINT_ENDPOINT,
     MultiControlNetKey: new_control_multi_endpoint,
     ImageHarmonizationKey: img2img_harmonization_endpoint,
@@ -93,7 +94,14 @@ def trace_workflow(meta: Dict[str, Any]) -> Workflow:
             identifier, response = map(mdata.get, ["identifier", "response"])
             if identifier is None or response is None:
                 return
-            data_model_d = response.get("extra", {}).get(DATA_MODEL_KEY)
+            extra_response = response.get("extra", {})
+            if not extra_response:
+                return
+            if identifier == VariationKey:
+                identifier = extra_response.get("task")
+                if identifier is None:
+                    return
+            data_model_d = extra_response.get(DATA_MODEL_KEY)
             if data_model_d is None:
                 return
             raw_injections = mdata.get("injections", {})
