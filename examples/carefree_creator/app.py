@@ -26,6 +26,64 @@ text_keys = ["text", "prompt", "negative_prompt"]
 CUSTOM_EMBEDDINGS_PATH = os.environ.get("CFDRAW_CFCREATOR_CUSTOM_EMBEDDINGS_PATH")
 
 
+def trim_custom_embeddings(params: Any) -> Any:
+    def _core(p: Any) -> Any:
+        if isinstance(p, list):
+            return [_core(v) for v in p]
+        if not isinstance(p, dict):
+            return p
+        p = shallow_copy_dict(p)
+        for k, v in p.items():
+            if k == "custom_embeddings":
+                if v is None or not isinstance(v, dict):
+                    continue
+                p[k] = {vk: None for vk in v}
+            elif isinstance(p, (list, dict)):
+                p[k] = _core(v)
+        return p
+
+    return _core(params)
+
+
+def get_custom_embeddings_mapping() -> Optional[Dict[str, Path]]:
+    if CUSTOM_EMBEDDINGS_PATH is not None:
+        d = Path(CUSTOM_EMBEDDINGS_PATH)
+    else:
+        d = Path(__file__).parent / "custom_embeddings"
+    if not d.is_dir():
+        return None
+    return {p.stem: p for p in d.iterdir() if p.is_file() and p.name.endswith(".ce")}
+
+
+def inject_custom_embeddings(params: Any) -> Any:
+    def _core(p: Any) -> Any:
+        if isinstance(p, list):
+            return [_core(v) for v in p]
+        if not isinstance(p, dict):
+            return p
+        p = shallow_copy_dict(p)
+        for k, v in p.items():
+            if k == "custom_embeddings":
+                if v is None or not isinstance(v, dict):
+                    continue
+                for vk in v:
+                    ce_path = ce_mapping.get(vk)
+                    if ce_path is None or vk in custom_embeddings:
+                        continue
+                    with open(ce_path, "r") as f:
+                        custom_embeddings[vk] = json.load(f)
+                p[k] = custom_embeddings
+            elif isinstance(p, (list, dict)):
+                p[k] = _core(v)
+        return p
+
+    custom_embeddings = {}
+    ce_mapping = get_custom_embeddings_mapping()
+    if ce_mapping is None:
+        return params
+    return _core(params)
+
+
 def inject(
     self: IFieldsPlugin,
     data: ISocketRequest,
@@ -63,27 +121,18 @@ def inject(
         if lora_scales:
             data.extraData["lora_scales"] = lora_scales
     # custom embeddings
-    if CUSTOM_EMBEDDINGS_PATH is not None:
-        custom_embeddings_folder = Path(CUSTOM_EMBEDDINGS_PATH)
-    else:
-        custom_embeddings_folder = Path(__file__).parent / "custom_embeddings"
-    if custom_embeddings_folder.is_dir():
-        custom_embeddings_paths = [
-            p
-            for p in custom_embeddings_folder.iterdir()
-            if p.is_file() and p.name.endswith(".ce")
-        ]
+    ce_mapping = get_custom_embeddings_mapping()
+    if ce_mapping is not None:
         custom_embeddings = {}
         for key in text_keys:
             k_text = data.extraData.get(key)
             if k_text is None:
                 continue
-            for ce_path in custom_embeddings_paths:
-                stem = ce_path.stem
-                if stem in k_text and stem not in custom_embeddings:
+            for ce_name, ce_path in ce_mapping.items():
+                if ce_name in k_text and ce_name not in custom_embeddings:
                     with open(ce_path, "r") as f:
                         ce = json.load(f)
-                    custom_embeddings[stem] = ce
+                    custom_embeddings[ce_name] = ce
         if custom_embeddings:
             data.extraData["custom_embeddings"] = custom_embeddings
     # collect
@@ -94,6 +143,7 @@ def inject(
     # inject data model
     data_model_d = data_model.dict()
     data_model_d.pop("tome_info", None)
+    data_model_d = trim_custom_embeddings(data_model_d)
     self.set_extra_response(DATA_MODEL_KEY, data_model_d)
     # return
     return data_model
@@ -432,13 +482,16 @@ class Variation(IFieldsPlugin):
         if task == VariationKey:
             task = extra["task"]
         data_model_d = extra[DATA_MODEL_KEY]
+        # inject custom embeddings
+        data_model_d = inject_custom_embeddings(data_model_d)
         # inject varations
         strength = 1.0 - data.extraData["fidelity"]
         variations = data_model_d.setdefault("variations", [])
         variations.append(dict(seed=new_seed(), strength=strength))
         # inject extra response
+        copied_d = trim_custom_embeddings(data_model_d)
         self.set_extra_response("task", task)
-        self.set_extra_response(DATA_MODEL_KEY, shallow_copy_dict(data_model_d))
+        self.set_extra_response(DATA_MODEL_KEY, copied_d)
         # switch case
         if task == Txt2ImgKey:
             model = Txt2ImgSDModel(**data_model_d)
@@ -680,6 +733,8 @@ class ExecuteWorkflow(IWorkflowPlugin):
         if workflow is None:
             self.send_exception("No workflow found")
             return
+        for node in workflow:
+            node.data.data = inject_custom_embeddings(node.data.data)
         for k, v in data.extraData.items():
             workflow.get(k).data.data["url"] = v
         target_key = workflow.last.key
