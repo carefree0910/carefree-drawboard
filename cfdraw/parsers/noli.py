@@ -95,6 +95,7 @@ class SingleNodeType(str, Enum):
 
 class GroupType(str, Enum):
     GROUP = "group"
+    FRAME = "frame"
 
 
 class LayerParams(BaseModel):
@@ -119,6 +120,7 @@ class Group(BaseModel):
     alias: str
     transform: Matrix2D
     nodes: List["INode"]
+    params: Optional[Dict[str, Any]] = None
 
 
 INodeType = Union[SingleNodeType, GroupType]
@@ -192,6 +194,7 @@ class_name2type = {
     "NoliFrameNode": SingleNodeType.NOLI_FRAME,
     "NoliTextFrameNode": SingleNodeType.NOLI_TEXT_FRAME,
     "Group": GroupType.GROUP,
+    "Frame": GroupType.FRAME,
 }
 type2class_name = {v: k for k, v in class_name2type.items()}
 
