@@ -499,7 +499,7 @@ class Variation(IFieldsPlugin):
         self.set_extra_response("task", task)
         self.set_extra_response(DATA_MODEL_KEY, copied_d)
         # switch case
-        if task == Txt2ImgKey:
+        if task == Txt2ImgKey or task == Txt2ImgWithTextKey:
             model = Txt2ImgSDModel(**data_model_d)
             return await get_apis().txt2img(model, step_callback=callback)
         if task == Img2ImgKey:
