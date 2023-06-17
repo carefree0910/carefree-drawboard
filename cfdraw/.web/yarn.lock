@@ -217,33 +217,33 @@
     "@babel/helper-validator-identifier" "^7.19.1"
     to-fast-properties "^2.0.0"
 
-"@carefree0910/business@~0.5.1-alpha.21":
-  version "0.5.1-alpha.21"
-  resolved "https://registry.npmmirror.com/@carefree0910/business/-/business-0.5.1-alpha.21.tgz#3a5c5fd085141914460a5a3b2571c9370df628b7"
-  integrity sha512-Hxdhr1muSfJNHKsdcTJ6PynhwBY9MaxXwYx7vceZuH4MGfZ+YRVLowPyFAPj4ZFSue4MWDolBSGG4F+YWECbRw==
+"@carefree0910/business@~0.5.1-alpha.23":
+  version "0.5.1-alpha.23"
+  resolved "https://registry.npmmirror.com/@carefree0910/business/-/business-0.5.1-alpha.23.tgz#704cda702f46f1aedfa157c114fd8cec252f2ac8"
+  integrity sha512-D95QxlHBioyIjR6TiToK9843rIPZRa7KamjTL/bzCtIeo8VE2k3IeBFDpL7Rjn2cALRfFY/NhQ18WCSCPEnILw==
   dependencies:
-    "@carefree0910/core" "^0.5.1-alpha.21"
-    "@carefree0910/svg" "^0.5.1-alpha.21"
+    "@carefree0910/core" "^0.5.1-alpha.23"
+    "@carefree0910/svg" "^0.5.1-alpha.23"
 
-"@carefree0910/core@^0.5.1-alpha.21", "@carefree0910/core@~0.5.1-alpha.21":
-  version "0.5.1-alpha.21"
-  resolved "https://registry.npmmirror.com/@carefree0910/core/-/core-0.5.1-alpha.21.tgz#2af809530ee96c8c512cd90a0d5ae8aaae50ef6d"
-  integrity sha512-6hdO8aildHXCHoxh0lbPwuOxJyWIXeaq4FNs3pWejFj7mv52mQFBuaj3UUXxWkRAu7cYbivVK78Y2ZAKibLn7Q==
+"@carefree0910/core@^0.5.1-alpha.23", "@carefree0910/core@~0.5.1-alpha.23":
+  version "0.5.1-alpha.23"
+  resolved "https://registry.npmmirror.com/@carefree0910/core/-/core-0.5.1-alpha.23.tgz#7d5b1f96d5d85469d077ddfac9bc078350b35dee"
+  integrity sha512-rD9xlVOIHPSlxISeotWFVeZMBkhvtxyf6o0OYjAIlSdI8s7iApLQppyHt8zgTXJADMrPIvmR0g7HwKfWJjCduQ==
 
-"@carefree0910/native@~0.5.1-alpha.21":
-  version "0.5.1-alpha.21"
-  resolved "https://registry.npmmirror.com/@carefree0910/native/-/native-0.5.1-alpha.21.tgz#4cee9cc7badff898ef8075ddda0f4fda2a841d2d"
-  integrity sha512-z4BZdgamrfZOemwd387qhTTYLg08NcNDPixOusHuHWHcuSPAanTimV6W3uXIlmc+fS9Y0tlYjEM3I1dv62lisw==
+"@carefree0910/native@~0.5.1-alpha.23":
+  version "0.5.1-alpha.23"
+  resolved "https://registry.npmmirror.com/@carefree0910/native/-/native-0.5.1-alpha.23.tgz#2fc8282b13b4ec79aa41e0b2e0f2836bc71b3c6f"
+  integrity sha512-e8VeD3xy9QdWr+RtlLqOqrmRtgAAeaA6ERcPraL1NnIaKZ+iWZ6Bw3PejYu2ItUfhK+2hf7E2W6OrVq3iwJnKg==
   dependencies:
-    "@carefree0910/core" "^0.5.1-alpha.21"
-    "@carefree0910/svg" "^0.5.1-alpha.21"
+    "@carefree0910/core" "^0.5.1-alpha.23"
+    "@carefree0910/svg" "^0.5.1-alpha.23"
 
-"@carefree0910/svg@^0.5.1-alpha.21", "@carefree0910/svg@~0.5.1-alpha.21":
-  version "0.5.1-alpha.21"
-  resolved "https://registry.npmmirror.com/@carefree0910/svg/-/svg-0.5.1-alpha.21.tgz#edfa8f664de88d2bb6536d3812ac51ce673a9c51"
-  integrity sha512-W1WzRHkQgwbX4xKTFm1KM2MCxNPxeGCa8YfioCK8x/0i3EuN2/CgMpuESwHRInn3c9mxE+VDjVXqImI3nHdlEA==
+"@carefree0910/svg@^0.5.1-alpha.23", "@carefree0910/svg@~0.5.1-alpha.23":
+  version "0.5.1-alpha.23"
+  resolved "https://registry.npmmirror.com/@carefree0910/svg/-/svg-0.5.1-alpha.23.tgz#2fc00f530b71e900365d4a4433817b8859a2f7e8"
+  integrity sha512-NW2F3WoJcxLrfWPKeECIIYmZwGjY+2eccMxL71b7UONyVCa/zhPHELYbtBcPbzys0sXcNDFqrqtRQ0kyLUCTQA==
   dependencies:
-    "@carefree0910/core" "^0.5.1-alpha.21"
+    "@carefree0910/core" "^0.5.1-alpha.23"
 
 "@chakra-ui/accordion@2.1.11":
   version "2.1.11"
