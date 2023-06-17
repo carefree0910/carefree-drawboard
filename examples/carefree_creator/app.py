@@ -265,8 +265,8 @@ class SR(IFieldsPlugin):
 
     async def process(self, data: ISocketRequest) -> List[Image.Image]:
         self.set_injection("url", data.nodeData)
-        kw = dict(url=data.nodeData.src, **data.extraData)
-        return await get_apis().sr(Img2ImgSRModel(**kw))
+        data_model = Img2ImgSRModel(url=data.nodeData.src, **data.extraData)
+        return await call_api(self, "sr", data_model)
 
 
 class SOD(IFieldsPlugin):
@@ -291,7 +291,8 @@ class SOD(IFieldsPlugin):
 
     async def process(self, data: ISocketRequest) -> List[Image.Image]:
         self.set_injection("url", data.nodeData)
-        return await get_apis().sod(Img2ImgSODModel(url=data.nodeData.src))
+        data_model = Img2ImgSODModel(url=data.nodeData.src)
+        return await call_api(self, "sod", data_model)
 
 
 class Captioning(IFieldsPlugin):
@@ -360,7 +361,7 @@ class Inpainting(IFieldsPlugin):
             total_steps = model.num_steps
         else:
             total_steps = model.num_steps * (2.0 - model.refine_fidelity)
-        return await get_apis().inpainting(model, step_callback=callback)
+        return await call_api(self, "inpainting", model, step_callback=callback)
 
 
 class SDInpainting(IFieldsPlugin):
@@ -603,8 +604,8 @@ class ImageHarmonization(IFieldsPlugin):
         )
 
     async def process(self, data: ISocketRequest) -> List[Image.Image]:
-        model = Img2ImgHarmonizationModel(**data.extraData)
-        return await get_apis().harmonization(model)
+        data_model = Img2ImgHarmonizationModel(**data.extraData)
+        return await call_api(self, "harmonization", data_model)
 
 
 class PromptEnhance(IFieldsPlugin):
