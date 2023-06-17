@@ -245,6 +245,13 @@ Pivot of the plugin.
     )
 
     def to_react(self, type: str, hash: str, identifier: str) -> Dict[str, Any]:
+        def _pop_none(_d: Dict[str, Any]) -> None:
+            for k, v in list(_d.items()):
+                if v is None:
+                    _d.pop(k)
+                elif isinstance(v, dict):
+                    _pop_none(v)
+
         d = self.dict(exclude={"pluginInfo"})
         pI = self.pluginInfo
         kw = dict(exclude={"plugins"}) if isinstance(pI, IPluginGroupInfo) else {}
@@ -285,6 +292,8 @@ Pivot of the plugin.
             props["nodeConstraintRules"] = node_constraint_rules
         if node_constraint_validator is not None:
             props["nodeConstraintValidator"] = node_constraint_validator
+        # pop None
+        _pop_none(props)
         return dict(type=type, props=props)
 
 
