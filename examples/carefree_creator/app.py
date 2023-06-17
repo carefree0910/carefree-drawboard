@@ -421,14 +421,14 @@ class Variation(IFieldsPlugin):
             ),
         )
 
-    async def process(self, data: ISocketRequest) -> List[Image.Image]:
+    async def process(self, data: ISocketRequest) -> Optional[List[Image.Image]]:
         def callback(step: int, num_steps: int) -> bool:
             return self.send_progress(step / num_steps)
 
         task = data.nodeData.identifier
         extra = data.nodeData.extra_responses
         if task is None or extra is None:
-            return []
+            return None
         if task == VariationKey:
             task = extra["task"]
         data_model_d = extra[DATA_MODEL_KEY]
@@ -453,7 +453,7 @@ class Variation(IFieldsPlugin):
             model = Txt2ImgSDOutpaintingModel(**data_model_d)
             return await get_apis().sd_outpainting(model, step_callback=callback)
         self.send_exception(f"unknown task: {task}")
-        return []
+        return None
 
 
 class ControlHints(IFieldsPlugin):
