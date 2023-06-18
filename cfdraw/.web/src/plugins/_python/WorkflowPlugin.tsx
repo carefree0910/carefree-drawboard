@@ -1,6 +1,6 @@
 import { observer } from "mobx-react-lite";
 
-import { Dictionary, isSingleNode } from "@carefree0910/core";
+import { isSingleNode } from "@carefree0910/core";
 
 import type { IDefinitions } from "@/schema/fields";
 import type { IPythonWorkflowPlugin } from "@/schema/_python";
@@ -9,19 +9,18 @@ import { PythonFieldsPlugin } from "./FieldsPlugin";
 
 export const WORKFLOW_KEY = "$workflow";
 
-type UploadNodeKey = "$upload";
 type IWorkNode =
   | {
       key: string;
-      endpoint: UploadNodeKey;
+      endpoint: "$upload";
       injections: {};
       data: { url: string };
     }
   | {
       key: string;
-      endpoint: Omit<string, UploadNodeKey>;
-      injections: Dictionary<any>;
-      data: Dictionary<any>;
+      endpoint: "$add_text";
+      injections: {};
+      data: { text: string };
     };
 const PythonWorkflowPlugin = ({ pluginInfo, ...props }: IPythonWorkflowPlugin) => {
   let definitions: IDefinitions = {};
@@ -30,11 +29,18 @@ const PythonWorkflowPlugin = ({ pluginInfo, ...props }: IPythonWorkflowPlugin) =
     const workflow = node.meta?.data?.response?.extra?.[WORKFLOW_KEY] as IWorkNode[] | undefined;
     if (!!workflow) {
       workflow.forEach((node) => {
-        if (node.endpoint !== "$upload") return;
-        definitions[node.key] = {
-          type: "image",
-          default: node.data.url,
-        };
+        if (node.endpoint === "$upload") {
+          definitions[node.key] = {
+            type: "image",
+            default: node.data.url,
+          };
+        } else if (node.endpoint === "$add_text") {
+          definitions[node.key] = {
+            type: "text",
+            default: node.data.text,
+            numRows: 2,
+          };
+        }
       });
     }
   }
