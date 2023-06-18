@@ -50,7 +50,7 @@ const ImageGalleryUpload = observer(({ onSelectUrl }: IOnSelectUrl) => {
       onUpload={(res) => {
         if (res.safe) {
           toastWord("success", Toast_Words["upload-image-success-message"]);
-          onSelectUrl(res.url, { meta: { type: "upload", data: {} } });
+          onSelectUrl(res.url, { node: { meta: { type: "upload", data: {} } } });
         } else {
           toastWord("warning", Toast_Words["nsfw-image-detected-warning-message"], {
             appendix: ` (${res.reason})`,
@@ -81,7 +81,9 @@ const ImageGalleryItem = observer(({ node, active, onSelectUrl, ...others }: IIm
   <GalleryItem
     node={node}
     active={active}
-    onItemClick={(node) => onSelectUrl(node.renderParams.src, makeMetaInjectionFrom(node))}>
+    onItemClick={(node) =>
+      makeMetaInjectionFrom(node).then((injection) => onSelectUrl(node.renderParams.src, injection))
+    }>
     <Image
       w="100%"
       h="100%"

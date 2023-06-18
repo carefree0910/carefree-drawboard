@@ -32,7 +32,9 @@ const TextGalleryItem = observer(({ node, active, onSelectText, ...others }: ITe
   <GalleryItem
     node={node}
     active={active}
-    onItemClick={(node) => onSelectText(node.params.content, makeMetaInjectionFrom(node))}>
+    onItemClick={(node) =>
+      makeMetaInjectionFrom(node).then((injection) => onSelectText(node.params.content, injection))
+    }>
     <CFTextarea
       isReadOnly
       w="100%"

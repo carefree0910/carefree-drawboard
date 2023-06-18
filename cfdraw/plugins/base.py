@@ -90,7 +90,7 @@ class ISocketPlugin(IPlugin, metaclass=ABCMeta):
 
     def set_injection(self, key: str, node: INodeData) -> None:
         self.injections[key] = dict(
-            meta=shallow_copy_dict(node.meta),
+            node=shallow_copy_dict(node.dict()),
             bboxFields=None if node.transform is None else node.transform.dict(),
         )
 

@@ -87,7 +87,7 @@ async function getNodeSrc(node: INode, opt: IGetNodeData): Promise<string | unde
   }
   return src;
 }
-async function getNodeData(node: INode | null, opt: IGetNodeData): Promise<INodeData> {
+export async function getNodeData(node: INode | null, opt: IGetNodeData): Promise<INodeData> {
   if (!node) return {};
   const common = await getNodeCommonData(node, opt);
   if (!opt.exportBox) return common;

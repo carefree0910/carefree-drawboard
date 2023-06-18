@@ -3,8 +3,10 @@ import { makeObservable, observable, runInAction } from "mobx";
 import { ISingleNode, Logger, Matrix2DFields } from "@carefree0910/core";
 import { ABCStore } from "@carefree0910/business";
 
+import type { INodeData } from "@/schema/_python";
 import type { ICommonMetaData, IMeta } from "@/schema/meta";
 import type { IListProperties } from "@/schema/plugins";
+import { getNodeData } from "@/hooks/usePython";
 
 class MetaStore extends ABCStore<IMeta["data"]> {
   data: IMeta["data"] = {};
@@ -65,7 +67,7 @@ export function setMetaField<T extends IMetaKey | IGeneralKey>(
 }
 
 export interface IMetaInjection {
-  meta: IMeta;
+  node: INodeData;
   bboxFields?: Matrix2DFields;
 }
 export type IMetaInjections = Partial<Record<IMetaKey | IGeneralKey, IMetaInjection>>;
@@ -89,8 +91,11 @@ export function getListInjectionKey({ field, listProperties }: ISetMetaField<str
   if (!listProperties) return field;
   return `${listProperties.listKey}.${listProperties.listIndex}.${field}`;
 }
-export function makeMetaInjectionFrom(node: ISingleNode): IMetaInjection | undefined {
-  return { meta: node.meta as IMeta, bboxFields: node.bboxFields };
+export function makeMetaInjectionFrom(node: ISingleNode): Promise<IMetaInjection> {
+  return getNodeData(node, {}).then((nodeData) => ({
+    node: nodeData,
+    bboxFields: node.bboxFields,
+  }));
 }
 export function getMetaInjection(key: string): IMetaInjection | undefined {
   return metaInjectionsStore.injections[key];
