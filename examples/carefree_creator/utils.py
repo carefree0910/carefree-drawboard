@@ -15,6 +15,7 @@ from cfcreator.sdks.apis import *
 DATA_MODEL_KEY = "$data_model"
 
 UPLOAD_META_TYPE = "upload"
+ADD_TEXT_META_TYPE = "add.text"
 PYTHON_FIELDS_META_TYPE = "python.fields"
 
 Txt2ImgKey = "txt2img"
@@ -91,6 +92,18 @@ def trace_workflow(meta: Dict[str, Any], nodeData: INodeData) -> Workflow:
                     data=dict(url=nodeData.src),
                 )
             )
+        elif mtype == ADD_TEXT_META_TYPE:
+            if key is None:
+                key = _get_key(ADD_TEXT_META_TYPE)
+            alias2key[alias] = key
+            workflow.push(
+                WorkNode(
+                    key=key,
+                    endpoint=ADD_TEXT_ENDPOINT,
+                    injections={},
+                    data=dict(text=nodeData.text),
+                )
+            )
         elif mtype == PYTHON_FIELDS_META_TYPE:
             identifier, response = map(mdata.get, ["identifier", "response"])
             if identifier is None or response is None:
@@ -122,9 +135,9 @@ def trace_workflow(meta: Dict[str, Any], nodeData: INodeData) -> Workflow:
                     continue
                 v_alias = v_data.get("alias", random_hash())
                 v_key = alias2key.get(v_alias)
-                if v_type == UPLOAD_META_TYPE:
+                if v_type == UPLOAD_META_TYPE or v_type == ADD_TEXT_META_TYPE:
                     if v_key is None:
-                        v_key = _get_key(UPLOAD_META_TYPE)
+                        v_key = _get_key(v_type)
                         alias2key[v_alias] = v_key
                     injections[v_key] = InjectionPack(index=0, field=k)
                 elif v_type == PYTHON_FIELDS_META_TYPE:
@@ -162,6 +175,8 @@ def trace_workflow(meta: Dict[str, Any], nodeData: INodeData) -> Workflow:
 
 
 __all__ = [
+    "UPLOAD_META_TYPE",
+    "ADD_TEXT_META_TYPE",
     "DATA_MODEL_KEY",
     "Txt2ImgKey",
     "Txt2ImgWithTextKey",
