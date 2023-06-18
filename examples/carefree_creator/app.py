@@ -701,7 +701,7 @@ class DrawWorkflow(IFieldsPlugin):
         )
 
     async def process(self, data: ISocketRequest) -> Optional[List[Image.Image]]:
-        workflow = trace_workflow(data.nodeData.meta)
+        workflow = trace_workflow(data.nodeData.meta, data.nodeData)
         if workflow.last is None:
             self.send_exception("Workflow is empty")
             return None
@@ -714,7 +714,7 @@ class ExecuteWorkflow(IWorkflowPlugin):
     def settings(self) -> IPluginSettings:
         return IPluginSettings(
             w=400,
-            h=200,
+            h=240,
             src=constants.EXECUTE_WORKFLOW_ICON,
             pivot=PivotType.BOTTOM,
             follow=True,
@@ -743,7 +743,10 @@ class ExecuteWorkflow(IWorkflowPlugin):
         for node in workflow:
             node.data.data = inject_custom_embeddings(node.data.data)
         for k, v in data.extraData.items():
-            workflow.get(k).data.data["url"] = v
+            if k.startswith(UPLOAD_META_TYPE):
+                workflow.get(k).data.data["url"] = v
+            elif k.startswith(ADD_TEXT_META_TYPE):
+                workflow.get(k).data.data["text"] = v
         target_key = workflow.last.key
         results = await get_apis().execute(workflow, target_key, **kw)
         for k, v in results.items():
