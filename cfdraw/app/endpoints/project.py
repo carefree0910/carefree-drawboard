@@ -43,8 +43,8 @@ def add_project_managements(endpoint: "ProjectEndpoint") -> None:
     def save_project(data: ProjectModel) -> SaveProjectResponse:
         with endpoint.get_conn(data.userId) as conn:
             try:
-                sql = f"INSERT OR REPLACE INTO '{data.userId}' VALUES ('{data.uid}', '{json.dumps(data.dict())}')"
-                conn.execute(sql)
+                sql = f"INSERT OR REPLACE INTO '{data.userId}' VALUES (?, ?)"
+                conn.execute(sql, [data.uid, json.dumps(data.dict())])
                 conn.commit()
             except Exception as err:
                 err_msg = get_err_msg(err)
