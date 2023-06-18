@@ -116,9 +116,9 @@ def trace_workflow(meta: Dict[str, Any]) -> Workflow:
                     continue
                 v_alias = v_data.get("alias", random_hash())
                 v_key = alias2key.get(v_alias)
-                if v_type == "upload":
+                if v_type == UPLOAD_META_TYPE:
                     if v_key is None:
-                        v_key = _get_key("upload")
+                        v_key = _get_key(UPLOAD_META_TYPE)
                         alias2key[v_alias] = v_key
                     injections[v_key] = InjectionPack(index=0, field=k)
                 elif v_type == PYTHON_FIELDS_META_TYPE:
