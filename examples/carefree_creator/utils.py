@@ -1,6 +1,7 @@
 from typing import Any
 from typing import Dict
 from cfdraw import cache_resource
+from cfdraw import INodeData
 from collections import defaultdict
 from cftool.misc import random_hash
 from cftool.data_structures import WorkNode
@@ -56,7 +57,7 @@ def get_apis() -> APIs:
     return APIs()
 
 
-def trace_workflow(meta: Dict[str, Any]) -> Workflow:
+def trace_workflow(meta: Dict[str, Any], nodeData: INodeData) -> Workflow:
     def _get_key(k: str) -> str:
         new_key = f"{k}_{counts[k]}"
         counts[k] += 1
@@ -70,7 +71,7 @@ def trace_workflow(meta: Dict[str, Any]) -> Workflow:
             k = ".".join(k_split)
         return k
 
-    def _trace(meta_: Dict[str, Any]) -> None:
+    def _trace(meta_: Dict[str, Any], nodeData: INodeData) -> None:
         mtype, mdata = map(meta_.get, ["type", "data"])
         if mtype is None or mdata is None:
             return
@@ -87,7 +88,7 @@ def trace_workflow(meta: Dict[str, Any]) -> Workflow:
                     key=key,
                     endpoint=UPLOAD_ENDPOINT,
                     injections={},
-                    data=dict(url=mdata["url"]),
+                    data=dict(url=nodeData.src),
                 )
             )
         elif mtype == PYTHON_FIELDS_META_TYPE:
@@ -108,9 +109,14 @@ def trace_workflow(meta: Dict[str, Any]) -> Workflow:
             injections = {}
             for k, v in raw_injections.items():
                 k = _convert_field_key(k)
-                v_meta = v.get("meta")
-                if v_meta is None:
+                v_node = v.get("node")
+                if v_node is None:
                     continue
+                try:
+                    v_nodeData = INodeData(**v_node)
+                except Exception as err:
+                    raise ValueError(f"invalid node data occurred ({err})")
+                v_meta = v_nodeData.meta
                 v_type, v_data = map(v_meta.get, ["type", "data"])
                 if v_type is None or v_data is None:
                     continue
@@ -133,7 +139,7 @@ def trace_workflow(meta: Dict[str, Any]) -> Workflow:
                     injections[v_key] = v_injection_pack
                 else:
                     raise ValueError(f"unknown type: {v_type}")
-                _trace(v_meta)
+                _trace(v_meta, v_nodeData)
             if key is None:
                 key = _get_key(identifier)
             alias2key[alias] = key
@@ -151,7 +157,7 @@ def trace_workflow(meta: Dict[str, Any]) -> Workflow:
     counts = defaultdict(int)
     workflow = Workflow()
     alias2key = {}
-    _trace(meta)
+    _trace(meta, nodeData)
     return workflow
 
 
