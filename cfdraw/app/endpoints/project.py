@@ -81,7 +81,7 @@ def add_project_managements(endpoint: "ProjectEndpoint") -> None:
                 s = sorted([(d["updateTime"], d) for d in ds], reverse=True)
                 metas = [ProjectMeta(**d) for _, d in s]
                 return metas
-            except Exception as err:
+            except Exception:
                 logging.exception("failed to fetch all projects")
                 return []
 
