@@ -11,7 +11,6 @@ from pydantic import BaseModel
 from cftool.web import raise_err
 from cftool.web import get_responses
 from cftool.misc import get_err_msg
-from cftool.misc import print_error
 
 from cfdraw.parsers import noli
 from cfdraw.app.endpoints.base import IEndpoint
@@ -67,7 +66,6 @@ def add_project_managements(endpoint: "ProjectEndpoint") -> None:
                 d = json.loads(json_string)
             return ProjectModel(**d)
         except Exception as err:
-            print_error(f"failed to load project '{uid}' ({get_err_msg(err)})")
             raise_err(err)
 
     @app.api.get("/all_projects/")

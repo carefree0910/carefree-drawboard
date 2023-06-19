@@ -14,7 +14,6 @@ from cftool.cv import np_to_bytes
 from cftool.web import raise_err
 from cftool.misc import random_hash
 
-from cfdraw import constants
 from cfdraw.config import get_config
 
 
