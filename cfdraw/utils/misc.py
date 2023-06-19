@@ -1,4 +1,5 @@
 import asyncio
+import logging
 import threading
 
 from typing import Any
@@ -62,8 +63,8 @@ def offload_run(future: Coroutine[Any, Any, bool]) -> bool:
                 event.set()
             else:
                 print_error("[offload_run] Failed to execute future")
-        except Exception as err:
-            print_error(f"[offload_run] {get_err_msg(err)}")
+        except Exception:
+            logging.exception("[offload_run] failed to execute future")
 
     event = asyncio.Event()
     progress = threading.Thread(target=_run)

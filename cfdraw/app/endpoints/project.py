@@ -2,6 +2,7 @@
 # Should be easy to replace with a more 'formal' database based one
 
 import json
+import logging
 import sqlite3
 
 from typing import Any
@@ -10,6 +11,7 @@ from pydantic import BaseModel
 from cftool.web import raise_err
 from cftool.web import get_responses
 from cftool.misc import get_err_msg
+from cftool.misc import print_error
 
 from cfdraw.parsers import noli
 from cfdraw.app.endpoints.base import IEndpoint
@@ -47,6 +49,7 @@ def add_project_managements(endpoint: "ProjectEndpoint") -> None:
                 conn.execute(sql, [data.uid, json.dumps(data.dict())])
                 conn.commit()
             except Exception as err:
+                logging.exception(f"failed to save project '{data.uid}'")
                 err_msg = get_err_msg(err)
                 return SaveProjectResponse(success=False, message=err_msg)
         return SaveProjectResponse(success=True, message="")
@@ -64,7 +67,7 @@ def add_project_managements(endpoint: "ProjectEndpoint") -> None:
                 d = json.loads(json_string)
             return ProjectModel(**d)
         except Exception as err:
-            print(f"failed to load project '{uid}' ({get_err_msg(err)})")
+            print_error(f"failed to load project '{uid}' ({get_err_msg(err)})")
             raise_err(err)
 
     @app.api.get("/all_projects/")
@@ -79,7 +82,7 @@ def add_project_managements(endpoint: "ProjectEndpoint") -> None:
                 metas = [ProjectMeta(**d) for _, d in s]
                 return metas
             except Exception as err:
-                print(f"failed to fetch all projects ({get_err_msg(err)})")
+                logging.exception("failed to fetch all projects")
                 return []
 
     @app.api.delete("/projects/")

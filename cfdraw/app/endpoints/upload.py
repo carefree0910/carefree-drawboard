@@ -1,4 +1,5 @@
 import json
+import logging
 
 from io import BytesIO
 from PIL import Image
@@ -94,6 +95,7 @@ def add_upload_image(app: IApp) -> None:
             args = contents, userJson, PngInfo(), base_url, audit
             data = await ImageUploader.upload_image(*args)
         except Exception as err:
+            logging.exception("failed to upload image")
             err_msg = get_err_msg(err)
             return UploadImageResponse(success=False, message=err_msg, data=None)
         finally:

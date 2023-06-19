@@ -62,6 +62,7 @@ class RequestQueue(IRequestQueue):
                         future = offload(future)
                     await future
             except Exception as err:
+                logging.exception(f"failed to execute plugin '{plugin}'")
                 await self._broadcast_exception(uid, get_err_msg(err))
             # cleanup
             request_item.data.event.set()
@@ -140,8 +141,8 @@ class RequestQueue(IRequestQueue):
                             message=message,
                         )
                     )
-            except Exception as err:
-                print_error(f"{prefix} {get_err_msg(err)}")
+            except Exception:
+                logging.exception(f"{prefix} failed to send message '{message}'")
             if not success:
                 print_error(f"Failed to send following message: {message}")
 
@@ -163,8 +164,8 @@ class RequestQueue(IRequestQueue):
                     message=message,
                 )
             )
-        except Exception as err:
-            print_error(f"{prefix} {get_err_msg(err)}")
+        except Exception:
+            logging.exception(f"{prefix} failed to send message '{message}'")
         if not success:
             print_error(f"Failed to send following message: {message}")
         return success
@@ -180,8 +181,8 @@ class RequestQueue(IRequestQueue):
         try:
             message = f"{prefix} {message}"
             success = await sender(ISocketMessage.make_exception(hash, message))
-        except Exception as err:
-            print_error(f"{prefix} {get_err_msg(err)}")
+        except Exception:
+            logging.exception(f"{prefix} failed to send message '{message}'")
         if not success:
             print_error(f"Failed to send following message: {message}")
         return success
