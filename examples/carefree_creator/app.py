@@ -70,7 +70,7 @@ def inject_custom_embeddings(params: Any) -> Any:
                     ce_path = ce_mapping.get(vk)
                     if ce_path is None or vk in custom_embeddings:
                         continue
-                    with open(ce_path, "r") as f:
+                    with ce_path.open("r") as f:
                         custom_embeddings[vk] = json.load(f)
                 p[k] = custom_embeddings
             elif isinstance(p, (list, dict)):
@@ -130,7 +130,7 @@ def inject(
                 continue
             for ce_name, ce_path in ce_mapping.items():
                 if ce_name in k_text and ce_name not in custom_embeddings:
-                    with open(ce_path, "r") as f:
+                    with ce_path.open("r") as f:
                         ce = json.load(f)
                     custom_embeddings[ce_name] = ce
         if custom_embeddings:

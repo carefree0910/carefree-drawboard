@@ -79,11 +79,11 @@ def set_init_codes(folder: Path, template: TemplateType) -> None:
     config_path = (folder / constants.DEFAULT_CONFIG_MODULE).with_suffix(".py")
     if not ask_overwrite(app_path):
         return
-    with open(app_path, "w") as f:
+    with app_path.open("w") as f:
         f.write(codes)
     if not ask_overwrite(config_path):
         return
-    with open(config_path, "w") as f:
+    with config_path.open("w") as f:
         f.write(CONFIG_TEMPLATE)
     print_info(f"App can be modified at {app_path}")
     print_info(f"Config can be modified at {config_path}")

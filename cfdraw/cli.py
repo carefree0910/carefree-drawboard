@@ -45,7 +45,7 @@ def run(
     # install requirements
     requirements_path = Path("./") / "requirements.txt"
     if requirements_path.is_file():
-        with open(requirements_path, "r") as f:
+        with requirements_path.open("r") as f:
             requirements = [line.strip() for line in f]
         if requirements:
             try:
