@@ -33,6 +33,7 @@ import {
   saveCurrentProject,
   saveProject,
 } from "@/actions/manageProjects";
+import { cleanGraph } from "@/actions/graphOps";
 import { downloadCurrentFullProject } from "@/actions/download";
 import CFText from "@/components/CFText";
 import CFInput from "@/components/CFInput";
@@ -163,9 +164,9 @@ const ProjectPlugin = ({ pluginInfo, ...props }: IPlugin) => {
     if (!Array.isArray(data)) {
       data = data.graphInfo;
     }
-    const json = Graph.fromJsonInfo(data as INodePack[])
-      .clone()
-      .toJson();
+    const graph = Graph.fromJsonInfo(data as INodePack[]).clone();
+    cleanGraph(graph);
+    const json = graph.toJson();
     useSafeExecute("addGraph", null, true, {
       success: async () => {
         toastWord("success", Toast_Words["import-local-project-success-message"]);
