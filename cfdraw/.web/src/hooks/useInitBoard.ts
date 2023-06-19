@@ -2,14 +2,12 @@ import { useEffect } from "react";
 import { makeObservable, observable } from "mobx";
 
 import {
-  Dictionary,
   Disposable,
   Graph,
   Logger,
   UnitTest,
   getRandomHash,
   isGroupNode,
-  isString,
   registerExecuterResponseCallback,
   removeExecuterResponseCallback,
   shallowCopy,
@@ -26,8 +24,9 @@ import {
 } from "@carefree0910/business";
 
 import type { IMeta } from "@/schema/meta";
-import { BOARD_CONTAINER_ID, IMAGE_PLACEHOLDER, IS_PROD } from "@/utils/constants";
+import { BOARD_CONTAINER_ID, IS_PROD } from "@/utils/constants";
 import { settingsStore } from "@/stores/settings";
+import { cleanGraph } from "@/actions/graphOps";
 import { useIsSetup } from "./useSetup";
 
 interface IInitStore {
@@ -68,11 +67,7 @@ export function useInitBoard(): void {
       await unittest.renderEmpty(1, onEvents);
     } else {
       const graph = Graph.fromJsonInfo(shallowCopy(initial.graphInfo));
-      graph.allSingleNodes.forEach((node) => {
-        if (node.type === "image") {
-          node.renderParams.placeholder = IMAGE_PLACEHOLDER;
-        }
-      });
+      cleanGraph(graph);
       await unittest.renderGraph(graph, null, onEvents);
     }
 
