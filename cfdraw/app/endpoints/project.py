@@ -77,9 +77,15 @@ def add_project_managements(endpoint: "ProjectEndpoint") -> None:
                 sql = f"SELECT json FROM '{userId}'"
                 results = conn.execute(sql)
                 json_strings = [result[0] for result in results.fetchall()]
-                ds = list(map(json.loads, json_strings))
-                s = sorted([(d["updateTime"], d) for d in ds], reverse=True)
-                metas = [ProjectMeta(**d) for _, d in s]
+                json_dicts = list(map(json.loads, json_strings))
+                sorted_pairs = sorted(
+                    [
+                        (json_dict["updateTime"], i)
+                        for i, json_dict in enumerate(json_dicts)
+                    ],
+                    reverse=True,
+                )
+                metas = [ProjectMeta(**json_dicts[i]) for _, i in sorted_pairs]
                 return metas
             except Exception:
                 logging.exception("failed to fetch all projects")
