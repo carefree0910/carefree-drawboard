@@ -58,15 +58,13 @@ def add_project_managements(endpoint: "ProjectEndpoint") -> None:
 
         try:
             with endpoint.get_conn(userId) as conn:
-                try:
-                    sql = f"SELECT json FROM '{userId}' WHERE uid='{uid}'"
-                    results = conn.execute(sql)
-                    json_string = results.fetchone()[0]
-                    d = json.loads(json_string)
-                except Exception as err:
-                    print(f"failed to load project '{uid}' ({get_err_msg(err)})")
+                sql = f"SELECT json FROM '{userId}' WHERE uid='{uid}'"
+                results = conn.execute(sql)
+                json_string = results.fetchone()[0]
+                d = json.loads(json_string)
             return ProjectModel(**d)
         except Exception as err:
+            print(f"failed to load project '{uid}' ({get_err_msg(err)})")
             raise_err(err)
 
     @app.api.get("/all_projects/")
