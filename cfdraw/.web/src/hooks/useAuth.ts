@@ -23,7 +23,6 @@ export const useAuth = () => {
   useEffect(() => {
     const onMessage = (e: MessageEvent<IUserStore | any>) => {
       if (!!e.data.userId) {
-        authEvent.emit(e.data);
         console.log("> incoming user message:", e);
       }
       if (!isAllowedOrigin(e.origin)) {
