@@ -1,9 +1,9 @@
-import axios from "axios";
+import axios, { AxiosInstance } from "axios";
 import { useCallback, useEffect, useMemo } from "react";
 
 import { Logger, isUndefined } from "@carefree0910/core";
 
-import type { APISources, APIs } from "@/schema/requests";
+import type { APISources } from "@/schema/requests";
 import type {
   IPythonOnSocketMessage,
   IPythonSocketRequest,
@@ -21,14 +21,12 @@ import {
 } from "@/stores/socket";
 
 // cannot use `useMemo` here
-export function useAPI<T extends APISources>(source: T): APIs[T] {
+export function useAPI<T extends APISources>(source: T): AxiosInstance {
   const timeout = settingsStore.internalSettings?.timeout ?? 300000;
   const baseURL = getBaseURL(source);
-  const apis = {
-    _python: axios.create({ baseURL, timeout }),
-  };
-  useInceptors(apis);
-  return apis[source];
+  const api = axios.create({ baseURL, timeout });
+  useInceptors(api, source);
+  return api;
 }
 
 /**

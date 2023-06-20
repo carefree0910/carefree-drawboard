@@ -1,21 +1,21 @@
-import type { APISources, APIs, Interceptors } from "@/schema/requests";
-import { _pythonInceptors } from "./_python";
+import type { AxiosInstance } from "axios";
 
-const interceptors: Record<APISources, Interceptors> = {
-  _python: _pythonInceptors,
-};
+import type { APISources, Interceptors } from "@/schema/requests";
+import { useDefaultInceptors } from "./_default";
 
-export function useInceptors(apis: APIs): void {
-  Object.entries(apis).forEach(([source, api]) => {
-    const { beforeRequest, requestError, beforeResponse, responseError } =
-      interceptors[source as APISources];
-    api.interceptors.request.use(
-      beforeRequest ?? ((config) => config),
-      requestError ?? ((error) => Promise.reject(error)),
-    );
-    api.interceptors.response.use(
-      beforeResponse ?? ((response) => response),
-      responseError ?? ((error) => Promise.reject(error)),
-    );
-  });
+export function useInceptors(
+  api: AxiosInstance,
+  source: APISources,
+  interceptors?: Interceptors,
+): void {
+  const { beforeRequest, requestError, beforeResponse, responseError } =
+    interceptors ?? useDefaultInceptors(source);
+  api.interceptors.request.use(
+    beforeRequest ?? ((config) => config),
+    requestError ?? ((error) => Promise.reject(error)),
+  );
+  api.interceptors.response.use(
+    beforeResponse ?? ((response) => response),
+    responseError ?? ((error) => Promise.reject(error)),
+  );
 }

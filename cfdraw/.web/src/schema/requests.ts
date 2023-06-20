@@ -1,7 +1,7 @@
-import type { AxiosInstance, AxiosResponse, InternalAxiosRequestConfig } from "axios";
+import type { AxiosResponse, InternalAxiosRequestConfig } from "axios";
 
 export const allAPISources = ["_python"] as const;
-export type APISources = typeof allAPISources[number];
+export type APISources = (typeof allAPISources)[number];
 export type Interceptors = {
   // Do something before request is sent
   beforeRequest?: (config: InternalAxiosRequestConfig) => InternalAxiosRequestConfig;
@@ -14,4 +14,3 @@ export type Interceptors = {
   // Do something with response error
   responseError?: (error: any) => any;
 };
-export type APIs = Record<APISources, AxiosInstance>;
