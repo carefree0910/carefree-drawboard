@@ -147,8 +147,22 @@ class IPluginSettings(IChakra):
     """
 
     # required fields
-    w: int = Field(..., ge=0, description="Width of the expanded plugin")  # type: ignore
-    h: int = Field(..., ge=0, description="Height of the expanded plugin")  # type: ignore
+    w: Union[int, float] = Field(  # type: ignore
+        ...,
+        ge=0,
+        description="""
+Width of the expanded plugin.
+> If it is less or equal than 1, we'll treat it as a ratio of the drawboard width.
+""",
+    )
+    h: Union[int, float] = Field(  # type: ignore
+        ...,
+        ge=0,
+        description="""
+Height of the expanded plugin.
+> If it is less or equal than 1, we'll treat it as a ratio of the drawboard height.
+""",
+    )
     # node constraints
     nodeConstraint: Optional[NodeConstraints] = Field(
         None,

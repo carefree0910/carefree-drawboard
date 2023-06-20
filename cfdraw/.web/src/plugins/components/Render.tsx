@@ -1,5 +1,5 @@
 import type { ChakraComponent } from "@chakra-ui/react";
-import { useCallback, useEffect, useLayoutEffect, useMemo } from "react";
+import { useCallback, useEffect, useLayoutEffect, useMemo, useState } from "react";
 import { observer } from "mobx-react-lite";
 
 import {
@@ -183,8 +183,8 @@ const Render = (({
     };
   }, [_id, inGroup, expand, groupExpand, ...infoDeps, ...constraintDeps]);
   let {
-    w,
-    h,
+    w: rawW,
+    h: rawH,
     iconW,
     iconH,
     pivot,
@@ -195,6 +195,23 @@ const Render = (({
     expandOffsetX,
     expandOffsetY,
   } = renderInfo;
+
+  // calculate w, h dynamically
+  const [w, setW] = useState(rawW);
+  const [h, setH] = useState(rawH);
+  const whUpdater = useCallback(() => {
+    if (rawW <= 1.0 || rawH <= 1.0) {
+      const { w: bw, h: bh } = useBoardContainerWH();
+      if (rawW <= 1.0) setW(Math.round(rawW * bw));
+      if (rawH <= 1.0) setH(Math.round(rawH * bh));
+    }
+  }, [rawW, rawH, isReady]);
+  useEffect(() => {
+    whUpdater();
+    window.addEventListener("resize", whUpdater);
+    return () => window.removeEventListener("resize", whUpdater);
+  }, [whUpdater]);
+
   iconW ??= DEFAULT_PLUGIN_SETTINGS.iconW;
   iconH ??= DEFAULT_PLUGIN_SETTINGS.iconH;
   pivot ??= DEFAULT_PLUGIN_SETTINGS.pivot as PivotType;
@@ -243,6 +260,8 @@ const Render = (({
     _id,
     ...infoDeps,
     groupId,
+    w,
+    h,
     iconW,
     iconH,
     pivot,
