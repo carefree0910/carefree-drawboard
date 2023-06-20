@@ -1,6 +1,6 @@
 import { makeObservable, observable } from "mobx";
 
-import { IBoardOptions, Lang } from "@carefree0910/core";
+import { IBoardOptions, Lang, isUndefined } from "@carefree0910/core";
 import { ABCStore } from "@carefree0910/business";
 
 import type { ReactPlugins, PythonPlugins, IMakePlugin } from "@/schema/plugins";
@@ -67,4 +67,4 @@ export const useFlattenedPythonPluginSettings = () => {
   };
   return settingsStore.pluginSettings.flatMap(flatten);
 };
-export const useSettingsSynced = () => !!settingsStore.boardSettings;
+export const useSettingsSynced = () => !isUndefined(settingsStore.boardSettings);
