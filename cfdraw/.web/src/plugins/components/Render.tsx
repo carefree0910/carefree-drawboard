@@ -49,7 +49,7 @@ function getExpandPosition(
     h,
     iconW,
     iconH,
-    pivot,
+    expandPivot: pivot,
     follow,
     expandOffsetX,
     expandOffsetY,
@@ -121,6 +121,7 @@ function getExpandPosition(
 
 const Render = (({
   id,
+  isGroup,
   groupId,
   nodeConstraint,
   nodeConstraintRules,
@@ -165,13 +166,28 @@ const Render = (({
       clearTimeout(timer);
     };
   }, [_id, inGroup, expand, groupExpand, ...infoDeps, ...constraintDeps]);
-  let { w, h, iconW, iconH, pivot, follow, offsetX, offsetY, expandOffsetX, expandOffsetY } =
-    renderInfo;
+  let {
+    w,
+    h,
+    iconW,
+    iconH,
+    pivot,
+    expandPivot,
+    follow,
+    offsetX,
+    offsetY,
+    expandOffsetX,
+    expandOffsetY,
+  } = renderInfo;
   iconW ??= DEFAULT_PLUGIN_SETTINGS.iconW;
   iconH ??= DEFAULT_PLUGIN_SETTINGS.iconH;
   pivot ??= DEFAULT_PLUGIN_SETTINGS.pivot as PivotType;
   follow ??= DEFAULT_PLUGIN_SETTINGS.follow;
   follow = follow || inGroup;
+  if (isUndefined(expandPivot)) {
+    const followFlag = !groupId ? follow : follow && usePluginIsFollow(groupId);
+    expandPivot = !followFlag || isGroup ? pivot : ["lb", "rb"].includes(pivot) ? pivot : "bottom";
+  }
   setPluginIsFollow(_id, follow);
   expandOffsetX ??=
     renderInfo.useModal || ["top", "center", "bottom"].includes(pivot)
@@ -195,6 +211,7 @@ const Render = (({
     iconW,
     iconH,
     pivot,
+    expandPivot,
     follow,
     expandOffsetX,
     expandOffsetY,
@@ -219,6 +236,7 @@ const Render = (({
     const _iconW = iconW!;
     const _iconH = iconH!;
     const _pivot = pivot!;
+    const _expandPivot = expandPivot!;
     const _follow = follow!;
     const _offsetX =
       offsetX ??
@@ -310,7 +328,7 @@ const Render = (({
       h,
       iconW: _iconW,
       iconH: _iconH,
-      pivot: _pivot,
+      expandPivot: _expandPivot,
       follow: _follow,
       expandOffsetX: expandOffsetX!,
       expandOffsetY: expandOffsetY!,

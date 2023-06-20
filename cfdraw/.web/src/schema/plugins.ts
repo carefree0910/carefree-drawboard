@@ -33,13 +33,14 @@ export interface IExpandPositionInfo {
   h: number;
   iconW: number;
   iconH: number;
-  pivot: PivotType;
+  expandPivot: PivotType;
   follow: boolean;
   expandOffsetX: number;
   expandOffsetY: number;
 }
 export interface IRenderInfo extends IExpandPositionInfo {
   src: IStr;
+  pivot: PivotType;
   tooltip?: IStr;
   offsetX?: number;
   offsetY?: number;

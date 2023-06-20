@@ -200,6 +200,10 @@ Pivot of the plugin.
 > Otherwise, the plugin will be shown at the pivot of the entire drawboard.
 """,
     )
+    expandPivot: Optional[PivotType] = Field(
+        None,
+        description="Pivot of the expanded panel, will be `pivot` if not specified",
+    )
     follow: Optional[bool] = Field(
         None,
         description="Whether the plugin follows the node",
