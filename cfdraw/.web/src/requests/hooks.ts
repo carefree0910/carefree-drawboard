@@ -20,12 +20,15 @@ import {
   socketLog,
 } from "@/stores/socket";
 
-// cannot use `useMemo` here
+const APIs: Partial<Record<APISources, AxiosInstance>> = {};
 export function useAPI<T extends APISources>(source: T): AxiosInstance {
+  const existing = APIs[source];
+  if (existing) return existing;
   const timeout = settingsStore.internalSettings?.timeout ?? 300000;
   const baseURL = getBaseURL(source);
   const api = axios.create({ baseURL, timeout });
   useInceptors(api, source);
+  APIs[source] = api;
   return api;
 }
 
