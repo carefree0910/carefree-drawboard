@@ -33,10 +33,10 @@ export async function uploadImage(
         userJson: userStore.json,
       });
       if (!res.success) {
-        toastWord("warning", Toast_Words["upload-image-error-message"], {
+        toastWord("error", Toast_Words["upload-image-error-message"], {
           appendix: ` - ${res.message}`,
         });
-        throw Error;
+        return;
       }
       return res.data;
     },
