@@ -59,6 +59,7 @@ export interface IFloating extends ButtonProps {
 }
 export interface IRender extends Omit<IFloating, "id" | "renderInfo">, NodeConstraintSettings {
   id?: string;
+  isGroup?: boolean;
   renderInfo: Partial<Omit<IRenderInfo, "src">> & { w: number; h: number; src: IStr };
   containerRef?: RefObject<HTMLDivElement>;
 }

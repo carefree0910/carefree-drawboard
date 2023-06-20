@@ -31,7 +31,7 @@ const PythonPluginGroup = ({ pluginInfo, renderInfo, ...props }: IPythonPluginGr
   const emitClose = useClosePanel(id);
 
   return (
-    <Render id={id} renderInfo={renderInfo} {...props}>
+    <Render isGroup id={id} renderInfo={renderInfo} {...props}>
       <Box w="100%" h="100%" p={`${p}px`}>
         <Flex>
           <CFHeading>{header}</CFHeading>
