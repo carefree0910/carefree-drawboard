@@ -10,6 +10,7 @@ import {
   allInternalPlugins,
   getHash,
   sleep,
+  isUndefined,
 } from "@carefree0910/core";
 import { ABCStore, langStore } from "@carefree0910/business";
 
@@ -120,12 +121,15 @@ const updateSettings = (data: ISettingsStore): boolean => {
     // `extraPlugins` should be updated every time to enable hot reload.
     settingsStore.extraPlugins = data.extraPlugins;
     // `internalSettings` should only be updated once.
-    if (!settingsStore.internalSettings) {
-      settingsStore.internalSettings = data.internalSettings;
+    if (isUndefined(settingsStore.internalSettings)) {
+      settingsStore.internalSettings = data.internalSettings ?? {};
     }
     // `boardSettings` should only be updated once.
-    if (!settingsStore.boardSettings) {
-      if (!data.boardSettings) return;
+    if (isUndefined(settingsStore.boardSettings)) {
+      if (!data.boardSettings) {
+        settingsStore.boardSettings = {};
+        return;
+      }
       //// Update theme styles
       Object.entries(data.boardSettings.styles ?? {}).forEach(([key, value]) => {
         if (value) {
