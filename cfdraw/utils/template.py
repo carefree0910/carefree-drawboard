@@ -41,8 +41,71 @@ class Plugin(IFieldsPlugin):
         return image.filter(ImageFilter.GaussianBlur(data.extraData["size"]))
 
 
+# This specifies the name of the plugin to be `blur`
+# If multiple plugins are used, their names should be unique
+
 register_plugin("blur")(Plugin)
 {constants.DEFAULT_ENTRY} = App()
+"""
+
+IMAGE_GROUP_APP_TEMPLATE = """
+from PIL import Image
+from PIL import ImageFilter
+from cfdraw import *
+
+# This will apply Gaussian Blur to the image
+class Plugin(IFieldsPlugin):
+    @property
+    def settings(self) -> IPluginSettings:
+        return IPluginSettings(
+            w=300,
+            h=180,
+            tooltip="Apply Gaussian Blur to the image",
+            pluginInfo=IFieldsPluginInfo(
+                definitions=dict(
+                    size=INumberField(
+                        default=3,
+                        min=1,
+                        max=10,
+                        step=1,
+                        isInt=True,
+                        label="Size",
+                    )
+                ),
+            ),
+        )
+
+    async def process(self, data: ISocketRequest) -> Image.Image:
+        image = await self.load_image(data.nodeData.src)
+        return image.filter(ImageFilter.GaussianBlur(data.extraData["size"]))
+
+# This will group the plugins together
+class PluginGroup(IPluginGroup):
+    @property
+    def settings(self) -> IPluginSettings:
+        return IPluginSettings(
+            w=200,
+            h=110,
+            nodeConstraint=NodeConstraints.IMAGE,
+            follow=True,
+            pivot=PivotType.RT,
+            tooltip="Image processing plugin group",
+            pluginInfo=IPluginGroupInfo(
+                header="Image Processing",
+                plugins=dict(
+                    # This specifies the name of the plugin to be `blur`
+                    # If multiple plugins are used, their names should be unique
+                    blur=Plugin,
+                ),
+            ),
+        )
+
+
+# This specifies the name of the plugin group to be `group`
+# If multiple plugins are used, their names should be unique
+
+register_plugin("group")(PluginGroup)
+app = App()
 """
 
 CONFIG_TEMPLATE = f"""
@@ -57,9 +120,13 @@ from cfdraw import *
 
 class TemplateType(str, Enum):
     IMAGE = "image"
+    IMAGE_GROUP = "image_group"
 
 
-app_templates = {TemplateType.IMAGE: IMAGE_APP_TEMPLATE}
+app_templates = {
+    TemplateType.IMAGE: IMAGE_APP_TEMPLATE,
+    TemplateType.IMAGE_GROUP: IMAGE_GROUP_APP_TEMPLATE,
+}
 
 
 def ask_overwrite(path: Path) -> bool:
