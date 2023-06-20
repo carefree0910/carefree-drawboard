@@ -69,11 +69,27 @@ function getExpandPosition(
   }
   // check modal
   if (isModal) {
-    pivot = "center";
+    follow = false;
     const { w: bw, h: bh } = useBoardContainerWH();
     const { x: left, y: top } = useBoardContainerLeftTop();
-    x = left + 0.5 * (bw - iconW);
-    y = top + 0.5 * (bh - h) - iconH;
+    //// x
+    if (["top", "center", "bottom"].includes(pivot)) {
+      x = left + 0.5 * (bw - iconW);
+    } else if (["rt", "right", "rb"].includes(pivot)) {
+      x = left + bw;
+    } else {
+      x = left - iconW;
+    }
+    //// y
+    if (pivot === "center") {
+      y = top + 0.5 * (bh - h) - iconH;
+    } else if (["left", "right"].includes(pivot)) {
+      y = top + 0.5 * (bh - iconH);
+    } else if (["lb", "bottom", "rb"].includes(pivot)) {
+      y = top + bh;
+    } else {
+      y = top - iconH;
+    }
   }
   // x
   if (["top", "center", "bottom"].includes(pivot)) {
@@ -185,8 +201,13 @@ const Render = (({
   follow ??= DEFAULT_PLUGIN_SETTINGS.follow;
   follow = follow || inGroup;
   if (isUndefined(expandPivot)) {
-    const followFlag = !groupId ? follow : follow && usePluginIsFollow(groupId);
-    expandPivot = !followFlag || isGroup ? pivot : ["lb", "rb"].includes(pivot) ? pivot : "bottom";
+    if (renderInfo.useModal) {
+      expandPivot = "center";
+    } else {
+      const followFlag = !groupId ? follow : follow && usePluginIsFollow(groupId);
+      expandPivot =
+        !followFlag || isGroup ? pivot : ["lb", "rb"].includes(pivot) ? pivot : "bottom";
+    }
   }
   setPluginIsFollow(_id, follow);
   expandOffsetX ??=
