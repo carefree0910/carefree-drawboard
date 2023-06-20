@@ -75,7 +75,7 @@ def get_upload_root() -> str:
 ROOT = Path(os.path.dirname(__file__))
 WEB_ROOT = ROOT / ".web"
 ## upload
-UPLOAD_ROOT = Path("~").expanduser() / ".cache" / "carefree-draw"
+UPLOAD_ROOT = Path("~").expanduser() / ".cache" / "carefree-drawboard" / "_upload"
 UPLOAD_IMAGE_FOLDER_NAME = ".images"
 UPLOAD_PROJECT_FOLDER_NAME = ".projects"
 BUGGY_PROJECT_FOLDER = ".buggy"
