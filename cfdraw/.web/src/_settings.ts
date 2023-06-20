@@ -172,7 +172,7 @@ export const reactPluginSettings: IMakePlugin<ReactPlugins | "_python.pluginGrou
     type: "basicEditor",
     props: {
       nodeConstraintRules: {
-        some: ["svg", "image", "path", "rectangle", "group", "frame"],
+        some: ["svg", "path", "rectangle", "group", "frame"],
       },
       renderInfo: {
         w: 280,
@@ -195,6 +195,21 @@ export const reactPluginSettings: IMakePlugin<ReactPlugins | "_python.pluginGrou
         h: 420,
         src: EditorIcon,
         tooltip: "text-editor-tooltip",
+        pivot: "right",
+        follow: true,
+      },
+      pluginInfo: {},
+    },
+  },
+  {
+    type: "imageEditor",
+    props: {
+      nodeConstraint: "image",
+      renderInfo: {
+        w: 400,
+        h: 420,
+        src: EditorIcon,
+        tooltip: "image-editor-tooltip",
         pivot: "right",
         follow: true,
       },
