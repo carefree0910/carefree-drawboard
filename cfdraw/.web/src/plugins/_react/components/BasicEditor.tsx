@@ -15,10 +15,24 @@ const BasicEditor = () => {
   if (!useIsReady()) return null;
   const info = useSelecting("basic")({ fixed: 1 });
   if (!info) return null;
-  const { type, x, y, w, h, rotation, displayNode, setX, setY, setW, setH, setRotation } = info;
+  const {
+    type,
+    x,
+    y,
+    w,
+    h,
+    rotation,
+    displayNode,
+    setX,
+    setY,
+    setW,
+    setH,
+    setRotation,
+    selectingNode,
+  } = info;
   if (type === "none" || type === "multiple") return null;
   return (
-    <Flex w="100%" px="12px" gap="12px" wrap="wrap" justify="flex-start">
+    <Flex w="100%" px="12px" gap="12px" wrap="wrap" justify="flex-start" key={selectingNode.alias}>
       <FieldInput caption="X" value={x} setValue={setX({ trace: true })} />
       <FieldInput caption="Y" value={y} setValue={setY({ trace: true })} />
       <FieldInput caption="W" value={w} setValue={setW({ trace: true })} />
