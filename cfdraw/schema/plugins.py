@@ -147,8 +147,8 @@ class IPluginSettings(IChakra):
     """
 
     # required fields
-    w: int = Field(..., gt=0, description="Width of the expanded plugin")  # type: ignore
-    h: int = Field(..., gt=0, description="Height of the expanded plugin")  # type: ignore
+    w: int = Field(..., ge=0, description="Width of the expanded plugin")  # type: ignore
+    h: int = Field(..., ge=0, description="Height of the expanded plugin")  # type: ignore
     # node constraints
     nodeConstraint: Optional[NodeConstraints] = Field(
         None,
@@ -638,8 +638,8 @@ class ILogoPluginInfo(IPluginInfo):
 
 
 class ILogoSettings(IPluginSettings):
-    w: int = Field(0, gt=0, description="Width of the expanded plugin")  # type: ignore
-    h: int = Field(0, gt=0, description="Height of the expanded plugin")  # type: ignore
+    w: int = Field(0, ge=0, description="Width of the expanded plugin")  # type: ignore
+    h: int = Field(0, ge=0, description="Height of the expanded plugin")  # type: ignore
 
 
 class IPluginGroupInfo(IPluginInfo):
