@@ -34,7 +34,7 @@ function SelectField({ definition, ...fieldKeys }: IField<ISelectField>) {
             hash,
             userId,
             userJson,
-            baseURL: getBaseURL(),
+            baseURL: getBaseURL("_python"),
             identifier: "sync_local_select",
             nodeData: {},
             nodeDataList: [],

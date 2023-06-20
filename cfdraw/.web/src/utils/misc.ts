@@ -1,3 +1,5 @@
+import type { APISources } from "@/schema/requests";
+
 // {identifier}.{hash}
 export function stripHashFromIdentifier(identifierWithHash: string): string {
   return identifierWithHash.includes(".")
@@ -33,7 +35,7 @@ export function cleanURL(url: string) {
   return url.trim().replace(/\/+$/, "");
 }
 
-export function getBaseURL(): string {
+function getPythonBaseURL(): string {
   let baseURL = cleanURL(getEnv("CFDRAW_API_URL"));
   if (!baseURL) {
     if (import.meta.env.PROD) {
@@ -47,6 +49,12 @@ export function getBaseURL(): string {
     }
   }
   return baseURL;
+}
+export function getBaseURL(source: APISources): string {
+  if (source === "_python") {
+    return getPythonBaseURL();
+  }
+  throw new Error(`unknown source: ${source}`);
 }
 
 export function getEnv(key: keyof Window["_env_"]): string {

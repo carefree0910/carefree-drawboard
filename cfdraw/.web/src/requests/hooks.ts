@@ -23,7 +23,7 @@ import {
 // cannot use `useMemo` here
 export function useAPI<T extends APISources>(source: T): APIs[T] {
   const timeout = settingsStore.internalSettings?.timeout ?? 300000;
-  const baseURL = getBaseURL();
+  const baseURL = getBaseURL(source);
   const apis = {
     _python: axios.create({ baseURL, timeout }),
   };

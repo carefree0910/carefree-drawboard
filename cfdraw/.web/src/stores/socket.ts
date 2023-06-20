@@ -186,7 +186,7 @@ interface IUseWebSocket {
 }
 export function useWebSocket(opt?: IUseWebSocket) {
   const interval = opt?.interval ?? 1000;
-  const baseURL = getBaseURL();
+  const baseURL = getBaseURL("_python");
   const socketURL = baseURL.replace("http", "ws").replace("https", "wss");
   const socketEndpoint = settingsStore.internalSettings?.socketEndpoint ?? "/ws";
 

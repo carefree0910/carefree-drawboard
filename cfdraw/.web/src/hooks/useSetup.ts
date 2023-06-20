@@ -200,7 +200,7 @@ function useSyncPython() {
         hash,
         userId,
         userJson,
-        baseURL: getBaseURL(),
+        baseURL: getBaseURL("_python"),
         identifier: "sync",
         nodeData: {},
         nodeDataList: [],

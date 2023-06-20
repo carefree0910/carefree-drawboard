@@ -123,7 +123,7 @@ export async function getPythonRequest({
   return {
     userId: userStore.userId,
     userJson: userStore.json,
-    baseURL: getBaseURL(),
+    baseURL: getBaseURL("_python"),
     identifier,
     nodeData,
     nodeDataList,
