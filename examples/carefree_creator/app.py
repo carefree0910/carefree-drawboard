@@ -369,7 +369,7 @@ class SDInpainting(IFieldsPlugin):
     def settings(self) -> IPluginSettings:
         return IPluginSettings(
             w=common_styles["w"],
-            h=common_styles["h"] - 100,
+            h=410,
             useModal=True,
             src=constants.SD_INPAINTING_ICON,
             tooltip=I18N(
@@ -548,9 +548,7 @@ class MultiControlNet(IFieldsPlugin):
     @property
     def settings(self) -> IPluginSettings:
         return IPluginSettings(
-            w=800,
-            h=640,
-            useModal=True,
+            **common_styles,
             keepOpen=True,
             src=constants.CONTROLNET_ICON,
             tooltip=I18N(
