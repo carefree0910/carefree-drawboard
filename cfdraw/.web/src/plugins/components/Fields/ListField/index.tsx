@@ -80,6 +80,7 @@ function ListField({ definition, gap, ...fieldKeys }: IField<IListField> & { gap
   const totalH = fieldH + gap + expandH;
 
   const onAdd = () => {
+    setExpanded(true);
     setMetaField(fieldKeys, [...values, getDefaults(definition.item)]);
   };
   const onDelete = (index: number) => {
