@@ -71,8 +71,8 @@ class Plugin(IFieldsPlugin):
         od = definitions.copy()
         od["label9"] = list_definition
         return IPluginSettings(
-            w=800,
-            h=800,
+            w=0.8,
+            h=0.8,
             tooltip=(
                 "Just display the fields and see if everything is nice looking "
                 "and works as expected (When you submit, we will display the "
