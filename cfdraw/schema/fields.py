@@ -177,6 +177,10 @@ class IListField(IBaseField):
         default_factory=lambda: [],
         description="The default items of the field",
     )
+    displayKey: Optional[str] = Field(
+        None,
+        description="The key of the field to be displayed when collapsed",
+    )
     maxNumRows: Optional[int] = Field(None, description="Maximum number of rows")
     type: FieldType = Field(FieldType.LIST, description="Type", const=True)
 

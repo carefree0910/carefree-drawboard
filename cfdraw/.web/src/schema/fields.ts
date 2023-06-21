@@ -59,6 +59,7 @@ export interface IListField extends IBaseFields {
   type: "list";
   item: IDefinitions;
   default: any[];
+  displayKey?: string;
   maxNumRows?: number;
 }
 export interface IObjectField extends IBaseFields {
