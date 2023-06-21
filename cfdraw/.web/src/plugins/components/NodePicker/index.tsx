@@ -209,29 +209,27 @@ function NodePicker<T extends INode>({
           </CFTooltip>
         </Center>
       </PopoverTrigger>
-      <Portal>
-        <PopoverContent w="366px" h="320px" bg={`${panelBg}cc`}>
-          <PopoverArrow />
-          <Flex
-            w="100%"
-            h="100%"
-            p="16px"
-            wrap="wrap"
-            gap="12px"
-            align="center"
-            alignContent="flex-start"
-            overflow="hidden"
-            sx={useScrollBarSx()}>
-            {specialGalleryItem}
-            {!!onClear && <GalleryClear onClear={onClear} />}
-            {nodes.map(gallerItemBuilder)}
-            <div ref={setLoader} />
-            {!hasMore && (
-              <CFCaption>{translate(UI_Words["node-picker-no-more-caption"], lang)}</CFCaption>
-            )}
-          </Flex>
-        </PopoverContent>
-      </Portal>
+      <PopoverContent w="366px" h="320px" bg={`${panelBg}cc`}>
+        <PopoverArrow />
+        <Flex
+          w="100%"
+          h="100%"
+          p="16px"
+          wrap="wrap"
+          gap="12px"
+          align="center"
+          alignContent="flex-start"
+          overflow="hidden"
+          sx={useScrollBarSx()}>
+          {specialGalleryItem}
+          {!!onClear && <GalleryClear onClear={onClear} />}
+          {nodes.map(gallerItemBuilder)}
+          <div ref={setLoader} />
+          {!hasMore && (
+            <CFCaption>{translate(UI_Words["node-picker-no-more-caption"], lang)}</CFCaption>
+          )}
+        </Flex>
+      </PopoverContent>
     </Popover>
   );
 }
