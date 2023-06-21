@@ -147,7 +147,7 @@ class IPluginSettings(IChakra):
     """
 
     # required fields
-    w: Union[int, float] = Field(  # type: ignore
+    w: Union[float, int] = Field(  # type: ignore
         ...,
         ge=0,
         description="""
@@ -155,7 +155,7 @@ Width of the expanded plugin.
 > If it is less or equal than 1, we'll treat it as a ratio of the drawboard width.
 """,
     )
-    h: Union[int, float] = Field(  # type: ignore
+    h: Union[float, int] = Field(  # type: ignore
         ...,
         ge=0,
         description="""
