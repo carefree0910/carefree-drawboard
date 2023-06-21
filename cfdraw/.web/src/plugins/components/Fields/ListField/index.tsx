@@ -18,7 +18,13 @@ import { titleCaseWord } from "@/utils/misc";
 import { EXPAND_TRANSITION } from "@/utils/constants";
 import { UI_Words } from "@/lang/ui";
 import { useScrollBarSx } from "@/stores/theme";
-import { getMetaField, setMetaField, setMetaInjection } from "@/stores/meta";
+import {
+  getListInjectionKey,
+  getMetaField,
+  getMetaInjection,
+  setMetaField,
+  setMetaInjection,
+} from "@/stores/meta";
 import { parseIStr } from "@/actions/i18n";
 import CFIcon from "@/components/CFIcon";
 import CFText, { CFCaption } from "@/components/CFText";
@@ -68,8 +74,19 @@ function ListField({ definition, gap, ...fieldKeys }: IField<IListField> & { gap
     setMetaField(fieldKeys, newValues);
     runInAction(() => {
       Object.keys(definition.item).forEach((key) => {
+        for (let i = index; i < newValues.length; i++) {
+          setMetaInjection(
+            { field: key, listProperties: { listKey: field, listIndex: i } },
+            getMetaInjection(
+              getListInjectionKey({
+                field: key,
+                listProperties: { listKey: field, listIndex: i + 1 },
+              }),
+            ),
+          );
+        }
         setMetaInjection(
-          { field: key, listProperties: { listKey: field, listIndex: index } },
+          { field: key, listProperties: { listKey: field, listIndex: newValues.length } },
           undefined,
         );
       });
