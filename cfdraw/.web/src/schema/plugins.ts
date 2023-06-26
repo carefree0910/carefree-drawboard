@@ -41,6 +41,10 @@ export interface IExpandPositionInfo {
 export interface IRenderInfo extends IExpandPositionInfo {
   src: IStr;
   pivot: PivotType;
+  minW?: number;
+  minH?: number;
+  maxW?: number;
+  maxH?: number;
   tooltip?: IStr;
   offsetX?: number;
   offsetY?: number;
