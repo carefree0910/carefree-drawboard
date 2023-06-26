@@ -248,6 +248,14 @@ img2img_fields = OrderedDict(
     lora=lora_field,
 )
 # super resolution fields
+sr_w_field = w_field.copy()
+sr_w_field.default = 2048
+sr_w_field.min = 1024
+sr_w_field.max = 3096
+sr_h_field = h_field.copy()
+sr_h_field.default = 2048
+sr_h_field.min = 1024
+sr_h_field.max = 3096
 sr_fields = OrderedDict(
     is_anime=IBooleanField(
         default=False,
@@ -260,6 +268,8 @@ sr_fields = OrderedDict(
             en="Whether should we use the super resolution model which is finetuned on anime images.",
         ),
     ),
+    target_w=sr_w_field,
+    target_h=sr_h_field,
 )
 # inpainting fields
 inpainting_fields = OrderedDict(

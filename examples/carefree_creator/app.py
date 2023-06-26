@@ -247,8 +247,8 @@ class SR(IFieldsPlugin):
     @property
     def settings(self) -> IPluginSettings:
         return IPluginSettings(
-            w=240,
-            h=180,
+            w=320,
+            h=300,
             src=constants.SR_ICON,
             tooltip=I18N(
                 zh="图片变高清",
