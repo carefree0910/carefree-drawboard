@@ -1,6 +1,5 @@
 import { useState } from "react";
 import { observer } from "mobx-react-lite";
-import { ColorChangeHandler } from "react-color";
 
 import type { IField } from "@/schema/plugins";
 import type { IColorField } from "@/schema/fields";
@@ -16,9 +15,9 @@ function ColorField({ definition, ...fieldKeys }: IField<IColorField>) {
   const tooltip = parseIStr(definition.tooltip ?? "");
   const defaultColor = parseIStr(definition.default ?? "");
   const [value, setValue] = useState(getMetaField(fieldKeys) ?? defaultColor);
-  const onChange: ColorChangeHandler = (color) => {
-    setValue(color.hex);
-    setMetaField(fieldKeys, color.hex);
+  const onChange = (color: string) => {
+    setValue(color);
+    setMetaField(fieldKeys, color);
   };
 
   return (

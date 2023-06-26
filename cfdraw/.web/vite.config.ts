@@ -62,7 +62,7 @@ export default defineConfig({
             "@svgdotjs/svg.topoly.js",
           ],
           "lottie-web": ["lottie-web"],
-          "react-color": ["react-color"],
+          "react-colorful": ["react-colorful"],
           "chakra-react-select": ["chakra-react-select"],
           "react-markdown": ["react-markdown", "remark-gfm", "react-syntax-highlighter"],
           "@carefree0910/core": ["@carefree0910/core"],

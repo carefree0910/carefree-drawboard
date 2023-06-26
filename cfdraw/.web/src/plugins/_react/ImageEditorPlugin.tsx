@@ -1,4 +1,3 @@
-import type { ColorChangeHandler } from "react-color";
 import { useEffect, useState } from "react";
 import { observer } from "mobx-react-lite";
 import { Flex } from "@chakra-ui/react";

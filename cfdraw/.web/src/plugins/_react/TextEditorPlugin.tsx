@@ -1,10 +1,15 @@
-import type { ColorChangeHandler } from "react-color";
-import { useEffect, useState } from "react";
+import { useCallback, useEffect, useState } from "react";
 import { observer } from "mobx-react-lite";
 import { Flex } from "@chakra-ui/react";
 
-import { Lang, TextAlign, allTextAlign } from "@carefree0910/core";
-import { langStore, selectingNodesStore, translate, useEditText } from "@carefree0910/business";
+import { INode, Lang, TextAlign, allTextAlign } from "@carefree0910/core";
+import {
+  langStore,
+  selectingNodesStore,
+  translate,
+  useEditText,
+  useSelecting,
+} from "@carefree0910/business";
 
 import type { IPlugin } from "@/schema/plugins";
 import { UI_Words } from "@/lang/ui";
@@ -27,6 +32,8 @@ const textAlignDict: Record<TextAlign, Record<Lang, string>> = {
   justify: { zh: "两端对齐", en: "Justify" },
 };
 
+let tracedNode: INode | null;
+let tracedColor: string | undefined;
 const TextEditorPlugin = ({ pluginInfo: { node }, ...props }: IPlugin) => {
   const id = usePluginIds("textEditor").id;
   const lang = langStore.tgt;
@@ -34,33 +41,45 @@ const TextEditorPlugin = ({ pluginInfo: { node }, ...props }: IPlugin) => {
   const [fontSize, setFontSize] = useState(0);
 
   const textParams = selectingNodesStore.info.textParams;
-  const { editColor, editContent, editFontSize, editAlign } = useEditText();
+  const [color, setColor] = useState("#ffffff");
+  const { editColor, editContent, editFontSize, editAlign } = useEditText({
+    node: node?.type === "text" ? node : tracedNode?.type === "text" ? tracedNode : undefined,
+  });
   useEffect(() => {
     if (node?.type === "text") {
+      setColor(node.params.color ?? "#ffffff");
       setContent(node.params.content);
       setFontSize(node.params.fontSize);
     }
   }, [node]);
+  useEffect(() => {
+    if (!node && tracedNode?.type === "text") {
+      onChangeColorComplete();
+    }
+  }, [node, tracedNode]);
 
-  const onChangeColor: ColorChangeHandler = (color) => {
-    editColor({ trace: false })(color.hex);
+  const onChangeColor = (color: string) => {
+    setColor(color);
+    editColor({ trace: false })(color);
+    tracedNode = node;
   };
-  const onChangeColorComplete: ColorChangeHandler = (color) => {
+  const onChangeColorComplete = useCallback(() => {
+    if (!color || color === tracedColor) return;
     console.log(">>> onChangeComplete");
-    editColor({ trace: true })(color.hex);
-  };
+    tracedNode = null;
+    tracedColor = color;
+    editColor({ trace: true })(color);
+  }, [node, color, tracedColor]);
   const onChangeAlign: ICFSelect<TextAlign, false>["onChange"] = (e) => {
     if (!!e) {
       editAlign({ trace: true })(e.value);
     }
   };
 
-  let textColor: string | undefined;
   let textAlign: TextAlign = "left";
   if (node?.type !== "text" || !textParams) {
     props.renderInfo.isInvisible = true;
   } else {
-    textColor = textParams.color;
     textAlign = textParams.align ?? "left";
   }
 
@@ -86,10 +105,10 @@ const TextEditorPlugin = ({ pluginInfo: { node }, ...props }: IPlugin) => {
             onBlur={() => editFontSize({ trace: true })(fontSize)}
           />
           <CFColorPicker
-            color={textColor}
+            color={color}
             onChange={onChangeColor}
-            onChangeComplete={onChangeColorComplete}
             thumbnailProps={{ ml: "12px" }}
+            onClose={onChangeColorComplete}
           />
         </Flex>
         <CFDivider />

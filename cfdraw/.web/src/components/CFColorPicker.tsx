@@ -1,3 +1,4 @@
+import type { ColorPickerBaseProps } from "react-colorful/dist/types";
 import React from "react";
 import { observer } from "mobx-react-lite";
 import {
@@ -11,22 +12,29 @@ import {
   PopoverTrigger,
   Portal,
   Spacer,
+  useDisclosure,
 } from "@chakra-ui/react";
-import { ChromePicker, ChromePickerProps } from "react-color";
+import { HexAlphaColorPicker as Picker } from "react-colorful";
 
 import CFTooltip, { CFFormLabel } from "./CFTooltip";
 
 interface IColorPicker {
-  pickerProps?: ChromePickerProps;
+  pickerProps?: ColorPickerBaseProps<string>;
   thumbnailProps?: ButtonProps;
+  onClose?: () => void;
 }
-const ColorPicker: React.FC<IColorPicker> = ({ pickerProps, thumbnailProps }) => {
+const ColorPicker: React.FC<IColorPicker> = ({
+  pickerProps,
+  thumbnailProps,
+  onClose: externalOnClose,
+}) => {
   const color = pickerProps?.color;
+  const { isOpen, onToggle, onClose } = useDisclosure({ onClose: externalOnClose });
 
   if (!color) return null;
 
   return (
-    <Popover>
+    <Popover isOpen={isOpen} onClose={onClose}>
       <PopoverTrigger>
         <Box
           as="button"
@@ -35,6 +43,7 @@ const ColorPicker: React.FC<IColorPicker> = ({ pickerProps, thumbnailProps }) =>
           position="relative"
           borderWidth="4px"
           borderColor="transparent"
+          onClick={onToggle}
           {...thumbnailProps}>
           <Box
             w="100%"
@@ -48,14 +57,14 @@ const ColorPicker: React.FC<IColorPicker> = ({ pickerProps, thumbnailProps }) =>
       </PopoverTrigger>
       <Portal>
         <PopoverContent w="100%" h="100%">
-          <ChromePicker disableAlpha {...pickerProps} />
+          <Picker {...pickerProps} />
         </PopoverContent>
       </Portal>
     </Popover>
   );
 };
 
-interface ICFColorPicker extends ChromePickerProps {
+interface ICFColorPicker extends ColorPickerBaseProps<string> {
   label?: string;
   tooltip?: string;
   formProps?: {
@@ -63,13 +72,26 @@ interface ICFColorPicker extends ChromePickerProps {
     control?: FormControlProps;
   };
   thumbnailProps?: ButtonProps;
+  onClose?: () => void;
 }
-function CFColorPicker({ label, tooltip, formProps, thumbnailProps, ...props }: ICFColorPicker) {
+function CFColorPicker({
+  label,
+  tooltip,
+  formProps,
+  thumbnailProps,
+  onClose,
+  ...props
+}: ICFColorPicker) {
+  const colorPickerProps: IColorPicker = {
+    pickerProps: props,
+    thumbnailProps,
+    onClose,
+  };
   if (!label) {
     return (
       <CFTooltip label={tooltip}>
         <Box>
-          <ColorPicker pickerProps={props} thumbnailProps={thumbnailProps} />
+          <ColorPicker {...colorPickerProps} />
         </Box>
       </CFTooltip>
     );
@@ -78,7 +100,7 @@ function CFColorPicker({ label, tooltip, formProps, thumbnailProps, ...props }: 
     <FormControl display="flex" alignItems="center" {...formProps?.control}>
       <CFFormLabel label={label} tooltip={{ label: tooltip }} {...formProps?.label} />
       <Spacer />
-      <ColorPicker pickerProps={props} thumbnailProps={thumbnailProps} />
+      <ColorPicker {...colorPickerProps} />
     </FormControl>
   );
 }
