@@ -217,10 +217,10 @@
     "@babel/helper-validator-identifier" "^7.19.1"
     to-fast-properties "^2.0.0"
 
-"@carefree0910/business@~0.5.1-alpha.26":
-  version "0.5.1-alpha.26"
-  resolved "https://registry.npmmirror.com/@carefree0910/business/-/business-0.5.1-alpha.26.tgz#c11c72bcd538f9d388a1c3e807a44985bf61abbb"
-  integrity sha512-+FzxireloiJTky68DGI0aanaiG8+ZPxvoyDn4ZNO2KpzDI1NZuhfNgsDuING7zKNXhqGtLOvRE1r3avfxOCpJg==
+"@carefree0910/business@~0.5.1-alpha.27":
+  version "0.5.1-alpha.27"
+  resolved "https://registry.npmmirror.com/@carefree0910/business/-/business-0.5.1-alpha.27.tgz#139937f174424fe9d0bf0d841dba4563c74bf278"
+  integrity sha512-WgRImTWa1elzfCumrsbSf9n43tskv6ReNPDhMKVsTCOP5/AJ89fvp9kuwWiIbNkrNtL/2TysxE3VrYHQybWj8g==
   dependencies:
     "@carefree0910/core" "^0.5.1-alpha.26"
     "@carefree0910/svg" "^0.5.1-alpha.26"
