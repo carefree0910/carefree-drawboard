@@ -191,6 +191,22 @@ Spcify when the plugin will be shown.
         ),
     )
     # style fields
+    minW: Optional[int] = Field(  # type: ignore
+        None,
+        description="Minimum width of the expanded plugin",
+    )
+    minH: Optional[int] = Field(  # type: ignore
+        None,
+        description="Minimum height of the expanded plugin",
+    )
+    maxW: Optional[int] = Field(  # type: ignore
+        None,
+        description="Maximum width of the expanded plugin",
+    )
+    maxH: Optional[int] = Field(  # type: ignore
+        None,
+        description="Maximum height of the expanded plugin",
+    )
     src: Optional[IStr] = Field(
         None,
         description="""
@@ -288,8 +304,8 @@ Pivot of the plugin.
         node_constraint_validator = d.pop("nodeConstraintValidator")
         button_props = d.pop("buttonProps", None) or {}
         for field in IChakra.__fields__:
-            # `w` and `h` are special fields, should not be included in `chakra_props`
-            if field in ["w", "h"]:
+            # `w`, `h`, ... are special fields, should not be included in `chakra_props`
+            if field in ["w", "h", "minW", "minH", "maxW", "maxH"]:
                 continue
             chakra_value = d.pop(field)
             if chakra_value is not None:

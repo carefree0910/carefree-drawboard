@@ -44,6 +44,10 @@ const Floating = forwardRef(function (
     groupId,
     w: _w, // will not take effect
     h: _h, // will not take effect
+    minW: _minW, // will not take effect
+    minH: _minH, // will not take effect
+    maxW: _maxW, // will not take effect
+    maxH: _maxH, // will not take effect
     renderInfo: {
       w,
       h,

@@ -17,6 +17,10 @@ class TextAlign(str, Enum):
 class IChakra(BaseModel):
     w: Optional[str] = Field(None, description="Width")
     h: Optional[str] = Field(None, description="Height")
+    minW: Optional[str] = Field(None, description="Min Width")
+    minH: Optional[str] = Field(None, description="Min Height")
+    maxW: Optional[str] = Field(None, description="Max Width")
+    maxH: Optional[str] = Field(None, description="Max Height")
     p: Optional[str] = Field(None, description="Padding")
     bg: Optional[str] = Field(None, description="Background color")
     textAlign: Optional[TextAlign] = Field(None, description="Text align")

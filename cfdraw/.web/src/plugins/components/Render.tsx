@@ -185,6 +185,10 @@ const Render = (({
   let {
     w: rawW,
     h: rawH,
+    minW,
+    minH,
+    maxW,
+    maxH,
     iconW,
     iconH,
     pivot,
@@ -197,8 +201,8 @@ const Render = (({
   } = renderInfo;
 
   // calculate w, h dynamically
-  const [w, setW] = useState(rawW);
-  const [h, setH] = useState(rawH);
+  let [w, setW] = useState(rawW);
+  let [h, setH] = useState(rawH);
   const whUpdater = useCallback(() => {
     if (rawW <= 1.0 || rawH <= 1.0) {
       const { w: bw, h: bh } = useBoardContainerWH();
@@ -211,6 +215,11 @@ const Render = (({
     window.addEventListener("resize", whUpdater);
     return () => window.removeEventListener("resize", whUpdater);
   }, [whUpdater]);
+
+  if (!isUndefined(minW) && w < minW) w = minW;
+  if (!isUndefined(minH) && h < minH) h = minH;
+  if (!isUndefined(maxW) && w > maxW) w = maxW;
+  if (!isUndefined(maxH) && h > maxH) h = maxH;
 
   iconW ??= DEFAULT_PLUGIN_SETTINGS.iconW;
   iconH ??= DEFAULT_PLUGIN_SETTINGS.iconH;
