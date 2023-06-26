@@ -25,21 +25,9 @@ w_field = INumberField(
         en="The width of the generated image",
     ),
 )
-h_field = INumberField(
-    default=512,
-    min=64,
-    max=1024,
-    step=64,
-    isInt=True,
-    label=I18N(
-        zh="高",
-        en="Height",
-    ),
-    tooltip=I18N(
-        zh="生成图片的高度",
-        en="The height of the generated image",
-    ),
-)
+h_field = w_field.copy()
+h_field.label = I18N(zh="高", en="Height")
+h_field.tooltip = I18N(zh="生成图片的高度", en="The height of the generated image")
 max_wh_field = INumberField(
     default=1024,
     min=256,
