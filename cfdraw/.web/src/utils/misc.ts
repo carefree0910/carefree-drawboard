@@ -1,3 +1,5 @@
+import { replaceAll } from "@carefree0910/core";
+
 import type { APISources } from "@/schema/requests";
 
 // {identifier}.{hash}
@@ -59,6 +61,6 @@ export function getBaseURL(source: APISources): string {
 
 export function getEnv(key: keyof Window["_env_"]): string {
   let windowEnv = window._env_[key];
-  if (windowEnv.replaceAll(" ", "") === `{{${key}}}`) windowEnv = "";
+  if (replaceAll(windowEnv, " ", "") === `{{${key}}}`) windowEnv = "";
   return windowEnv || import.meta.env[`VITE_${key}`] || "";
 }

@@ -1,7 +1,7 @@
 import { useCallback, useEffect } from "react";
 import { action, makeObservable, observable, runInAction } from "mobx";
 
-import { Dictionary, getRandomHash, isUndefined } from "@carefree0910/core";
+import { Dictionary, getRandomHash, isUndefined, replaceAll } from "@carefree0910/core";
 import { ABCStore, useIsReady } from "@carefree0910/business";
 
 import type { IMeta } from "@/schema/meta";
@@ -115,7 +115,7 @@ export function usePluginIds(identifier: string, hasEffect?: boolean): IDs;
 export function usePluginIds(input: ReactPlugins | string, hasEffect: boolean = true): IDs {
   const pureIdentifier = allReactPlugins.includes(input)
     ? input
-    : stripHashFromIdentifier(input).replaceAll(".", "_");
+    : replaceAll(stripHashFromIdentifier(input), ".", "_");
   return pluginsInfoStore.setDefault("ids", {
     key: pureIdentifier,
     hasEffect,
