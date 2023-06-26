@@ -44,7 +44,15 @@ const MetaPlugin = ({ pluginInfo, ...others }: IPlugin) => {
           delete meta.data.response.extra[WORKFLOW_KEY];
         }
         if (!!meta.data.response.extra[DATA_MODEL_KEY]) {
-          delete meta.data.response.extra[DATA_MODEL_KEY];
+          for (const [key, value] of Object.entries(meta.data.response.extra[DATA_MODEL_KEY])) {
+            if (
+              !value ||
+              (Array.isArray(value) && value.length === 0) ||
+              (typeof value === "object" && Object.keys(value).length === 0)
+            ) {
+              delete meta.data.response.extra[DATA_MODEL_KEY][key];
+            }
+          }
         }
       }
       if (!!meta.data?.injections) {
