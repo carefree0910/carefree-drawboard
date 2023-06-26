@@ -7,7 +7,13 @@ from cflearn.api.cv.diffusion import ControlNetHints
 
 
 # common styles
-common_styles = dict(w=0.75, h=0.6, useModal=True)
+common_styles = dict(
+    w=0.75,
+    h=0.6,
+    maxW=800,
+    minH=600,
+    useModal=True,
+)
 common_group_styles = dict(w=230, h=110)
 # common diffusion fields
 w_field = INumberField(
