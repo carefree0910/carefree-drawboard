@@ -4,10 +4,12 @@ import { observer } from "mobx-react-lite";
 import {
   Box,
   ButtonProps,
+  Flex,
   FormControl,
   FormControlProps,
   FormLabelProps,
   Popover,
+  PopoverArrow,
   PopoverContent,
   PopoverTrigger,
   Portal,
@@ -16,7 +18,11 @@ import {
 } from "@chakra-ui/react";
 import { HexAlphaColorPicker as Picker } from "react-colorful";
 
-import CFTooltip, { CFFormLabel } from "./CFTooltip";
+import "./index.scss";
+import { genBlock } from "@/utils/bem";
+import CFTooltip, { CFFormLabel } from "../CFTooltip";
+
+const block = genBlock("c-color-picker");
 
 interface IColorPicker {
   pickerProps?: ColorPickerBaseProps<string>;
@@ -57,7 +63,10 @@ const ColorPicker: React.FC<IColorPicker> = ({
       </PopoverTrigger>
       <Portal>
         <PopoverContent w="100%" h="100%">
-          <Picker {...pickerProps} />
+          <PopoverArrow />
+          <Flex w="100%" h="100%" p="16px" direction="column">
+            <Picker {...pickerProps} className={block()} />
+          </Flex>
         </PopoverContent>
       </Portal>
     </Popover>

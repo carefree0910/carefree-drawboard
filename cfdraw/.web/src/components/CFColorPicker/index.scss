@@ -1,0 +1,30 @@
+$blockName: c-color-picker;
+
+.#{$blockName} .react-colorful__saturation {
+  margin-bottom: 12px;
+  border-radius: 5px;
+  border-bottom: none;
+  cursor: pointer;
+}
+
+.#{$blockName} .react-colorful__hue {
+  margin-bottom: 12px;
+}
+
+.#{$blockName} .react-colorful__hue,
+.#{$blockName} .react-colorful__alpha {
+  height: 14px;
+  border-radius: 5px;
+  cursor: pointer;
+}
+
+.#{$blockName} .react-colorful__hue-pointer,
+.#{$blockName} .react-colorful__alpha-pointer {
+  width: 20px;
+  height: 20px;
+}
+
+.#{$blockName} .react-colorful__saturation-pointer {
+  width: 24px;
+  height: 24px;
+}
