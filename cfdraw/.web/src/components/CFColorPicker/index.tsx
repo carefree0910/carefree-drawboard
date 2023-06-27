@@ -16,7 +16,7 @@ import {
   Spacer,
   useDisclosure,
 } from "@chakra-ui/react";
-import { HexAlphaColorPicker as Picker } from "react-colorful";
+import { HexAlphaColorPicker as Picker, HexColorInput } from "react-colorful";
 
 import "./index.scss";
 import { genBlock } from "@/utils/bem";
@@ -66,6 +66,13 @@ const ColorPicker: React.FC<IColorPicker> = ({
           <PopoverArrow />
           <Flex w="100%" h="100%" p="16px" direction="column">
             <Picker {...pickerProps} className={block()} />
+            <HexColorInput
+              alpha
+              prefixed
+              color={color}
+              onChange={pickerProps.onChange}
+              className={block({ e: "input" })}
+            />
           </Flex>
         </PopoverContent>
       </Portal>

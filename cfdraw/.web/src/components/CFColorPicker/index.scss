@@ -28,3 +28,21 @@ $blockName: c-color-picker;
   width: 24px;
   height: 24px;
 }
+
+.#{$blockName} {
+  &__input {
+    border: 1px solid #ddd;
+    outline: none;
+    padding: 2px;
+    margin-top: 12px;
+    border-radius: 4px;
+    text-align: center;
+    text-transform: uppercase;
+    transition: border-color 0.2s ease-in-out, box-shadow 0.2s ease-in-out;
+  }
+
+  &__input:focus {
+    box-shadow: 0 0 0 1px #ccc;
+    border-color: #ccc;
+  }
+}
