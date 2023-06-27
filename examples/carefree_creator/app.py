@@ -427,9 +427,8 @@ class SDOutpainting(IFieldsPlugin):
         def callback(step: int, num_steps: int) -> bool:
             return self.send_progress(step / num_steps)
 
-        url_node = self.filter(data.nodeDataList, SingleNodeType.IMAGE)[0]
-        url = url_node.src
-        self.set_injection("url", url_node)
+        url = data.nodeData.src
+        self.set_injection("url", data.nodeData)
         model = inject(self, data, Txt2ImgSDOutpaintingModel, extra=dict(url=url))
         return await get_apis().sd_outpainting(model, step_callback=callback)
 
