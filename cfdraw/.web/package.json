@@ -10,10 +10,10 @@
     "build:preview": "tsc && vite build && vite preview"
   },
   "dependencies": {
-    "@carefree0910/business": "~0.5.1-alpha.27",
-    "@carefree0910/core": "~0.5.1-alpha.26",
-    "@carefree0910/native": "~0.5.1-alpha.26",
-    "@carefree0910/svg": "~0.5.1-alpha.26",
+    "@carefree0910/business": "~0.5.1-alpha.28",
+    "@carefree0910/core": "~0.5.1-alpha.28",
+    "@carefree0910/native": "~0.5.1-alpha.28",
+    "@carefree0910/svg": "~0.5.1-alpha.28",
     "@chakra-ui/icons": "^2.0.4",
     "@chakra-ui/react": "^2.2.4",
     "@emotion/react": "^11.9.3",
@@ -26,6 +26,7 @@
     "axios": "^1.3.4",
     "chakra-react-select": "^4.6.0",
     "classnames": "^2.3.2",
+    "colord": "^2.9.3",
     "eslint": "8.37.0",
     "eslint-config-next": "13.2.4",
     "framer-motion": "^10.10.0",
