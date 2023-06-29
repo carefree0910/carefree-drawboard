@@ -15,7 +15,7 @@ import { CFSrollableSelect } from "@/components/CFSelect";
 import { useDefaultFieldValue } from "./utils";
 
 function SelectField({ definition, ...fieldKeys }: IField<ISelectField>) {
-  const syncSelect = (extraData: Dictionary<any>) => {
+  const syncSelect = (task: string, extraData: Dictionary<any>) => {
     const hash = getHash(JSON.stringify(extraData)).toString();
     runOneTimeSocketHook<{ options: string[] }>({
       key: "selectField",
@@ -26,7 +26,7 @@ function SelectField({ definition, ...fieldKeys }: IField<ISelectField>) {
           userId,
           userJson,
           baseURL: getBaseURL("_python"),
-          identifier: "sync_select_mapping",
+          identifier: task,
           nodeData: {},
           nodeDataList: [],
           extraData,
@@ -49,10 +49,10 @@ function SelectField({ definition, ...fieldKeys }: IField<ISelectField>) {
   const [options, setOptions] = useState(definition.options as IStr[]);
   const onMenuOpen = useCallback(() => {
     if (definition.mappingPath) {
-      syncSelect({ mappingPath: definition.mappingPath });
+      syncSelect("sync_select_mapping", { mappingPath: definition.mappingPath });
     }
     if (definition.localProperties) {
-      syncSelect(definition.localProperties);
+      syncSelect("sync_local_select", definition.localProperties);
     }
   }, [definition.localProperties]);
 
