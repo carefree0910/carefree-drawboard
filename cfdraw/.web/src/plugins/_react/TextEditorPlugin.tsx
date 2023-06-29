@@ -1,15 +1,8 @@
-import { useCallback, useEffect, useState } from "react";
 import { observer } from "mobx-react-lite";
 import { Flex } from "@chakra-ui/react";
 
-import { INode, Lang, TextAlign, allTextAlign } from "@carefree0910/core";
-import {
-  langStore,
-  selectingNodesStore,
-  translate,
-  useEditText,
-  useSelecting,
-} from "@carefree0910/business";
+import { Lang, TextAlign, allTextAlign } from "@carefree0910/core";
+import { langStore, selectingNodesStore, translate, useEditText } from "@carefree0910/business";
 
 import type { IPlugin } from "@/schema/plugins";
 import { UI_Words } from "@/lang/ui";
@@ -32,7 +25,6 @@ const textAlignDict: Record<TextAlign, Record<Lang, string>> = {
   justify: { zh: "两端对齐", en: "Justify" },
 };
 
-let tracedNode: INode | null;
 const TextEditorPlugin = ({ pluginInfo: { node }, ...props }: IPlugin) => {
   const id = usePluginIds("textEditor").id;
   const lang = langStore.tgt;
@@ -40,8 +32,6 @@ const TextEditorPlugin = ({ pluginInfo: { node }, ...props }: IPlugin) => {
   const textParams = selectingNodesStore.info.textParams;
   if (node?.type !== "text" || !textParams) {
     props.renderInfo.isInvisible = true;
-  } else {
-    tracedNode = node;
   }
 
   const color = textParams?.color ?? "#ffffff";
@@ -50,41 +40,26 @@ const TextEditorPlugin = ({ pluginInfo: { node }, ...props }: IPlugin) => {
   const textAlign = textParams?.align ?? "left";
 
   const { editColor, editContent, editFontSize, editAlign } = useEditText({
-    node: node?.type === "text" ? node : tracedNode?.type === "text" ? tracedNode : undefined,
+    allowUsePreviousNode: true,
   });
 
   const onChangeColor = (color: string) => editColor({ trace: false })(color);
   const onChangeColorComplete = () => {
     if (!color) return;
     console.log(">>> onChangeColorComplete");
-    editColor({
-      trace: true,
-      success: async () => {
-        tracedNode = null;
-      },
-    })(color);
+    editColor({ trace: true })(color);
   };
 
   const onChangeContent = (content: string) => editContent({ trace: false })(content);
   const onChangeContentComplete = () => {
     console.log(">>> onChangeContentComplete");
-    editContent({
-      trace: true,
-      success: async () => {
-        tracedNode = null;
-      },
-    })(content);
+    editContent({ trace: true })(content);
   };
 
   const onFontSizeChange = (value: number) => editFontSize({ trace: false })(value);
   const onFontSizeChangeComplete = (value: number) => {
-    console.log(">>> onFontSizeChangeComplete", tracedNode);
-    editFontSize({
-      trace: true,
-      success: async () => {
-        tracedNode = null;
-      },
-    })(value);
+    console.log(">>> onFontSizeChangeComplete");
+    editFontSize({ trace: true })(value);
   };
 
   const onChangeAlign: ICFSelect<TextAlign, false>["onChange"] = (e) => {
