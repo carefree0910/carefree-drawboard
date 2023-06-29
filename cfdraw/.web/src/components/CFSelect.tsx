@@ -41,6 +41,7 @@ function CFSelect<T, isMulti extends boolean>({
     <Box position="relative" {...boxProps}>
       <Select
         selectedOptionStyle="check"
+        menuPlacement="auto"
         menuPortalTarget={document.body}
         styles={{
           menuPortal: (provided) => ({ ...provided, zIndex: 100 }),
