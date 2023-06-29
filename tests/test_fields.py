@@ -4,6 +4,7 @@ from cfdraw import *
 from pathlib import Path
 
 
+assets_folder = Path(__file__).parent / "assets"
 definitions = dict(
     label0=ISelectField(
         default="option0",
@@ -56,10 +57,16 @@ definitions = dict(
         tooltip="label7",
     ),
     label8=ISelectLocalField(
-        path=str(Path(__file__).parent / "assets"),
+        path=str(assets_folder),
         defaultPlaceholder="None",
         label="label8",
         tooltip="label8",
+    ),
+    label9=I18NSelectField(
+        mapping=str(assets_folder / "test_fields_label9.json"),
+        default="option0",
+        label="label9",
+        tooltip="label9",
     ),
 )
 list_label = f"label{len(definitions)}"
@@ -86,7 +93,9 @@ class Plugin(IFieldsPlugin):
 
     async def process(self, data: ISocketRequest) -> str:
         label7 = data.extraData["label7"]
+        label9 = data.extraData["label9"]
         data.extraData["label7"] = definitions["label7"].parse(label7)
+        data.extraData["label9"] = definitions["label9"].parse(label9)
         return json.dumps(data.extraData, indent=2, ensure_ascii=False)
 
 
