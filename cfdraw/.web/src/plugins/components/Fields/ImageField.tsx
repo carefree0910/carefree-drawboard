@@ -95,7 +95,7 @@ const ImageGalleryItem = observer(({ node, active, onSelectUrl, ...others }: IIm
   </GalleryItem>
 ));
 
-function ImageField({ definition, ...fieldKeys }: IField<IImageField>) {
+function ImageField({ definition, onFieldChange, ...fieldKeys }: IField<IImageField>) {
   useDefaultFieldValue({ definition, ...fieldKeys });
   const label = parseIStr(definition.label ?? titleCaseWord(fieldKeys.field));
   const tooltip = parseIStr(definition.tooltip ?? "");
@@ -106,6 +106,7 @@ function ImageField({ definition, ...fieldKeys }: IField<IImageField>) {
     setValue(value);
     setMetaField(fieldKeys, value);
     setMetaInjection(fieldKeys, injection);
+    onFieldChange?.(value);
   };
   const onSelectUrl = (url: string, injection: IMetaInjection | undefined) => {
     setValueAndMeta(url, injection);

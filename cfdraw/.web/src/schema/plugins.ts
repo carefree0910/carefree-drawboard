@@ -88,6 +88,7 @@ export interface IListProperties {
 export interface IField<T extends IFieldDefinition> {
   field: string;
   definition: T;
+  onFieldChange?: (value: any) => void;
   listProperties?: IListProperties;
 }
 

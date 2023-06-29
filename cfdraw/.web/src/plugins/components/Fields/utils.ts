@@ -24,6 +24,7 @@ export function useDefaultFieldValue({ definition, ...fieldKeys }: IField<IField
 export interface IFieldComponent {
   gap: number;
   definition: IFieldDefinition;
+  onFieldChange?: (value: any) => void;
   field: string;
   listProperties?: IListProperties;
 }

@@ -9,7 +9,7 @@ import { parseIStr } from "@/actions/i18n";
 import CFColorPicker from "@/components/CFColorPicker";
 import { useDefaultFieldValue } from "./utils";
 
-function ColorField({ definition, ...fieldKeys }: IField<IColorField>) {
+function ColorField({ definition, onFieldChange, ...fieldKeys }: IField<IColorField>) {
   useDefaultFieldValue({ definition, ...fieldKeys });
   const label = parseIStr(definition.label ?? titleCaseWord(fieldKeys.field));
   const tooltip = parseIStr(definition.tooltip ?? "");
@@ -18,6 +18,7 @@ function ColorField({ definition, ...fieldKeys }: IField<IColorField>) {
   const onChange = (color: string) => {
     setValue(color);
     setMetaField(fieldKeys, color);
+    onFieldChange?.(color);
   };
 
   return (

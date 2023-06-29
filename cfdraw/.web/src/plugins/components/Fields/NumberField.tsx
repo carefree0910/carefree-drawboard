@@ -12,7 +12,7 @@ import CFSlider from "@/components/CFSlider";
 import TextField from "./TextField";
 import { useDefaultFieldValue } from "./utils";
 
-function NumberField({ definition, ...fieldKeys }: IField<INumberField>) {
+function NumberField({ definition, onFieldChange, ...fieldKeys }: IField<INumberField>) {
   useDefaultFieldValue({ definition, ...fieldKeys });
   const label = parseIStr(definition.label ?? titleCaseWord(fieldKeys.field));
   const [value, setValue] = useState(getMetaField(fieldKeys) ?? definition.default);
@@ -34,6 +34,7 @@ function NumberField({ definition, ...fieldKeys }: IField<INumberField>) {
           },
           inList: definition.inList,
         }}
+        onFieldChange={onFieldChange}
         {...fieldKeys}
       />
     );
@@ -52,6 +53,7 @@ function NumberField({ definition, ...fieldKeys }: IField<INumberField>) {
       onSliderChange={(value) => {
         setValue(value);
         setMetaField(fieldKeys, value);
+        onFieldChange?.(value);
       }}
       scale={definition.scale}
       label={label}

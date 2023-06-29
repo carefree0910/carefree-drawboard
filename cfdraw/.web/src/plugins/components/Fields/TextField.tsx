@@ -52,7 +52,7 @@ const TextGalleryItem = observer(({ node, active, onSelectText, ...others }: ITe
   </GalleryItem>
 ));
 
-function TextField({ definition, ...fieldKeys }: IField<ITextField>) {
+function TextField({ definition, onFieldChange, ...fieldKeys }: IField<ITextField>) {
   useDefaultFieldValue({ definition, ...fieldKeys });
   const label = parseIStr(definition.label ?? titleCaseWord(fieldKeys.field));
   const tooltip = parseIStr(definition.tooltip ?? label);
@@ -68,9 +68,10 @@ function TextField({ definition, ...fieldKeys }: IField<ITextField>) {
       setValue(v);
       if (!isNumber) {
         setMetaField(fieldKeys, v);
+        onFieldChange?.(v);
       }
     },
-    [isNumber, fieldKeys, setValue],
+    [isNumber, fieldKeys, setValue, onFieldChange],
   );
   const onBlur = useCallback(() => {
     if (definition.numberOptions) {
@@ -88,8 +89,9 @@ function TextField({ definition, ...fieldKeys }: IField<ITextField>) {
       }
       setValue(number.toString());
       setMetaField(fieldKeys, number);
+      onFieldChange?.(number);
     }
-  }, [fieldKeys, value, setValue, definition.numberOptions]);
+  }, [fieldKeys, value, setValue, onFieldChange, definition.numberOptions]);
   const onSelectText = (content: string, injection: IMetaInjection | undefined) => {
     setValue(content);
     if (!isNumber) {

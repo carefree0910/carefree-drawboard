@@ -6,7 +6,7 @@ import SelectField from "./SelectField";
 import BooleanField from "./BooleanField";
 import { IFieldComponent, injectDefaultFieldProps } from "./utils";
 
-export function Field({ gap, definition, ...fieldKeys }: IFieldComponent) {
+export function Field({ gap, definition, ...others }: IFieldComponent) {
   let Field: any;
   if (definition.type === "text") {
     Field = TextField;
@@ -22,6 +22,6 @@ export function Field({ gap, definition, ...fieldKeys }: IFieldComponent) {
     Field = ImageField;
   }
   if (!Field) return null;
-  injectDefaultFieldProps({ gap, definition, ...fieldKeys });
-  return <Field definition={definition} {...fieldKeys} />;
+  injectDefaultFieldProps({ gap, definition, ...others });
+  return <Field definition={definition} {...others} />;
 }
