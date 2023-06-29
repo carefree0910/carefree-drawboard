@@ -59,9 +59,9 @@ interface IListBody {
   values: IListItem[];
   expandH: number;
   expanded: boolean;
-  getDefinitions: (pack: IListItem, index: number) => IDefinitions;
+  getDefinitions: (index: number) => IDefinitions;
   gap?: number;
-  getDisplayKey?: (pack: IListItem, index: number) => string | undefined;
+  getDisplayKey?: (index: number) => string | undefined;
 }
 let ListBody = ({
   field,
@@ -124,8 +124,8 @@ let ListBody = ({
           {values.map((pack, index) => {
             const keyId = `${field}-${pack[ID_KEY]}`;
             const listProperties: IListProperties = { listKey: field, listIndex: index };
-            const definitions = getDefinitions(pack, index);
-            const displayKey = getDisplayKey?.(pack, index) ?? Object.keys(definitions)[0];
+            const definitions = getDefinitions(index);
+            const displayKey = getDisplayKey?.(index) ?? Object.keys(definitions)[0];
             const picked = definitions[displayKey];
             let displayItem: string;
             if (isUndefined(picked)) {
