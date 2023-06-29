@@ -14,7 +14,12 @@ import { parseIStr } from "@/actions/i18n";
 import { CFSrollableSelect } from "@/components/CFSelect";
 import { useDefaultFieldValue } from "./utils";
 
-function SelectField({ definition, onFieldChange, ...fieldKeys }: IField<ISelectField>) {
+function SelectField({
+  definition,
+  onFieldChange,
+  onFieldChangeComplete,
+  ...fieldKeys
+}: IField<ISelectField>) {
   const syncSelect = (task: string, extraData: Dictionary<any>) => {
     const hash = getHash(JSON.stringify(extraData)).toString();
     runOneTimeSocketHook<{ options: string[] }>({
@@ -78,6 +83,7 @@ function SelectField({ definition, onFieldChange, ...fieldKeys }: IField<ISelect
           setValue(value);
           setMetaField(fieldKeys, value);
           onFieldChange?.(value);
+          onFieldChangeComplete?.(value);
         }
       }}
     />

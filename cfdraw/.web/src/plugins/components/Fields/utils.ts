@@ -25,6 +25,7 @@ export interface IFieldComponent {
   gap: number;
   definition: IFieldDefinition;
   onFieldChange?: (value: any) => void;
+  onFieldChangeComplete?: (value: any) => void;
   field: string;
   listProperties?: IListProperties;
 }
