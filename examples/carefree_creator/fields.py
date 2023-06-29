@@ -11,7 +11,7 @@ common_styles = dict(
     w=0.75,
     h=0.6,
     maxW=800,
-    minH=600,
+    minH=520,
     useModal=True,
 )
 common_group_styles = dict(w=230, h=110)
