@@ -343,7 +343,7 @@ function useCheckIconLoaded() {
       dispose();
       clearTimeout(timer);
     };
-  }, [reactPlugins]);
+  }, [JSON.stringify(reactPlugins)]);
 }
 
 //// preload image placeholder
