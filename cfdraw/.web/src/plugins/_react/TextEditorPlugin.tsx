@@ -43,27 +43,16 @@ const TextEditorPlugin = ({ pluginInfo: { node }, ...props }: IPlugin) => {
     props.renderInfo.isInvisible = true;
   }
 
+  const color = textParams?.color ?? "#ffffff";
   const content = textParams?.content ?? "";
   const fontSize = textParams?.fontSize ?? 0;
   const textAlign = textParams?.align ?? "left";
 
-  const [color, setColor] = useState("#ffffff");
   const { editColor, editContent, editFontSize, editAlign } = useEditText({
     node: node?.type === "text" ? node : tracedNode?.type === "text" ? tracedNode : undefined,
   });
-  useEffect(() => {
-    if (node?.type === "text") {
-      setColor(node.params.color ?? "#ffffff");
-    }
-  }, [node]);
-  useEffect(() => {
-    if (!node && tracedNode?.type === "text") {
-      onChangeColorComplete();
-    }
-  }, [node, tracedNode]);
 
   const onChangeColor = (color: string) => {
-    setColor(color);
     editColor({ trace: false })(color);
     tracedNode = node;
   };
@@ -74,6 +63,7 @@ const TextEditorPlugin = ({ pluginInfo: { node }, ...props }: IPlugin) => {
     tracedColor = color;
     editColor({ trace: true })(color);
   }, [node, color, tracedColor]);
+
   const onChangeAlign: ICFSelect<TextAlign, false>["onChange"] = (e) => {
     if (!!e) {
       editAlign({ trace: true })(e.value);
