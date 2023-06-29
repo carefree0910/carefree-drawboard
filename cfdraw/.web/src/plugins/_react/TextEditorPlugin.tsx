@@ -59,9 +59,13 @@ const TextEditorPlugin = ({ pluginInfo: { node }, ...props }: IPlugin) => {
   const onChangeColorComplete = useCallback(() => {
     if (!color || color === tracedColor) return;
     console.log(">>> onChangeColorComplete");
-    tracedNode = null;
     tracedColor = color;
-    editColor({ trace: true })(color);
+    editColor({
+      trace: true,
+      success: async () => {
+        tracedNode = null;
+      },
+    })(color);
   }, [node, color, tracedColor]);
 
   const onChangeContent = (content: string) => {
@@ -70,8 +74,12 @@ const TextEditorPlugin = ({ pluginInfo: { node }, ...props }: IPlugin) => {
   };
   const onChangeContentComplete = () => {
     console.log(">>> onChangeContentComplete");
-    tracedNode = null;
-    editContent({ trace: true })(content);
+    editContent({
+      trace: true,
+      success: async () => {
+        tracedNode = null;
+      },
+    })(content);
   };
 
   const onChangeAlign: ICFSelect<TextAlign, false>["onChange"] = (e) => {
