@@ -1,7 +1,7 @@
 import { useCallback, useState } from "react";
 import { observer } from "mobx-react-lite";
 
-import { getHash } from "@carefree0910/core";
+import { Dictionary, getHash } from "@carefree0910/core";
 
 import type { IStr } from "@/schema/misc";
 import type { IField } from "@/schema/plugins";
@@ -15,6 +15,31 @@ import { CFSrollableSelect } from "@/components/CFSelect";
 import { useDefaultFieldValue } from "./utils";
 
 function SelectField({ definition, ...fieldKeys }: IField<ISelectField>) {
+  const syncSelect = (extraData: Dictionary<any>) => {
+    const hash = getHash(JSON.stringify(extraData)).toString();
+    runOneTimeSocketHook<{ options: string[] }>({
+      key: "selectField",
+      hook: {
+        key: hash,
+        getMessage: async () => ({
+          hash,
+          userId,
+          userJson,
+          baseURL: getBaseURL("_python"),
+          identifier: "sync_select_mapping",
+          nodeData: {},
+          nodeDataList: [],
+          extraData,
+          isInternal: true,
+        }),
+      },
+    }).then((res) => {
+      if (res) {
+        setOptions(res.options);
+      }
+    });
+  };
+
   useDefaultFieldValue({ definition, ...fieldKeys });
   const userId = userStore.userId;
   const userJson = userStore.json;
@@ -24,29 +49,7 @@ function SelectField({ definition, ...fieldKeys }: IField<ISelectField>) {
   const [options, setOptions] = useState(definition.options as IStr[]);
   const onMenuOpen = useCallback(() => {
     if (definition.localProperties) {
-      const extraData = definition.localProperties;
-      const hash = getHash(JSON.stringify(extraData)).toString();
-      runOneTimeSocketHook<{ options: string[] }>({
-        key: "selectField",
-        hook: {
-          key: hash,
-          getMessage: async () => ({
-            hash,
-            userId,
-            userJson,
-            baseURL: getBaseURL("_python"),
-            identifier: "sync_local_select",
-            nodeData: {},
-            nodeDataList: [],
-            extraData,
-            isInternal: true,
-          }),
-        },
-      }).then((res) => {
-        if (res) {
-          setOptions(res.options);
-        }
-      });
+      syncSelect(definition.localProperties);
     }
   }, [definition.localProperties]);
 
