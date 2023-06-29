@@ -42,6 +42,9 @@ function CFSelect<T, isMulti extends boolean>({
       <Select
         selectedOptionStyle="check"
         menuPortalTarget={document.body}
+        styles={{
+          menuPortal: (provided) => ({ ...provided, zIndex: 100 }),
+        }}
         chakraStyles={{
           dropdownIndicator: (provided) => ({
             ...provided,
