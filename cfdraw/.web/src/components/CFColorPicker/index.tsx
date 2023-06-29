@@ -27,11 +27,13 @@ interface IColorPicker {
   pickerProps?: ColorPickerBaseProps<string>;
   thumbnailProps?: ButtonProps;
   onClose?: () => void;
+  usePortal?: boolean;
 }
 const ColorPicker: React.FC<IColorPicker> = ({
   pickerProps,
   thumbnailProps,
   onClose: externalOnClose,
+  usePortal,
 }) => {
   const color = pickerProps?.color;
   const { isOpen, onToggle, onClose } = useDisclosure({ onClose: externalOnClose });
@@ -60,7 +62,7 @@ const ColorPicker: React.FC<IColorPicker> = ({
           />
         </Box>
       </PopoverTrigger>
-      <CFPopoverContent w="100%" h="100%" usePortal>
+      <CFPopoverContent w="100%" h="100%" usePortal={usePortal}>
         <PopoverArrow />
         <Flex w="100%" h="100%" p="16px" direction="column">
           <Picker {...pickerProps} className={block()} />
@@ -86,6 +88,7 @@ interface ICFColorPicker extends ColorPickerBaseProps<string> {
   };
   thumbnailProps?: ButtonProps;
   onClose?: () => void;
+  usePortal?: boolean;
 }
 function CFColorPicker({
   label,
@@ -93,12 +96,14 @@ function CFColorPicker({
   formProps,
   thumbnailProps,
   onClose,
+  usePortal,
   ...props
 }: ICFColorPicker) {
   const colorPickerProps: IColorPicker = {
     pickerProps: props,
     thumbnailProps,
     onClose,
+    usePortal,
   };
   if (!label) {
     return (

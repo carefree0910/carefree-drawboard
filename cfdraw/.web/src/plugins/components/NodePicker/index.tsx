@@ -99,6 +99,7 @@ interface INodePicker<T extends INode> extends ButtonProps {
   specialGalleryItem?: ReactElement;
   imageProps?: Omit<ImageProps, "src">;
   iconProps?: ChakraProps;
+  usePortal?: boolean;
 }
 function NodePicker<T extends INode>({
   src,
@@ -109,6 +110,7 @@ function NodePicker<T extends INode>({
   specialGalleryItem,
   imageProps,
   iconProps,
+  usePortal,
   ...props
 }: INodePicker<T>) {
   const numFetchEvery = 5;
@@ -208,7 +210,7 @@ function NodePicker<T extends INode>({
           </CFTooltip>
         </Center>
       </PopoverTrigger>
-      <CFPopoverContent w="366px" h={isOpen ? "100%" : "0px"} maxH="320px" bg={`${panelBg}cc`}>
+      <CFPopoverContent w="366px" h="100%" maxH="320px" bg={`${panelBg}cc`} usePortal={usePortal}>
         <PopoverArrow />
         <Flex
           w="100%"

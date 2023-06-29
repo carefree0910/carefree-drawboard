@@ -143,6 +143,7 @@ function TextField({ definition, ...fieldKeys }: IField<ITextField>) {
             );
           }}
           onClear={!!value ? () => onSelectText("", undefined) : undefined}
+          usePortal={!definition.inList}
         />
       </Box>
     </Box>

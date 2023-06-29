@@ -27,6 +27,7 @@ function ColorField({ definition, ...fieldKeys }: IField<IColorField>) {
       formProps={{ control: definition.props }}
       color={value}
       onChange={onChange}
+      usePortal={!definition.inList}
     />
   );
 }

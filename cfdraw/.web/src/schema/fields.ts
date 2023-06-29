@@ -7,6 +7,7 @@ interface IBaseFields {
   tooltip?: IStr;
   props?: any;
   numRows?: number;
+  inList?: boolean;
 }
 export interface ITextField extends IBaseFields {
   type: "text";

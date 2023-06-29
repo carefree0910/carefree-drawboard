@@ -16,7 +16,14 @@ import {
   Spacer,
 } from "@chakra-ui/react";
 
-import { Dictionary, Logger, getRandomHash, isString, isUndefined } from "@carefree0910/core";
+import {
+  Dictionary,
+  Logger,
+  getRandomHash,
+  isString,
+  isUndefined,
+  shallowCopy,
+} from "@carefree0910/core";
 import { langStore, translate } from "@carefree0910/business";
 
 import "./index.scss";
@@ -176,7 +183,7 @@ const List = ({
                     onClick={() => onDelete(index, definitions)}
                   />
                 </Flex>
-                <CFPopoverContent w="400px">
+                <CFPopoverContent w="400px" usePortal>
                   <PopoverArrow />
                   <PopoverCloseButton />
                   <PopoverHeader>
@@ -189,15 +196,20 @@ const List = ({
                     flexShrink={0}
                     direction="column"
                     gap={`${gap}px`}>
-                    {Object.entries(definitions).map(([key, item]) => (
-                      <Field
-                        key={`${keyId}-${key}-${index}`}
-                        gap={gap}
-                        definition={item}
-                        field={key}
-                        listProperties={listProperties}
-                      />
-                    ))}
+                    {Object.entries(definitions).map(([key, item]) => {
+                      item = shallowCopy(item);
+                      item.inList = true;
+
+                      return (
+                        <Field
+                          key={`${keyId}-${key}-${index}`}
+                          gap={gap}
+                          definition={item}
+                          field={key}
+                          listProperties={listProperties}
+                        />
+                      );
+                    })}
                   </Flex>
                 </CFPopoverContent>
               </Popover>

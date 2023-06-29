@@ -154,6 +154,7 @@ function ImageField({ definition, ...fieldKeys }: IField<IImageField>) {
         }}
         onClear={!!value ? () => onSelectUrl("", undefined) : undefined}
         specialGalleryItem={<ImageGalleryUpload onSelectUrl={onSelectUrl} />}
+        usePortal={!definition.inList}
       />
     </Flex>
   );

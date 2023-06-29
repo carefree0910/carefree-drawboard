@@ -32,6 +32,7 @@ function NumberField({ definition, ...fieldKeys }: IField<INumberField>) {
             max: definition.max,
             isInt: definition.isInt,
           },
+          inList: definition.inList,
         }}
         {...fieldKeys}
       />
