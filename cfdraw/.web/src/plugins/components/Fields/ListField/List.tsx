@@ -129,8 +129,7 @@ let ListBody = ({
             const picked = definitions[displayKey];
             let displayItem: string;
             if (isUndefined(picked)) {
-              Logger.warn(`displayKey '${displayKey}' not found`);
-              displayItem = "unknown";
+              displayItem = displayKey;
             } else {
               const value = values[index][displayKey];
               switch (picked.type) {
