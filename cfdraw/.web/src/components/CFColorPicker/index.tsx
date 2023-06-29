@@ -24,24 +24,19 @@ import CFPopoverContent from "../CFPopoverContent";
 const block = genBlock("c-color-picker");
 
 interface IColorPicker {
-  pickerProps?: ColorPickerBaseProps<string>;
+  pickerProps: ColorPickerBaseProps<string>;
   thumbnailProps?: ButtonProps;
   onChangeComplete?: () => void;
   usePortal?: boolean;
 }
 const ColorPicker: React.FC<IColorPicker> = ({
-  pickerProps,
+  pickerProps: { color, onChange, ...others },
   thumbnailProps,
   onChangeComplete,
   usePortal,
 }) => {
-  const color = pickerProps?.color;
-  const { isOpen, onToggle, onClose } = useDisclosure({ onClose: onChangeComplete });
-
-  if (!color) return null;
-
   return (
-    <Popover isOpen={isOpen} onClose={onClose}>
+    <Popover>
       <PopoverTrigger>
         <Box
           as="button"
@@ -50,7 +45,6 @@ const ColorPicker: React.FC<IColorPicker> = ({
           position="relative"
           borderWidth="4px"
           borderColor="transparent"
-          onClick={onToggle}
           {...thumbnailProps}>
           <Box
             w="100%"
@@ -58,19 +52,26 @@ const ColorPicker: React.FC<IColorPicker> = ({
             borderWidth="2px"
             borderRadius="2px"
             borderColor="transparent"
-            bg={color.toString()}
+            bg={color}
           />
         </Box>
       </PopoverTrigger>
       <CFPopoverContent w="100%" h="100%" usePortal={usePortal}>
         <PopoverArrow />
         <Flex w="100%" h="100%" p="16px" direction="column">
-          <Picker {...pickerProps} className={block()} />
+          <Picker
+            color={color}
+            onChange={onChange}
+            onPointerUp={onChangeComplete}
+            {...others}
+            className={block()}
+          />
           <HexColorInput
             alpha
             prefixed
             color={color}
-            onChange={pickerProps.onChange}
+            onChange={onChange}
+            onBlur={onChangeComplete}
             className={block({ e: "input" })}
           />
         </Flex>

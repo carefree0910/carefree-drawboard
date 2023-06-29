@@ -33,7 +33,6 @@ const textAlignDict: Record<TextAlign, Record<Lang, string>> = {
 };
 
 let tracedNode: INode | null;
-let tracedColor: string | undefined;
 const TextEditorPlugin = ({ pluginInfo: { node }, ...props }: IPlugin) => {
   const id = usePluginIds("textEditor").id;
   const lang = langStore.tgt;
@@ -55,17 +54,16 @@ const TextEditorPlugin = ({ pluginInfo: { node }, ...props }: IPlugin) => {
   });
 
   const onChangeColor = (color: string) => editColor({ trace: false })(color);
-  const onChangeColorComplete = useCallback(() => {
-    if (!color || color === tracedColor) return;
+  const onChangeColorComplete = () => {
+    if (!color) return;
     console.log(">>> onChangeColorComplete");
-    tracedColor = color;
     editColor({
       trace: true,
       success: async () => {
         tracedNode = null;
       },
     })(color);
-  }, [node, color, tracedColor]);
+  };
 
   const onChangeContent = (content: string) => editContent({ trace: false })(content);
   const onChangeContentComplete = () => {
