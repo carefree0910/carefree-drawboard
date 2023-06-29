@@ -62,14 +62,15 @@ definitions = dict(
         tooltip="label8",
     ),
 )
-list_definition = IListField(label="label9", tooltip="label9", item=definitions)
+list_label = f"label{len(definitions)}"
+list_definition = IListField(label=list_label, tooltip=list_label, item=definitions)
 
 
 class Plugin(IFieldsPlugin):
     @property
     def settings(self) -> IPluginSettings:
         od = definitions.copy()
-        od["label9"] = list_definition
+        od[list_label] = list_definition
         return IPluginSettings(
             w=0.8,
             h=0.8,
