@@ -58,11 +58,21 @@ const TextEditorPlugin = ({ pluginInfo: { node }, ...props }: IPlugin) => {
   };
   const onChangeColorComplete = useCallback(() => {
     if (!color || color === tracedColor) return;
-    console.log(">>> onChangeComplete");
+    console.log(">>> onChangeColorComplete");
     tracedNode = null;
     tracedColor = color;
     editColor({ trace: true })(color);
   }, [node, color, tracedColor]);
+
+  const onChangeContent = (content: string) => {
+    editContent({ trace: false })(content);
+    tracedNode = node;
+  };
+  const onChangeContentComplete = () => {
+    console.log(">>> onChangeContentComplete");
+    tracedNode = null;
+    editContent({ trace: true })(content);
+  };
 
   const onChangeAlign: ICFSelect<TextAlign, false>["onChange"] = (e) => {
     if (!!e) {
@@ -118,8 +128,8 @@ const TextEditorPlugin = ({ pluginInfo: { node }, ...props }: IPlugin) => {
         <CFTextarea
           flex={1}
           value={content}
-          onChange={(e) => editContent({ trace: false })(e.target.value)}
-          onBlur={() => editContent({ trace: true })(content)}
+          onChange={(e) => onChangeContent(e.target.value)}
+          onBlur={() => onChangeContentComplete()}
         />
       </Flex>
     </Render>
