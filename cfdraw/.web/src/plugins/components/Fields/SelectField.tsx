@@ -48,6 +48,9 @@ function SelectField({ definition, ...fieldKeys }: IField<ISelectField>) {
   const [value, setValue] = useState(getMetaField(fieldKeys) ?? definition.default);
   const [options, setOptions] = useState(definition.options as IStr[]);
   const onMenuOpen = useCallback(() => {
+    if (definition.mappingPath) {
+      syncSelect({ mappingPath: definition.mappingPath });
+    }
     if (definition.localProperties) {
       syncSelect(definition.localProperties);
     }

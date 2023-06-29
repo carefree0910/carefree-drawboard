@@ -2,6 +2,7 @@ from cfdraw.schema.plugins import *
 from cfdraw.plugins.base import *
 from cfdraw import constants
 from cfdraw.config import get_config
+from cfdraw.schema.fields import I18NSelectField
 from cfdraw.schema.fields import ISelectLocalField
 from cfdraw.plugins.factory import PluginFactory
 
@@ -35,7 +36,15 @@ class SyncLocalSelectSocketPlugin(IInternalSocketPlugin):
         return ISocketMessage.make_success(data.hash, dict(options=options))
 
 
+@PluginFactory.register_internal("sync_select_mapping")
+class SyncSelectMappingSocketPlugin(IInternalSocketPlugin):
+    async def process(self, data: ISocketRequest) -> ISocketMessage:
+        options = I18NSelectField.get_options(data.extraData["mappingPath"])
+        return ISocketMessage.make_success(data.hash, dict(options=options))
+
+
 __all__ = [
     "SyncSocketPlugin",
     "SyncLocalSelectSocketPlugin",
+    "SyncSelectMappingSocketPlugin",
 ]

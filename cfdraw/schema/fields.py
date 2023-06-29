@@ -1,3 +1,5 @@
+import json
+
 import regex as re
 
 from enum import Enum
@@ -80,28 +82,44 @@ class ISelectField(IBaseField):
 
 
 class I18NSelectField(IBaseField):
-    mapping: Dict[str, I18N] = Field(
+    mapping: Union[Dict[str, I18N], str] = Field(
         ...,
         description=(
             "The mapping of the options. "
-            "The key is the 'actual' option, and the value is the i18n object to be displayed"
+            "The key is the 'actual' option, and the value is the i18n object to be displayed\n"
+            "> If `str` is provided, it represents the path to the mapping json file."
         ),
     )
     default: str = Field(..., description="The default 'actual' option of the field")
     isMulti: Optional[bool] = Field(None, description="Whether use multi-select")
     type: FieldType = Field(FieldType.I18N_SELECT, description="Type", const=True)
 
+    @staticmethod
+    def parse_mapping(mapping: Union[Dict[str, I18N], str]) -> Dict[str, I18N]:
+        if isinstance(mapping, dict):
+            return mapping
+        with open(mapping, "r", encoding="utf-8") as f:
+            return {k: I18N(**d) for k, d in json.load(f).items()}
+
+    @staticmethod
+    def get_options(mapping: Union[Dict[str, I18N], str]) -> List[I18N]:
+        return list(I18NSelectField.parse_mapping(mapping).values())
+
     def dict(self, **kwargs: Any) -> Dict[str, Any]:
         d = super().dict(**kwargs)
         d["type"] = FieldType.SELECT.value
         mapping, default = map(d.pop, ["mapping", "default"])
-        d["options"] = list(mapping.values())
-        d["default"] = mapping[default]
+        parsed_mapping = self.parse_mapping(mapping)
+        d["options"] = self.get_options(parsed_mapping)
+        d["default"] = parsed_mapping[default]
+        if isinstance(mapping, str):
+            d["mappingPath"] = mapping
         return d
 
     def parse(self, i18n_d: Dict[str, str]) -> Optional[str]:
         i18n = I18N(**i18n_d)
-        for k, v in self.mapping.items():
+        mapping = self.parse_mapping(self.mapping)
+        for k, v in mapping.items():
             if i18n == v:
                 return k
         return None

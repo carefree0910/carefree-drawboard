@@ -46,6 +46,7 @@ export interface ISelectField extends IBaseFields {
   options: readonly IStr[];
   default: IStr;
   isMulti?: boolean;
+  mappingPath?: string;
   localProperties?: ISelectLocalProperties;
 }
 export interface IBooleanField extends IBaseFields {
