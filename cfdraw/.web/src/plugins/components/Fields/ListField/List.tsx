@@ -59,7 +59,10 @@ export interface IListItem extends Dictionary<any> {
   [ID_KEY]: string;
 }
 
-interface IList {
+const block = genBlock("c-list-field");
+const iconProps: ImageProps = { w: "24px", h: "24px", cursor: "pointer" };
+
+interface IListBody {
   field: string;
   values: IListItem[];
   expanded: boolean;
@@ -68,7 +71,7 @@ interface IList {
   gap?: number;
   getDisplayKey?: (pack: IListItem, index: number) => string | undefined;
 }
-const List = ({
+let ListBody = ({
   field,
   values,
   expanded,
@@ -76,9 +79,8 @@ const List = ({
   getDefinitions,
   gap = DEFAULT_GAP,
   getDisplayKey,
-}: IList) => {
+}: IListBody) => {
   const lang = langStore.tgt;
-  const iconProps: ImageProps = { w: "24px", h: "24px", cursor: "pointer" };
 
   const onDelete = (index: number, definitions: IDefinitions) => {
     const newValues = [...values];
@@ -217,6 +219,78 @@ const List = ({
           })}
         </Flex>
       )}
+    </Flex>
+  );
+};
+ListBody = observer(ListBody);
+
+interface IList extends IListBody, Omit<FlexProps, "gap"> {
+  totalH: number;
+  getNewItem: () => IListItem;
+  setExpanded: (expanded: boolean) => void;
+  label?: string;
+  tooltip?: string;
+}
+const List = ({
+  totalH,
+  getNewItem,
+  setExpanded,
+  label,
+  tooltip,
+  field,
+  values,
+  expanded,
+  getFlexProps,
+  getDefinitions,
+  gap = DEFAULT_GAP,
+  getDisplayKey,
+  ...props
+}: IList) => {
+  const lang = langStore.tgt;
+
+  const onAdd = () => {
+    setExpanded(true);
+    setMetaField({ field }, [...values, getNewItem()]);
+  };
+
+  return (
+    <Flex
+      w="100%"
+      h={`${expanded ? totalH : DEFAULT_FIELD_H}px`}
+      direction="column"
+      transition={EXPAND_TRANSITION}
+      {...props}>
+      <Flex w="100%" h={`${DEFAULT_FIELD_H}px`} flexShrink={0} align="center">
+        <CFTooltip label={tooltip}>
+          <Flex w="100%" h="100%" align="center" as="button" onClick={() => setExpanded(!expanded)}>
+            <CFIcon
+              svg={ArrowDownIcon}
+              squared={false}
+              className={block({ e: "icon", m: expanded ? "expanded" : "folded" })}
+              fillbyCurrentColor
+              transition={EXPAND_TRANSITION}
+            />
+            {label && (
+              <CFText ml="6px" fontWeight={500}>
+                {label}
+              </CFText>
+            )}
+            <Spacer />
+          </Flex>
+        </CFTooltip>
+        <CFTooltip label={translate(UI_Words["add-object-to-list-tooltip"], lang)}>
+          <Image {...iconProps} src={AddIcon} onClick={onAdd} />
+        </CFTooltip>
+      </Flex>
+      <ListBody
+        field={field}
+        values={values}
+        expanded={expanded}
+        getFlexProps={getFlexProps}
+        getDefinitions={getDefinitions}
+        gap={gap}
+        getDisplayKey={getDisplayKey}
+      />
     </Flex>
   );
 };
