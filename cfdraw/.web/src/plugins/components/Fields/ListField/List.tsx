@@ -11,7 +11,6 @@ import {
   Popover,
   PopoverArrow,
   PopoverCloseButton,
-  PopoverContent,
   PopoverHeader,
   PopoverTrigger,
   Spacer,
@@ -44,6 +43,7 @@ import { parseIStr } from "@/actions/i18n";
 import CFIcon from "@/components/CFIcon";
 import CFText, { CFCaption } from "@/components/CFText";
 import CFTooltip from "@/components/CFTooltip";
+import CFPopoverContent from "@/components/CFPopoverContent";
 import { getFieldH, useDefaultFieldValue } from "../utils";
 import { Field } from "../Field";
 
@@ -176,7 +176,7 @@ const List = ({
                     onClick={() => onDelete(index, definitions)}
                   />
                 </Flex>
-                <PopoverContent w="400px">
+                <CFPopoverContent w="400px">
                   <PopoverArrow />
                   <PopoverCloseButton />
                   <PopoverHeader>
@@ -199,7 +199,7 @@ const List = ({
                       />
                     ))}
                   </Flex>
-                </PopoverContent>
+                </CFPopoverContent>
               </Popover>
             );
           })}

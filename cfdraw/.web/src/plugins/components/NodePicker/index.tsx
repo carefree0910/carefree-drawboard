@@ -4,9 +4,7 @@ import {
   Center,
   Flex,
   Image,
-  Portal,
   Popover,
-  PopoverContent,
   PopoverTrigger,
   Box,
   ButtonProps,
@@ -31,6 +29,7 @@ import { themeStore, useActiveBorderProps, useScrollBarSx } from "@/stores/theme
 import CFIcon from "@/components/CFIcon";
 import CFText, { CFCaption } from "@/components/CFText";
 import CFTooltip from "@/components/CFTooltip";
+import CFPopoverContent from "@/components/CFPopoverContent";
 import { Event } from "@/utils/event";
 
 // helpers
@@ -209,7 +208,7 @@ function NodePicker<T extends INode>({
           </CFTooltip>
         </Center>
       </PopoverTrigger>
-      <PopoverContent w="366px" h={isOpen ? "100%" : "0px"} maxH="320px" bg={`${panelBg}cc`}>
+      <CFPopoverContent w="366px" h={isOpen ? "100%" : "0px"} maxH="320px" bg={`${panelBg}cc`}>
         <PopoverArrow />
         <Flex
           w="100%"
@@ -229,7 +228,7 @@ function NodePicker<T extends INode>({
             <CFCaption>{translate(UI_Words["node-picker-no-more-caption"], lang)}</CFCaption>
           )}
         </Flex>
-      </PopoverContent>
+      </CFPopoverContent>
     </Popover>
   );
 }

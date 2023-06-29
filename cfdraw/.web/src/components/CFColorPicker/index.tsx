@@ -10,9 +10,7 @@ import {
   FormLabelProps,
   Popover,
   PopoverArrow,
-  PopoverContent,
   PopoverTrigger,
-  Portal,
   Spacer,
   useDisclosure,
 } from "@chakra-ui/react";
@@ -21,6 +19,7 @@ import { HexAlphaColorPicker as Picker, HexColorInput } from "react-colorful";
 import "./index.scss";
 import { genBlock } from "@/utils/bem";
 import CFTooltip, { CFFormLabel } from "../CFTooltip";
+import CFPopoverContent from "../CFPopoverContent";
 
 const block = genBlock("c-color-picker");
 
@@ -61,21 +60,19 @@ const ColorPicker: React.FC<IColorPicker> = ({
           />
         </Box>
       </PopoverTrigger>
-      <Portal>
-        <PopoverContent w="100%" h="100%">
-          <PopoverArrow />
-          <Flex w="100%" h="100%" p="16px" direction="column">
-            <Picker {...pickerProps} className={block()} />
-            <HexColorInput
-              alpha
-              prefixed
-              color={color}
-              onChange={pickerProps.onChange}
-              className={block({ e: "input" })}
-            />
-          </Flex>
-        </PopoverContent>
-      </Portal>
+      <CFPopoverContent w="100%" h="100%" usePortal>
+        <PopoverArrow />
+        <Flex w="100%" h="100%" p="16px" direction="column">
+          <Picker {...pickerProps} className={block()} />
+          <HexColorInput
+            alpha
+            prefixed
+            color={color}
+            onChange={pickerProps.onChange}
+            className={block({ e: "input" })}
+          />
+        </Flex>
+      </CFPopoverContent>
     </Popover>
   );
 };
