@@ -25,7 +25,8 @@ export interface ICFSlider extends FlexProps {
   scale?: "linear" | "logarithmic";
   label?: string;
   tooltip?: string;
-  onSliderChange(value: number): void;
+  onSliderChange: (value: number) => void;
+  onSliderChangeComplete?: (value: number) => void;
   precision?: number;
 }
 
@@ -39,6 +40,7 @@ const CFSlider: React.FC<ICFSlider> = ({
   label,
   tooltip,
   onSliderChange,
+  onSliderChangeComplete,
   precision = 2,
   ...props
 }) => {
@@ -47,16 +49,31 @@ const CFSlider: React.FC<ICFSlider> = ({
   const [iptFocused, setIptFocused] = useState(false);
   const offset = scale === "linear" || min > 0 ? 0 : -min + 1;
 
-  const handleSliderChange = useCallback(
+  const parseV = useCallback(
     (v: number) => {
       if (scale === "logarithmic") {
         v = Math.pow(Math.E, v) - offset;
       }
       v = +v.toFixed(precision);
+      return v;
+    },
+    [scale, offset, precision],
+  );
+  const handleSliderChange = useCallback(
+    (v: number) => {
+      v = parseV(v);
       setVal(v);
       onSliderChange(v);
     },
-    [setVal, onSliderChange],
+    [parseV, setVal, onSliderChange],
+  );
+  const handleSliderChangeComplete = useCallback(
+    (v: number) => {
+      v = parseV(v);
+      setVal(v);
+      onSliderChangeComplete?.(v);
+    },
+    [parseV, setVal, onSliderChangeComplete],
   );
 
   const inputValueFormatter = useCallback(
@@ -93,8 +110,16 @@ const CFSlider: React.FC<ICFSlider> = ({
       setInputVal(val.toString());
       setVal(val);
       onSliderChange(val);
+      onSliderChangeComplete?.(val);
     },
-    [onSliderChange, setVal, setInputVal, setIptFocused, inputValueFormatter],
+    [
+      onSliderChange,
+      onSliderChangeComplete,
+      setVal,
+      setInputVal,
+      setIptFocused,
+      inputValueFormatter,
+    ],
   );
 
   const handleInputPress = useCallback(
@@ -104,9 +129,10 @@ const CFSlider: React.FC<ICFSlider> = ({
         setInputVal(val.toString());
         setVal(val);
         onSliderChange(val);
+        onSliderChangeComplete?.(val);
       }
     },
-    [onSliderChange, setVal, setInputVal, inputValueFormatter],
+    [onSliderChange, onSliderChangeComplete, setVal, setInputVal, inputValueFormatter],
   );
 
   // controlled
@@ -146,7 +172,8 @@ const CFSlider: React.FC<ICFSlider> = ({
         color="#333"
         fontSize="12px"
         step={step}
-        onChange={handleSliderChange}>
+        onChange={handleSliderChange}
+        onChangeEnd={handleSliderChangeComplete}>
         <SliderTrack h="2px">
           <SliderFilledTrack bg={sliderTrackColor} />
         </SliderTrack>
