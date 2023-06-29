@@ -16,14 +16,7 @@ import {
   Spacer,
 } from "@chakra-ui/react";
 
-import {
-  Dictionary,
-  Logger,
-  getRandomHash,
-  isString,
-  isUndefined,
-  shallowCopy,
-} from "@carefree0910/core";
+import { Dictionary, Logger, isString, isUndefined, shallowCopy } from "@carefree0910/core";
 import { langStore, translate } from "@carefree0910/business";
 
 import "./index.scss";
@@ -32,8 +25,8 @@ import MinusIcon from "@/assets/icons/minus.svg";
 import SettingsIcon from "@/assets/icons/settings.svg";
 import { ReactComponent as ArrowDownIcon } from "@/assets/icons/arrow-down.svg";
 
-import type { IField, IListProperties } from "@/schema/plugins";
-import type { IDefinitions, IListField } from "@/schema/fields";
+import type { IListProperties } from "@/schema/plugins";
+import type { IDefinitions } from "@/schema/fields";
 import { genBlock } from "@/utils/bem";
 import { titleCaseWord } from "@/utils/misc";
 import { DEFAULT_FIELD_H, DEFAULT_GAP, EXPAND_TRANSITION } from "@/utils/constants";
@@ -51,7 +44,6 @@ import CFIcon from "@/components/CFIcon";
 import CFText, { CFCaption } from "@/components/CFText";
 import CFTooltip from "@/components/CFTooltip";
 import CFPopoverContent from "@/components/CFPopoverContent";
-import { getFieldH, useDefaultFieldValue } from "../utils";
 import { Field } from "../Field";
 
 export const ID_KEY = "^_^__id__^_^";
@@ -225,32 +217,34 @@ let ListBody = ({
 };
 ListBody = observer(ListBody);
 
-interface IList extends IListBody, Omit<FlexProps, "gap"> {
+interface IList extends Omit<IListBody, "expanded" | "values">, Omit<FlexProps, "gap"> {
   getNewItem: () => IListItem;
-  setExpanded: (expanded: boolean) => void;
   label?: string;
   tooltip?: string;
 }
 const List = ({
   getNewItem,
-  setExpanded,
   label,
   tooltip,
   field,
-  values,
   expandH,
-  expanded,
   getDefinitions,
   gap = DEFAULT_GAP,
   getDisplayKey,
   ...props
 }: IList) => {
+  const fieldKeys = { field };
+  const values: IListItem[] | undefined = getMetaField(fieldKeys);
+
+  if (!values) return null;
+
   const lang = langStore.tgt;
   const totalH = DEFAULT_FIELD_H + gap + expandH;
+  const [expanded, setExpanded] = useState(false);
 
   const onAdd = () => {
     setExpanded(true);
-    setMetaField({ field }, [...values, getNewItem()]);
+    setMetaField(fieldKeys, [...values, getNewItem()]);
   };
 
   return (

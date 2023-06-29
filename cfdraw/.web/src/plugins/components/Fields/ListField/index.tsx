@@ -1,5 +1,4 @@
 import { observer } from "mobx-react-lite";
-import { useState } from "react";
 
 import { getRandomHash } from "@carefree0910/core";
 
@@ -27,8 +26,6 @@ function ListField({ definition, gap, ...fieldKeys }: IField<IListField> & { gap
   const field = fieldKeys.field;
   const label = parseIStr(definition.label ?? titleCaseWord(field));
   const tooltip = parseIStr(definition.tooltip ?? "");
-  const [expanded, setExpanded] = useState(false);
-
   const values: IListItem[] | undefined = getMetaField(fieldKeys);
 
   if (!values) return null;
@@ -41,10 +38,7 @@ function ListField({ definition, gap, ...fieldKeys }: IField<IListField> & { gap
       label={label}
       tooltip={tooltip}
       field={field}
-      values={values}
       expandH={expandH}
-      expanded={expanded}
-      setExpanded={setExpanded}
       getNewItem={() => getDefaults(definition.item)}
       getDefinitions={() => definition.item}
       gap={gap}
