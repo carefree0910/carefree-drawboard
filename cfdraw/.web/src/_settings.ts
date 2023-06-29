@@ -191,7 +191,7 @@ export const reactPluginSettings: IMakePlugin<ReactPlugins | "_python.pluginGrou
     props: {
       nodeConstraint: "text",
       renderInfo: {
-        w: 400,
+        w: 408,
         h: 420,
         src: EditorIcon,
         tooltip: "text-editor-tooltip",
@@ -206,7 +206,7 @@ export const reactPluginSettings: IMakePlugin<ReactPlugins | "_python.pluginGrou
     props: {
       nodeConstraint: "image",
       renderInfo: {
-        w: 400,
+        w: 408,
         h: 420,
         src: EditorIcon,
         tooltip: "image-editor-tooltip",
