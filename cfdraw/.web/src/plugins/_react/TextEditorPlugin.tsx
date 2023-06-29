@@ -39,6 +39,14 @@ const TextEditorPlugin = ({ pluginInfo: { node }, ...props }: IPlugin) => {
   const lang = langStore.tgt;
 
   const textParams = selectingNodesStore.info.textParams;
+  if (node?.type !== "text" || !textParams) {
+    props.renderInfo.isInvisible = true;
+  }
+
+  const content = textParams?.content ?? "";
+  const fontSize = textParams?.fontSize ?? 0;
+  const textAlign = textParams?.align ?? "left";
+
   const [color, setColor] = useState("#ffffff");
   const { editColor, editContent, editFontSize, editAlign } = useEditText({
     node: node?.type === "text" ? node : tracedNode?.type === "text" ? tracedNode : undefined,
@@ -71,16 +79,6 @@ const TextEditorPlugin = ({ pluginInfo: { node }, ...props }: IPlugin) => {
       editAlign({ trace: true })(e.value);
     }
   };
-
-  let textAlign: TextAlign = "left";
-  if (node?.type !== "text" || !textParams) {
-    props.renderInfo.isInvisible = true;
-  } else {
-    textAlign = textParams.align ?? "left";
-  }
-
-  const content = textParams?.content ?? "";
-  const fontSize = textParams?.fontSize ?? 0;
 
   return (
     <Render id={id} {...props}>
