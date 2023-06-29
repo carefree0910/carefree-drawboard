@@ -61,6 +61,8 @@ interface IListBody {
   expanded: boolean;
   getDefinitions: (index: number) => IDefinitions;
   gap?: number;
+  onListChange?: (values: IListItem[]) => void;
+  onListChangeComplete?: (values: IListItem[]) => void;
   getDisplayKey?: (index: number) => string | undefined;
 }
 let ListBody = ({
@@ -70,6 +72,8 @@ let ListBody = ({
   expanded,
   getDefinitions,
   gap = DEFAULT_GAP,
+  onListChange,
+  onListChangeComplete,
   getDisplayKey,
 }: IListBody) => {
   const lang = langStore.tgt;
@@ -77,6 +81,8 @@ let ListBody = ({
   const onDelete = (index: number, definitions: IDefinitions) => {
     const newValues = [...values];
     newValues.splice(index, 1);
+    onListChange?.(newValues);
+    onListChangeComplete?.(newValues);
     setMetaField({ field }, newValues);
     runInAction(() => {
       Object.keys(definitions).forEach((key) => {
@@ -201,6 +207,20 @@ let ListBody = ({
                           definition={item}
                           field={key}
                           listProperties={listProperties}
+                          onFieldChange={(value) => {
+                            if (onListChange) {
+                              const newValues = shallowCopy(values);
+                              newValues[index][key] = value;
+                              onListChange(newValues);
+                            }
+                          }}
+                          onFieldChangeComplete={(value) => {
+                            if (onListChangeComplete) {
+                              const newValues = shallowCopy(values);
+                              newValues[index][key] = value;
+                              onListChangeComplete(newValues);
+                            }
+                          }}
                         />
                       );
                     })}
@@ -229,6 +249,8 @@ const List = ({
   expandH,
   getDefinitions,
   gap = DEFAULT_GAP,
+  onListChange,
+  onListChangeComplete,
   getDisplayKey,
   ...props
 }: IList) => {
@@ -243,7 +265,10 @@ const List = ({
 
   const onAdd = () => {
     setExpanded(true);
-    setMetaField(fieldKeys, [...values, getNewItem()]);
+    const newValues = [...values, getNewItem()];
+    onListChange?.(newValues);
+    onListChangeComplete?.(newValues);
+    setMetaField(fieldKeys, newValues);
   };
 
   return (
@@ -282,6 +307,8 @@ const List = ({
         expanded={expanded}
         getDefinitions={getDefinitions}
         gap={gap}
+        onListChange={onListChange}
+        onListChangeComplete={onListChangeComplete}
         getDisplayKey={getDisplayKey}
       />
     </Flex>
