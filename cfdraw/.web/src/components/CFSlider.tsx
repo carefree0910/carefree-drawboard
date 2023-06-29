@@ -7,7 +7,6 @@ import {
   FlexProps,
 } from "@chakra-ui/react";
 import { observer } from "mobx-react-lite";
-import { useUnmount } from "ahooks";
 import React, { useCallback, useEffect, useState } from "react";
 
 import { BoardStore, useGlobalTransform, useIsReady } from "@carefree0910/business";
@@ -146,12 +145,6 @@ const CFSlider: React.FC<ICFSlider> = ({
       }
     }
   }, [value]);
-
-  useUnmount(() => {
-    if (value.toString() !== inputVal) {
-      handleInputBlur(+inputVal);
-    }
-  });
 
   const {
     textColor,
