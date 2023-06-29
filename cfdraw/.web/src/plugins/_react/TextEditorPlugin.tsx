@@ -41,6 +41,8 @@ const TextEditorPlugin = ({ pluginInfo: { node }, ...props }: IPlugin) => {
   const textParams = selectingNodesStore.info.textParams;
   if (node?.type !== "text" || !textParams) {
     props.renderInfo.isInvisible = true;
+  } else {
+    tracedNode = node;
   }
 
   const color = textParams?.color ?? "#ffffff";
@@ -52,10 +54,7 @@ const TextEditorPlugin = ({ pluginInfo: { node }, ...props }: IPlugin) => {
     node: node?.type === "text" ? node : tracedNode?.type === "text" ? tracedNode : undefined,
   });
 
-  const onChangeColor = (color: string) => {
-    tracedNode = node;
-    editColor({ trace: false })(color);
-  };
+  const onChangeColor = (color: string) => editColor({ trace: false })(color);
   const onChangeColorComplete = useCallback(() => {
     if (!color || color === tracedColor) return;
     console.log(">>> onChangeColorComplete");
@@ -68,10 +67,7 @@ const TextEditorPlugin = ({ pluginInfo: { node }, ...props }: IPlugin) => {
     })(color);
   }, [node, color, tracedColor]);
 
-  const onChangeContent = (content: string) => {
-    tracedNode = node;
-    editContent({ trace: false })(content);
-  };
+  const onChangeContent = (content: string) => editContent({ trace: false })(content);
   const onChangeContentComplete = () => {
     console.log(">>> onChangeContentComplete");
     editContent({
