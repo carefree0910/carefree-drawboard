@@ -6,7 +6,6 @@ import { getRandomHash } from "@carefree0910/core";
 import type { IField } from "@/schema/plugins";
 import type { IDefinitions, IListField } from "@/schema/fields";
 import { titleCaseWord } from "@/utils/misc";
-import { DEFAULT_FIELD_H } from "@/utils/constants";
 import { getMetaField } from "@/stores/meta";
 import { parseIStr } from "@/actions/i18n";
 import { getFieldH, useDefaultFieldValue } from "../utils";
@@ -36,29 +35,17 @@ function ListField({ definition, gap, ...fieldKeys }: IField<IListField> & { gap
 
   definition.numRows = Math.max(1, Math.min(values.length, definition.maxNumRows ?? 4) + 0.5);
   const expandH = getFieldH({ gap, definition, field });
-  const totalH = DEFAULT_FIELD_H + gap + expandH;
 
   return (
     <List
-      totalH={totalH}
-      getNewItem={() => getDefaults(definition.item)}
-      setExpanded={setExpanded}
       label={label}
       tooltip={tooltip}
       field={field}
       values={values}
+      expandH={expandH}
       expanded={expanded}
-      getFlexProps={(expanded) =>
-        expanded
-          ? {
-              h: `${expandH}px`,
-              mt: "6px",
-            }
-          : {
-              h: "0px",
-              mt: "0px",
-            }
-      }
+      setExpanded={setExpanded}
+      getNewItem={() => getDefaults(definition.item)}
       getDefinitions={() => definition.item}
       gap={gap}
       getDisplayKey={() => definition.displayKey}

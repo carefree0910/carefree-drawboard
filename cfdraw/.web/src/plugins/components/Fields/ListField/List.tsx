@@ -65,8 +65,8 @@ const iconProps: ImageProps = { w: "24px", h: "24px", cursor: "pointer" };
 interface IListBody {
   field: string;
   values: IListItem[];
+  expandH: number;
   expanded: boolean;
-  getFlexProps: (expanded: boolean) => FlexProps;
   getDefinitions: (pack: IListItem, index: number) => IDefinitions;
   gap?: number;
   getDisplayKey?: (pack: IListItem, index: number) => string | undefined;
@@ -74,8 +74,8 @@ interface IListBody {
 let ListBody = ({
   field,
   values,
+  expandH,
   expanded,
-  getFlexProps,
   getDefinitions,
   gap = DEFAULT_GAP,
   getDisplayKey,
@@ -110,10 +110,11 @@ let ListBody = ({
   return (
     <Flex
       w="100%"
+      h={expanded ? `${expandH}px` : "0px"}
+      mt={expanded ? "6px" : "0px"}
       overflow="hidden"
       direction="column"
-      transition={EXPAND_TRANSITION}
-      {...getFlexProps(expanded)}>
+      transition={EXPAND_TRANSITION}>
       {values.length === 0 ? (
         <Center>
           <CFCaption>{translate(UI_Words["list-field-empty-caption"], lang)}</CFCaption>
@@ -225,28 +226,27 @@ let ListBody = ({
 ListBody = observer(ListBody);
 
 interface IList extends IListBody, Omit<FlexProps, "gap"> {
-  totalH: number;
   getNewItem: () => IListItem;
   setExpanded: (expanded: boolean) => void;
   label?: string;
   tooltip?: string;
 }
 const List = ({
-  totalH,
   getNewItem,
   setExpanded,
   label,
   tooltip,
   field,
   values,
+  expandH,
   expanded,
-  getFlexProps,
   getDefinitions,
   gap = DEFAULT_GAP,
   getDisplayKey,
   ...props
 }: IList) => {
   const lang = langStore.tgt;
+  const totalH = DEFAULT_FIELD_H + gap + expandH;
 
   const onAdd = () => {
     setExpanded(true);
@@ -285,8 +285,8 @@ const List = ({
       <ListBody
         field={field}
         values={values}
+        expandH={expandH}
         expanded={expanded}
-        getFlexProps={getFlexProps}
         getDefinitions={getDefinitions}
         gap={gap}
         getDisplayKey={getDisplayKey}
