@@ -6,7 +6,7 @@ import { isUndefined } from "@carefree0910/core";
 import type { IField } from "@/schema/plugins";
 import type { INumberField } from "@/schema/fields";
 import { titleCaseWord } from "@/utils/misc";
-import { getMetaField, setMetaField } from "@/stores/meta";
+import { getFieldData, setFieldData } from "@/stores/dataCenter";
 import { parseIStr } from "@/actions/i18n";
 import CFSlider from "@/components/CFSlider";
 import TextField from "./TextField";
@@ -20,7 +20,7 @@ function NumberField({
 }: IField<INumberField>) {
   useDefaultFieldValue({ definition, ...fieldKeys });
   const label = parseIStr(definition.label ?? titleCaseWord(fieldKeys.field));
-  const [value, setValue] = useState(getMetaField(fieldKeys) ?? definition.default);
+  const [value, setValue] = useState(getFieldData(fieldKeys) ?? definition.default);
 
   if (isUndefined(definition.min) || isUndefined(definition.max)) {
     const tooltip = parseIStr(definition.tooltip ?? label);
@@ -58,7 +58,7 @@ function NumberField({
       value={value}
       onSliderChange={(value) => {
         setValue(value);
-        setMetaField(fieldKeys, value);
+        setFieldData(fieldKeys, value);
         onFieldChange?.(value);
       }}
       onSliderChangeComplete={(value) => onFieldChangeComplete?.(value)}

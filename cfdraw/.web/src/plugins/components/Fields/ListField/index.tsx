@@ -5,7 +5,7 @@ import { getRandomHash } from "@carefree0910/core";
 import type { IField } from "@/schema/plugins";
 import type { IDefinitions, IListField } from "@/schema/fields";
 import { titleCaseWord } from "@/utils/misc";
-import { getMetaField } from "@/stores/meta";
+import { getFieldData } from "@/stores/dataCenter";
 import { parseIStr } from "@/actions/i18n";
 import { getFieldH, useDefaultFieldValue } from "../utils";
 import List, { ID_KEY, IListItem } from "./List";
@@ -26,7 +26,7 @@ function ListField({ definition, gap, ...fieldKeys }: IField<IListField> & { gap
   const field = fieldKeys.field;
   const label = parseIStr(definition.label ?? titleCaseWord(field));
   const tooltip = parseIStr(definition.tooltip ?? "");
-  const values: IListItem[] | undefined = getMetaField(fieldKeys);
+  const values: IListItem[] | undefined = getFieldData(fieldKeys);
 
   if (!values) return null;
 

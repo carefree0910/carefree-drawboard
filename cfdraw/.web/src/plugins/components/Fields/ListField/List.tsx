@@ -32,13 +32,8 @@ import { titleCaseWord } from "@/utils/misc";
 import { DEFAULT_FIELD_H, DEFAULT_GAP, EXPAND_TRANSITION } from "@/utils/constants";
 import { UI_Words } from "@/lang/ui";
 import { useScrollBarSx } from "@/stores/theme";
-import {
-  getListInjectionKey,
-  getMetaField,
-  getMetaInjection,
-  setMetaField,
-  setMetaInjection,
-} from "@/stores/meta";
+import { getListInjectionKey, getMetaInjection, setMetaInjection } from "@/stores/meta";
+import { getFieldData, setFieldData } from "@/stores/dataCenter";
 import { parseIStr } from "@/actions/i18n";
 import CFIcon from "@/components/CFIcon";
 import CFText, { CFCaption } from "@/components/CFText";
@@ -83,7 +78,7 @@ let ListBody = ({
     newValues.splice(index, 1);
     onListChange?.(newValues);
     onListChangeComplete?.(newValues);
-    setMetaField({ field }, newValues);
+    setFieldData({ field }, newValues);
     runInAction(() => {
       Object.keys(definitions).forEach((key) => {
         for (let i = index; i < newValues.length; i++) {
@@ -255,7 +250,7 @@ const List = ({
   ...props
 }: IList) => {
   const fieldKeys = { field };
-  const values: IListItem[] | undefined = getMetaField(fieldKeys);
+  const values: IListItem[] | undefined = getFieldData(fieldKeys);
 
   if (!values) return null;
 
@@ -268,7 +263,7 @@ const List = ({
     const newValues = [...values, getNewItem()];
     onListChange?.(newValues);
     onListChangeComplete?.(newValues);
-    setMetaField(fieldKeys, newValues);
+    setFieldData(fieldKeys, newValues);
   };
 
   return (

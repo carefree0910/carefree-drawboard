@@ -5,13 +5,13 @@ import { isUndefined } from "@carefree0910/core";
 import type { IField, IListProperties } from "@/schema/plugins";
 import type { IFieldDefinition } from "@/schema/fields";
 import { DEFAULT_FIELD_H } from "@/utils/constants";
-import { getMetaField, setMetaField } from "@/stores/meta";
+import { getFieldData, setFieldData } from "@/stores/dataCenter";
 import { parseIStr } from "@/actions/i18n";
 
 export function useDefaultFieldValue({ definition, ...fieldKeys }: IField<IFieldDefinition>) {
   useEffect(() => {
-    if (isUndefined(getMetaField(fieldKeys))) {
-      setMetaField(
+    if (isUndefined(getFieldData(fieldKeys))) {
+      setFieldData(
         fieldKeys,
         definition.type === "text" || definition.type === "image" || definition.type === "color"
           ? parseIStr(definition.default)

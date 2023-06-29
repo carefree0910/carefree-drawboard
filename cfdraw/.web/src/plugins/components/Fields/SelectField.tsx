@@ -9,7 +9,7 @@ import type { ISelectField } from "@/schema/fields";
 import { getBaseURL, titleCaseWord } from "@/utils/misc";
 import { userStore } from "@/stores/user";
 import { runOneTimeSocketHook } from "@/stores/socket";
-import { getMetaField, setMetaField } from "@/stores/meta";
+import { getFieldData, setFieldData } from "@/stores/dataCenter";
 import { parseIStr } from "@/actions/i18n";
 import { CFSrollableSelect } from "@/components/CFSelect";
 import { useDefaultFieldValue } from "./utils";
@@ -50,7 +50,7 @@ function SelectField({
   const userJson = userStore.json;
   const label = parseIStr(definition.label ?? titleCaseWord(fieldKeys.field));
   const tooltip = parseIStr(definition.tooltip ?? "");
-  const [value, setValue] = useState(getMetaField(fieldKeys) ?? definition.default);
+  const [value, setValue] = useState(getFieldData(fieldKeys) ?? definition.default);
   const [options, setOptions] = useState(definition.options as IStr[]);
   const onMenuOpen = useCallback(() => {
     if (definition.mappingPath) {
@@ -81,7 +81,7 @@ function SelectField({
         if (!!e) {
           const value = JSON.parse(e.value);
           setValue(value);
-          setMetaField(fieldKeys, value);
+          setFieldData(fieldKeys, value);
           onFieldChange?.(value);
           onFieldChangeComplete?.(value);
         }

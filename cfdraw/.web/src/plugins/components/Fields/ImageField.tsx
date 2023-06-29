@@ -17,13 +17,8 @@ import { toastWord } from "@/utils/toast";
 import { titleCaseWord } from "@/utils/misc";
 import { IMAGE_PLACEHOLDER } from "@/utils/constants";
 import { themeStore } from "@/stores/theme";
-import {
-  IMetaInjection,
-  getMetaField,
-  makeMetaInjectionFrom,
-  setMetaField,
-  setMetaInjection,
-} from "@/stores/meta";
+import { IMetaInjection, makeMetaInjectionFrom, setMetaInjection } from "@/stores/meta";
+import { getFieldData, setFieldData } from "@/stores/dataCenter";
 import { parseIStr } from "@/actions/i18n";
 import CFIcon from "@/components/CFIcon";
 import CFText, { CFCaption } from "@/components/CFText";
@@ -106,10 +101,10 @@ function ImageField({
   const tooltip = parseIStr(definition.tooltip ?? "");
   const lang = langStore.tgt;
   const { panelBg } = themeStore.styles;
-  const [value, setValue] = useState(getMetaField(fieldKeys) ?? definition.default);
+  const [value, setValue] = useState(getFieldData(fieldKeys) ?? definition.default);
   const setValueAndMeta = (value: string, injection: IMetaInjection | undefined) => {
     setValue(value);
-    setMetaField(fieldKeys, value);
+    setFieldData(fieldKeys, value);
     setMetaInjection(fieldKeys, injection);
     onFieldChange?.(value);
     onFieldChangeComplete?.(value);

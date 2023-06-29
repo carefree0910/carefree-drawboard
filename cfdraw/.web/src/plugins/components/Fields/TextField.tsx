@@ -13,12 +13,11 @@ import { themeStore, useScrollBarSx } from "@/stores/theme";
 import {
   IMetaInjection,
   getListInjectionKey,
-  getMetaField,
   getMetaInjection,
   makeMetaInjectionFrom,
-  setMetaField,
   setMetaInjection,
 } from "@/stores/meta";
+import { getFieldData, setFieldData } from "@/stores/dataCenter";
 import { parseIStr } from "@/actions/i18n";
 import CFInput from "@/components/CFInput";
 import CFTextarea from "@/components/CFTextarea";
@@ -63,7 +62,7 @@ function TextField({
   const tooltip = parseIStr(definition.tooltip ?? label);
   const defaultText = parseIStr(definition.default ?? "");
   const { captionColor } = themeStore.styles;
-  const [value, setValue] = useState(getMetaField(fieldKeys) ?? defaultText);
+  const [value, setValue] = useState(getFieldData(fieldKeys) ?? defaultText);
   const isNumber = useMemo(() => !!definition.numberOptions, [definition.numberOptions]);
   const Input = definition.numRows && definition.numRows > 1 ? CFTextarea : CFInput;
 
@@ -72,7 +71,7 @@ function TextField({
       const v = event.target.value;
       setValue(v);
       if (!isNumber) {
-        setMetaField(fieldKeys, v);
+        setFieldData(fieldKeys, v);
         onFieldChange?.(v);
       }
     },
@@ -95,7 +94,7 @@ function TextField({
         number = Math.round(number);
       }
       setValue(number.toString());
-      setMetaField(fieldKeys, number);
+      setFieldData(fieldKeys, number);
       onFieldChange?.(number);
       onFieldChangeComplete?.(number);
     }
@@ -103,7 +102,7 @@ function TextField({
   const onSelectText = (content: string, injection: IMetaInjection | undefined) => {
     setValue(content);
     if (!isNumber) {
-      setMetaField(fieldKeys, content);
+      setFieldData(fieldKeys, content);
     }
     setMetaInjection(fieldKeys, injection);
     nodePickerEvent.emit({ type: "close" });

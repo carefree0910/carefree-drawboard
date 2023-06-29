@@ -14,7 +14,7 @@ import type { ISelectField } from "@/schema/fields";
 import { UI_Words } from "@/lang/ui";
 import { NodeEditor_Words } from "@/lang/nodeEditor";
 import { DEFAULT_GAP } from "@/utils/constants";
-import { getMetaField, setMetaField } from "@/stores/meta";
+import { getFieldData, setFieldData } from "@/stores/dataCenter";
 import { usePluginIds } from "@/stores/pluginsInfo";
 import CFDivider from "@/components/CFDivider";
 import CFHeading from "@/components/CFHeading";
@@ -45,17 +45,17 @@ const ImageEditorPlugin = ({ pluginInfo: { node }, ...props }: IPlugin) => {
   // controlled
   useEffect(() => {
     if (node?.type === "image") {
-      const existing = getMetaField(fieldKeys);
+      const existing = getFieldData(fieldKeys);
       const latest = params2values(filters ?? []);
       if (JSON.stringify(existing) !== JSON.stringify(latest)) {
-        setMetaField(fieldKeys, latest);
+        setFieldData(fieldKeys, latest);
       }
     }
   }, [fieldKeys, filters, node?.type]);
 
   const label = translate(UI_Words["image-editor-filters-label"], lang);
   const tooltip = translate(UI_Words["image-editor-filters-tooltip"], lang);
-  const values: IListItem[] | undefined = getMetaField(fieldKeys);
+  const values: IListItem[] | undefined = getFieldData(fieldKeys);
 
   if (!values) return null;
 

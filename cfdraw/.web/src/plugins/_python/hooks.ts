@@ -11,7 +11,8 @@ import type {
   IUseOnPythonPluginMessage,
   OnPythonPluginMessage,
 } from "@/schema/_python";
-import { IMetaInjections, getMetaField, getMetaInjection } from "@/stores/meta";
+import { getFieldData } from "@/stores/dataCenter";
+import { IMetaInjections, getMetaInjection } from "@/stores/meta";
 import { setPluginMessage, usePluginIds, usePluginNeedRender } from "@/stores/pluginsInfo";
 import { useSocketPython } from "@/hooks/usePython";
 import { checkHasConstraint } from "../utils/renderFilters";
@@ -23,7 +24,7 @@ export function useDefinitionsRequestDataFn(definitions: IDefinitions): () => Di
   return useCallback(() => {
     const data: Dictionary<any> = {};
     Object.keys(definitions).forEach((field) => {
-      const value = getMetaField({ field });
+      const value = getFieldData({ field });
       if (Array.isArray(value)) {
         value.forEach((obj: any) => {
           if (!!obj[ID_KEY]) {
@@ -46,7 +47,7 @@ export function useDefinitionsGetInjectionsFn(definitions: IDefinitions): () => 
           injections[key] = injection;
         }
       } else {
-        const definitionValues = getMetaField({ field });
+        const definitionValues = getFieldData({ field });
         if (!Array.isArray(definitionValues)) return;
         definitionValues.forEach((_, i) => {
           Object.entries(definition.item).forEach(([itemField, itemDefinition]) => {

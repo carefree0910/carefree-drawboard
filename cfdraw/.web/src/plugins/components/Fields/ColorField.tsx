@@ -4,7 +4,7 @@ import { observer } from "mobx-react-lite";
 import type { IField } from "@/schema/plugins";
 import type { IColorField } from "@/schema/fields";
 import { titleCaseWord } from "@/utils/misc";
-import { getMetaField, setMetaField } from "@/stores/meta";
+import { getFieldData, setFieldData } from "@/stores/dataCenter";
 import { parseIStr } from "@/actions/i18n";
 import CFColorPicker from "@/components/CFColorPicker";
 import { useDefaultFieldValue } from "./utils";
@@ -19,11 +19,11 @@ function ColorField({
   const label = parseIStr(definition.label ?? titleCaseWord(fieldKeys.field));
   const tooltip = parseIStr(definition.tooltip ?? "");
   const defaultColor = parseIStr(definition.default ?? "");
-  const [value, setValue] = useState(getMetaField(fieldKeys) ?? defaultColor);
+  const [value, setValue] = useState(getFieldData(fieldKeys) ?? defaultColor);
 
   const onChange = (color: string) => {
     setValue(color);
-    setMetaField(fieldKeys, color);
+    setFieldData(fieldKeys, color);
     onFieldChange?.(color);
   };
   const onChangeComplete = () => onFieldChangeComplete?.(value);
