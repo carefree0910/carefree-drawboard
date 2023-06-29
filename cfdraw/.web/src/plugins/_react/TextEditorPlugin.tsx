@@ -96,7 +96,7 @@ const TextEditorPlugin = ({ pluginInfo: { node }, ...props }: IPlugin) => {
             value={fontSize}
             scale="logarithmic"
             onSliderChange={(value) => editFontSize({ trace: false })(value)}
-            onSliderChangeComplete={() => editFontSize({ trace: true })(fontSize)}
+            onSliderChangeComplete={(value) => editFontSize({ trace: true })(value)}
           />
           <CFColorPicker
             color={color}
