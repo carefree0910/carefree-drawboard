@@ -13,7 +13,7 @@ import type { IField } from "@/schema/plugins";
 import type { IDefinitions, IListField } from "@/schema/fields";
 import { genBlock } from "@/utils/bem";
 import { titleCaseWord } from "@/utils/misc";
-import { EXPAND_TRANSITION } from "@/utils/constants";
+import { DEFAULT_FIELD_H, EXPAND_TRANSITION } from "@/utils/constants";
 import { UI_Words } from "@/lang/ui";
 import { getMetaField, setMetaField } from "@/stores/meta";
 import { parseIStr } from "@/actions/i18n";
@@ -51,9 +51,7 @@ function ListField({ definition, gap, ...fieldKeys }: IField<IListField> & { gap
 
   definition.numRows = Math.max(1, Math.min(values.length, definition.maxNumRows ?? 4) + 0.5);
   const expandH = getFieldH({ gap, definition, field });
-  definition.numRows = 1;
-  const fieldH = getFieldH({ gap, definition, field });
-  const totalH = fieldH + gap + expandH;
+  const totalH = DEFAULT_FIELD_H + gap + expandH;
 
   const onAdd = () => {
     setExpanded(true);
@@ -63,11 +61,11 @@ function ListField({ definition, gap, ...fieldKeys }: IField<IListField> & { gap
   return (
     <Flex
       w="100%"
-      h={`${expanded ? totalH : fieldH}px`}
+      h={`${expanded ? totalH : DEFAULT_FIELD_H}px`}
       direction="column"
       transition={EXPAND_TRANSITION}
       {...definition.props}>
-      <Flex w="100%" h={`${fieldH}px`} flexShrink={0} align="center">
+      <Flex w="100%" h={`${DEFAULT_FIELD_H}px`} flexShrink={0} align="center">
         <CFTooltip label={tooltip}>
           <Flex w="100%" h="100%" align="center" as="button" onClick={() => setExpanded(!expanded)}>
             <CFIcon
