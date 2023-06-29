@@ -37,8 +37,6 @@ let tracedColor: string | undefined;
 const TextEditorPlugin = ({ pluginInfo: { node }, ...props }: IPlugin) => {
   const id = usePluginIds("textEditor").id;
   const lang = langStore.tgt;
-  const [content, setContent] = useState("");
-  const [fontSize, setFontSize] = useState(0);
 
   const textParams = selectingNodesStore.info.textParams;
   const [color, setColor] = useState("#ffffff");
@@ -48,8 +46,6 @@ const TextEditorPlugin = ({ pluginInfo: { node }, ...props }: IPlugin) => {
   useEffect(() => {
     if (node?.type === "text") {
       setColor(node.params.color ?? "#ffffff");
-      setContent(node.params.content);
-      setFontSize(node.params.fontSize);
     }
   }, [node]);
   useEffect(() => {
@@ -83,6 +79,9 @@ const TextEditorPlugin = ({ pluginInfo: { node }, ...props }: IPlugin) => {
     textAlign = textParams.align ?? "left";
   }
 
+  const content = textParams?.content ?? "";
+  const fontSize = textParams?.fontSize ?? 0;
+
   return (
     <Render id={id} {...props}>
       <CFHeading>{translate(NodeEditor_Words["text-editor-plugin-header"], lang)}</CFHeading>
@@ -98,10 +97,7 @@ const TextEditorPlugin = ({ pluginInfo: { node }, ...props }: IPlugin) => {
             precision={0}
             value={fontSize}
             scale="logarithmic"
-            onSliderChange={(value) => {
-              setFontSize(value);
-              editFontSize({ trace: false })(value);
-            }}
+            onSliderChange={(value) => editFontSize({ trace: false })(value)}
             onBlur={() => editFontSize({ trace: true })(fontSize)}
           />
           <CFColorPicker
@@ -134,11 +130,7 @@ const TextEditorPlugin = ({ pluginInfo: { node }, ...props }: IPlugin) => {
         <CFTextarea
           flex={1}
           value={content}
-          onChange={(e) => {
-            const value = e.target.value;
-            setContent(value);
-            editContent({ trace: false })(value);
-          }}
+          onChange={(e) => editContent({ trace: false })(e.target.value)}
           onBlur={() => editContent({ trace: true })(content)}
         />
       </Flex>
