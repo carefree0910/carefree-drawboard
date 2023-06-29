@@ -107,8 +107,8 @@ const TextEditorPlugin = ({ pluginInfo: { node }, ...props }: IPlugin) => {
           <CFColorPicker
             color={color}
             onChange={onChangeColor}
+            onChangeComplete={onChangeColorComplete}
             thumbnailProps={{ ml: "12px" }}
-            onClose={onChangeColorComplete}
             usePortal
           />
         </Flex>

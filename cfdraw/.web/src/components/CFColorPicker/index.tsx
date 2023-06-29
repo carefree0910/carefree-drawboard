@@ -26,17 +26,17 @@ const block = genBlock("c-color-picker");
 interface IColorPicker {
   pickerProps?: ColorPickerBaseProps<string>;
   thumbnailProps?: ButtonProps;
-  onClose?: () => void;
+  onChangeComplete?: () => void;
   usePortal?: boolean;
 }
 const ColorPicker: React.FC<IColorPicker> = ({
   pickerProps,
   thumbnailProps,
-  onClose: externalOnClose,
+  onChangeComplete,
   usePortal,
 }) => {
   const color = pickerProps?.color;
-  const { isOpen, onToggle, onClose } = useDisclosure({ onClose: externalOnClose });
+  const { isOpen, onToggle, onClose } = useDisclosure({ onClose: onChangeComplete });
 
   if (!color) return null;
 
@@ -87,7 +87,7 @@ interface ICFColorPicker extends ColorPickerBaseProps<string> {
     control?: FormControlProps;
   };
   thumbnailProps?: ButtonProps;
-  onClose?: () => void;
+  onChangeComplete?: () => void;
   usePortal?: boolean;
 }
 function CFColorPicker({
@@ -95,14 +95,14 @@ function CFColorPicker({
   tooltip,
   formProps,
   thumbnailProps,
-  onClose,
+  onChangeComplete,
   usePortal,
   ...props
 }: ICFColorPicker) {
   const colorPickerProps: IColorPicker = {
     pickerProps: props,
     thumbnailProps,
-    onClose,
+    onChangeComplete,
     usePortal,
   };
   if (!label) {
