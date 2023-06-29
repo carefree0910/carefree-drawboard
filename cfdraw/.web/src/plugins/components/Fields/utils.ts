@@ -4,6 +4,7 @@ import { isUndefined } from "@carefree0910/core";
 
 import type { IField, IListProperties } from "@/schema/plugins";
 import type { IFieldDefinition } from "@/schema/fields";
+import { DEFAULT_FIELD_H } from "@/utils/constants";
 import { getMetaField, setMetaField } from "@/stores/meta";
 import { parseIStr } from "@/actions/i18n";
 
@@ -27,8 +28,6 @@ export interface IFieldComponent {
   listProperties?: IListProperties;
 }
 export function getFieldH({ gap, definition, field }: IFieldComponent): number {
-  const defaultH = 42;
-
   // calculate height, in order to place the field in the shortest column (if needed)
   let fieldH;
   const props = definition.props ?? {};
@@ -39,7 +38,7 @@ export function getFieldH({ gap, definition, field }: IFieldComponent): number {
     fieldH = parseInt(props.h.slice(0, -2));
   } else {
     const numRows = definition.numRows ?? 1;
-    fieldH = defaultH * numRows + gap * (numRows - 1);
+    fieldH = DEFAULT_FIELD_H * numRows + gap * (numRows - 1);
   }
   return fieldH;
 }

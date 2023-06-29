@@ -56,3 +56,6 @@ export const DEFAULT_PLUGIN_SETTINGS = {
 export const IMAGE_PLACEHOLDER = ImagePlaceholder;
 export const NSFW_IMAGE_PLACEHOLDER = NSFWImagePlaceholder;
 export const DEFAULT_FONT_SIZE = 64;
+
+export const DEFAULT_GAP = 12;
+export const DEFAULT_FIELD_H = 42;

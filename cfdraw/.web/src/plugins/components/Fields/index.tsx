@@ -4,6 +4,7 @@ import { Flex, FlexProps } from "@chakra-ui/react";
 import { argMin, range, shallowCopy } from "@carefree0910/core";
 
 import type { IDefinitions } from "@/schema/fields";
+import { DEFAULT_GAP } from "@/utils/constants";
 import { getFieldH } from "./utils";
 import { Field } from "./Field";
 import ListField from "./ListField";
@@ -15,7 +16,7 @@ interface IDefinitionsComponent extends FlexProps {
 }
 export function Definitions({ definitions, numColumns, rowGap, ...others }: IDefinitionsComponent) {
   const nc = numColumns ?? 1;
-  const gap = rowGap ?? 12;
+  const gap = rowGap ?? DEFAULT_GAP;
 
   const columnW = useMemo(
     () => (numColumns === 1 ? "100%" : `${(100 - 5 * (nc - 1)) / nc}%`),
