@@ -209,7 +209,7 @@ function NodePicker<T extends INode>({
           </CFTooltip>
         </Center>
       </PopoverTrigger>
-      <PopoverContent w="366px" h="320px" bg={`${panelBg}cc`}>
+      <PopoverContent w="366px" h={isOpen ? "100%" : "0px"} maxH="320px" bg={`${panelBg}cc`}>
         <PopoverArrow />
         <Flex
           w="100%"
