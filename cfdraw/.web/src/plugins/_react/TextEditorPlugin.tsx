@@ -78,6 +78,17 @@ const TextEditorPlugin = ({ pluginInfo: { node }, ...props }: IPlugin) => {
     })(content);
   };
 
+  const onFontSizeChange = (value: number) => editFontSize({ trace: false })(value);
+  const onFontSizeChangeComplete = (value: number) => {
+    console.log(">>> onFontSizeChangeComplete", tracedNode);
+    editFontSize({
+      trace: true,
+      success: async () => {
+        tracedNode = null;
+      },
+    })(value);
+  };
+
   const onChangeAlign: ICFSelect<TextAlign, false>["onChange"] = (e) => {
     if (!!e) {
       editAlign({ trace: true })(e.value);
@@ -99,8 +110,8 @@ const TextEditorPlugin = ({ pluginInfo: { node }, ...props }: IPlugin) => {
             precision={0}
             value={fontSize}
             scale="logarithmic"
-            onSliderChange={(value) => editFontSize({ trace: false })(value)}
-            onSliderChangeComplete={(value) => editFontSize({ trace: true })(value)}
+            onSliderChange={onFontSizeChange}
+            onSliderChangeComplete={onFontSizeChangeComplete}
           />
           <CFColorPicker
             color={color}
