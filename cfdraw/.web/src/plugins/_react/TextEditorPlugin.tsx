@@ -53,8 +53,8 @@ const TextEditorPlugin = ({ pluginInfo: { node }, ...props }: IPlugin) => {
   });
 
   const onChangeColor = (color: string) => {
-    editColor({ trace: false })(color);
     tracedNode = node;
+    editColor({ trace: false })(color);
   };
   const onChangeColorComplete = useCallback(() => {
     if (!color || color === tracedColor) return;
@@ -65,8 +65,8 @@ const TextEditorPlugin = ({ pluginInfo: { node }, ...props }: IPlugin) => {
   }, [node, color, tracedColor]);
 
   const onChangeContent = (content: string) => {
-    editContent({ trace: false })(content);
     tracedNode = node;
+    editContent({ trace: false })(content);
   };
   const onChangeContentComplete = () => {
     console.log(">>> onChangeContentComplete");
