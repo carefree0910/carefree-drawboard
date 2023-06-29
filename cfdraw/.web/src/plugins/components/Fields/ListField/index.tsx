@@ -10,7 +10,7 @@ import { parseIStr } from "@/actions/i18n";
 import { getFieldH, useDefaultFieldValue } from "../utils";
 import List, { ID_KEY, IListItem } from "./List";
 
-function getDefaults(item: IDefinitions): IListItem {
+export function getDefaults(item: IDefinitions): IListItem {
   const defaults: IListItem = { [ID_KEY]: getRandomHash().toString() };
   for (const [key, value] of Object.entries(item)) {
     defaults[key] = value.default;
