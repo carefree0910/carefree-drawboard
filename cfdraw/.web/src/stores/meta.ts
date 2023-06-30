@@ -33,7 +33,7 @@ export function getListInjectionKey({ field, listProperties }: IDataCenterKey) {
   return `${listProperties.listKey}.${listProperties.listIndex}.${field}`;
 }
 export function makeMetaInjectionFrom(node: ISingleNode): Promise<IMetaInjection> {
-  return getNodeData(node, {}).then((nodeData) => ({
+  return getNodeData(node, { exportBox: node.bbox }).then((nodeData) => ({
     node: nodeData,
     bboxFields: node.bboxFields,
   }));
