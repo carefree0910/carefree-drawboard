@@ -564,7 +564,7 @@ class MultiControlNet(IFieldsPlugin):
             ),
         )
 
-    async def process(self, data: ISocketRequest) -> List[Image.Image]:
+    async def process(self, data: ISocketRequest) -> Optional[List[Image.Image]]:
         def callback(step: int, num_steps: int) -> bool:
             return self.send_progress(step / num_steps)
 
@@ -575,6 +575,15 @@ class MultiControlNet(IFieldsPlugin):
         if not data.extraData["url"]:
             data.extraData.pop("url")
         controls = list(map(parse_control, data.extraData.pop("controls")))
+        if len(controls) == 0:
+            msg = "should provide at least one control in the 'ControlNet' setting"
+            self.send_exception(msg)
+            return
+        for i, control in enumerate(controls):
+            if not control.get("data", {}).get("hint_url"):
+                msg = f"should provide `hint_url` for control {i} in the 'ControlNet' setting"
+                self.send_exception(msg)
+                return
         data.extraData["controls"] = controls
         model = inject(self, data, ControlMultiModel, "base_model")
         return await get_apis().run_multi_controlnet(model, step_callback=callback)
@@ -601,7 +610,13 @@ class ImageHarmonization(IFieldsPlugin):
             ),
         )
 
-    async def process(self, data: ISocketRequest) -> List[Image.Image]:
+    async def process(self, data: ISocketRequest) -> Optional[List[Image.Image]]:
+        if not data.extraData.get("url"):
+            self.send_exception("'Image' should be provided")
+            return
+        if not data.extraData.get("mask_url"):
+            self.send_exception("'Foreground' should be provided")
+            return
         data_model = Img2ImgHarmonizationModel(**data.extraData)
         return await call_api(self, "harmonization", data_model)
 
