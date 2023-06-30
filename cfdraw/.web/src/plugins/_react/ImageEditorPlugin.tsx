@@ -1,12 +1,7 @@
 import { useEffect } from "react";
 import { observer } from "mobx-react-lite";
 
-import {
-  IImageFilterParams,
-  getRandomHash,
-  imageFilterSettings,
-  isUndefined,
-} from "@carefree0910/core";
+import { IImageFilterParams, getRandomHash, imageFilterSettings } from "@carefree0910/core";
 import { langStore, translate, useFilters } from "@carefree0910/business";
 
 import type { IPlugin } from "@/schema/plugins";
