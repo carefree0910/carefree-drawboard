@@ -89,7 +89,7 @@ def trace_workflow(meta: Dict[str, Any], nodeData: INodeData) -> Workflow:
                     key=key,
                     endpoint=UPLOAD_ENDPOINT,
                     injections={},
-                    data=dict(url=nodeData.src),
+                    data=dict(url=nodeData.src or ""),
                 )
             )
         elif mtype == ADD_TEXT_META_TYPE:
@@ -101,7 +101,7 @@ def trace_workflow(meta: Dict[str, Any], nodeData: INodeData) -> Workflow:
                     key=key,
                     endpoint=ADD_TEXT_ENDPOINT,
                     injections={},
-                    data=dict(text=nodeData.text),
+                    data=dict(text=nodeData.text or ""),
                 )
             )
         elif mtype == PYTHON_FIELDS_META_TYPE:
