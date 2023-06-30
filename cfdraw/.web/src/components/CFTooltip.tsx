@@ -10,7 +10,7 @@ function CFTooltip({ label, ...others }: TooltipProps) {
   if (typeof label === "string") {
     label = translate(label, langStore.tgt);
   }
-  return <Tooltip hasArrow label={label} {...others} />;
+  return <Tooltip hasArrow label={label} placement="auto" {...others} />;
 }
 
 interface ICFFormLabel extends FormLabelProps {
