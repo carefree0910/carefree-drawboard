@@ -122,27 +122,27 @@ function NodePicker<T extends INode>({
     const allRenderNodes = BoardStore.graph.allRenderNodes.filter(
       (node) => !selectingAliases.has(node.alias),
     );
-    const currentNodes = (type === "none" ? [] : selectingNodes)
-      .concat(allRenderNodes)
-      .filter((node) => node.type === targetType) as T[];
-    const sorted = sortBy(
-      currentNodes,
-      currentNodes.map((n) => n.zIndex),
+    const sortedRenderNodes = sortBy(
+      allRenderNodes,
+      allRenderNodes.map((n) => n.zIndex),
     );
+    const finalNodes = (type === "none" ? [] : selectingNodes)
+      .concat(sortedRenderNodes)
+      .filter((node) => node.type === targetType) as T[];
     // set new nodes
     setNodes((prevNodes) => {
       if (
         checkEqual(
           prevNodes.map((n) => n.alias),
-          sorted.map((n) => n.alias),
+          finalNodes.map((n) => n.alias),
         )
       ) {
         setHasMore(false);
         return prevNodes;
       }
       setHasMore(true);
-      const newNumItems = Math.min(prevNodes.length + numFetchEvery, sorted.length);
-      return sorted.slice(0, newNumItems);
+      const newNumItems = Math.min(prevNodes.length + numFetchEvery, finalNodes.length);
+      return finalNodes.slice(0, newNumItems);
     });
   };
 
