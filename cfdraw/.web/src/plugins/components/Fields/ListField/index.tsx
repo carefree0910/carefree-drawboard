@@ -1,6 +1,6 @@
 import { observer } from "mobx-react-lite";
 
-import { getRandomHash } from "@carefree0910/core";
+import { getFieldDefault, getRandomHash } from "@carefree0910/core";
 
 import type { IField } from "@/schema/plugins";
 import type { IDefinitions, IListField } from "@/schema/fields";
@@ -13,7 +13,7 @@ import List, { ID_KEY, IListItem } from "./List";
 export function getDefaults(item: IDefinitions): IListItem {
   const defaults: IListItem = { [ID_KEY]: getRandomHash().toString() };
   for (const [key, value] of Object.entries(item)) {
-    defaults[key] = value.default;
+    defaults[key] = getFieldDefault(value);
   }
   return defaults;
 }
