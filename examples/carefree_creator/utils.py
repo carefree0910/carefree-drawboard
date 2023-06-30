@@ -139,7 +139,7 @@ def trace_workflow(meta: Dict[str, Any], nodeData: INodeData) -> Workflow:
                     if v_key is None:
                         v_key = _get_key(v_type)
                         alias2key[v_alias] = v_key
-                    injections[v_key] = InjectionPack(index=0, field=k)
+                    v_injection_pack = InjectionPack(index=0, field=k)
                 elif v_type == PYTHON_FIELDS_META_TYPE:
                     v_identifier = v_data.get("identifier")
                     if v_identifier is None:
@@ -149,9 +149,9 @@ def trace_workflow(meta: Dict[str, Any], nodeData: INodeData) -> Workflow:
                     if v_key is None:
                         v_key = _get_key(v_identifier)
                         alias2key[v_alias] = v_key
-                    injections[v_key] = v_injection_pack
                 else:
                     raise ValueError(f"unknown type: {v_type}")
+                injections.setdefault(v_key, []).append(v_injection_pack)
                 _trace(v_meta, v_nodeData)
             if key is None:
                 key = _get_key(identifier)
