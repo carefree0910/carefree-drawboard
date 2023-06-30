@@ -172,7 +172,7 @@ export const reactPluginSettings: IMakePlugin<ReactPlugins | "_python.pluginGrou
     type: "basicEditor",
     props: {
       nodeConstraintRules: {
-        some: ["svg", "path", "rectangle", "group", "frame"],
+        some: ["path", "rectangle", "group", "frame"],
       },
       renderInfo: {
         w: 280,
@@ -211,6 +211,22 @@ export const reactPluginSettings: IMakePlugin<ReactPlugins | "_python.pluginGrou
         h: 420,
         src: EditorIcon,
         tooltip: "image-editor-tooltip",
+        pivot: "right",
+        follow: true,
+        keepOpen: true,
+      },
+      pluginInfo: {},
+    },
+  },
+  {
+    type: "svgEditor",
+    props: {
+      nodeConstraint: "svg",
+      renderInfo: {
+        w: 408,
+        h: 420,
+        src: EditorIcon,
+        tooltip: "svg-editor-tooltip",
         pivot: "right",
         follow: true,
         keepOpen: true,

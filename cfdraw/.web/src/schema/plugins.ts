@@ -113,6 +113,7 @@ export const allReactPlugins = [
   "basicEditor",
   "textEditor",
   "imageEditor",
+  "svgEditor",
   "groupEditor",
   "multiEditor",
   "brush",
@@ -149,6 +150,7 @@ export interface IPluginProps {
   basicEditor: IPlugin;
   textEditor: IPlugin;
   imageEditor: IPlugin;
+  svgEditor: IPlugin;
   groupEditor: IPlugin;
   multiEditor: IPlugin;
   brush: IPlugin;
