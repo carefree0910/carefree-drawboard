@@ -1,5 +1,10 @@
 import { BBox, TextNode } from "@carefree0910/core";
-import { BoardStore, BusinessOpCallbacks, useSafeExecute } from "@carefree0910/business";
+import {
+  BoardStore,
+  BusinessOpCallbacks,
+  useAddNode,
+  useSafeExecute,
+} from "@carefree0910/business";
 
 import type { IMeta } from "@/schema/meta";
 import { themeStore } from "@/stores/theme";
@@ -15,19 +20,12 @@ export function addNewText(
     noSelect?: boolean;
   },
 ): void {
-  const newText = new TextNode(
+  useAddNode().addText({ trace: true, noSelect: opt.noSelect ?? true, callbacks: opt.callbacks })({
     alias,
-    { content, fontSize, color: themeStore.styles.textColor },
-    opt.bbox.fields,
-    { z: BoardStore.graph.minZIndex - 1 },
-  );
-  newText.meta = opt.meta;
-  console.log("newText: ", newText.snapshot());
-  useSafeExecute("addJson", null, true, opt.callbacks, {
-    noSelect: opt.noSelect ?? true,
-    safeOpt: {
-      retry: 3,
-      retryInterval: 500,
-    },
-  })({ alias, json: newText.toJson() });
+    content,
+    fontSize,
+    color: themeStore.styles.textColor,
+    bboxFields: opt.bbox.fields,
+    meta: opt.meta,
+  });
 }

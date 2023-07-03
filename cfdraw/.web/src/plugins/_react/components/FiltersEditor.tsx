@@ -1,10 +1,9 @@
 import { useEffect } from "react";
 import { observer } from "mobx-react-lite";
 
-import { IImageFilterParams, INode, getRandomHash, imageFilterSettings } from "@carefree0910/core";
+import { IImageFilterParams, INode, getRandomHash, imageFilterFactory } from "@carefree0910/core";
 import { langStore, translate, useFilters } from "@carefree0910/business";
 
-import type { IListProperties } from "@/schema/plugins";
 import type { ISelectField } from "@/schema/fields";
 import { UI_Words } from "@/lang/ui";
 import { DEFAULT_GAP } from "@/utils/constants";
@@ -55,16 +54,19 @@ const FiltersEditor = ({ node, field }: IFiltersEditor) => {
       tooltip={tooltip}
       field={field}
       expandH={180}
-      getNewItem={() => ({ type: "alpha", ...getDefaults(imageFilterSettings.alpha) })}
+      getNewItem={() => ({
+        type: imageFilterFactory.defaultType,
+        ...getDefaults(imageFilterFactory.defaultDefinitions),
+      })}
       getDefinitions={(index) => {
         const typeDefinition: ISelectField = {
           type: "select",
-          default: "alpha",
-          options: Object.keys(imageFilterSettings),
+          default: imageFilterFactory.defaultType,
+          options: imageFilterFactory.options,
         };
         return {
           type: typeDefinition,
-          ...imageFilterSettings[values[index].type],
+          ...imageFilterFactory.get(values[index].type),
         };
       }}
       gap={DEFAULT_GAP}

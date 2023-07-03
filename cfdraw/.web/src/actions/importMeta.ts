@@ -85,14 +85,14 @@ function consumeAddText({ lang, type, metaData }: IImportMeta<"add.text">): void
   const failed = async () => {
     toastWord("error", Toast_Words["add-text-error-message"]);
   };
-  const { addText } = useAddNode({ success, failed });
+  const { addText } = useAddNode();
   metaData.alias = newAlias;
   const content = useDefaultTextContent(lang);
   const fontSize = DEFAULT_FONT_SIZE;
   const { w, h } = getAutoWH({ content, fontSize });
-  addText({ trace: true })({
+  addText({ trace: true, callbacks: { success, failed } })({
     alias: newAlias,
-    initColor: textColor,
+    color: textColor,
     lang,
     autoFit: true,
     meta: { type, data: metaData },
