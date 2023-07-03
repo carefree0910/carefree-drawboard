@@ -63,6 +63,7 @@ const MetaPlugin = ({ pluginInfo, ...others }: IPlugin) => {
           pending: meta.data.elapsedTimes.pending,
           executing: meta.data.elapsedTimes.executing,
           total: meta.data.elapsedTimes.total,
+          endTime: meta.data.elapsedTimes.endTime,
         };
       }
       trimMeta(meta.data?.from);
