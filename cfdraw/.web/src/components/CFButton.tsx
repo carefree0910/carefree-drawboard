@@ -1,6 +1,6 @@
 import { observer } from "mobx-react-lite";
 import { useState, useCallback } from "react";
-import { Box, Button, ButtonProps, Image, ImageProps } from "@chakra-ui/react";
+import { Box, Button, ButtonProps, Image, ImageProps, forwardRef } from "@chakra-ui/react";
 
 import iconLoading from "@/assets/lottie/icon-loading.json";
 
@@ -11,22 +11,24 @@ import { settingsStore } from "@/stores/settings";
 import CFLottie from "./CFLottie";
 import CFTooltip from "./CFTooltip";
 
-function CFButton(props: ButtonProps) {
+const CFButton = forwardRef((props: ButtonProps, ref) => {
   const { textColor } = themeStore.styles;
 
-  return <Button color={textColor} flexShrink={0} {...props}></Button>;
-}
+  return <Button color={textColor} flexShrink={0} {...props} ref={ref} />;
+});
 interface ICFButtonWithBusyProps extends ButtonProps {
   busy: boolean;
   tooltip: string;
 }
-export function CFButtonWithBusyTooltip({ busy, tooltip, ...others }: ICFButtonWithBusyProps) {
-  return (
-    <CFTooltip label={busy ? tooltip : undefined} shouldWrapChildren>
-      <CFButton w="100%" isDisabled={busy} {...others} />
-    </CFTooltip>
-  );
-}
+export const CFButtonWithBusyTooltip = forwardRef(
+  ({ busy, tooltip, ...others }: ICFButtonWithBusyProps, ref) => {
+    return (
+      <CFTooltip label={busy ? tooltip : undefined} shouldWrapChildren>
+        <CFButton w="100%" isDisabled={busy} {...others} ref={ref} />
+      </CFTooltip>
+    );
+  },
+);
 export interface IIconLoadedEvent {
   id: string;
 }
@@ -38,7 +40,7 @@ interface ICFIconButton extends ButtonProps {
   imageProps?: ImageProps;
 }
 export const CFIconButton = observer<ICFIconButton>(
-  ({ id, src, tooltip, imageProps, children, ...others }) => {
+  forwardRef(({ id, src, tooltip, imageProps, children, ...others }, ref) => {
     const [iconLoaded, setIconLoaded] = useState(false);
     const onIconLoaded = useCallback(() => {
       iconLoadedEvent.emit({ id });
@@ -58,7 +60,7 @@ export const CFIconButton = observer<ICFIconButton>(
 
     return (
       <CFTooltip label={tooltip}>
-        <Box as="button" id={id} {...others}>
+        <Box as="button" id={id} {...others} ref={ref}>
           <Image
             src={src}
             w="100%"
@@ -85,7 +87,7 @@ export const CFIconButton = observer<ICFIconButton>(
         </Box>
       </CFTooltip>
     );
-  },
+  }),
 );
 
 export default observer(CFButton);
