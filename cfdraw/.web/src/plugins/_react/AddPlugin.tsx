@@ -26,6 +26,7 @@ import { globalEvent } from "@/utils/event";
 import { DEFAULT_FIELD_H, DEFAULT_PLUGIN_SETTINGS } from "@/utils/constants";
 import { Add_Words } from "@/lang/add";
 import { Toast_Words } from "@/lang/toast";
+import { themeStore, useScrollBarSx } from "@/stores/theme";
 import { usePluginIds, usePluginIsExpanded } from "@/stores/pluginsInfo";
 import { importMeta } from "@/actions/importMeta";
 import { getNewProject, loadLocalProject, saveCurrentProject } from "@/actions/manageProjects";
@@ -39,7 +40,6 @@ import { CFIconButton } from "@/components/CFButton";
 import { drawboardPluginFactory } from "../utils/factory";
 import { useClosePanel } from "../components/hooks";
 import Render from "../components/Render";
-import { themeStore, useScrollBarSx } from "@/stores/theme";
 
 interface IPresetNoliFramePanel {
   closePanel: () => void;
@@ -67,7 +67,7 @@ const PresetNoliFramePanel = observer(({ closePanel }: IPresetNoliFramePanel) =>
       align="center"
       justify="space-evenly"
       sx={useScrollBarSx()}>
-      {addPresetFramesRes.data.buttonPresets.map(({ id, preview, add }) => (
+      {addPresetFramesRes.data.button.map(({ id, preview, add }) => (
         <Image
           key={id}
           src={preview}
