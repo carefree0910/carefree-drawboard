@@ -235,6 +235,22 @@ export const reactPluginSettings: IMakePlugin<ReactPlugins | "_python.pluginGrou
     },
   },
   {
+    type: "noliFrameEditor",
+    props: {
+      nodeConstraint: "noliFrame",
+      renderInfo: {
+        w: 408,
+        h: 420,
+        src: EditorIcon,
+        tooltip: "noliFrame-editor-tooltip",
+        pivot: "right",
+        follow: true,
+        keepOpen: true,
+      },
+      pluginInfo: {},
+    },
+  },
+  {
     type: "groupEditor",
     props: {
       nodeConstraint: "group",
