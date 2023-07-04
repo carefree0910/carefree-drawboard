@@ -7,36 +7,32 @@ import { useIsReady } from "@carefree0910/business";
 import loadingPage from "@/assets/lottie/loading-page.json";
 
 import { useVisibilityTransitionProps } from "@/utils/constants";
-import { useSettingsSynced } from "@/stores/settings";
 import { themeStore } from "@/stores/theme";
 import { useIsAllReady } from "@/hooks/useSetup";
 import CFLottie from "./CFLottie";
 
 const CFLoadingPage: React.FC<PropsWithChildren> = ({ children }) => {
   const isReady = useIsReady() && useIsAllReady();
-  const isSynced = useSettingsSynced();
   const { boardBg } = themeStore.styles;
 
   return (
     <>
       {children}
-      {isSynced && (
-        <Flex
-          w="100%"
-          h="100%"
-          bg={boardBg}
-          zIndex="1000"
-          position="absolute"
-          direction="column"
-          alignContent="center"
-          {...useVisibilityTransitionProps({ visible: !isReady, second: 0.5 })}>
-          <Spacer />
-          <Center>
-            <CFLottie hide={!isSynced} animationData={loadingPage} />
-          </Center>
-          <Spacer />
-        </Flex>
-      )}
+      <Flex
+        w="100%"
+        h="100%"
+        bg={boardBg}
+        zIndex="1000"
+        position="absolute"
+        direction="column"
+        alignContent="center"
+        {...useVisibilityTransitionProps({ visible: !isReady, second: 0.5 })}>
+        <Spacer />
+        <Center>
+          <CFLottie animationData={loadingPage} />
+        </Center>
+        <Spacer />
+      </Flex>
     </>
   );
 };
