@@ -93,7 +93,7 @@ function replaceCurrentProjectWith(
       onSuccess(project);
     },
     failed: async () => void 0,
-  })({ json: JSON.stringify(project.graphInfo), apiInfos: {}, noFit: true });
+  })({ json: JSON.stringify(project.graphInfo), noFit: true });
 }
 export function getProject(uid: string): Promise<IProject> {
   return Requests.get<IProject>("_python", `/get_project/?userId=${userStore.userId}&uid=${uid}`);

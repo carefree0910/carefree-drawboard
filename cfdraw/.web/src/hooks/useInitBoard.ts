@@ -88,7 +88,6 @@ export function useInitBoard(): void {
     ({ dispose: disposeBoardStore } = await useBoardStore(
       unittest.api,
       {
-        apiInfo: {},
         groupCode: "",
         modelCodes: [""],
       },
