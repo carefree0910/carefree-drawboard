@@ -1,12 +1,14 @@
 import type { Dictionary } from "@carefree0910/core";
 
 import type { IStr } from "./misc";
+import type { IDataCenterKey } from "@/stores/dataCenter";
 
 interface IBaseFields {
   label?: IStr;
   tooltip?: IStr;
   props?: any;
   numRows?: number;
+  condition?: string | IDataCenterKey;
   inList?: boolean;
 }
 export interface ITextField extends IBaseFields {

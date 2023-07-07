@@ -34,6 +34,17 @@ class FieldType(str, Enum):
     OBJECT = "object"
 
 
+class IListProperties(BaseModel):
+    listKey: str
+    listIndex: int
+    parent: Optional["IListProperties"] = None
+
+
+class ICondition(BaseModel):
+    field: str
+    listProperties: Optional[IListProperties] = None
+
+
 class IBaseField(BaseModel):
     label: Optional[IStr] = Field(None, description="The label of the field")
     tooltip: Optional[IStr] = Field(None, description="The tooltip of the field")
@@ -41,6 +52,13 @@ class IBaseField(BaseModel):
     numRows: Optional[int] = Field(
         None,
         description="Number of rows that will be occupied by this field",
+    )
+    condition: Optional[Union[str, ICondition]] = Field(
+        None,
+        description=""""
+Whether the field is conditioned on another field (i.e., show this field only when the `condition` field has a `True` value).
+> This is useful when the settings are hierarchical. For example, we may want to show the `model` field only when the `useModel` field has a `True` value.
+""",
     )
 
     class Config:
@@ -230,6 +248,8 @@ IObjectField.update_forward_refs()
 
 __all__ = [
     "FieldType",
+    "IListProperties",
+    "ICondition",
     "ITextField",
     "IImageField",
     "NumberScale",
