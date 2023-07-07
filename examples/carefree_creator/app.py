@@ -149,6 +149,12 @@ def inject(
     return data_model
 
 
+def inject_highres(data: ISocketRequest, extra: Dict[str, Any]) -> None:
+    if data.extraData.get("use_highres", False):
+        highres_fidelity = data.extraData["highres_fidelity"]
+        extra["highres_info"] = HighresModel(fidelity=highres_fidelity).dict()
+
+
 async def call_api(self: IFieldsPlugin, fn: str, model: BaseModel, **kw: Any) -> Any:
     model_d = model.dict()
     self.set_extra_response(DATA_MODEL_KEY, model_d)
@@ -202,8 +208,7 @@ class Txt2Img(IFieldsPlugin):
             return self.send_progress(step / num_steps)
 
         extra = {}
-        if data.extraData.get("use_highres", False):
-            extra["highres_info"] = HighresModel().dict()
+        inject_highres(data, extra)
         model = inject(self, data, Txt2ImgSDModel, "version", extra)
         return await get_apis().txt2img(model, step_callback=callback)
 
@@ -235,8 +240,7 @@ class Img2Img(IFieldsPlugin):
         url = data.nodeData.src
         self.set_injection("url", data.nodeData)
         extra = dict(url=url)
-        if data.extraData.get("use_highres", False):
-            extra["highres_info"] = HighresModel().dict()
+        inject_highres(data, extra)
         model = inject(self, data, Img2ImgSDModel, "version", extra)
         return await get_apis().img2img(model, step_callback=callback)
 
@@ -673,8 +677,7 @@ class Txt2ImgWithText(IFieldsPlugin):
 
         self.set_injection("text", data.nodeData)
         extra = dict(text=data.nodeData.text)
-        if data.extraData.get("use_highres", False):
-            extra["highres_info"] = HighresModel().dict()
+        inject_highres(data, extra)
         model = inject(self, data, Txt2ImgSDModel, "version", extra)
         return await get_apis().txt2img(model, step_callback=callback)
 

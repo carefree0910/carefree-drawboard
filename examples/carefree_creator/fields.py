@@ -148,6 +148,21 @@ use_highres = IBooleanField(
         en="Generate images with 2x width & height",
     ),
 )
+highres_fidelity = INumberField(
+    default=0.3,
+    min=0.0,
+    max=1.0,
+    step=0.05,
+    label=I18N(
+        zh="相似度",
+        en="Fidelity",
+    ),
+    tooltip=I18N(
+        zh="高清生成的图片与直出图片的相似度",
+        en="How similar the (2x) generated image should be to the (original) generated image",
+    ),
+    condition="use_highres",
+)
 lora_field = IListField(
     label="LoRA",
     tooltip=I18N(zh="配置 LoRA 模型", en="Setup LoRA models"),
@@ -187,9 +202,10 @@ txt2img_fields = OrderedDict(
     num_steps=num_steps,
     guidance_scale=guidance_scale,
     use_circular=use_circular,
-    use_highres=use_highres,
     seed=seed,
+    use_highres=use_highres,
     lora=lora_field,
+    highres_fidelity=highres_fidelity,
 )
 txt2img_text_fields = OrderedDict(
     w=w_field,
@@ -200,9 +216,10 @@ txt2img_text_fields = OrderedDict(
     num_steps=num_steps,
     guidance_scale=guidance_scale,
     use_circular=use_circular,
-    use_highres=use_highres,
     seed=seed,
+    use_highres=use_highres,
     lora=lora_field,
+    highres_fidelity=highres_fidelity,
 )
 # sd_inpainting / sd_outpainting fields
 sd_inpainting_prompt = text.copy()
@@ -249,9 +266,10 @@ img2img_fields = OrderedDict(
     num_steps=num_steps,
     guidance_scale=guidance_scale,
     use_circular=use_circular,
-    use_highres=use_highres,
     seed=seed,
+    use_highres=use_highres,
     lora=lora_field,
+    highres_fidelity=highres_fidelity,
 )
 # super resolution fields
 sr_w_field = w_field.copy()
