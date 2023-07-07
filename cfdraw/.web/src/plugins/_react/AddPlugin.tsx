@@ -167,7 +167,7 @@ const AddPlugin = ({ pluginInfo, ...props }: IPlugin) => {
             }}
             {...commonProps}
           />
-          <Popover>
+          {/* <Popover>
             <PopoverTrigger>
               <CFIconButton
                 src={AddNoliFrameIcon}
@@ -190,7 +190,7 @@ const AddPlugin = ({ pluginInfo, ...props }: IPlugin) => {
               closePanel();
             }}
             {...commonProps}
-          />
+          /> */}
           <CFImageUploader onUpload={closePanel}>
             <CFIconButton
               src={AddImageIcon}
