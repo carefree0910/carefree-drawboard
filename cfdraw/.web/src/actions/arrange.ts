@@ -124,21 +124,7 @@ async function animateArrangement(
   }
 
   async function matchBBox(trace: boolean, fields: Dictionary<Matrix2DFields>): Promise<void> {
-    const existingNodes = BoardStore.board.getNodes();
-    await BoardStore.board.executer.executeNoBusiness(
-      "matchBBox",
-      {
-        aliases: original
-          .filter((node) =>
-            isGroupNode(node)
-              ? node.allRenderChildrenNodes.every((n) => existingNodes.has(n.alias))
-              : existingNodes.has(node.alias),
-          )
-          .map((node) => node.alias),
-        params: fields,
-      },
-      trace,
-    );
+    await BoardStore.board.executer.executeNoBusiness("matchBBox", { params: { fields } }, trace);
   }
 
   const scheduleFn = schedules[schedule];
