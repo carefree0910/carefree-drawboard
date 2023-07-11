@@ -1,7 +1,6 @@
 import { observer } from "mobx-react-lite";
 
-import { shallowCopy } from "@carefree0910/core";
-import { useSelecting } from "@carefree0910/business";
+import { useMeta } from "@carefree0910/business";
 
 import type { IPlugin } from "@/schema/plugins";
 import { IS_PROD } from "@/utils/constants";
@@ -24,19 +23,7 @@ const DEBUG_META = false;
 const DATA_MODEL_KEY = "$data_model";
 const MetaPlugin = ({ pluginInfo, ...others }: IPlugin) => {
   const id = usePluginIds("meta").id;
-  const info = useSelecting("raw");
-  let meta: IMeta | undefined;
-  if (!info || info.type === "group" || info.type === "frame" || info.type === "multiple") {
-    others.renderInfo.isInvisible = true;
-  } else {
-    const _meta = info.displayNode?.params.meta;
-    if (!_meta) {
-      others.renderInfo.isInvisible = true;
-    } else {
-      meta = _meta as IMeta;
-    }
-  }
-  meta = shallowCopy(meta);
+  const { meta } = useMeta({ allowUsePreviousNode: true });
   const trimMeta = (meta: IMeta | undefined) => {
     if (!!meta && (IS_PROD || !DEBUG_META)) {
       if (!!meta.data?.response?.extra) {
@@ -69,8 +56,13 @@ const MetaPlugin = ({ pluginInfo, ...others }: IPlugin) => {
       trimMeta(meta.data?.from);
     }
   };
-  trimMeta(meta);
-  const history = meta ? getMetaTrace(meta).reverse().map(getMetaRepresentation).join(" -> ") : "";
+  trimMeta(meta as IMeta);
+  const history = meta
+    ? getMetaTrace(meta as IMeta)
+        .reverse()
+        .map(getMetaRepresentation)
+        .join(" -> ")
+    : "";
   const jsonString = JSON.stringify(meta ?? {}, null, 2);
   const markdown = `**${history}**
 
