@@ -1,17 +1,12 @@
-import axios, { AxiosInstance } from "axios";
 import { useCallback, useEffect, useMemo } from "react";
 
 import { Logger, isUndefined } from "@carefree0910/core";
 
-import type { APISources } from "@/schema/requests";
 import type {
   IPythonOnSocketMessage,
   IPythonSocketRequest,
   IPythonSocketCallbacks,
 } from "@/schema/_python";
-import { getBaseURL } from "@/utils/misc";
-import { settingsStore } from "@/stores/settings";
-import { useInceptors } from "./interceptors";
 import {
   checkSocketHookExists,
   getSocketHooks,
@@ -19,18 +14,6 @@ import {
   runSocketHook,
   socketLog,
 } from "@/stores/socket";
-
-const APIs: Partial<Record<APISources, AxiosInstance>> = {};
-export function useAPI<T extends APISources>(source: T): AxiosInstance {
-  const existing = APIs[source];
-  if (existing) return existing;
-  const timeout = settingsStore.internalSettings?.timeout ?? 300000;
-  const baseURL = getBaseURL(source);
-  const api = axios.create({ baseURL, timeout });
-  useInceptors(api, source);
-  APIs[source] = api;
-  return api;
-}
 
 /**
  * this function will try to inject a simple but useful retry mechanism, so we only need to

@@ -1,10 +1,9 @@
-import { INode, ISingleNode, isGroupNode, toJsonBlob } from "@carefree0910/core";
+import { INode, isGroupNode, toJsonBlob, Requests } from "@carefree0910/core";
 import { ExportBlobOptions, exportBlob, exportNodes } from "@carefree0910/svg";
 
 import type { DownloadFormat, ImageFormat } from "@/schema/misc";
 import { toastWord } from "@/utils/toast";
 import { Toast_Words } from "@/lang/toast";
-import { Requests } from "@/requests/actions";
 import { uploadImage } from "./uploadImage";
 
 const isImage = (format: DownloadFormat) => format === "JPG" || format === "PNG";

@@ -11,6 +11,7 @@ import {
   getHash,
   sleep,
   isUndefined,
+  useAPI,
 } from "@carefree0910/core";
 import { ABCStore, langStore } from "@carefree0910/business";
 
@@ -44,6 +45,8 @@ export function useIsAllReady(): boolean {
   return useIsSetup() && setupStore.isReady;
 }
 export function useSetup(): void {
+  const source = "_python";
+  useAPI({ source, baseURL: getBaseURL(source) });
   useAuth();
   useUserInitialization();
   useSyncPython();
