@@ -2,7 +2,6 @@ import { useCallback, useEffect, useRef } from "react";
 import { computed, makeObservable, observable, runInAction } from "mobx";
 
 import {
-  FOCUS_PLUGIN_NAME,
   GUIDELINE_SYSTEM_PLUGIN_NAME,
   getRandomHash,
   Logger,
@@ -148,7 +147,7 @@ const updateSettings = (data: ISettingsStore): boolean => {
         autoResize: true,
         useDynamicScale: false,
         internalPlugins: [GUIDELINE_SYSTEM_PLUGIN_NAME].concat(allInternalPlugins),
-        excludedPlugins: new Set([FOCUS_PLUGIN_NAME, WATERMARK_PLUGIN_NAME]),
+        excludedPlugins: new Set([WATERMARK_PLUGIN_NAME]),
         useGlobalClipboard: false, // TODO : test `true`
         backgroundColor: themeStore.styles.boardBg,
         fitContainerOptions: {
