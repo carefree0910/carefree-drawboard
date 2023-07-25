@@ -217,11 +217,20 @@
     "@babel/helper-validator-identifier" "^7.19.1"
     to-fast-properties "^2.0.0"
 
-"@carefree0910/business@~0.5.1-alpha.54":
+"@carefree0910/business@^0.5.1-alpha.54", "@carefree0910/business@~0.5.1-alpha.54":
   version "0.5.1-alpha.54"
   resolved "https://registry.npmmirror.com/@carefree0910/business/-/business-0.5.1-alpha.54.tgz#3fdd6415718f52d207dc7e8ba40f5831511dd0fd"
   integrity sha512-GyyIsDm2RHr8oYr2rlarlcBtp9+9oIoHGeC1QSc/nmy6ww0YeNmtz9JGju3L6Vc+PcnkXVc343anP+TcXjYtaQ==
   dependencies:
+    "@carefree0910/core" "^0.5.1-alpha.54"
+    "@carefree0910/svg" "^0.5.1-alpha.54"
+
+"@carefree0910/components@~0.5.1-alpha.54":
+  version "0.5.1-alpha.54"
+  resolved "https://registry.npmmirror.com/@carefree0910/components/-/components-0.5.1-alpha.54.tgz#2ae660e01123bee8595e455845a2590592f128f5"
+  integrity sha512-8wJg3oKBUpurj66rgQxU3SLAc1fa+8Fe4eGTAYx7p/XFnpktQyxLmrKPV6GIIuvvKslQqHF83FvTkpKUPG1DsA==
+  dependencies:
+    "@carefree0910/business" "^0.5.1-alpha.54"
     "@carefree0910/core" "^0.5.1-alpha.54"
     "@carefree0910/svg" "^0.5.1-alpha.54"
 
@@ -4762,9 +4771,9 @@ react-select@5.7.0:
     use-isomorphic-layout-effect "^1.1.2"
 
 react-select@^5.7.3:
-  version "5.7.3"
-  resolved "https://registry.npmmirror.com/react-select/-/react-select-5.7.3.tgz#fa0dc9a23cad6ff3871ad3829f6083a4b54961a2"
-  integrity sha512-z8i3NCuFFWL3w27xq92rBkVI2onT0jzIIPe480HlBjXJ3b5o6Q+Clp4ydyeKrj9DZZ3lrjawwLC5NGl0FSvUDg==
+  version "5.7.4"
+  resolved "https://registry.npmmirror.com/react-select/-/react-select-5.7.4.tgz#d8cad96e7bc9d6c8e2709bdda8f4363c5dd7ea7d"
+  integrity sha512-NhuE56X+p9QDFh4BgeygHFIvJJszO1i1KSkg/JPcIJrbovyRtI+GuOEa4XzFCEpZRAEoEI8u/cAHK+jG/PgUzQ==
   dependencies:
     "@babel/runtime" "^7.12.0"
     "@emotion/cache" "^11.4.0"
