@@ -20,7 +20,12 @@ function BoardPanel() {
     <>
       <Flex h="100%" flex={1} direction="column">
         <Box w="100%" h="100%" bg={boardBg}>
-          <Box id={BOARD_CONTAINER_ID} visibility={isReady ? "visible" : "hidden"}></Box>
+          <Box
+            id={BOARD_CONTAINER_ID}
+            visibility={isReady ? "visible" : "hidden"}
+            w="100%"
+            h="100%"
+          />
         </Box>
         <Wrapper>
           {useReactPluginSettings().map((settings) => (

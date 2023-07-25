@@ -32,6 +32,7 @@ export default defineConfig({
       "@carefree0910/svg",
       "@carefree0910/business",
       "@carefree0910/native",
+      "@carefree0910/components",
     ],
     exclude: ["@carefree0910/core", "@carefree0910/svg"],
     esbuildOptions: {
