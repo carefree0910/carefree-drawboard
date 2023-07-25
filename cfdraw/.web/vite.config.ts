@@ -9,6 +9,7 @@ import tsconfigPaths from "vite-tsconfig-paths";
 export default defineConfig({
   resolve: {
     alias: [{ find: "@", replacement: path.resolve(__dirname, "src") }],
+    dedupe: ["@emotion/react"],
   },
   plugins: [
     react(),
@@ -33,8 +34,9 @@ export default defineConfig({
       "@carefree0910/business",
       "@carefree0910/native",
       "@carefree0910/components",
+      "@emotion/react",
     ],
-    exclude: ["@carefree0910/core", "@carefree0910/svg"],
+    exclude: ["@carefree0910/core", "@carefree0910/svg", "@emotion/react"],
     esbuildOptions: {
       keepNames: true,
     },
@@ -55,7 +57,12 @@ export default defineConfig({
           axios: ["axios"],
           jszip: ["jszip"],
           react: ["react", "react-dom"],
-          "chakra-ui": ["@chakra-ui/react", "@chakra-ui/icons"],
+          "chakra-ui": [
+            "@emotion/react",
+            "@emotion/styled",
+            "@chakra-ui/react",
+            "@chakra-ui/icons",
+          ],
           svgdotjs: [
             "@svgdotjs/svg.js",
             "@svgdotjs/svg.filter.js",
