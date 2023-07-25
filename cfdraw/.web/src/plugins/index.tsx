@@ -22,6 +22,7 @@ export * from "./_react/TextEditorPlugin";
 export * from "./_react/ImageEditorPlugin";
 export * from "./_react/SVGEditorPlugin";
 export * from "./_react/NoliFrameEditorPlugin";
+export * from "./_react/NoliTextFrameEditorPlugin";
 export * from "./_react/GroupPlugin";
 export * from "./_react/LinksPlugin";
 export * from "./_react/ShortcutsPlugin";
