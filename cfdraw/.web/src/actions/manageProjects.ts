@@ -39,7 +39,13 @@ export function getNewProject(): IProject {
 export function useCurrentProjectWithUserId(): IProjectWithUserId {
   const info = useCurrentProjectInfo();
   const userId = userStore.userId;
-  const graphInfo = BoardStore.graph.toJsonInfo();
+  const graph = BoardStore.graph.snapshot();
+  graph.allSingleNodes.forEach((node) => {
+    if (node.type === "image") {
+      node.renderParams.placeholder = undefined;
+    }
+  });
+  const graphInfo = graph.toJsonInfo();
   const globalTransform = useGlobalTransform().globalTransform.fields;
   return { ...info, userId, graphInfo, globalTransform };
 }
