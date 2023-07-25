@@ -148,7 +148,7 @@ const updateSettings = (data: ISettingsStore): boolean => {
         useDynamicScale: false,
         internalPlugins: [GUIDELINE_SYSTEM_PLUGIN_NAME].concat(allInternalPlugins),
         excludedPlugins: new Set([WATERMARK_PLUGIN_NAME]),
-        useGlobalClipboard: false, // TODO : test `true`
+        useGlobalClipboard: true,
         backgroundColor: themeStore.styles.boardBg,
         fitContainerOptions: {
           targetFields: undefined,
