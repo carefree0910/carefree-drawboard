@@ -3,13 +3,12 @@ import { Box, Flex, Spacer } from "@chakra-ui/react";
 import { CloseIcon } from "@chakra-ui/icons";
 
 import { shallowCopy } from "@carefree0910/core";
+import { CFDivider, CFHeading } from "@carefree0910/components";
 
 import { IPythonPluginGroup } from "@/schema/_python";
 import { titleCaseWord } from "@/utils/misc";
 import { usePluginIds } from "@/stores/pluginsInfo";
 import { parseIStr } from "@/actions/i18n";
-import CFDivider from "@/components/CFDivider";
-import CFHeading from "@/components/CFHeading";
 import { drawboardPluginFactory } from "../utils/factory";
 import { useClosePanel } from "../components/hooks";
 import Render from "../components/Render";

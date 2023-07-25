@@ -2,13 +2,16 @@ import { observer } from "mobx-react-lite";
 import { Flex } from "@chakra-ui/react";
 
 import { langStore, translate } from "@carefree0910/business";
-import { BasicEditor, NoliFrameContentEditor } from "@carefree0910/components";
+import {
+  BasicEditor,
+  CFDivider,
+  CFHeading,
+  NoliFrameContentEditor,
+} from "@carefree0910/components";
 
 import type { IPlugin } from "@/schema/plugins";
 import { NodeEditor_Words } from "@/lang/nodeEditor";
 import { usePluginIds } from "@/stores/pluginsInfo";
-import CFDivider from "@/components/CFDivider";
-import CFHeading from "@/components/CFHeading";
 import { drawboardPluginFactory } from "../utils/factory";
 import Render from "../components/Render";
 

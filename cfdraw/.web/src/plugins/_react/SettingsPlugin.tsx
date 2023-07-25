@@ -9,6 +9,14 @@ import {
   translate,
   useIsReady,
 } from "@carefree0910/business";
+import {
+  CFButton,
+  CFSelect,
+  CFDivider,
+  CFHeading,
+  CFSlider,
+  useGlobalScale,
+} from "@carefree0910/components";
 
 import { allReactPlugins, IPlugin } from "@/schema/plugins";
 import { Plugins_Words } from "@/lang/plugins";
@@ -25,11 +33,6 @@ import {
 } from "@/stores/pluginsInfo";
 import { parseIStr } from "@/actions/i18n";
 import { hideAllPlugins, showAllPlugins } from "@/actions/managePlugins";
-import CFButton from "@/components/CFButton";
-import CFSelect from "@/components/CFSelect";
-import CFDivider from "@/components/CFDivider";
-import CFHeading from "@/components/CFHeading";
-import { CFGlobalScaleSlider } from "@/components/CFSlider";
 import { drawboardPluginFactory } from "../utils/factory";
 import Render from "../components/Render";
 
@@ -42,6 +45,7 @@ const SettingsPlugin = ({ pluginInfo, ...props }: IPlugin) => {
   const lang = langStore.tgt;
   const commonProps = { fontWeight: 400, size: "md" };
   const disablePluginSettings = uiStore.disablePluginSettings;
+  const { scale, minScale, maxScale, onScaleChange } = useGlobalScale();
 
   const selected = { value: lang, label: langDescriptions[lang] };
   const options: LangOption[] = Object.keys(langDescriptions).map((lang) => ({
@@ -72,7 +76,14 @@ const SettingsPlugin = ({ pluginInfo, ...props }: IPlugin) => {
           <Box mt="24px">
             <CFHeading>{translate(Settings_Words["global-scale-header"], lang)}</CFHeading>
             <CFDivider />
-            <CFGlobalScaleSlider />
+            <CFSlider
+              min={minScale}
+              max={maxScale}
+              step={0.001}
+              value={scale}
+              scale="logarithmic"
+              onSliderChange={onScaleChange}
+            />
           </Box>
         )}
         {/* plugin visible settings */}

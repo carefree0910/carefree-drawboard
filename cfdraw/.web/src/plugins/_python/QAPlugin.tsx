@@ -3,12 +3,12 @@ import { observer } from "mobx-react-lite";
 import { Textarea } from "@chakra-ui/react";
 
 import { langStore, translate } from "@carefree0910/business";
+import { CFInput } from "@carefree0910/components";
 
 import type { IPythonQAPlugin, OnPythonPluginMessage } from "@/schema/_python";
 import { UI_Words } from "@/lang/ui";
 import { usePluginIds } from "@/stores/pluginsInfo";
 import { parseIStr } from "@/actions/i18n";
-import CFInput from "@/components/CFInput";
 import { drawboardPluginFactory } from "@/plugins/utils/factory";
 import PythonPluginWithSubmit from "./PluginWithSubmit";
 

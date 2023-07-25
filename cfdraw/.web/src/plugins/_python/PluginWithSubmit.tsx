@@ -3,6 +3,7 @@ import { observer } from "mobx-react-lite";
 
 import { isUndefined } from "@carefree0910/core";
 import { langStore, translate } from "@carefree0910/business";
+import { CFButtonWithBusyTooltip, CFDivider } from "@carefree0910/components";
 
 import type { IPythonSocketPluginWithSubmit } from "@/schema/_python";
 import { Event } from "@/utils/event";
@@ -16,8 +17,6 @@ import {
 } from "@/stores/pluginsInfo";
 import { useSocketPython } from "@/hooks/usePython";
 import { parseIStr } from "@/actions/i18n";
-import { CFButtonWithBusyTooltip } from "@/components/CFButton";
-import CFDivider from "@/components/CFDivider";
 import Render from "../components/Render";
 import { checkHasConstraint } from "../utils/renderFilters";
 import { useCurrentMeta, useOnMessage } from "./hooks";

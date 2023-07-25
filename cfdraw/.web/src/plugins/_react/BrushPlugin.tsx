@@ -10,6 +10,7 @@ import {
   translate,
   updateBrushOptions,
 } from "@carefree0910/business";
+import { CFButton, CFSlider, CFSwitch, CFDivider, CFHeading } from "@carefree0910/components";
 
 import type { ICommonMetaData, IMeta } from "@/schema/meta";
 import type { IPlugin } from "@/schema/plugins";
@@ -20,11 +21,6 @@ import { themeStore } from "@/stores/theme";
 import { VisibleManager, uiStore } from "@/stores/ui";
 import { setPluginExpanded, usePluginIds } from "@/stores/pluginsInfo";
 import { hideAllPlugins } from "@/actions/managePlugins";
-import CFButton from "@/components/CFButton";
-import CFSlider from "@/components/CFSlider";
-import CFSwitch from "@/components/CFSwitch";
-import CFDivider from "@/components/CFDivider";
-import CFHeading from "@/components/CFHeading";
 import { drawboardPluginFactory } from "../utils/factory";
 import Render from "../components/Render";
 

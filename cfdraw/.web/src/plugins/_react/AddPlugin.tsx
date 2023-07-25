@@ -4,7 +4,7 @@ import { ButtonProps, Flex } from "@chakra-ui/react";
 
 import { Frame, getCenteredBBox, getRandomHash } from "@carefree0910/core";
 import { BoardStore, langStore, translate, useSafeExecute } from "@carefree0910/business";
-import { AddPanel } from "@carefree0910/components";
+import { AddPanel, CFDivider, CFInput, CFIconButton, ICFInput } from "@carefree0910/components";
 
 import AddProjectIcon from "@/assets/icons/add-project.svg";
 import AddFrameIcon from "@/assets/icons/add-frame.svg";
@@ -17,9 +17,6 @@ import { Add_Words } from "@/lang/add";
 import { Toast_Words } from "@/lang/toast";
 import { usePluginIds, usePluginIsExpanded } from "@/stores/pluginsInfo";
 import { getNewProject, loadLocalProject, saveCurrentProject } from "@/actions/manageProjects";
-import CFInput, { ICFInput } from "@/components/CFInput";
-import CFDivider from "@/components/CFDivider";
-import { CFIconButton } from "@/components/CFButton";
 import { drawboardPluginFactory } from "../utils/factory";
 import { useClosePanel } from "../components/hooks";
 import Render from "../components/Render";

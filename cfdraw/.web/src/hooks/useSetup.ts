@@ -13,6 +13,7 @@ import {
   useAPI,
 } from "@carefree0910/core";
 import { ABCStore, langStore } from "@carefree0910/business";
+import { iconLoadedEvent } from "@carefree0910/components";
 
 import type { IPythonOnSocketMessage, IPythonSocketRequest } from "@/schema/_python";
 import { useReactPluginSettings } from "@/_settings";
@@ -34,7 +35,6 @@ import {
 } from "@/actions/manageProjects";
 import { collapseAllPlugins } from "@/actions/managePlugins";
 import { useWebSocketHook } from "@/requests/hooks";
-import { iconLoadedEvent } from "@/components/CFButton";
 import { authEvent, useAuth } from "./useAuth";
 
 export function useIsSetup(): boolean {

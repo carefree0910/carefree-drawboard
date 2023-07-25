@@ -4,7 +4,7 @@ import { CloseIcon } from "@chakra-ui/icons";
 import { Flex, Spacer } from "@chakra-ui/react";
 
 import { langStore, translate } from "@carefree0910/business";
-import { Definitions } from "@carefree0910/components";
+import { CFHeading, Definitions } from "@carefree0910/components";
 
 import type { OnPythonPluginMessage, IPythonFieldsPlugin } from "@/schema/_python";
 import { UI_Words } from "@/lang/ui";
@@ -14,7 +14,6 @@ import { titleCaseWord } from "@/utils/misc";
 import { usePluginIds, usePluginTaskCache } from "@/stores/pluginsInfo";
 import { parseIStr } from "@/actions/i18n";
 import { importMeta } from "@/actions/importMeta";
-import CFHeading from "@/components/CFHeading";
 import { drawboardPluginFactory } from "@/plugins/utils/factory";
 import { useClosePanel } from "../components/hooks";
 import { useDefinitionsGetInjectionsFn, useDefinitionsRequestDataFn } from "./hooks";

@@ -12,6 +12,7 @@ import {
 
 import { isUndefined } from "@carefree0910/core";
 import { langStore, translate } from "@carefree0910/business";
+import { CFText, CFIconButton } from "@carefree0910/components";
 
 import type { IFloating } from "@/schema/plugins";
 import {
@@ -30,8 +31,6 @@ import {
 } from "@/stores/pluginsInfo";
 import { isInteractingWithBoard } from "@/hooks/useDocumentEvents";
 import { parseIStr } from "@/actions/i18n";
-import CFText from "@/components/CFText";
-import { CFIconButton } from "@/components/CFButton";
 import { CFPendingProgress, CFWorkingProgress } from "@/components/CFCircularProgress";
 
 export function getExpandId(id: string): string {

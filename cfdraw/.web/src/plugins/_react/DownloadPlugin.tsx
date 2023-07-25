@@ -3,17 +3,21 @@ import { observer } from "mobx-react-lite";
 import { Flex, Spacer } from "@chakra-ui/react";
 
 import { langStore, translate, useSelecting } from "@carefree0910/business";
+import {
+  CFText,
+  CFCaption,
+  CFButton,
+  CFDivider,
+  CFHeading,
+  CFSelect,
+  CFSrollableSelect,
+} from "@carefree0910/components";
 
 import type { IPlugin } from "@/schema/plugins";
 import { DownloadFormat, allDownloadFormat } from "@/schema/misc";
 import { Download_Words } from "@/lang/download";
 import { usePluginIds } from "@/stores/pluginsInfo";
 import { downloadNodes } from "@/actions/download";
-import CFSelect, { CFSrollableSelect } from "@/components/CFSelect";
-import CFText, { CFCaption } from "@/components/CFText";
-import CFButton from "@/components/CFButton";
-import CFDivider from "@/components/CFDivider";
-import CFHeading from "@/components/CFHeading";
 import { drawboardPluginFactory } from "../utils/factory";
 import { useClosePanel } from "../components/hooks";
 import Render from "../components/Render";

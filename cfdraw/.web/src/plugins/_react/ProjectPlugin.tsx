@@ -5,6 +5,14 @@ import { Box, Flex, Image } from "@chakra-ui/react";
 
 import { Dictionary, Graph, INodePack, Logger } from "@carefree0910/core";
 import { BoardStore, langStore, translate, useSafeExecute } from "@carefree0910/business";
+import {
+  CFText,
+  CFInput,
+  CFButton,
+  CFDivider,
+  CFHeading,
+  CFSrollableSelect,
+} from "@carefree0910/components";
 
 import DeleteIcon from "@/assets/icons/delete.svg";
 
@@ -35,12 +43,6 @@ import {
 } from "@/actions/manageProjects";
 import { cleanGraph } from "@/actions/graphOps";
 import { downloadCurrentFullProject } from "@/actions/download";
-import CFText from "@/components/CFText";
-import CFInput from "@/components/CFInput";
-import CFButton from "@/components/CFButton";
-import CFDivider from "@/components/CFDivider";
-import CFHeading from "@/components/CFHeading";
-import { CFSrollableSelect } from "@/components/CFSelect";
 import { drawboardPluginFactory } from "../utils/factory";
 import { useClosePanel } from "../components/hooks";
 import Render from "../components/Render";
