@@ -8,7 +8,7 @@ import { uploadImage } from "./uploadImage";
 
 const isImage = (format: DownloadFormat) => format === "JPG" || format === "PNG";
 
-function fetchImage(data: { url: string; jpeg: boolean }): Promise<Blob> {
+export function fetchImage(data: { url: string; jpeg: boolean }): Promise<Blob> {
   return Requests.postJson<Blob>("_python", "/fetch_image", data, "blob");
 }
 

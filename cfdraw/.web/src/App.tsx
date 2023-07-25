@@ -1,32 +1,75 @@
-import { Flex } from "@chakra-ui/react";
+import React, { useRef } from "react";
+import { Box, Flex } from "@chakra-ui/react";
 import { observer } from "mobx-react-lite";
 
+import { isUndefined, shallowCopy, waitUntil } from "@carefree0910/core";
+import { NoliNativeBoard } from "@carefree0910/native";
+import { BoardPanel } from "@carefree0910/components";
+
+import MakePlugin from "./plugins";
 import { useSetup } from "./hooks/useSetup";
 import { useWebSocket } from "./stores/socket";
-import { useInitBoard } from "./hooks/useInitBoard";
-import { useFileDropper } from "./hooks/useFileDropper";
 import { useGridLines } from "./hooks/useGridLines";
-import { usePreventDefaults } from "./hooks/usePreventDefaults";
 import { useDocumentEvents } from "./hooks/useDocumentEvents";
-import CFLoadingPage from "./components/CFLoadingPage";
-import BoardPanel from "./BoardPanel";
+import { fetchImage } from "./actions/export";
+import { uploadImage } from "./actions/uploadImage";
+import { settingsStore, usePythonPluginSettings } from "./stores/settings";
+import { useReactPluginSettings } from "./_settings";
 
 function App() {
   useSetup();
   useWebSocket();
-  useInitBoard();
-  useFileDropper();
   useGridLines();
-  usePreventDefaults();
   useDocumentEvents();
+
+  const ref = useRef(null);
+  const Wrapper = settingsStore.internalSettings?.useStrictMode ? React.StrictMode : React.Fragment;
 
   return (
     <Flex h="100vh" className="p-editor" direction="column" userSelect="none">
-      <Flex w="100%" flex={1}>
-        <CFLoadingPage>
-          <BoardPanel />
-        </CFLoadingPage>
+      <Flex h="100%" flex={1} direction="column">
+        <BoardPanel
+          w="100%"
+          h="100%"
+          enableLoadingPage
+          setupOptions={{
+            isProd: false,
+            exportFn: ({ url, jpeg }) => fetchImage({ url, jpeg }),
+            uploadFn: async (blob) => {
+              return uploadImage(blob, { failed: async () => void 0 });
+            },
+            setupBeforeBoard: () =>
+              waitUntil(() => !isUndefined(settingsStore.boardSettings)).then(() => {
+                const { styles, boardOptions, globalSettings, initialProject } = shallowCopy(
+                  settingsStore.boardSettings!,
+                );
+                return {
+                  initialProject,
+                  initBoardOptions: {
+                    api: NoliNativeBoard,
+                    boardSettings: { styles, boardOptions, globalSettings },
+                    internalSettings: settingsStore.internalSettings,
+                  },
+                };
+              }),
+            enableFileDropper: true,
+            enablePreventDefaults: true,
+          }}
+        />
+        <Wrapper>
+          {useReactPluginSettings().map((settings) => (
+            <MakePlugin key={settings.type} containerRef={ref} {...settings} />
+          ))}
+          {usePythonPluginSettings().map((settings) => (
+            <MakePlugin
+              key={settings.props.pluginInfo.identifier}
+              containerRef={ref}
+              {...settings}
+            />
+          ))}
+        </Wrapper>
       </Flex>
+      <Box ref={ref} position="absolute"></Box>
     </Flex>
   );
 }
