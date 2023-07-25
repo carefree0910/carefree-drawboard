@@ -8,6 +8,13 @@ import ImageIcon from "@/assets/icons/image.svg";
 import { ReactComponent as ImportIcon } from "@/assets/icons/import.svg";
 
 import { IImageNode } from "@carefree0910/core";
+import {
+  GalleryItem,
+  IGalleryItem,
+  SpecialGalleryContainer,
+  NodePicker,
+  nodePickerEvent,
+} from "@carefree0910/components";
 
 import type { IField } from "@/schema/plugins";
 import type { IImageField } from "@/schema/fields";
@@ -25,12 +32,6 @@ import CFText, { CFCaption } from "@/components/CFText";
 import CFTooltip, { CFFormLabel } from "@/components/CFTooltip";
 import CFImageUploader from "@/components/CFImageUploader";
 import { useDefaultFieldValue } from "./utils";
-import NodePicker, {
-  GalleryItem,
-  IGalleryItem,
-  SpecialGalleryContainer,
-  nodePickerEvent,
-} from "../NodePicker";
 
 interface IOnSelectUrl {
   onSelectUrl: (url: string, injection: IMetaInjection | undefined) => void;

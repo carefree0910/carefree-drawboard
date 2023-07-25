@@ -3,6 +3,7 @@ import { observer } from "mobx-react-lite";
 import { ChangeEvent, useCallback, useMemo, useState } from "react";
 
 import { ITextNode, isUndefined } from "@carefree0910/core";
+import { GalleryItem, IGalleryItem, NodePicker, nodePickerEvent } from "@carefree0910/components";
 
 import TextIcon from "@/assets/icons/add-text.svg";
 import type { IField } from "@/schema/plugins";
@@ -22,7 +23,6 @@ import { parseIStr } from "@/actions/i18n";
 import CFInput from "@/components/CFInput";
 import CFTextarea from "@/components/CFTextarea";
 import { useDefaultFieldValue } from "./utils";
-import NodePicker, { GalleryItem, IGalleryItem, nodePickerEvent } from "../NodePicker";
 
 interface ITextGalleryItem extends Omit<IGalleryItem<ITextNode>, "onItemClick">, TextareaProps {
   onSelectText: (content: string, injection: IMetaInjection | undefined) => void;
