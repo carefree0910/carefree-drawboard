@@ -77,6 +77,7 @@ export default defineConfig({
           "@carefree0910/svg": ["@carefree0910/svg"],
           "@carefree0910/business": ["@carefree0910/business"],
           "@carefree0910/native": ["@carefree0910/native"],
+          "@carefree0910/components": ["@carefree0910/components"],
         },
       },
     },
