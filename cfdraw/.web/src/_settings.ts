@@ -57,9 +57,8 @@ export const reactPluginSettings: IMakePlugin<ReactPlugins | "_python.pluginGrou
     props: {
       nodeConstraint: "none",
       renderInfo: {
-        w: 256,
+        w: 320,
         h: 190,
-        // h: 244,
         offsetY: 120,
         src: AddIcon,
         tooltip: "add-new-stuff-tooltip",
