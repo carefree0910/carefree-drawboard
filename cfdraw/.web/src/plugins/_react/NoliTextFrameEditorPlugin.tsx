@@ -8,6 +8,7 @@ import {
   NoliTextFrameCommonEditor,
   NoliTextFrameComposeBaseEditor,
   NoliTextFrameContentEditor,
+  NoliTextFrameLayersEditor,
 } from "@carefree0910/components";
 
 import type { IPlugin } from "@/schema/plugins";
@@ -38,7 +39,8 @@ const NoliTextFrameEditorPlugin = ({ pluginInfo: { node }, ...props }: IPlugin) 
         <NoliTextFrameComposeBaseEditor />
         <NoliTextFrameAlignEditor mt="8px" />
         <NoliTextFrameCommonEditor mt="8px" />
-        <NoliTextFrameContentEditor mt="16px" flex={1} />
+        <NoliTextFrameContentEditor mt="16px" />
+        <NoliTextFrameLayersEditor mt="16px" />
       </Flex>
     </Render>
   );
