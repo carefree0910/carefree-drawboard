@@ -3,6 +3,7 @@ import { observer } from "mobx-react-lite";
 import { Flex } from "@chakra-ui/react";
 
 import { langStore, selectingNodesStore, translate, useEditNode } from "@carefree0910/business";
+import { BasicEditor } from "@carefree0910/components";
 
 import type { IPlugin } from "@/schema/plugins";
 import { NodeEditor_Words } from "@/lang/nodeEditor";
@@ -11,7 +12,6 @@ import CFDivider from "@/components/CFDivider";
 import CFHeading from "@/components/CFHeading";
 import CFTextarea from "@/components/CFTextarea";
 import { drawboardPluginFactory } from "../utils/factory";
-import BasicEditor from "./components/BasicEditor";
 import Render from "../components/Render";
 
 const NoliFrameEditorPlugin = ({ pluginInfo: { node }, ...props }: IPlugin) => {

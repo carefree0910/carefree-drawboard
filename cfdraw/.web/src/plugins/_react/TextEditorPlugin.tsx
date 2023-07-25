@@ -3,6 +3,7 @@ import { Flex } from "@chakra-ui/react";
 
 import { Lang, TextAlign, allTextAlign } from "@carefree0910/core";
 import { langStore, selectingNodesStore, translate, useEditText } from "@carefree0910/business";
+import { BasicEditor } from "@carefree0910/components";
 
 import type { IPlugin } from "@/schema/plugins";
 import { UI_Words } from "@/lang/ui";
@@ -15,7 +16,6 @@ import CFHeading from "@/components/CFHeading";
 import CFTextarea from "@/components/CFTextarea";
 import CFColorPicker from "@/components/CFColorPicker";
 import { drawboardPluginFactory } from "../utils/factory";
-import BasicEditor from "./components/BasicEditor";
 import Render from "../components/Render";
 
 const textAlignDict: Record<TextAlign, Record<Lang, string>> = {

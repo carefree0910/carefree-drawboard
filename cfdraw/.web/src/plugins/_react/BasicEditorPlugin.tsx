@@ -1,6 +1,7 @@
 import { observer } from "mobx-react-lite";
 
 import { langStore, translate } from "@carefree0910/business";
+import { BasicEditor } from "@carefree0910/components";
 
 import type { IPlugin } from "@/schema/plugins";
 import { NodeEditor_Words } from "@/lang/nodeEditor";
@@ -8,7 +9,6 @@ import { usePluginIds } from "@/stores/pluginsInfo";
 import CFDivider from "@/components/CFDivider";
 import CFHeading from "@/components/CFHeading";
 import { drawboardPluginFactory } from "../utils/factory";
-import BasicEditor from "./components/BasicEditor";
 import Render from "../components/Render";
 
 const BasicEditorPlugin = ({ pluginInfo, ...props }: IPlugin) => {
