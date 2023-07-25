@@ -4,6 +4,7 @@ import { CloseIcon } from "@chakra-ui/icons";
 import { Flex, Spacer } from "@chakra-ui/react";
 
 import { langStore, translate } from "@carefree0910/business";
+import { Definitions } from "@carefree0910/components";
 
 import type { OnPythonPluginMessage, IPythonFieldsPlugin } from "@/schema/_python";
 import { UI_Words } from "@/lang/ui";
@@ -16,7 +17,6 @@ import { importMeta } from "@/actions/importMeta";
 import CFHeading from "@/components/CFHeading";
 import { drawboardPluginFactory } from "@/plugins/utils/factory";
 import { useClosePanel } from "../components/hooks";
-import { Definitions } from "../components/Fields";
 import { useDefinitionsGetInjectionsFn, useDefinitionsRequestDataFn } from "./hooks";
 import PythonPluginWithSubmit from "./PluginWithSubmit";
 

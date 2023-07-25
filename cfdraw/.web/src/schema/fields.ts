@@ -1,7 +1,6 @@
-import type { Dictionary } from "@carefree0910/core";
+import type { Dictionary, IDataCenterKey } from "@carefree0910/core";
 
 import type { IStr } from "./misc";
-import type { IDataCenterKey } from "@/stores/dataCenter";
 
 interface IBaseFields {
   label?: IStr;

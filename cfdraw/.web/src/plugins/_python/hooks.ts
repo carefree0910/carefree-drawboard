@@ -2,6 +2,7 @@ import { useCallback, useEffect, useMemo, useState } from "react";
 
 import { Dictionary, INode, getRandomHash, isSingleNode, shallowCopy } from "@carefree0910/core";
 import { langStore } from "@carefree0910/business";
+import { ID_KEY, getFieldData } from "@carefree0910/components";
 
 import type { IMeta } from "@/schema/meta";
 import type { IDefinitions, IFieldDefinition } from "@/schema/fields";
@@ -11,13 +12,11 @@ import type {
   IUseOnPythonPluginMessage,
   OnPythonPluginMessage,
 } from "@/schema/_python";
-import { getFieldData } from "@/stores/dataCenter";
 import { IMetaInjections, getMetaInjection } from "@/stores/meta";
 import { setPluginMessage, usePluginIds, usePluginNeedRender } from "@/stores/pluginsInfo";
 import { useSocketPython } from "@/hooks/usePython";
 import { checkHasConstraint } from "../utils/renderFilters";
 import { cleanupException, cleanupFinished, cleanupInterrupted } from "../utils/cleanup";
-import { ID_KEY } from "../components/Fields/ListField/List";
 import { socketFinishedEvent } from "./PluginWithSubmit";
 
 export function useDefinitionsRequestDataFn(definitions: IDefinitions): () => Dictionary<any> {

@@ -1,10 +1,9 @@
 import { makeObservable, observable } from "mobx";
 
-import { Dictionary, ISingleNode, Matrix2DFields } from "@carefree0910/core";
+import { Dictionary, ISingleNode, Matrix2DFields, IDataCenterKey } from "@carefree0910/core";
 import { ABCStore } from "@carefree0910/business";
 
 import type { INodeData } from "@/schema/_python";
-import type { IDataCenterKey } from "./dataCenter";
 import { getNodeData } from "@/hooks/usePython";
 
 export interface IMetaInjection {
