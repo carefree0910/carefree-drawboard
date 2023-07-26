@@ -52,6 +52,12 @@ export default defineConfig({
     keepNames: true,
   },
   build: {
+    commonjsOptions: {
+      requireReturnsDefault: function (path) {
+        if (path.includes("rc-upload")) return true;
+        return false;
+      },
+    },
     rollupOptions: {
       output: {
         manualChunks: {
