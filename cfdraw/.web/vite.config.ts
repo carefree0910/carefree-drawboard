@@ -83,7 +83,6 @@ export default defineConfig({
           "react-markdown": ["react-markdown", "remark-gfm", "react-syntax-highlighter"],
           "react-select": ["react-select", "chakra-react-select"],
           mobx: ["mobx", "mobx-react-lite"],
-          ahooks: ["ahooks"],
           "rc-upload": ["rc-upload"],
           "lottie-web": ["lottie-web"],
           svgdotjs: [
