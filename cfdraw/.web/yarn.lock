@@ -225,10 +225,10 @@
     "@carefree0910/core" "^0.5.1-alpha.54"
     "@carefree0910/svg" "^0.5.1-alpha.54"
 
-"@carefree0910/components@~0.5.1-alpha.56":
-  version "0.5.1-alpha.56"
-  resolved "https://registry.npmmirror.com/@carefree0910/components/-/components-0.5.1-alpha.56.tgz#be284f6b7a27e4ae24021d7ba6c45bc29c608f07"
-  integrity sha512-HHgfzTKCfP07KPjTSn9EDR8w92VH9fsS/0EqRcQkvl6d0Uy8TLCzo6OdVa65OBKQ84DR3d9anoX6LLlozoDo0g==
+"@carefree0910/components@~0.5.1-alpha.59":
+  version "0.5.1-alpha.59"
+  resolved "https://registry.npmmirror.com/@carefree0910/components/-/components-0.5.1-alpha.59.tgz#12d2c65f517a353061514747b5fd0b9ad6ee711a"
+  integrity sha512-yb2LPo3WGgd07VoNobi5fcHXi1jRD7+eAYwttb9snFpvBJqtthQlfv2rtddCzSdJXqzV0csLwjDFFSChFlF4CA==
   dependencies:
     "@carefree0910/business" "^0.5.1-alpha.54"
     "@carefree0910/core" "^0.5.1-alpha.54"
