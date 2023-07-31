@@ -153,6 +153,10 @@ export function getAutoSaveProjectInfo(): Promise<IProjectsStore | undefined> {
     (projects ?? []).find(({ uid }) => uid.startsWith(AUTO_SAVE_PREFIX)),
   );
 }
+export function injectAutoSaveInfo(project: IProject): void {
+  project.uid = `${AUTO_SAVE_PREFIX}${project.uid}`;
+  project.name = "Auto Save";
+}
 export function getAutoSaveProject(): Promise<IProject> {
   const userId = userStore.userId;
   if (!userId) {
@@ -161,8 +165,7 @@ export function getAutoSaveProject(): Promise<IProject> {
   return getAutoSaveProjectInfo().then((info) => {
     if (info) return getProject(info.uid);
     const autoSaveProject = { userId, ...getNewProject() };
-    autoSaveProject.uid = `${AUTO_SAVE_PREFIX}${autoSaveProject.uid}`;
-    autoSaveProject.name = "Auto Save";
+    injectAutoSaveInfo(autoSaveProject);
     return saveProject(autoSaveProject, async () => void 0, true).then(() => autoSaveProject);
   });
 }
