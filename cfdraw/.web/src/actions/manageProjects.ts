@@ -80,6 +80,7 @@ export function saveProject(
 }
 interface ISaveCurrentProject {
   noToast?: boolean;
+  projectCallback?: (project: IProjectWithUserId) => void;
 }
 export function saveCurrentProject(
   onSuccess: () => Promise<void>,
@@ -88,6 +89,7 @@ export function saveCurrentProject(
   opt ??= {};
   updateCurrentProjectUpdateTime();
   const projectWithUserId = useCurrentProjectWithUserId();
+  opt.projectCallback?.(projectWithUserId);
   return saveProject(projectWithUserId, onSuccess, opt.noToast);
 }
 
