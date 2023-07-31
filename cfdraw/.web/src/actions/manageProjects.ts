@@ -78,13 +78,17 @@ export function saveProject(
     },
   );
 }
+interface ISaveCurrentProject {
+  noToast?: boolean;
+}
 export function saveCurrentProject(
   onSuccess: () => Promise<void>,
-  noToast?: boolean,
+  opt?: ISaveCurrentProject,
 ): Promise<void> {
+  opt ??= {};
   updateCurrentProjectUpdateTime();
   const projectWithUserId = useCurrentProjectWithUserId();
-  return saveProject(projectWithUserId, onSuccess, noToast);
+  return saveProject(projectWithUserId, onSuccess, opt.noToast);
 }
 
 function replaceCurrentProjectWith(

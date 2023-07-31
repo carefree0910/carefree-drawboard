@@ -63,7 +63,7 @@ const AddPlugin = ({ pluginInfo, ...props }: IPlugin) => {
           },
           true,
         ),
-      true,
+      { noToast: true },
     );
   };
   const onNewFrame = () => {
