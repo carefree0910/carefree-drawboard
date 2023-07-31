@@ -30,6 +30,8 @@ import {
   getAutoSaveProject,
   getAutoSaveProjectInfo,
   getProject,
+  injectAutoSaveInfo,
+  saveCurrentProject,
   saveProject,
   useCurrentProjectWithUserId,
 } from "@/actions/manageProjects";
@@ -277,16 +279,26 @@ function useAutoSaveEvery(second: number) {
       const timerId = setTimeout(() => {
         getAutoSaveProjectInfo()
           .then((info) => {
-            if (!info) throw new Error("no Auto Save project found");
+            if (!info) {
+              console.warn("no 'Auto Save' project found, will create one");
+              return false;
+            }
             const project = useCurrentProjectWithUserId();
             project.uid = info.uid;
             project.name = info.name;
             project.updateTime = getNewUpdateTime();
             Logger.debug("period saving");
-            return saveProject(project, async () => void 0, true);
+            return saveProject(project, async () => void 0, true).then(() => true);
           })
-          .then(() => {
-            autoSavetEvery(second);
+          .then((hasAutoSave) => {
+            if (hasAutoSave) {
+              autoSavetEvery(second);
+            } else {
+              saveCurrentProject(async () => autoSavetEvery(second), {
+                noToast: true,
+                projectCallback: injectAutoSaveInfo,
+              });
+            }
           })
           .catch((err) => {
             console.error("error occurred in autoSavetEvery: ", err);
