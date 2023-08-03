@@ -47,7 +47,12 @@ function App() {
                   initialProject,
                   initBoardOptions: {
                     api: NoliNativeBoard,
-                    boardSettings: { styles, boardOptions, globalSettings },
+                    boardSettings: {
+                      styles,
+                      boardOptions,
+                      globalSettings,
+                      boardStoreOptions: { constantsOpt: { token: undefined } },
+                    },
                     internalSettings: settingsStore.internalSettings,
                   },
                 };
