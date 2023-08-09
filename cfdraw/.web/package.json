@@ -10,11 +10,33 @@
     "build:preview": "tsc && vite build && vite preview"
   },
   "dependencies": {
+    "@carefree0910/pack_react": "~0.5.1-alpha.72"
+  },
+  "devDependencies": {
+    "@total-typescript/ts-reset": "^0.4.2",
+    "@types/node": "18.15.11",
+    "@types/opentype.js": "^1.3.4",
+    "@types/react": "18.0.33",
+    "@types/react-color": "^3.0.6",
+    "@types/react-dom": "18.0.11",
+    "@types/react-syntax-highlighter": "^15.5.6",
+    "@types/uuid": "^9.0.1",
+    "@vitejs/plugin-react": "^3.1.0",
+    "rollup": "^2.76.0",
+    "rollup-plugin-styles": "^4.0.0",
+    "rollup-plugin-visualizer": "^5.9.0",
+    "sass": "^1.60.0",
+    "typescript": "^5.0.3",
+    "vite": "^4.3.9",
+    "vite-plugin-svgr": "^2.4.0",
+    "vite-tsconfig-paths": "^4.0.8"
+  },
+  "peerDependencies": {
     "@carefree0910/business": "~0.5.1-alpha.66",
+    "@carefree0910/components": "~0.5.1-alpha.66",
     "@carefree0910/core": "~0.5.1-alpha.66",
     "@carefree0910/native": "~0.5.1-alpha.66",
     "@carefree0910/svg": "~0.5.1-alpha.66",
-    "@carefree0910/components": "~0.5.1-alpha.66",
     "@chakra-ui/icons": "^2.0.4",
     "@chakra-ui/react": "^2.2.4",
     "@emotion/react": "^11.9.3",
@@ -46,21 +68,5 @@
     "remark-gfm": "^3.0.1",
     "uuid": "^9.0.0"
   },
-  "devDependencies": {
-    "@total-typescript/ts-reset": "^0.4.2",
-    "@types/node": "18.15.11",
-    "@types/opentype.js": "^1.3.4",
-    "@types/react": "18.0.33",
-    "@types/react-color": "^3.0.6",
-    "@types/react-dom": "18.0.11",
-    "@types/react-syntax-highlighter": "^15.5.6",
-    "@types/uuid": "^9.0.1",
-    "@vitejs/plugin-react": "^3.1.0",
-    "rollup-plugin-visualizer": "^5.9.0",
-    "sass": "^1.60.0",
-    "typescript": "^5.0.3",
-    "vite": "^4.3.9",
-    "vite-plugin-svgr": "^2.4.0",
-    "vite-tsconfig-paths": "^4.0.8"
-  }
+  "packageManager": "yarn@1.22.1"
 }
