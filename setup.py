@@ -18,7 +18,7 @@ setup(
         "typer",
         "fastapi>=0.95.1",
         "gunicorn",
-        "pydantic",
+        "pydantic<2.0.0",
         "uvicorn",
         "websockets",
         "watchdog",
