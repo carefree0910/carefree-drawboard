@@ -166,9 +166,7 @@ const ProjectPlugin = ({ pluginInfo, ...props }: IPlugin) => {
     if (!Array.isArray(data)) {
       data = data.graphInfo;
     }
-    const graph = Graph.fromJsonInfo(data as INodePack[]).clone();
-    cleanGraph(graph);
-    const json = graph.toJson();
+    const json = cleanGraph(Graph.fromJsonInfo(data as INodePack[]).clone()).toJson();
     useSafeExecute("addGraph", null, true, {
       success: async () => {
         toastWord("success", Toast_Words["import-local-project-success-message"]);
