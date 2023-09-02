@@ -70,7 +70,7 @@ const _pluginsLangRecords: Record<Lang, Record<AllPlugins, string>> = {
 };
 
 export const Plugins_Words: Record<AllPlugins, string> = {} as any;
-export const pluginsLangRecords: Dictionary<Dictionary<string>> = {};
+export const pluginsLangRecords: Record<Lang, Dictionary<string>> = {} as any;
 
 function injectScope(scope: string, data: Dictionary<string>) {
   Object.entries(data).forEach(([key, value]) => {
@@ -92,5 +92,5 @@ injectScope(scope, Plugins_Words);
 Object.entries(_pluginsLangRecords).forEach(([lang, record]) => {
   const reversedRecord = reverseMapping(record);
   injectScope(scope, reversedRecord);
-  pluginsLangRecords[lang] = reverseMapping(reversedRecord);
+  pluginsLangRecords[lang as Lang] = reverseMapping(reversedRecord);
 });

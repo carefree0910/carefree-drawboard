@@ -15,10 +15,10 @@ import {
   sortBy,
 } from "@carefree0910/core";
 import { BoardStore } from "@carefree0910/business";
+import { Toast_Words } from "@carefree0910/components";
 
 import { checkMeta, getOriginMeta, IMeta } from "@/schema/meta";
 import { toastWord } from "@/utils/toast";
-import { Toast_Words } from "@/lang/toast";
 
 const schedules = {
   easeInOutElastic: (x: number): number => {

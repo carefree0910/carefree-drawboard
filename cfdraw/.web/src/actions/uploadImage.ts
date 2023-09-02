@@ -1,7 +1,7 @@
 import { safeCall, Requests } from "@carefree0910/core";
+import { Toast_Words } from "@carefree0910/components";
 
 import { toastWord } from "@/utils/toast";
-import { Toast_Words } from "@/lang/toast";
 import { userStore } from "@/stores/user";
 
 type UploadImageOptions = {

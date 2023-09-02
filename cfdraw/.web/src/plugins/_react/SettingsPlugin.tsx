@@ -16,11 +16,12 @@ import {
   CFHeading,
   CFSlider,
   useGlobalScale,
+  Settings_Words,
 } from "@carefree0910/components";
 
 import { allReactPlugins, IPlugin } from "@/schema/plugins";
 import { Plugins_Words } from "@/lang/plugins";
-import { Settings_Words } from "@/lang/settings";
+import { CFDraw_Settings_Words } from "@/lang/settings";
 import { stripHashFromIdentifier } from "@/utils/misc";
 import { uiStore } from "@/stores/ui";
 import { usePythonPluginSettings } from "@/stores/settings";
@@ -88,7 +89,7 @@ const SettingsPlugin = ({ pluginInfo, ...props }: IPlugin) => {
         )}
         {/* plugin visible settings */}
         <Box mt="12px" pb="12px">
-          <CFHeading>{translate(Settings_Words["plugins-header"], lang)}</CFHeading>
+          <CFHeading>{translate(CFDraw_Settings_Words["plugins-header"], lang)}</CFHeading>
           <CFDivider />
           <Flex w="100%" gap="8px" direction="column" justifyContent="space-around">
             {allReactPlugins
@@ -128,10 +129,10 @@ const SettingsPlugin = ({ pluginInfo, ...props }: IPlugin) => {
             })}
             <Flex w="100%" my="6px" justifyContent="space-around">
               <CFButton onClick={() => hideAllPlugins()} isDisabled={disablePluginSettings}>
-                {translate(Settings_Words["hide-all-plugins-message"], lang)}
+                {translate(CFDraw_Settings_Words["hide-all-plugins-message"], lang)}
               </CFButton>
               <CFButton onClick={() => showAllPlugins()} isDisabled={disablePluginSettings}>
-                {translate(Settings_Words["show-all-plugins-message"], lang)}
+                {translate(CFDraw_Settings_Words["show-all-plugins-message"], lang)}
               </CFButton>
             </Flex>
           </Flex>

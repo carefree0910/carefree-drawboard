@@ -14,7 +14,7 @@ import {
 } from "@carefree0910/business";
 
 import { toastWord } from "@/utils/toast";
-import { Toast_Words } from "@/lang/toast";
+import { CFDraw_Toast_Words } from "@/lang/toast";
 import { userStore } from "@/stores/user";
 import {
   IProjectsStore,
@@ -56,7 +56,7 @@ export function saveProject(
   noToast?: boolean,
 ): Promise<void> {
   if (!noToast) {
-    toastWord("info", Toast_Words["uploading-project-message"]);
+    toastWord("info", CFDraw_Toast_Words["uploading-project-message"]);
   }
 
   return safeCall(
@@ -66,7 +66,7 @@ export function saveProject(
         message: string;
       }>("_python", "/save_project", projectWithUserId);
       if (!res.success) {
-        toastWord("warning", Toast_Words["save-project-error-message"], {
+        toastWord("warning", CFDraw_Toast_Words["save-project-error-message"], {
           appendix: ` - ${res.message}`,
         });
         throw Error;
@@ -114,7 +114,7 @@ export function loadProject(
   uid: string,
   onSuccess: (project: IProject) => Promise<void>,
 ): Promise<void> {
-  toastWord("info", Toast_Words["loading-project-message"]);
+  toastWord("info", CFDraw_Toast_Words["loading-project-message"]);
 
   return safeCall(
     async () => getProject(uid).then((res) => replaceCurrentProjectWith(res, onSuccess)),
@@ -130,7 +130,7 @@ export function loadLocalProject(
   noToast?: boolean,
 ): void {
   if (!noToast) {
-    toastWord("info", Toast_Words["loading-project-message"]);
+    toastWord("info", CFDraw_Toast_Words["loading-project-message"]);
   }
   replaceCurrentProjectWith(project, onSuccess);
 }

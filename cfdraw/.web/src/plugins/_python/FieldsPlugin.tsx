@@ -8,7 +8,7 @@ import { CFHeading, Definitions } from "@carefree0910/components";
 
 import type { OnPythonPluginMessage, IPythonFieldsPlugin } from "@/schema/_python";
 import { UI_Words } from "@/lang/ui";
-import { Toast_Words } from "@/lang/toast";
+import { CFDraw_Toast_Words } from "@/lang/toast";
 import { toastWord } from "@/utils/toast";
 import { titleCaseWord } from "@/utils/misc";
 import { usePluginIds, usePluginTaskCache } from "@/stores/pluginsInfo";
@@ -31,7 +31,7 @@ const BasePythonFieldsPlugin = ({ pluginInfo, ...props }: IPythonFieldsPlugin) =
   const onFinished = useCallback<OnPythonPluginMessage>(
     ({ data: { final, injections, elapsedTimes } }) => {
       if (!final) {
-        toastWord("success", Toast_Words["submit-task-finished-message"], {
+        toastWord("success", CFDraw_Toast_Words["submit-task-finished-message"], {
           appendix: ` (${pureIdentifier})`,
         });
       } else {
@@ -52,7 +52,9 @@ const BasePythonFieldsPlugin = ({ pluginInfo, ...props }: IPythonFieldsPlugin) =
   );
   const onSocketError = useCallback(
     async (err: any) => {
-      toastWord("error", Toast_Words["submit-task-error-message"], { appendix: ` - ${err}` });
+      toastWord("error", CFDraw_Toast_Words["submit-task-error-message"], {
+        appendix: ` - ${err}`,
+      });
     },
     [lang],
   );

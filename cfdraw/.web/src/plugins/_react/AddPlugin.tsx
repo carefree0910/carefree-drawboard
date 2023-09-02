@@ -14,7 +14,7 @@ import { toastWord } from "@/utils/toast";
 import { globalEvent } from "@/utils/event";
 import { DEFAULT_PLUGIN_SETTINGS } from "@/utils/constants";
 import { Add_Words } from "@/lang/add";
-import { Toast_Words } from "@/lang/toast";
+import { CFDraw_Toast_Words } from "@/lang/toast";
 import { usePluginIds, usePluginIsExpanded } from "@/stores/pluginsInfo";
 import { getNewProject, loadLocalProject, saveCurrentProject } from "@/actions/manageProjects";
 import { drawboardPluginFactory } from "../utils/factory";
@@ -51,14 +51,14 @@ const AddPlugin = ({ pluginInfo, ...props }: IPlugin) => {
   };
   const closePanel = useClosePanel(id);
   const onNewProject = () => {
-    toastWord("info", Toast_Words["adding-project-message"]);
+    toastWord("info", CFDraw_Toast_Words["adding-project-message"]);
     saveCurrentProject(
       async () =>
         loadLocalProject(
           getNewProject(),
           async () => {
             globalEvent.emit({ type: "newProject", data: undefined });
-            toastWord("success", Toast_Words["add-project-success-message"]);
+            toastWord("success", CFDraw_Toast_Words["add-project-success-message"]);
             closePanel();
           },
           true,
@@ -75,8 +75,8 @@ const AddPlugin = ({ pluginInfo, ...props }: IPlugin) => {
       null,
       true,
       {
-        success: async () => toastWord("success", Toast_Words["add-frame-success-message"]),
-        failed: async () => toastWord("error", Toast_Words["add-frame-error-message"]),
+        success: async () => toastWord("success", CFDraw_Toast_Words["add-frame-success-message"]),
+        failed: async () => toastWord("error", CFDraw_Toast_Words["add-frame-error-message"]),
       },
       {
         noSelect: true,

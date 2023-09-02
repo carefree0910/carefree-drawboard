@@ -1,6 +1,3 @@
-import { Lang } from "@carefree0910/core";
-import { langDescriptions, langStore, updateDictionary } from "@carefree0910/business";
-
 import { uiLangRecords } from "./ui";
 import { addLangRecords } from "./add";
 import { brushLangRecords } from "./brush";
@@ -11,7 +8,7 @@ import { projectsLangRecords } from "./projects";
 import { settingsLangRecords } from "./settings";
 import { nodeEditorLangRecords } from "./nodeEditor";
 
-const initLangDirs = [
+export const initLangDirs = [
   uiLangRecords,
   toastLangRecords,
   tooltipLangRecords,
@@ -22,24 +19,3 @@ const initLangDirs = [
   nodeEditorLangRecords,
   brushLangRecords,
 ];
-
-export function initializeLang(): void {
-  const collected = new Set();
-  let anyDuplicate = false;
-  for (const lang of Object.keys(langDescriptions) as Lang[]) {
-    initLangDirs.forEach((d) => {
-      updateDictionary(lang, d[lang]);
-      Object.keys(d[lang]).forEach((k) => {
-        const _k = `${lang}-${k}`;
-        if (collected.has(_k)) {
-          console.warn(`Key ${k} is duplicated!`);
-          anyDuplicate = true;
-        }
-        collected.add(_k);
-      });
-    });
-  }
-  if (!anyDuplicate) {
-    console.log("No duplicate lang keys found, great job!");
-  }
-}

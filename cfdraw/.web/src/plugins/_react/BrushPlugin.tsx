@@ -16,7 +16,7 @@ import type { ICommonMetaData, IMeta } from "@/schema/meta";
 import type { IPlugin } from "@/schema/plugins";
 import { toastWord } from "@/utils/toast";
 import { Brush_Words } from "@/lang/brush";
-import { Toast_Words } from "@/lang/toast";
+import { CFDraw_Toast_Words } from "@/lang/toast";
 import { themeStore } from "@/stores/theme";
 import { VisibleManager, uiStore } from "@/stores/ui";
 import { setPluginExpanded, usePluginIds } from "@/stores/pluginsInfo";
@@ -29,12 +29,12 @@ const useSwitchBrushMode = () => async (): Promise<void> => {
   const previousInBrushMode = toolbarStore.inBrushMode;
   // handle drawboard
   if (!previousInBrushMode) {
-    toastWord("success", Toast_Words["enter-brush-mode-message"]);
+    toastWord("success", CFDraw_Toast_Words["enter-brush-mode-message"]);
     toolbarStore.switchBrushMode(defaultBrushStyles);
   } else {
     toolbarStore.switchBrushMode({
       nodeCallback: (node) => {
-        toastWord("success", Toast_Words["exit-brush-mode-message"]);
+        toastWord("success", CFDraw_Toast_Words["exit-brush-mode-message"]);
         node.active = true;
         node.params.meta = {
           type: "add.sketch.path",

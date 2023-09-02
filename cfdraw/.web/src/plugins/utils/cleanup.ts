@@ -2,7 +2,7 @@ import { isUndefined } from "@carefree0910/core";
 
 import type { OnPythonPluginMessage, IPythonPlugin, IPythonPluginMessage } from "@/schema/_python";
 import { toastWord } from "@/utils/toast";
-import { Toast_Words } from "@/lang/toast";
+import { CFDraw_Toast_Words } from "@/lang/toast";
 import { getSocketHook, removeSocketHooks, socketLog } from "@/stores/socket";
 import { removePluginMessage, removePluginTaskCache } from "@/stores/pluginsInfo";
 import { socketFinishedEvent } from "../_python/PluginWithSubmit";
@@ -40,7 +40,7 @@ export function cleanupException({
   pluginInfo: { noErrorToast, retryInterval },
 }: ICleanupException): void {
   if (!noErrorToast) {
-    toastWord("error", Toast_Words["submit-task-error-message"], {
+    toastWord("error", CFDraw_Toast_Words["submit-task-error-message"], {
       appendix: ` - ${message}`,
     });
   }
@@ -55,7 +55,7 @@ interface ICleanupInterrupted {
   message: IPythonPluginMessage;
 }
 export function cleanupInterrupted({ id, message: { hash, message } }: ICleanupInterrupted): void {
-  toastWord("warning", Toast_Words["submit-task-interrupted-message"], {
+  toastWord("warning", CFDraw_Toast_Words["submit-task-interrupted-message"], {
     appendix: ` - ${message}`,
   });
   cleanup(id, hash);

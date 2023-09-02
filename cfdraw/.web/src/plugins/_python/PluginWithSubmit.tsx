@@ -8,7 +8,7 @@ import { CFButtonWithBusyTooltip, CFDivider } from "@carefree0910/components";
 import type { IPythonSocketPluginWithSubmit } from "@/schema/_python";
 import { Event } from "@/utils/event";
 import { toast } from "@/utils/toast";
-import { Toast_Words } from "@/lang/toast";
+import { CFDraw_Toast_Words } from "@/lang/toast";
 import {
   usePluginHash,
   setPluginExpanded,
@@ -68,7 +68,8 @@ function PythonPluginWithSubmit({
       toast(
         "info",
         parseIStr(
-          toastMessageOnSubmit ?? translate(Toast_Words["submit-task-success-message"], lang),
+          toastMessageOnSubmit ??
+            translate(CFDraw_Toast_Words["submit-task-success-message"], lang),
         ),
       );
     }
@@ -117,7 +118,7 @@ function PythonPluginWithSubmit({
       <CFDivider />
       <CFButtonWithBusyTooltip
         busy={busy}
-        tooltip={Toast_Words["submit-task-busy-message"]}
+        tooltip={CFDraw_Toast_Words["submit-task-busy-message"]}
         onClick={onClick}>
         {buttonText}
       </CFButtonWithBusyTooltip>

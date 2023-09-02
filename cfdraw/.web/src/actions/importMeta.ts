@@ -17,12 +17,13 @@ import type { IPythonFieldsMetaData, IPythonResults, MetaType } from "@/schema/m
 import type { IImportMeta } from "@/schema/meta";
 import { toastWord } from "@/utils/toast";
 import { DEFAULT_FONT_SIZE, IMAGE_PLACEHOLDER, NSFW_IMAGE_PLACEHOLDER } from "@/utils/constants";
-import { Toast_Words } from "@/lang/toast";
+import { CFDraw_Toast_Words } from "@/lang/toast";
 import { themeStore } from "@/stores/theme";
 import { updateMeta } from "./update";
 import { addNewText } from "./addText";
 import { addNewImage, getNewRectangle, INewRectangle, NewImageInfo } from "./addImage";
 import { getArrangements } from "./arrange";
+import { Toast_Words } from "@carefree0910/components";
 
 // helper functions
 
@@ -131,10 +132,10 @@ interface IPack<R> {
 }
 function consumePythonFields({ type, metaData }: IImportMeta<"python.fields">): void {
   const success = async () => {
-    toastWord("success", Toast_Words["generate-success-message"]);
+    toastWord("success", CFDraw_Toast_Words["generate-success-message"]);
   };
   const failed = async (err: any) => {
-    toastWord("error", Toast_Words["post-python-fields-plugin-error-message"], {
+    toastWord("error", CFDraw_Toast_Words["post-python-fields-plugin-error-message"], {
       appendix: ` (${err})`,
     });
   };
@@ -163,7 +164,7 @@ function consumePythonFields({ type, metaData }: IImportMeta<"python.fields">): 
         }
       } else if (results.type === "text") {
         if (results.value[i].text.length === 0) {
-          toastWord("warning", Toast_Words["returned-empty-text-message"]);
+          toastWord("warning", CFDraw_Toast_Words["returned-empty-text-message"]);
           return;
         }
       }

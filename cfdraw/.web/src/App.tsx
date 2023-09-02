@@ -15,6 +15,7 @@ import { fetchImage } from "./actions/export";
 import { uploadImage } from "./actions/uploadImage";
 import { settingsStore, usePythonPluginSettings } from "./stores/settings";
 import { useReactPluginSettings } from "./_settings";
+import { initLangDirs } from "./lang";
 
 function App() {
   useSetup();
@@ -59,6 +60,7 @@ function App() {
               }),
             enableFileDropper: true,
             enablePreventDefaults: true,
+            extraLangRecords: initLangDirs,
           }}
         />
         <Wrapper>

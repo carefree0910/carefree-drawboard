@@ -19,7 +19,7 @@ import DeleteIcon from "@/assets/icons/delete.svg";
 import type { IPlugin } from "@/schema/plugins";
 import { toastWord } from "@/utils/toast";
 import { globalEvent } from "@/utils/event";
-import { Toast_Words } from "@/lang/toast";
+import { CFDraw_Toast_Words } from "@/lang/toast";
 import { Projects_Words } from "@/lang/projects";
 import { userStore } from "@/stores/user";
 import {
@@ -128,23 +128,23 @@ const ProjectPlugin = ({ pluginInfo, ...props }: IPlugin) => {
   }
   function onSaveProject() {
     saveCurrentProject(async () => {
-      toastWord("success", Toast_Words["save-project-success-message"]);
+      toastWord("success", CFDraw_Toast_Words["save-project-success-message"]);
       updateUids();
       closePanel();
     });
   }
   async function onLoadProjectSuccess(project: IProject) {
     updateProjectStates(project);
-    toastWord("success", Toast_Words["load-project-success-message"]);
+    toastWord("success", CFDraw_Toast_Words["load-project-success-message"]);
     closePanel();
   }
   function onLoadProject() {
     if (!selectedUid) {
-      toastWord("warning", Toast_Words["please-select-project-message"]);
+      toastWord("warning", CFDraw_Toast_Words["please-select-project-message"]);
       return;
     }
     if (selectedUid === uid) {
-      toastWord("info", Toast_Words["already-selected-project-message"]);
+      toastWord("info", CFDraw_Toast_Words["already-selected-project-message"]);
       return;
     }
     getLoadUid()
@@ -154,7 +154,9 @@ const ProjectPlugin = ({ pluginInfo, ...props }: IPlugin) => {
       })
       .then((uid) => loadProject(uid, onLoadProjectSuccess))
       .catch((err) =>
-        toastWord("error", Toast_Words["load-project-error-message"], { appendix: ` - ${err}` }),
+        toastWord("error", CFDraw_Toast_Words["load-project-error-message"], {
+          appendix: ` - ${err}`,
+        }),
       );
   }
   function onDownloadProject(): void {
@@ -162,35 +164,38 @@ const ProjectPlugin = ({ pluginInfo, ...props }: IPlugin) => {
     closePanel();
   }
   function onImportLocalProject(data: IImportLocal) {
-    toastWord("info", Toast_Words["importing-local-project-message"]);
+    toastWord("info", CFDraw_Toast_Words["importing-local-project-message"]);
     if (!Array.isArray(data)) {
       data = data.graphInfo;
     }
     const json = cleanGraph(Graph.fromJsonInfo(data as INodePack[]).clone()).toJson();
     useSafeExecute("addGraph", null, true, {
       success: async () => {
-        toastWord("success", Toast_Words["import-local-project-success-message"]);
+        toastWord("success", CFDraw_Toast_Words["import-local-project-success-message"]);
         closePanel();
       },
-      failed: async () => toastWord("error", Toast_Words["import-local-project-error-message"]),
+      failed: async () =>
+        toastWord("error", CFDraw_Toast_Words["import-local-project-error-message"]),
     })({ json });
   }
   function onDeleteProject() {
     if (!selectedUid) {
-      toastWord("warning", Toast_Words["please-select-project-to-delete-message"]);
+      toastWord("warning", CFDraw_Toast_Words["please-select-project-to-delete-message"]);
       return;
     }
     if (isSelectingAutoSave) {
-      toastWord("warning", Toast_Words["cannot-delete-auto-save-project-message"]);
+      toastWord("warning", CFDraw_Toast_Words["cannot-delete-auto-save-project-message"]);
       return;
     }
     deleteProject(selectedUid)
       .then(() => {
-        toastWord("success", Toast_Words["delete-project-success-message"]);
+        toastWord("success", CFDraw_Toast_Words["delete-project-success-message"]);
         updateUids();
       })
       .catch((err) =>
-        toastWord("error", Toast_Words["delete-project-error-message"], { appendix: ` - ${err}` }),
+        toastWord("error", CFDraw_Toast_Words["delete-project-error-message"], {
+          appendix: ` - ${err}`,
+        }),
       );
   }
 
