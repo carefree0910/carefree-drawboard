@@ -12,7 +12,7 @@ import {
   useDefaultTextContent,
   useSafeExecute,
 } from "@carefree0910/business";
-import { Toast_Words, toastWord } from "@carefree0910/components";
+import { Toast_Words, getArrangements, toastWord } from "@carefree0910/components";
 
 import type { IPythonFieldsMetaData, IPythonResults, MetaType } from "@/schema/meta";
 import type { IImportMeta } from "@/schema/meta";
@@ -22,7 +22,6 @@ import { themeStore } from "@/stores/theme";
 import { updateMeta } from "./update";
 import { addNewText } from "./addText";
 import { addNewImage, getNewRectangle, INewRectangle, NewImageInfo } from "./addImage";
-import { getArrangements } from "./arrange";
 
 // helper functions
 

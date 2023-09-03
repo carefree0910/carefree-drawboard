@@ -1,8 +1,9 @@
 import { observer } from "mobx-react-lite";
 
+import { onArrange } from "@carefree0910/components";
+
 import type { IPlugin } from "@/schema/plugins";
 import { usePluginIds } from "@/stores/pluginsInfo";
-import { onArrange } from "@/actions/arrange";
 import { drawboardPluginFactory } from "../utils/factory";
 import Render from "../components/Render";
 
