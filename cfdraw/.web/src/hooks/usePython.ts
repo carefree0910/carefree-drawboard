@@ -12,7 +12,7 @@ import {
   isUndefined,
 } from "@carefree0910/core";
 import { BoardStore, langStore, translate } from "@carefree0910/business";
-import { Toast_Words } from "@carefree0910/components";
+import { Exporter, Toast_Words } from "@carefree0910/components";
 
 import type { IMeta } from "@/schema/meta";
 import type {
@@ -24,7 +24,6 @@ import type {
 import { getBaseURL } from "@/utils/misc";
 import { userStore } from "@/stores/user";
 import { useWebSocketHook } from "@/requests/hooks";
-import { Exporter } from "@/actions/export";
 import { uploadImage } from "@/actions/uploadImage";
 
 type IGetPythonRequest = ExportBlobOptions & { noExport?: boolean };
