@@ -1,7 +1,7 @@
 import { isUndefined } from "@carefree0910/core";
+import { toastWord } from "@carefree0910/components";
 
 import type { OnPythonPluginMessage, IPythonPlugin, IPythonPluginMessage } from "@/schema/_python";
-import { toastWord } from "@/utils/toast";
 import { CFDraw_Toast_Words } from "@/lang/toast";
 import { getSocketHook, removeSocketHooks, socketLog } from "@/stores/socket";
 import { removePluginMessage, removePluginTaskCache } from "@/stores/pluginsInfo";

@@ -4,13 +4,19 @@ import { ButtonProps, Flex } from "@chakra-ui/react";
 
 import { Frame, getCenteredBBox, getRandomHash } from "@carefree0910/core";
 import { BoardStore, langStore, translate, useSafeExecute } from "@carefree0910/business";
-import { AddPanel, CFDivider, CFInput, CFIconButton, ICFInput } from "@carefree0910/components";
+import {
+  AddPanel,
+  CFDivider,
+  CFInput,
+  CFIconButton,
+  ICFInput,
+  toastWord,
+} from "@carefree0910/components";
 
 import AddProjectIcon from "@/assets/icons/add-project.svg";
 import AddFrameIcon from "@/assets/icons/add-frame.svg";
 
 import type { IPlugin } from "@/schema/plugins";
-import { toastWord } from "@/utils/toast";
 import { globalEvent } from "@/utils/event";
 import { DEFAULT_PLUGIN_SETTINGS } from "@/utils/constants";
 import { Add_Words } from "@/lang/add";

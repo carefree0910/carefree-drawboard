@@ -12,8 +12,8 @@ import {
   useGlobalTransform,
   useSafeExecute,
 } from "@carefree0910/business";
+import { toastWord } from "@carefree0910/components";
 
-import { toastWord } from "@/utils/toast";
 import { CFDraw_Toast_Words } from "@/lang/toast";
 import { userStore } from "@/stores/user";
 import {

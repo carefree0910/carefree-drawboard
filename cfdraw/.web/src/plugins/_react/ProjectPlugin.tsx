@@ -12,12 +12,12 @@ import {
   CFDivider,
   CFHeading,
   CFSrollableSelect,
+  toastWord,
 } from "@carefree0910/components";
 
 import DeleteIcon from "@/assets/icons/delete.svg";
 
 import type { IPlugin } from "@/schema/plugins";
-import { toastWord } from "@/utils/toast";
 import { globalEvent } from "@/utils/event";
 import { CFDraw_Toast_Words } from "@/lang/toast";
 import { Projects_Words } from "@/lang/projects";

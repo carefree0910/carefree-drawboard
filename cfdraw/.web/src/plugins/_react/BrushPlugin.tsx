@@ -10,11 +10,17 @@ import {
   translate,
   updateBrushOptions,
 } from "@carefree0910/business";
-import { CFButton, CFSlider, CFSwitch, CFDivider, CFHeading } from "@carefree0910/components";
+import {
+  CFButton,
+  CFSlider,
+  CFSwitch,
+  CFDivider,
+  CFHeading,
+  toastWord,
+} from "@carefree0910/components";
 
 import type { ICommonMetaData, IMeta } from "@/schema/meta";
 import type { IPlugin } from "@/schema/plugins";
-import { toastWord } from "@/utils/toast";
 import { Brush_Words } from "@/lang/brush";
 import { CFDraw_Toast_Words } from "@/lang/toast";
 import { themeStore } from "@/stores/theme";

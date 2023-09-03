@@ -3,11 +3,10 @@ import { observer } from "mobx-react-lite";
 
 import { isUndefined } from "@carefree0910/core";
 import { langStore, translate } from "@carefree0910/business";
-import { CFButtonWithBusyTooltip, CFDivider } from "@carefree0910/components";
+import { CFButtonWithBusyTooltip, CFDivider, toast } from "@carefree0910/components";
 
 import type { IPythonSocketPluginWithSubmit } from "@/schema/_python";
 import { Event } from "@/utils/event";
-import { toast } from "@/utils/toast";
 import { CFDraw_Toast_Words } from "@/lang/toast";
 import {
   usePluginHash,

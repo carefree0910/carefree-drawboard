@@ -12,10 +12,10 @@ import {
   useDefaultTextContent,
   useSafeExecute,
 } from "@carefree0910/business";
+import { Toast_Words, toastWord } from "@carefree0910/components";
 
 import type { IPythonFieldsMetaData, IPythonResults, MetaType } from "@/schema/meta";
 import type { IImportMeta } from "@/schema/meta";
-import { toastWord } from "@/utils/toast";
 import { DEFAULT_FONT_SIZE, IMAGE_PLACEHOLDER, NSFW_IMAGE_PLACEHOLDER } from "@/utils/constants";
 import { CFDraw_Toast_Words } from "@/lang/toast";
 import { themeStore } from "@/stores/theme";
@@ -23,7 +23,6 @@ import { updateMeta } from "./update";
 import { addNewText } from "./addText";
 import { addNewImage, getNewRectangle, INewRectangle, NewImageInfo } from "./addImage";
 import { getArrangements } from "./arrange";
-import { Toast_Words } from "@carefree0910/components";
 
 // helper functions
 

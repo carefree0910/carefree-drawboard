@@ -1,6 +1,6 @@
 import { download, toJsonBlob } from "@carefree0910/core";
+import { toastWord } from "@carefree0910/components";
 
-import { toastWord } from "@/utils/toast";
 import { CFDraw_Toast_Words } from "@/lang/toast";
 import { useCurrentProjectWithUserId } from "./manageProjects";
 

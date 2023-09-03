@@ -4,12 +4,11 @@ import { CloseIcon } from "@chakra-ui/icons";
 import { Flex, Spacer } from "@chakra-ui/react";
 
 import { langStore, translate } from "@carefree0910/business";
-import { CFHeading, Definitions } from "@carefree0910/components";
+import { CFHeading, Definitions, toastWord } from "@carefree0910/components";
 
 import type { OnPythonPluginMessage, IPythonFieldsPlugin } from "@/schema/_python";
 import { UI_Words } from "@/lang/ui";
 import { CFDraw_Toast_Words } from "@/lang/toast";
-import { toastWord } from "@/utils/toast";
 import { titleCaseWord } from "@/utils/misc";
 import { usePluginIds, usePluginTaskCache } from "@/stores/pluginsInfo";
 import { parseIStr } from "@/actions/i18n";
