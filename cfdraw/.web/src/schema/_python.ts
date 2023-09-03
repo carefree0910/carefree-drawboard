@@ -1,9 +1,10 @@
 import type { TextareaProps } from "@chakra-ui/react";
 
-import type { Dictionary, INode, Matrix2DFields, IDefinitions } from "@carefree0910/core";
+import type { Dictionary, IDefinitions } from "@carefree0910/core";
+import type { INodeData } from "@carefree0910/components";
 
 import type { IMetaInjections } from "@/stores/meta";
-import type { IElapsedTimes, IMeta, IPythonResults } from "./meta";
+import type { IElapsedTimes, IPythonResults } from "./meta";
 import type { PythonPlugins, IMakePlugin, IPlugin, IPluginInfo } from "./plugins";
 import type { IStr } from "./misc";
 
@@ -23,24 +24,6 @@ interface IPythonCallbacks {
 export interface IUsePythonInfo extends IPythonPluginInfo, IPythonCallbacks {
   isInvisible: boolean;
   needExportNodeData: boolean;
-}
-export interface INodeData {
-  type?: INode["type"];
-  // transform info
-  x?: number;
-  y?: number;
-  w?: number;
-  h?: number;
-  z?: number;
-  transform?: Matrix2DFields;
-  // text info
-  text?: string;
-  // image info
-  src?: string;
-  // meta
-  meta?: IMeta;
-  // children, in case this is a `Group`
-  children?: INodeData[];
 }
 
 // plugin
