@@ -1,11 +1,10 @@
 import type { TextareaProps } from "@chakra-ui/react";
 
-import type { Dictionary, INode, Matrix2DFields } from "@carefree0910/core";
+import type { Dictionary, INode, Matrix2DFields, IDefinitions } from "@carefree0910/core";
 
 import type { IMetaInjections } from "@/stores/meta";
 import type { IElapsedTimes, IMeta, IPythonResults } from "./meta";
 import type { PythonPlugins, IMakePlugin, IPlugin, IPluginInfo } from "./plugins";
-import type { IDefinitions } from "./fields";
 import type { IStr } from "./misc";
 
 // general

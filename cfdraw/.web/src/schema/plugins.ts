@@ -1,10 +1,9 @@
 import type { RefObject } from "react";
 import type { ButtonProps, FlexProps } from "@chakra-ui/react";
 
-import type { INode, NodeType, PivotType } from "@carefree0910/core";
+import type { INode, NodeType, PivotType, IFieldDefinition } from "@carefree0910/core";
 
 import type { IStr } from "./misc";
-import type { IFieldDefinition } from "./fields";
 import type {
   IPythonChatPlugin,
   IPythonFieldsPlugin,

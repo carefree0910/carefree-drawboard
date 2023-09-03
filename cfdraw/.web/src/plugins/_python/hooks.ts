@@ -1,11 +1,18 @@
 import { useCallback, useEffect, useMemo, useState } from "react";
 
-import { Dictionary, INode, getRandomHash, isSingleNode, shallowCopy } from "@carefree0910/core";
+import {
+  Dictionary,
+  IDefinitions,
+  IFieldDefinition,
+  INode,
+  getRandomHash,
+  isSingleNode,
+  shallowCopy,
+} from "@carefree0910/core";
 import { langStore } from "@carefree0910/business";
 import { ID_KEY, getFieldData } from "@carefree0910/components";
 
 import type { IMeta } from "@/schema/meta";
-import type { IDefinitions, IFieldDefinition } from "@/schema/fields";
 import type {
   IPythonOnPluginMessage,
   IPythonPlugin,

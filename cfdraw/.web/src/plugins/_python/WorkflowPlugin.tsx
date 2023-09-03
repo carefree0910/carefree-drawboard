@@ -1,8 +1,7 @@
 import { observer } from "mobx-react-lite";
 
-import { isSingleNode } from "@carefree0910/core";
+import { isSingleNode, IDefinitions } from "@carefree0910/core";
 
-import type { IDefinitions } from "@/schema/fields";
 import type { IPythonWorkflowPlugin } from "@/schema/_python";
 import { drawboardPluginFactory } from "@/plugins/utils/factory";
 import { PythonFieldsPlugin } from "./FieldsPlugin";
