@@ -225,10 +225,10 @@
     "@carefree0910/core" "^0.5.1-alpha.88"
     "@carefree0910/svg" "^0.5.1-alpha.88"
 
-"@carefree0910/components@^0.5.1-alpha.88":
-  version "0.5.1-alpha.88"
-  resolved "https://registry.yarnpkg.com/@carefree0910/components/-/components-0.5.1-alpha.88.tgz#07eff208008425236e45adb44aa15283d1adfbdf"
-  integrity sha512-JyQkcznkzMZmcC8Y3Ry3FycjfeWcwMbTLlFi0kzfq0agy3faiYwnLhtGM/dwVC2MDJhMeJXQT/cZSGW/R1orzg==
+"@carefree0910/components@^0.5.1-alpha.89":
+  version "0.5.1-alpha.89"
+  resolved "https://registry.npmmirror.com/@carefree0910/components/-/components-0.5.1-alpha.89.tgz#50f8e90558eeb9a53d6b56a23c5b9a7981d7b6e2"
+  integrity sha512-BMUIxVr3iLVsAL8FEXZ6UjleyN7U19OO0J2N9ksov/JfLj7UHSl8E1CUqi8Ab3f2821QQGzyxgi+gBfah0Po1w==
   dependencies:
     "@carefree0910/business" "^0.5.1-alpha.88"
     "@carefree0910/core" "^0.5.1-alpha.88"
@@ -247,13 +247,13 @@
     "@carefree0910/core" "^0.5.1-alpha.88"
     "@carefree0910/svg" "^0.5.1-alpha.88"
 
-"@carefree0910/pack_react@~0.5.1-alpha.88":
-  version "0.5.1-alpha.88"
-  resolved "https://registry.yarnpkg.com/@carefree0910/pack_react/-/pack_react-0.5.1-alpha.88.tgz#cb918ff6fbf4724790acd7ec5a8c0720c7ffd805"
-  integrity sha512-txERB7QcMlEPxDW66WfpPqG5+/2Jts+ECBi7OunnCD3WUKEbPhp11KK10LaGYlL5EyzqOW2XUtjstjXCzA3nyg==
+"@carefree0910/pack_react@~0.5.1-alpha.89":
+  version "0.5.1-alpha.89"
+  resolved "https://registry.npmmirror.com/@carefree0910/pack_react/-/pack_react-0.5.1-alpha.89.tgz#02f30cefefa1c64392af93a5186c200424a079ec"
+  integrity sha512-CjMqdD39PTkHWqxJNI4m1DPBM8dBDBd1oYBB8+dRzqZrmrwuCh1squq+2bbsMBEl0VVR0A0LxOgizKkQ8l3zwg==
   dependencies:
     "@carefree0910/business" "^0.5.1-alpha.88"
-    "@carefree0910/components" "^0.5.1-alpha.88"
+    "@carefree0910/components" "^0.5.1-alpha.89"
     "@carefree0910/core" "^0.5.1-alpha.88"
     "@carefree0910/native" "^0.5.1-alpha.88"
     "@carefree0910/svg" "^0.5.1-alpha.88"
