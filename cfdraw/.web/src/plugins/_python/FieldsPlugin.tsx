@@ -3,13 +3,21 @@ import { observer } from "mobx-react-lite";
 import { CloseIcon } from "@chakra-ui/icons";
 import { Flex, Spacer } from "@chakra-ui/react";
 
+import { Dictionary, getHash } from "@carefree0910/core";
 import { langStore, translate } from "@carefree0910/business";
-import { CFHeading, Definitions, toastWord } from "@carefree0910/components";
+import {
+  CFHeading,
+  Definitions,
+  registerSelectFieldHooks,
+  toastWord,
+} from "@carefree0910/components";
 
 import type { OnPythonPluginMessage, IPythonFieldsPlugin } from "@/schema/_python";
 import { UI_Words } from "@/lang/ui";
 import { CFDraw_Toast_Words } from "@/lang/toast";
-import { titleCaseWord } from "@/utils/misc";
+import { getBaseURL, titleCaseWord } from "@/utils/misc";
+import { userStore } from "@/stores/user";
+import { runOneTimeSocketHook } from "@/stores/socket";
 import { usePluginIds, usePluginTaskCache } from "@/stores/pluginsInfo";
 import { parseIStr } from "@/actions/i18n";
 import { importMeta } from "@/actions/importMeta";
@@ -81,3 +89,38 @@ const BasePythonFieldsPlugin = ({ pluginInfo, ...props }: IPythonFieldsPlugin) =
 
 export const PythonFieldsPlugin = observer(BasePythonFieldsPlugin);
 drawboardPluginFactory.registerPython("_python.fields", true)(PythonFieldsPlugin);
+
+registerSelectFieldHooks({
+  onMenuOpen: ({ definition, setOptions }) => {
+    const syncSelect = (task: string, extraData: Dictionary<any>) => {
+      const hash = getHash(JSON.stringify(extraData)).toString();
+      runOneTimeSocketHook<{ options: string[] }>({
+        key: "selectField",
+        hook: {
+          key: hash,
+          getMessage: async () => ({
+            hash,
+            userId: userStore.userId,
+            userJson: userStore.json,
+            baseURL: getBaseURL("_python"),
+            identifier: task,
+            nodeData: {},
+            nodeDataList: [],
+            extraData,
+            isInternal: true,
+          }),
+        },
+      }).then((res) => {
+        if (res) {
+          setOptions(res.options);
+        }
+      });
+    };
+    if (definition.mappingPath) {
+      syncSelect("sync_select_mapping", { mappingPath: definition.mappingPath });
+    }
+    if (definition.localProperties) {
+      syncSelect("sync_local_select", definition.localProperties);
+    }
+  },
+});
