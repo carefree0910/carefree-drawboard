@@ -1,8 +1,8 @@
 import { makeObservable, observable } from "mobx";
 
-import { Dictionary, ISingleNode, Matrix2DFields, IDataCenterKey } from "@carefree0910/core";
+import { Dictionary, Matrix2DFields, IDataCenterKey } from "@carefree0910/core";
 import { ABCStore } from "@carefree0910/business";
-import { INodeData, getNodeData } from "@carefree0910/components";
+import { INodeData } from "@carefree0910/components";
 
 export interface IMetaInjection {
   node: INodeData;
@@ -28,12 +28,6 @@ const metaInjectionsStore = new MetaInjectionsStore();
 export function getListInjectionKey({ field, listProperties }: IDataCenterKey) {
   if (!listProperties) return field;
   return `${listProperties.listKey}.${listProperties.listIndex}.${field}`;
-}
-export function makeMetaInjectionFrom(node: ISingleNode): Promise<IMetaInjection> {
-  return getNodeData(node, { exportBox: node.bbox }).then((nodeData) => ({
-    node: nodeData,
-    bboxFields: node.bboxFields,
-  }));
 }
 export function getMetaInjection(key: string): IMetaInjection | undefined {
   return metaInjectionsStore.injections[key];
