@@ -36,8 +36,14 @@ function App() {
           setupOptions={{
             isProd: false,
             exportFn: ({ url, jpeg }) => fetchImage({ url, jpeg }),
-            uploadFn: async (blob) => {
+            uploadImageFn: async (blob) => {
               return uploadImage(blob, { failed: async () => void 0 });
+            },
+            uploadSVGFn: async (svg) => {
+              return uploadImage(new Blob([svg], { type: "image/svg+xml" }), {
+                isSVG: true,
+                failed: async () => void 0,
+              });
             },
             setupBeforeBoard: () =>
               waitUntil(() => !isUndefined(settingsStore.boardSettings)).then(() => {

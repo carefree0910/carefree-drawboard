@@ -18,7 +18,9 @@ from cftool.misc import get_err_msg
 
 from cfdraw import constants
 from cfdraw.app.schema import IApp
+from cfdraw.utils.server import save_svg
 from cfdraw.utils.server import save_image
+from cfdraw.utils.server import get_svg_response
 from cfdraw.utils.server import get_image_response
 from cfdraw.app.endpoints.base import IEndpoint
 
@@ -56,6 +58,7 @@ class ImageUploader:
         userJson: str,
         meta: PngInfo,
         base_url: str,
+        is_svg: bool,
         audit: bool,
     ) -> ImageDataModel:
         """
@@ -64,6 +67,10 @@ class ImageUploader:
         * `FieldsMiddleware`, `contents` will be an `Image.Image` object.
         """
 
+        if is_svg:
+            if isinstance(contents, Image.Image):
+                raise ValueError("svg image should be uploaded as bytes")
+            return ImageDataModel(**save_svg(contents.decode(), base_url))
         meta.add_text("userJson", userJson)
         if isinstance(contents, Image.Image):
             image = contents
@@ -83,6 +90,7 @@ def add_upload_image(app: IApp) -> None:
         image: UploadFile = File(),
         userId: str = Form(),
         userJson: Optional[str] = Form(None),
+        isSVG: str = Form("0"),
         audit: bool = Form(True),
         *,
         request: Request,
@@ -92,7 +100,8 @@ def add_upload_image(app: IApp) -> None:
             contents = image.file.read()
             if userJson is None:
                 userJson = json.dumps(dict(userId=userId))
-            args = contents, userJson, PngInfo(), base_url, audit
+            is_svg = isSVG == "1"
+            args = contents, userJson, PngInfo(), base_url, is_svg, audit
             data = await ImageUploader.upload_image(*args)
         except Exception as err:
             logging.exception("failed to upload image")
@@ -111,6 +120,8 @@ def add_upload_image(app: IApp) -> None:
         **get_image_response_kwargs(),
     )
     async def get_image(file: str, jpeg: bool = False) -> Response:
+        if file.endswith(".svg"):
+            return get_svg_response(file)
         return get_image_response(file, jpeg)
 
 

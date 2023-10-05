@@ -1,9 +1,10 @@
-import { safeCall, Requests } from "@carefree0910/core";
+import { safeCall, Requests, getImageSizeOf } from "@carefree0910/core";
 import { Toast_Words, toastWord } from "@carefree0910/components";
 
 import { userStore } from "@/stores/user";
 
 type UploadImageOptions = {
+  isSVG?: boolean;
   failed: (e: any) => Promise<void>;
 };
 
@@ -17,7 +18,7 @@ export interface IUploadImageResponseData {
 
 export async function uploadImage(
   blob: Blob,
-  { failed }: UploadImageOptions,
+  { isSVG, failed }: UploadImageOptions,
 ): Promise<IUploadImageResponseData | void> {
   return safeCall(
     async () => {
@@ -29,12 +30,20 @@ export async function uploadImage(
         image: blob,
         userId: userStore.userId,
         userJson: userStore.json,
+        isSVG: isSVG ? "1" : "0",
       });
       if (!res.success) {
         toastWord("error", Toast_Words["upload-image-error-message"], {
           appendix: ` - ${res.message}`,
         });
         return;
+      }
+      if (isSVG) {
+        const objURL = URL.createObjectURL(blob);
+        const { w, h } = await getImageSizeOf(objURL);
+        URL.revokeObjectURL(objURL);
+        res.data.w = w;
+        res.data.h = h;
       }
       return res.data;
     },

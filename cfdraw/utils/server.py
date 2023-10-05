@@ -17,6 +17,19 @@ from cftool.misc import random_hash
 from cfdraw.config import get_config
 
 
+def save_svg(svg: str, base_url: str) -> Dict[str, Any]:
+    config = get_config()
+    state = random.getstate()
+    random.seed()
+    path = config.upload_image_folder / f"{random_hash()}.svg"
+    random.setstate(state)
+    with path.open("w") as f:
+        f.write(svg)
+    base_url = base_url.rstrip("/")
+    url = f"{base_url}/{path.relative_to(config.upload_root_path).as_posix()}"
+    return dict(w=0, h=0, url=url)
+
+
 def save_image(image: Image.Image, meta: PngInfo, base_url: str) -> Dict[str, Any]:
     w, h = image.size
     config = get_config()
@@ -28,6 +41,17 @@ def save_image(image: Image.Image, meta: PngInfo, base_url: str) -> Dict[str, An
     base_url = base_url.rstrip("/")
     url = f"{base_url}/{path.relative_to(config.upload_root_path).as_posix()}"
     return dict(w=w, h=h, url=url)
+
+
+def get_svg_response(file: str) -> Response:
+    config = get_config()
+    try:
+        svg_path = config.upload_image_folder / file
+        with svg_path.open("r") as f:
+            content = f.read()
+        return Response(content=content, media_type="image/svg+xml")
+    except Exception as err:
+        raise_err(err)
 
 
 def get_image(file: str, jpeg: bool = False) -> Image.Image:
