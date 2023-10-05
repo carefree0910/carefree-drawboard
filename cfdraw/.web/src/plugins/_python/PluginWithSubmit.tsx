@@ -42,6 +42,7 @@ function PythonPluginWithSubmit({
     closeOnSubmit = true,
     toastOnSubmit = true,
     toastMessageOnSubmit,
+    exportFullImages,
   } = pluginInfo;
   const lang = langStore.tgt;
   const [hash, setHash] = useState<string | undefined>(undefined);
@@ -96,6 +97,7 @@ function PythonPluginWithSubmit({
     onSocketError,
     getExtraRequestData,
     needExportNodeData: hasConstraint,
+    exportFullImages,
   });
 
   useEffect(() => {

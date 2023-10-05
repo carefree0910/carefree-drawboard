@@ -135,7 +135,7 @@ export function useTextTransfer({ key, plugin: { pluginInfo, ...props } }: IUseT
   id: string;
   text: string;
 } {
-  const { node, nodes, identifier, retryInterval, updateInterval } = pluginInfo;
+  const { node, nodes, identifier, retryInterval, updateInterval, exportFullImages } = pluginInfo;
   const id = usePluginIds(`${key}_${identifier}`).id;
   const needRender = usePluginNeedRender(id);
   const [hash, setHash] = useState<string | undefined>(undefined);
@@ -174,6 +174,7 @@ export function useTextTransfer({ key, plugin: { pluginInfo, ...props } }: IUseT
     updateInterval,
     onMessage,
     needExportNodeData: hasConstraint,
+    exportFullImages,
   });
 
   return { id, text: value };

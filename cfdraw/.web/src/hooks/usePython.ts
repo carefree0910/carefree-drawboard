@@ -17,19 +17,21 @@ export async function getPythonRequest({
   getExtraRequestData,
   opt = {},
   needExportNodeData,
+  exportFullImages,
 }: Omit<IUsePythonInfo, "isInvisible"> & {
   opt?: IGetPythonRequest;
 }): Promise<Omit<IPythonSocketRequest, "hash">> {
   let exportBox: BBox | undefined;
   if (!opt.noExport) {
-    exportBox =
-      nodes.length === 0
-        ? node?.bbox ?? BBox.unit()
-        : nodes.length === 1
-        ? nodes[0].bbox
-        : nodes[argMax(nodes.map((n) => n.bbox.area))].bbox;
+    exportBox = exportFullImages
+      ? undefined
+      : nodes.length === 0
+      ? node?.bbox ?? BBox.unit()
+      : nodes.length === 1
+      ? nodes[0].bbox
+      : nodes[argMax(nodes.map((n) => n.bbox.area))].bbox;
   }
-  const getNodeDataOpt: IGetNodeData = { exportBox, ...opt };
+  const getNodeDataOpt: IGetNodeData = { exportBox, forceExport: exportFullImages, ...opt };
   const nodeData = needExportNodeData ? await getNodeData(node, getNodeDataOpt) : {};
   const nodeDataList =
     !needExportNodeData || nodes.length <= 1 ? [] : await getNodeDataList(nodes, getNodeDataOpt);
@@ -61,6 +63,7 @@ export function useSocketPython<R>({
   onMessage,
   onSocketError,
   needExportNodeData,
+  exportFullImages,
 }: IUseSocketPython<R>) {
   const deps = [
     hash,
@@ -81,6 +84,7 @@ export function useSocketPython<R>({
         identifier,
         getExtraRequestData,
         needExportNodeData,
+        exportFullImages,
       }).then((req) => ({ hash: hash!, ...req })),
     [deps],
   );

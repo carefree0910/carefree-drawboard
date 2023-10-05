@@ -14,6 +14,7 @@ interface IPythonPluginInfo extends IPluginInfo, IPythonSocketIntervals {
   name?: IStr;
   identifier: string;
   noErrorToast?: boolean;
+  exportFullImages?: boolean;
 }
 export interface IPythonPlugin extends IPlugin {
   pluginInfo: IPythonPluginInfo;

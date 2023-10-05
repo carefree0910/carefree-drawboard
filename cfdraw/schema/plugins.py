@@ -105,6 +105,10 @@ class IPluginInfo(BaseModel):
         gt=0,
         description="If not None, the plugin will be called every `updateInterval` ms",
     )
+    exportFullImages: Optional[bool] = Field(
+        None,
+        description="Whether to export full images when multiple images are selected",
+    )
 
 
 class IPluginSettings(IChakra):
