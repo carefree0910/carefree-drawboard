@@ -3,6 +3,7 @@ from typing import Any
 from typing import List
 
 from cfdraw import *
+from cftool.misc import shallow_copy_dict
 
 
 @cache_resource
@@ -78,7 +79,7 @@ class TextToImagePlugin(IFieldsPlugin):
         def callback(step: int, *_: Any) -> None:
             self.send_progress(step / num_inference_steps)
 
-        kwargs = data.extraData
+        kwargs = shallow_copy_dict(data.extraData)
         kwargs["callback"] = callback
         num_inference_steps = kwargs["num_inference_steps"]
         return get_models()[0](**kwargs).images
@@ -107,7 +108,7 @@ class ImageToImagePlugin(IFieldsPlugin):
         def callback(step: int, *_: Any) -> None:
             self.send_progress(step / num_inference_steps)
 
-        kwargs = data.extraData
+        kwargs = shallow_copy_dict(data.extraData)
         kwargs["callback"] = callback
         num_inference_steps = kwargs["num_inference_steps"]
         image = await self.load_image(data.nodeData.src)
