@@ -1,7 +1,13 @@
 import { observer } from "mobx-react-lite";
 
 import { langStore, translate } from "@carefree0910/business";
-import { BasicEditor, CFDivider, CFHeading, ImageFiltersEditor } from "@carefree0910/components";
+import {
+  BasicEditor,
+  CFDivider,
+  CFHeading,
+  ImageFiltersEditor,
+  ImageRenderTypeEditor,
+} from "@carefree0910/components";
 
 import type { IPlugin } from "@/schema/plugins";
 import { NodeEditor_Words } from "@/lang/nodeEditor";
@@ -21,6 +27,7 @@ const ImageEditorPlugin = ({ pluginInfo, ...props }: IPlugin) => {
       <BasicEditor />
       <CFDivider />
       <ImageFiltersEditor field={field} />
+      <ImageRenderTypeEditor flexProps={{ mt: "16px" }} />
     </Render>
   );
 };
