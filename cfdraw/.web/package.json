@@ -10,7 +10,7 @@
     "build:preview": "tsc && vite build && vite preview"
   },
   "dependencies": {
-    "@carefree0910/pack_react": "~0.5.1-alpha.108"
+    "@carefree0910/pack_react": "~0.5.1-alpha.113"
   },
   "devDependencies": {
     "@total-typescript/ts-reset": "^0.4.2",
