@@ -7,6 +7,7 @@ import {
   CFHeading,
   ImageFiltersEditor,
   ImageRenderTypeEditor,
+  ImageSrcEditor,
 } from "@carefree0910/components";
 
 import type { IPlugin } from "@/schema/plugins";
@@ -28,6 +29,7 @@ const ImageEditorPlugin = ({ pluginInfo, ...props }: IPlugin) => {
       <CFDivider />
       <ImageFiltersEditor field={field} />
       <ImageRenderTypeEditor flexProps={{ mt: "16px" }} />
+      <ImageSrcEditor w="100%" mt="16px" />
     </Render>
   );
 };
