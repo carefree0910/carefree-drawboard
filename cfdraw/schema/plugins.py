@@ -727,7 +727,7 @@ class IQAPluginInfo(IPluginInfo):
     )
 
 
-class IChatPluginInfo(IPluginInfo):
+class IChatPluginInfo(IWorkflowPluginInfo):
     """This should align with `IPythonChatPlugin` at `cfdraw/.web/src/schema/_python.ts`"""
 
     initialText: IStr = Field(

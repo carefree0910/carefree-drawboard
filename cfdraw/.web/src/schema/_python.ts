@@ -79,9 +79,10 @@ export interface IPythonQAPlugin extends IPythonPlugin {
   };
 }
 export interface IPythonChatPlugin extends IPythonPlugin {
-  pluginInfo: IPythonPluginInfo & {
-    initialText: IStr;
-  };
+  pluginInfo: IPythonPluginInfo &
+    IPythonPluginWithSubmitPluginInfo & {
+      initialText: IStr;
+    };
 }
 
 // web
