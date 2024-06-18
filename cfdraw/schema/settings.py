@@ -17,7 +17,7 @@ class BoardOptions(BaseModel):
     maxScale: float = Field(256, ge=2, le=256, description="max global scale")
 
 
-class GlobalSettings(BaseModel):
+class GlobalSettings(BaseModel, use_enum_values=True):
     """This should align with `IGlobalSettings` locates at `cfdraw/.web/src/stores/_python.ts`"""
 
     defaultLang: Optional[noli.Lang] = Field(None, description="default language")
@@ -38,7 +38,7 @@ class BoardSettings(BaseModel):
     globalSettings: Optional[GlobalSettings] = Field(None, description="global setting")
 
     def to_filtered(self) -> Dict[str, Any]:
-        d = self.dict()
+        d = self.model_dump()
         gs = d["globalSettings"]
         if gs is not None:
             d["globalSettings"] = {k: v for k, v in gs.items() if v is not None}
@@ -48,9 +48,9 @@ class BoardSettings(BaseModel):
 class ExtraPlugins(BaseModel):
     logo: Optional[ILogoSettings] = Field(None, description="logo settings")
 
-    def dict(self, **kwargs: Any) -> Dict[str, Any]:
+    def model_dump(self, **kwargs: Any) -> Dict[str, Any]:
         kwargs["exclude"] = (kwargs.get("exclude") or set()) | {"logo"}
-        d = super().dict(**kwargs)
+        d = super().model_dump(**kwargs)
         if self.logo is None:
             d["logo"] = None
         else:

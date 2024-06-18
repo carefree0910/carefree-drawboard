@@ -10,6 +10,7 @@ from typing import TypeVar
 from typing import Optional
 from pathlib import Path
 from pydantic import BaseModel
+from cfcreator.common import HighresModel
 from cfcreator.common import InpaintingMode
 from cflearn.misc.toolkit import new_seed
 from cfcreator.sdks.apis import ALL_LATENCIES_KEY
@@ -141,7 +142,7 @@ def inject(
         kw.update(extra)
     data_model = data_model_type(**kw)
     # inject data model
-    data_model_d = data_model.dict()
+    data_model_d = data_model.model_dump()
     data_model_d.pop("tome_info", None)
     data_model_d = trim_custom_embeddings(data_model_d)
     self.set_extra_response(DATA_MODEL_KEY, data_model_d)
@@ -152,11 +153,11 @@ def inject(
 def inject_highres(data: ISocketRequest, extra: Dict[str, Any]) -> None:
     if data.extraData.get("use_highres", False):
         highres_fidelity = data.extraData["highres_fidelity"]
-        extra["highres_info"] = HighresModel(fidelity=highres_fidelity).dict()
+        extra["highres_info"] = HighresModel(fidelity=highres_fidelity).model_dump()
 
 
 async def call_api(self: IFieldsPlugin, fn: str, model: BaseModel, **kw: Any) -> Any:
-    model_d = model.dict()
+    model_d = model.model_dump()
     self.set_extra_response(DATA_MODEL_KEY, model_d)
     return await getattr(get_apis(), fn)(model, **kw)
 

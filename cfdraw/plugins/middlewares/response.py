@@ -48,7 +48,7 @@ class ResponseMiddleware(IMiddleware):
         user_json = self.request.get_user_json()
         args = user_json, meta, base_url, False, audit
         futures = [upload(im, *args) for im in response]
-        urls = [data.dict() for data in await asyncio.gather(*futures)]
+        urls = [data.model_dump() for data in await asyncio.gather(*futures)]
         self.plugin.elapsed_times.upload = time.time() - t
         return self.make_success(dict(type="image", value=urls))
 

@@ -45,7 +45,7 @@ def add_project_managements(endpoint: "ProjectEndpoint") -> None:
         with endpoint.get_conn(data.userId) as conn:
             try:
                 sql = f"INSERT OR REPLACE INTO '{data.userId}' VALUES (?, ?)"
-                conn.execute(sql, [data.uid, json.dumps(data.dict())])
+                conn.execute(sql, [data.uid, json.dumps(data.model_dump())])
                 conn.commit()
             except Exception as err:
                 logging.exception(f"failed to save project '{data.uid}'")

@@ -14,7 +14,7 @@ class TextAlign(str, Enum):
     START = "start"
 
 
-class IChakra(BaseModel):
+class IChakra(BaseModel, use_enum_values=True):
     w: Optional[str] = Field(None, description="Width")
     h: Optional[str] = Field(None, description="Height")
     minW: Optional[str] = Field(None, description="Min Width")

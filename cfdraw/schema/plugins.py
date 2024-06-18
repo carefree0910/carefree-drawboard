@@ -502,10 +502,10 @@ Pivot of the plugin.
                 elif isinstance(v, dict):
                     _pop_none(v)
 
-        d = self.dict(exclude={"pluginInfo"})
+        d = self.model_dump(exclude={"pluginInfo"})
         pI = self.pluginInfo
         kw = dict(exclude={"plugins"}) if isinstance(pI, IPluginGroupInfo) else {}
-        plugin_info = self.pluginInfo.dict(**kw)
+        plugin_info = self.pluginInfo.model_dump(**kw)
         plugin_info["identifier"] = identifier
         if isinstance(pI, IPluginGroupInfo):
             plugins: List[Dict[str, Any]] = []
@@ -519,7 +519,7 @@ Pivot of the plugin.
         node_constraint_rules = d.pop("nodeConstraintRules")
         node_constraint_validator = d.pop("nodeConstraintValidator")
         button_props = d.pop("buttonProps", None) or {}
-        for field in IChakra.__fields__:
+        for field in IChakra.model_fields:
             # `w`, `h`, ... are special fields, should not be included in `chakra_props`
             if field in ["w", "h", "minW", "minH", "maxW", "maxH"]:
                 continue
@@ -550,13 +550,13 @@ Pivot of the plugin.
 class ElapsedTimes(BaseModel):
     """This should align with `IElapsedTimes` at `cfdraw/.web/src/schema/meta.ts`"""
 
-    createTime: Optional[float]
-    startTime: Optional[float]
-    endTime: Optional[float]
-    pending: Optional[float]
-    executing: Optional[float]
-    upload: Optional[float]
-    total: Optional[float]
+    createTime: Optional[float] = None
+    startTime: Optional[float] = None
+    endTime: Optional[float] = None
+    pending: Optional[float] = None
+    executing: Optional[float] = None
+    upload: Optional[float] = None
+    total: Optional[float] = None
 
     def __init__(self, **data: Any):
         super().__init__(**data)
@@ -710,7 +710,7 @@ class ISocketResponse(BaseModel):
     elapsedTimes: Optional[ElapsedTimes] = Field(None, description="Elapsed times.")
 
 
-class ISocketMessage(BaseModel):
+class ISocketMessage(BaseModel, use_enum_values=True):
     """This should align with `IPythonSocketMessage` at `src/schema/_python.ts`"""
 
     hash: str = Field(..., description="Hash of the current task")

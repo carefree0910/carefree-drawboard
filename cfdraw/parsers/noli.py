@@ -1,5 +1,5 @@
 from enum import Enum
-from typing import Any
+from typing import Any, Literal
 from typing import Dict
 from typing import List
 from typing import Union
@@ -104,7 +104,7 @@ class LayerParams(BaseModel):
 
 
 class RenderParams(BaseModel):
-    src: Optional[str]
+    src: Optional[str] = None
 
 
 class SingleNode(BaseModel):
@@ -113,7 +113,7 @@ class SingleNode(BaseModel):
     bboxFields: Matrix2D
     layerParams: LayerParams
     params: Dict[str, Any]
-    renderParams: Optional[RenderParams]
+    renderParams: Optional[RenderParams] = None
 
 
 class Group(BaseModel):
@@ -127,17 +127,17 @@ class Group(BaseModel):
 INodeType = Union[SingleNodeType, GroupType]
 
 
-class INode(BaseModel):
+class INode(BaseModel, use_enum_values=True):
     type: INodeType
     alias: str
     bboxFields: Matrix2D
-    layerParams: Optional[LayerParams]  # only for single node
-    params: Optional[Dict[str, Any]]  # only for single node
-    renderParams: Optional[RenderParams]  # only for single node
-    nodes: Optional[List["INode"]]  # only for group
+    layerParams: Optional[LayerParams] = None  # only for single node
+    params: Optional[Dict[str, Any]] = None  # only for single node
+    renderParams: Optional[RenderParams] = None  # only for single node
+    nodes: Optional[List["INode"]] = None  # only for group
 
-    def dict(self, **kwargs: Any) -> Dict[str, Any]:
-        d = super().dict(**kwargs)
+    def model_dump(self, **kwargs: Any) -> Dict[str, Any]:
+        d = super().model_dump(**kwargs)
         d.pop("type")
         return dict(className=type2class_name[self.type], info=d)
 

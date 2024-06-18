@@ -44,7 +44,7 @@ class ISocketPlugin(IPlugin, metaclass=ABCMeta):
 
     def to_react(self) -> Dict[str, Any]:
         return self.settings.to_react(
-            self.type,
+            self.type.value,
             self.hash,
             hash_identifier(self.hash, self.identifier),
         )
@@ -89,8 +89,8 @@ class ISocketPlugin(IPlugin, metaclass=ABCMeta):
 
     def set_injection(self, key: str, node: INodeData) -> None:
         self.injections[key] = dict(
-            node=shallow_copy_dict(node.dict()),
-            bboxFields=None if node.transform is None else node.transform.dict(),
+            node=shallow_copy_dict(node.model_dump()),
+            bboxFields=None if node.transform is None else node.transform.model_dump(),
         )
 
 

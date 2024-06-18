@@ -7,10 +7,12 @@ from typing import Any
 from typing import Dict
 from typing import List
 from typing import Union
+from typing import Literal
 from typing import Optional
 from pathlib import Path
 from pydantic import Field
 from pydantic import BaseModel
+from pydantic import ConfigDict
 
 from cfdraw.parsers.noli import IStr
 from cfdraw.parsers.noli import I18N
@@ -45,6 +47,8 @@ class ICondition(BaseModel):
 
 
 class IBaseField(BaseModel):
+    model_config = ConfigDict(extra="forbid", use_enum_values=True)
+
     label: Optional[IStr] = Field(None, description="The label of the field")
     tooltip: Optional[IStr] = Field(None, description="The tooltip of the field")
     props: Optional[IChakra] = Field(None, description="Props for the component")
@@ -60,19 +64,15 @@ Whether the field is conditioned on another field (i.e., show this field only wh
 """,
     )
 
-    class Config:
-        extra = "forbid"
-        smart_union = True
-
 
 class ITextField(IBaseField):
     default: IStr = Field("", description="The default value of the field")
-    type: FieldType = Field(FieldType.TEXT, description="Type", const=True)
+    type: Literal[FieldType.TEXT] = Field(FieldType.TEXT, validate_default=True)
 
 
 class IImageField(IBaseField):
     default: IStr = Field("", description="The default value of the field")
-    type: FieldType = Field(FieldType.IMAGE, description="Type", const=True)
+    type: Literal[FieldType.IMAGE] = Field(FieldType.IMAGE, validate_default=True)
 
 
 class NumberScale(str, Enum):
@@ -88,14 +88,14 @@ class INumberField(IBaseField):
     isInt: Optional[bool] = Field(None, description="Whether the field is an integer")
     scale: Optional[NumberScale] = Field(None, description="The scale of the field")
     precision: Optional[int] = Field(None, description="The precision of the field")
-    type: FieldType = Field(FieldType.NUMBER, description="Type", const=True)
+    type: Literal[FieldType.NUMBER] = Field(FieldType.NUMBER, validate_default=True)
 
 
 class ISelectField(IBaseField):
     options: List[IStr] = Field(..., description="The options of the field")
     default: IStr = Field(..., description="The default value of the field")
     isMulti: Optional[bool] = Field(None, description="Whether use multi-select")
-    type: FieldType = Field(FieldType.SELECT, description="Type", const=True)
+    type: Literal[FieldType.SELECT] = Field(FieldType.SELECT, validate_default=True)
 
 
 class I18NSelectField(IBaseField):
@@ -109,7 +109,9 @@ class I18NSelectField(IBaseField):
     )
     default: str = Field(..., description="The default 'actual' option of the field")
     isMulti: Optional[bool] = Field(None, description="Whether use multi-select")
-    type: FieldType = Field(FieldType.I18N_SELECT, description="Type", const=True)
+    type: Literal[FieldType.I18N_SELECT] = Field(
+        FieldType.I18N_SELECT, validate_default=True
+    )
 
     @staticmethod
     def parse_mapping(mapping: Union[Dict[str, I18N], str]) -> Dict[str, I18N]:
@@ -122,8 +124,8 @@ class I18NSelectField(IBaseField):
     def get_options(mapping: Union[Dict[str, I18N], str]) -> List[I18N]:
         return list(I18NSelectField.parse_mapping(mapping).values())
 
-    def dict(self, **kwargs: Any) -> Dict[str, Any]:
-        d = super().dict(**kwargs)
+    def model_dump(self, **kwargs: Any) -> Dict[str, Any]:
+        d = super().model_dump(**kwargs)
         d["type"] = FieldType.SELECT.value
         mapping, default = map(d.pop, ["mapping", "default"])
         parsed_mapping = self.parse_mapping(mapping)
@@ -153,7 +155,9 @@ class ISelectLocalField(IBaseField):
         description="If provided, it will be inserted to the first of the options and serve as the default value",
     )
     isMulti: Optional[bool] = Field(None, description="Whether use multi-select")
-    type: FieldType = Field(FieldType.SELECT_LOCAL, description="Type", const=True)
+    type: Literal[FieldType.SELECT_LOCAL] = Field(
+        FieldType.SELECT_LOCAL, validate_default=True
+    )
 
     @staticmethod
     def get_options(
@@ -177,8 +181,8 @@ class ISelectLocalField(IBaseField):
             return sorted_paths
         return [defaultPlaceholder] + sorted_paths
 
-    def dict(self, **kwargs: Any) -> Dict[str, Any]:
-        d = super().dict(**kwargs)
+    def model_dump(self, **kwargs: Any) -> Dict[str, Any]:
+        d = super().model_dump(**kwargs)
         d["type"] = FieldType.SELECT.value
         kw = dict(
             path=d.pop("path"),
@@ -198,12 +202,12 @@ class ISelectLocalField(IBaseField):
 
 class IBooleanField(IBaseField):
     default: bool = Field(..., description="The default value of the field")
-    type: FieldType = Field(FieldType.BOOLEAN, description="Type", const=True)
+    type: Literal[FieldType.BOOLEAN] = Field(FieldType.BOOLEAN, validate_default=True)
 
 
 class IColorField(IBaseField):
     default: IStr = Field("#ffffff", description="The default value of the field")
-    type: FieldType = Field(FieldType.COLOR, description="Type", const=True)
+    type: Literal[FieldType.COLOR] = Field(FieldType.COLOR, validate_default=True)
 
 
 class IListField(IBaseField):
@@ -217,7 +221,7 @@ class IListField(IBaseField):
         description="The key of the field to be displayed when collapsed",
     )
     maxNumRows: Optional[int] = Field(None, description="Maximum number of rows")
-    type: FieldType = Field(FieldType.LIST, description="Type", const=True)
+    type: Literal[FieldType.LIST] = Field(FieldType.LIST, validate_default=True)
 
 
 class IObjectField(IBaseField):
@@ -226,7 +230,7 @@ class IObjectField(IBaseField):
         default_factory=lambda: {},
         description="The default object of the field",
     )
-    type: FieldType = Field(FieldType.OBJECT, description="Type", const=True)
+    type: Literal[FieldType.OBJECT] = Field(FieldType.OBJECT, validate_default=True)
 
 
 IFieldDefinition = Union[
@@ -241,8 +245,8 @@ IFieldDefinition = Union[
     IListField,
     IObjectField,
 ]
-IListField.update_forward_refs()
-IObjectField.update_forward_refs()
+IListField.model_rebuild()
+IObjectField.model_rebuild()
 
 
 __all__ = [

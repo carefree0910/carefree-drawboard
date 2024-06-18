@@ -28,14 +28,14 @@ def add_websocket(app: IApp) -> None:
                     ISocketMessage.make_exception(
                         hash,
                         message=f"Invalid data: {get_err_msg(e)}",
-                    ).dict()
+                    ).model_dump()
                 )
             )
 
         async def send_message(data: ISocketMessage) -> bool:
             if websocket.client_state == WebSocketState.DISCONNECTED:
                 return False
-            await websocket.send_text(json.dumps(data.dict()))
+            await websocket.send_text(json.dumps(data.model_dump()))
             return True
 
         await websocket.accept()
