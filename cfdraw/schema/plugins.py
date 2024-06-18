@@ -710,7 +710,7 @@ class ISocketResponse(BaseModel):
     elapsedTimes: Optional[ElapsedTimes] = Field(None, description="Elapsed times.")
 
 
-class ISocketMessage(BaseModel, use_enum_values=True):
+class ISocketMessage(BaseModel, use_enum_values=True):  # type: ignore
     """This should align with `IPythonSocketMessage` at `src/schema/_python.ts`"""
 
     hash: str = Field(..., description="Hash of the current task")

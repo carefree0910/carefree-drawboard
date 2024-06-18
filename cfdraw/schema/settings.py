@@ -17,7 +17,7 @@ class BoardOptions(BaseModel):
     maxScale: float = Field(256, ge=2, le=256, description="max global scale")
 
 
-class GlobalSettings(BaseModel, use_enum_values=True):
+class GlobalSettings(BaseModel, use_enum_values=True):  # type: ignore
     """This should align with `IGlobalSettings` locates at `cfdraw/.web/src/stores/_python.ts`"""
 
     defaultLang: Optional[noli.Lang] = Field(None, description="default language")

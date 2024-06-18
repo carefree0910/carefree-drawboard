@@ -127,7 +127,7 @@ class Group(BaseModel):
 INodeType = Union[SingleNodeType, GroupType]
 
 
-class INode(BaseModel, use_enum_values=True):
+class INode(BaseModel, use_enum_values=True):  # type: ignore
     type: INodeType
     alias: str
     bboxFields: Matrix2D
@@ -166,7 +166,7 @@ class Graph(BaseModel):
         def _generate(nodes: List[INode]) -> Generator[SingleNode, None, None]:
             for node in nodes:
                 if node.type in SingleNodeType:
-                    yield node
+                    yield node  # type: ignore
                 elif node.type in GroupType:
                     if node.nodes is None:
                         raise ValueError(f"`Group` '{node.alias}' has no nodes")
@@ -202,7 +202,7 @@ type2class_name = {v: k for k, v in class_name2type.items()}
 
 def _parse_single_node(info: Dict[str, Any]) -> SingleNode:
     core_info = info["info"]
-    return SingleNode(type=class_name2type[info["className"]], **core_info)
+    return SingleNode(type=class_name2type[info["className"]], **core_info)  # type: ignore
 
 
 def _parse_group(info: Dict[str, Any]) -> Group:
@@ -218,8 +218,8 @@ def _parse_group(info: Dict[str, Any]) -> Group:
 def parse_node(info: Dict[str, Any]) -> INode:
     class_name = info["className"]
     if class_name == "Group":
-        return _parse_group(info)
-    return _parse_single_node(info)
+        return _parse_group(info)  # type: ignore
+    return _parse_single_node(info)  # type: ignore
 
 
 def parse_graph(render_info_list: List[Dict[str, Any]]) -> Graph:
