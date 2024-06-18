@@ -5,8 +5,6 @@ from typing import Any
 from typing import Dict
 from typing import List
 from typing import Optional
-from cftool.misc import shallow_copy_dict
-from cftool.data_structures import Workflow
 
 from cfdraw import constants
 from cfdraw.utils import server
@@ -16,6 +14,7 @@ from cfdraw.plugins.middlewares import *
 from cfdraw.parsers.noli import SingleNodeType
 from cfdraw.app.endpoints.upload import ImageUploader
 from cfdraw.app.endpoints.upload import FetchImageModel
+from cfdraw.core.toolkit.misc import shallow_copy_dict
 
 
 class ISocketPlugin(IPlugin, metaclass=ABCMeta):

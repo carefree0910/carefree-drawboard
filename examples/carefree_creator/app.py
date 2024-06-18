@@ -10,12 +10,12 @@ from typing import TypeVar
 from typing import Optional
 from pathlib import Path
 from pydantic import BaseModel
-from cftool.misc import shallow_copy_dict
 from cfcreator.common import InpaintingMode
 from cflearn.misc.toolkit import new_seed
 from cfcreator.sdks.apis import ALL_LATENCIES_KEY
 
 from cfdraw import *
+from cfdraw.core.toolkit.misc import shallow_copy_dict
 
 from utils import *
 from fields import *

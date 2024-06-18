@@ -5,7 +5,7 @@ from typing import Any
 from typing import Dict
 
 from cfdraw import constants
-from cfdraw.utils import console
+from cfdraw.core.toolkit import console
 
 
 def get_yarn() -> str:

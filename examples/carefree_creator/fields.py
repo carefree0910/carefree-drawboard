@@ -368,7 +368,9 @@ multi_controlnet_fields = OrderedDict(
     url=IImageField(
         default="",
         label=I18N(zh="初始图", en="Init Image"),
-        tooltip=I18N(zh="可选项，不选也没问题", en="This is optional, you can leave it blank"),
+        tooltip=I18N(
+            zh="可选项，不选也没问题", en="This is optional, you can leave it blank"
+        ),
     ),
     fidelity=fidelity,
     max_wh=max_wh_field,
@@ -386,12 +388,16 @@ harmonization_fields = OrderedDict(
     url=IImageField(
         default="",
         label=I18N(zh="原图", en="Image"),
-        tooltip=I18N(zh="想要进行风格融合的原图", en="The original image to be harmonized"),
+        tooltip=I18N(
+            zh="想要进行风格融合的原图", en="The original image to be harmonized"
+        ),
     ),
     mask_url=IImageField(
         default="",
         label=I18N(zh="前景", en="Foreground"),
-        tooltip=I18N(zh="想要进行风格融合的前景区域", en="The foreground area to be harmonized"),
+        tooltip=I18N(
+            zh="想要进行风格融合的前景区域", en="The foreground area to be harmonized"
+        ),
     ),
     strength=INumberField(
         default=1.0,

@@ -5,18 +5,17 @@ from typing import AsyncGenerator
 from aiohttp import ClientSession
 from fastapi import FastAPI
 from contextlib import asynccontextmanager
-from cftool.misc import print_info
-from cftool.misc import random_hash
 from fastapi.middleware import cors
 
 from cfdraw import constants
-from cfdraw.utils import console
 from cfdraw.config import get_config
 from cfdraw.app.schema import IApp
 from cfdraw.app.endpoints import *
+from cfdraw.core.toolkit import console
 from cfdraw.schema.plugins import IPlugin
 from cfdraw.plugins.factory import Plugins
 from cfdraw.plugins.factory import PluginFactory
+from cfdraw.core.toolkit.misc import random_hash
 
 
 async def ping() -> str:
@@ -31,11 +30,8 @@ class App(IApp):
         async def lifespan(api: FastAPI) -> AsyncGenerator:
             # startup
 
-            def info(msg: str) -> None:
-                print_info(msg)
-
-            info(f"🚀 Starting Backend Server at {self.config.api_url} ...")
-            info("🔨 Compiling Plugins & Endpoints...")
+            console.log(f"🚀 Starting Backend Server at {self.config.api_url} ...")
+            console.log("🔨 Compiling Plugins & Endpoints...")
             tplugin_with_notification: List[Type[IPlugin]] = []
             for tplugin in self.plugins.values():
                 tplugin.hash = self.hash
@@ -44,7 +40,7 @@ class App(IApp):
                     tplugin_with_notification.append(tplugin)
             if tplugin_with_notification or notification is not None:
                 console.rule("")
-                info(f"📣 Notifications:")
+                console.log(f"📣 Notifications:")
                 if notification is not None:
                     console.rule(f"[bold green][ GLOBAL ]")
                     console.print(notification)
@@ -56,8 +52,8 @@ class App(IApp):
             for endpoint in self.endpoints:
                 await endpoint.on_startup()
             upload_root_path = self.config.upload_root_path
-            info(f"🔔 Your files will be saved to '{upload_root_path}'")
-            info("🎉 Backend Server is Ready!")
+            console.log(f"🔔 Your files will be saved to '{upload_root_path}'")
+            console.log("🎉 Backend Server is Ready!")
 
             yield
 

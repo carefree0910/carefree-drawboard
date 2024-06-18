@@ -1,7 +1,7 @@
 from datetime import datetime
-from cftool.constants import TIME_FORMAT
 
 from cfdraw import *
+from cfdraw.core.toolkit.constants import TIME_FORMAT
 
 
 class TimerPlugin(ITextAreaPlugin):

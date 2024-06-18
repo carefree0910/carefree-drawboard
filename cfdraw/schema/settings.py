@@ -4,12 +4,12 @@ from typing import List
 from typing import Optional
 from pydantic import Field
 from pydantic import BaseModel
-from cftool.misc import random_hash
 
 from cfdraw.parsers import noli
 from cfdraw.schema.plugins import hash_identifier
 from cfdraw.schema.plugins import ILogoSettings
 from cfdraw.schema.plugins import ReactPluginType
+from cfdraw.core.toolkit.misc import random_hash
 
 
 class BoardOptions(BaseModel):

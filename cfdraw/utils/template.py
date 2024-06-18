@@ -1,9 +1,8 @@
 from enum import Enum
 from pathlib import Path
-from cftool.misc import print_info
 
 from cfdraw import constants
-from cfdraw.utils import console
+from cfdraw.core.toolkit import console
 
 
 IMAGE_APP_TEMPLATE = f"""
@@ -152,6 +151,6 @@ def set_init_codes(folder: Path, template: TemplateType) -> None:
         return
     with config_path.open("w") as f:
         f.write(CONFIG_TEMPLATE)
-    print_info(f"App can be modified at {app_path}")
-    print_info(f"Config can be modified at {config_path}")
+    console.log(f"App can be modified at {app_path}")
+    console.log(f"Config can be modified at {config_path}")
     console.rule(f"[bold green]🎉 You can launch the app with `cfdraw run` now! 🎉")

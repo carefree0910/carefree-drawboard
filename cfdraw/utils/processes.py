@@ -6,7 +6,7 @@ import contextlib
 
 from typing import Optional
 
-from cfdraw.utils import console
+from cfdraw.core.toolkit import console
 
 
 def kill(pid: int) -> None:

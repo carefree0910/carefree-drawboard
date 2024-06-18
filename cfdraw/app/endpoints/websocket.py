@@ -4,18 +4,18 @@ import logging
 
 from fastapi import WebSocket
 from fastapi import WebSocketDisconnect
-from cftool.misc import get_err_msg
-from cftool.misc import print_error
 from starlette.websockets import WebSocketState
 
 from cfdraw import constants
 from cfdraw.app.schema import IApp
 from cfdraw.app.schema import IRequestQueueData
+from cfdraw.core.toolkit import console
 from cfdraw.utils.misc import offload
 from cfdraw.schema.plugins import ElapsedTimes
 from cfdraw.schema.plugins import ISocketRequest
 from cfdraw.schema.plugins import ISocketMessage
 from cfdraw.app.endpoints.base import IEndpoint
+from cfdraw.core.toolkit.misc import get_err_msg
 
 
 def add_websocket(app: IApp) -> None:
@@ -72,7 +72,7 @@ def add_websocket(app: IApp) -> None:
                     )
                     exception = ISocketMessage.make_exception(data.hash, message)
                     if not await send_message(exception):
-                        print_error(f"[websocket.loop] {message}")
+                        console.error(f"\[websocket.loop] {message}")
             except WebSocketDisconnect:
                 break
             except Exception as e:

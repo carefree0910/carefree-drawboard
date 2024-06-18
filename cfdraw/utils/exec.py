@@ -2,12 +2,10 @@ import os
 import uvicorn
 import subprocess
 
-from cftool.misc import print_info
-
 from cfdraw import constants
-from cfdraw.utils import console
 from cfdraw.utils import prerequisites
 from cfdraw.config import get_config
+from cfdraw.core.toolkit import console
 
 
 def setup_frontend() -> None:
@@ -32,14 +30,14 @@ def run_frontend(host: bool) -> None:
         stdout=subprocess.DEVNULL,
         stderr=subprocess.STDOUT,
     )
-    print_info(f"👌 Your app will be ready at {get_config().frontend_url} soon...")
+    console.log(f"👌 Your app will be ready at {get_config().frontend_url} soon...")
 
 
 def run_frontend_prod() -> None:
     setup_frontend()
     config = get_config()
     if config.use_unified:
-        print_info(f"👀 Your app codes are being compiled, please wait for a while...")
+        console.log(f"👀 Your app codes are being compiled, please wait for a while...")
         subprocess.run(
             [prerequisites.get_yarn(), "build"],
             cwd=constants.WEB_ROOT,
@@ -51,7 +49,7 @@ def run_frontend_prod() -> None:
             cwd=constants.WEB_ROOT,
             env=os.environ,
         )
-        print_info(
+        console.log(
             f"👀 Your app codes are being compiled, "
             "please wait until a bunch of urls appear..."
         )
@@ -81,5 +79,5 @@ def run_backend_prod(module: str, *, log_level: constants.LogLevel) -> None:
     console.rule("[bold green]Launching Production Backend")
     config = get_config()
     if config.use_unified:
-        print_info(f"👌 Your app will be ready at {config.api_url} soon...")
+        console.log(f"👌 Your app will be ready at {config.api_url} soon...")
     run_backend(module, log_level=log_level, verbose=False)

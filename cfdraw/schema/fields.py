@@ -9,7 +9,6 @@ from typing import List
 from typing import Union
 from typing import Optional
 from pathlib import Path
-from pydantic import Extra
 from pydantic import Field
 from pydantic import BaseModel
 
@@ -62,7 +61,7 @@ Whether the field is conditioned on another field (i.e., show this field only wh
     )
 
     class Config:
-        extra = Extra.forbid
+        extra = "forbid"
         smart_union = True
 
 

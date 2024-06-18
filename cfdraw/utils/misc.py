@@ -6,10 +6,9 @@ from typing import Any
 from typing import TypeVar
 from typing import Callable
 from typing import Coroutine
-from cftool.misc import get_err_msg
-from cftool.misc import print_error
-from cftool.misc import print_warning
 from concurrent.futures import ThreadPoolExecutor
+
+from cfdraw.core.toolkit import console
 
 
 TFutureResponse = TypeVar("TFutureResponse")
@@ -19,7 +18,7 @@ def deprecated(message: str) -> Callable[[type], type]:
     def _deprecated(cls: type) -> type:
         def init(self: Any, *args: Any, **kwargs: Any) -> None:
             if not cls._warned_deprecation:  # type: ignore
-                print_warning(f"{cls.__name__} is deprecated, {message}")
+                console.warn(f"{cls.__name__} is deprecated, {message}")
                 cls._warned_deprecation = True  # type: ignore
             original_init(self, *args, **kwargs)
 
@@ -62,7 +61,7 @@ def offload_run(future: Coroutine[Any, Any, bool]) -> bool:
             if success:
                 event.set()
             else:
-                print_error("[offload_run] Failed to execute future")
+                console.error("\[offload_run] Failed to execute future")
         except Exception:
             logging.exception("[offload_run] failed to execute future")
 

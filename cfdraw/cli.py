@@ -5,14 +5,13 @@ import subprocess
 import pkg_resources
 
 from pathlib import Path
-from cftool.misc import print_info
 
 from cfdraw import constants
 from cfdraw.utils import exec
-from cfdraw.utils import console
 from cfdraw.utils import processes
 from cfdraw.utils import prerequisites
 from cfdraw.config import get_config
+from cfdraw.core.toolkit import console
 from cfdraw.utils.template import set_init_codes
 from cfdraw.utils.template import TemplateType
 
@@ -52,7 +51,7 @@ def run(
                 pkg_resources.require(requirements)
             except Exception as err:
                 console.rule("📦 Installing Requirements")
-                print_info(f"Reason : {err}")
+                console.log(f"Reason : {err}")
                 enclosed = lambda s: f'"{s}"'
                 requirements_string = " ".join(map(enclosed, requirements))
                 cmd = f"{sys.executable} -m pip install {requirements_string}"
@@ -90,11 +89,11 @@ def run(
             backend_fn(module, log_level=log_level)
     finally:
         console.rule("[bold]Shutting down")
-        print_info("Killing frontend")
+        console.log("Killing frontend")
         processes.kill_process_on_port(frontend_port)
-        print_info("Killing backend")
+        console.log("Killing backend")
         processes.kill_process_on_port(backend_port)
-        print_info("Done")
+        console.log("Done")
 
 
 @cli.command()

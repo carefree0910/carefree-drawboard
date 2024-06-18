@@ -3,7 +3,7 @@ from typing import Any
 from typing import List
 
 from cfdraw import *
-from cftool.misc import shallow_copy_dict
+from cfdraw.core.toolkit.misc import shallow_copy_dict
 
 
 @cache_resource
