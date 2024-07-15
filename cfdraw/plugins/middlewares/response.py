@@ -40,7 +40,7 @@ class ResponseMiddleware(IMiddleware):
                 )
             )
         meta = PngInfo()
-        meta.add_text("request", self.request.json())
+        meta.add_text("request", self.request.model_dump_json())
         t = time.time()
         audit = self.plugin.image_should_audit
         upload = ImageUploader.upload_image
